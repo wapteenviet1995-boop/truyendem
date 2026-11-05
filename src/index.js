@@ -201,6 +201,62 @@ export default {
       }
     }
 
+    const adminChaptersMatch = path.match(/^\/api\/admin\/stories\/(\d+)\/chapters$/);
+    if (adminChaptersMatch && method === "GET") {
+      if (!(await requireAdmin(request, env))) return json({ ok: false, error: "Không có quyền quản trị." }, 401);
+      const result = await env.DB.prepare(
+        "SELECT id, title, chapter_number, content, audio_url, duration_seconds, status FROM chapters WHERE story_id=? ORDER BY chapter_number ASC"
+      ).bind(Number(adminChaptersMatch[1])).all();
+      return json({ ok: true, chapters: result.results || [] });
+    }
+    if (adminChaptersMatch && method === "POST") {
+      if (!(await requireAdmin(request, env))) return json({ ok: false, error: "Không có quyền quản trị." }, 401);
+      const data = await bodyJson(request);
+      const title = clean(data?.title, 180);
+      const number = Math.max(1, Math.floor(Number(data?.chapter_number) || 1));
+      const content = String(data?.content || "").slice(0, 100000);
+      const audio = clean(data?.audio_url, 1000);
+      const duration = Math.max(0, Math.floor(Number(data?.duration_seconds) || 0));
+      const status = ["draft", "published", "hidden"].includes(data?.status) ? data.status : "draft";
+      if (!title || !content.trim()) return json({ ok: false, error: "Tên chương và nội dung không được để trống." }, 400);
+      try {
+        await env.DB.prepare(
+          "INSERT INTO chapters (story_id,title,chapter_number,content,audio_url,duration_seconds,status) VALUES (?,?,?,?,?,?,?)"
+        ).bind(Number(adminChaptersMatch[1]),title,number,content,audio,duration,status).run();
+        return json({ ok: true, message: "Đã thêm chương." }, 201);
+      } catch (error) {
+        return json({ ok: false, error: "Không thể thêm chương. Kiểm tra truyện và số chương có bị trùng không." }, 409);
+      }
+    }
+
+    const chapterMatch = path.match(/^\/api\/admin\/chapters\/(\d+)$/);
+    if (chapterMatch && method === "PUT") {
+      if (!(await requireAdmin(request, env))) return json({ ok: false, error: "Không có quyền quản trị." }, 401);
+      const data = await bodyJson(request);
+      const title = clean(data?.title, 180);
+      const number = Math.max(1, Math.floor(Number(data?.chapter_number) || 1));
+      const content = String(data?.content || "").slice(0, 100000);
+      const audio = clean(data?.audio_url, 1000);
+      const duration = Math.max(0, Math.floor(Number(data?.duration_seconds) || 0));
+      const status = ["draft", "published", "hidden"].includes(data?.status) ? data.status : "draft";
+      if (!title || !content.trim()) return json({ ok: false, error: "Tên chương và nội dung không được để trống." }, 400);
+      try {
+        const result = await env.DB.prepare(
+          "UPDATE chapters SET title=?,chapter_number=?,content=?,audio_url=?,duration_seconds=?,status=? WHERE id=?"
+        ).bind(title,number,content,audio,duration,status,Number(chapterMatch[1])).run();
+        if (!result.meta.changes) return json({ ok: false, error: "Không tìm thấy chương." }, 404);
+        return json({ ok: true, message: "Đã cập nhật chương." });
+      } catch (error) {
+        return json({ ok: false, error: "Không thể cập nhật chương. Có thể số chương đã tồn tại." }, 409);
+      }
+    }
+    if (chapterMatch && method === "DELETE") {
+      if (!(await requireAdmin(request, env))) return json({ ok: false, error: "Không có quyền quản trị." }, 401);
+      const result = await env.DB.prepare("DELETE FROM chapters WHERE id=?").bind(Number(chapterMatch[1])).run();
+      if (!result.meta.changes) return json({ ok: false, error: "Không tìm thấy chương." }, 404);
+      return json({ ok: true, message: "Đã xóa chương." });
+    }
+
     const storyMatch = path.match(/^\/api\/admin\/stories\/(\d+)$/);
     if (storyMatch && method === "PUT") {
       if (!(await requireAdmin(request, env))) return json({ ok: false, error: "Không có quyền quản trị." }, 401);
