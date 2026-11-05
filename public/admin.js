@@ -34,7 +34,8 @@ async function loadStories(){
  try{
   const r=await api("/api/admin/stories");
   if(!r.stories.length){box.innerHTML='<p class="hint">Chưa có truyện. Hãy thêm truyện đầu tiên ở biểu mẫu phía trên.</p>';return}
-  box.innerHTML=r.stories.map(s=>'<article class="story-item">'+(s.cover_url?'<img src="'+escapeAttr(s.cover_url)+'" alt="">':'<div class="cover-placeholder"></div>')+'<div class="story-main"><strong>'+escapeHtml(s.title)+'</strong><div class="story-meta">'+escapeHtml(s.author||"Chưa rõ tác giả")+' · <span class="status">'+escapeHtml(s.status)+'</span></div></div><div class="story-actions"><button data-edit="'+s.id+'">Sửa</button><button data-delete="'+s.id+'">Xóa</button></div></article>').join("");
+  box.innerHTML=r.stories.map(s=>'<article class="story-item">'+(s.cover_url?'<img src="'+escapeAttr(s.cover_url)+'" alt="">':'<div class="cover-placeholder"></div>')+'<div class="story-main"><strong>'+escapeHtml(s.title)+'</strong><div class="story-meta">'+escapeHtml(s.author||"Chưa rõ tác giả")+' · <span class="status">'+escapeHtml(s.status)+'</span></div></div><div class="story-actions"><button data-chapters="'+s.id+'">Chương</button><button data-edit="'+s.id+'">Sửa</button><button data-delete="'+s.id+'">Xóa</button></div></article>').join("");
+  box.querySelectorAll("[data-chapters]").forEach(b=>b.onclick=()=>openChapters(Number(b.dataset.chapters),r.stories.find(s=>s.id===Number(b.dataset.chapters))));
   box.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>editStory(r.stories.find(s=>s.id===Number(b.dataset.edit))));
   box.querySelectorAll("[data-delete]").forEach(b=>b.onclick=()=>deleteStory(Number(b.dataset.delete)));
  }catch(err){box.innerHTML='<p class="message">'+escapeHtml(err.message)+'</p>'}
@@ -44,3 +45,28 @@ async function deleteStory(id){if(!confirm("Bạn chắc chắn muốn xóa truy
 function escapeHtml(v){return String(v??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 function escapeAttr(v){return escapeHtml(v).replace(/'/g,"&#39;")}
 (async()=>{try{const r=await api("/api/auth/me");if(r.user&&r.user.role==="admin")showDashboard(r.user);else showLogin()}catch{showLogin()}})();
+let activeStoryId=null;
+$("#close-chapters").onclick=()=>$("#chapter-panel").hidden=true;
+$("#cancel-chapter").onclick=resetChapterForm;
+function resetChapterForm(){ $("#chapter-form").reset();$("#chapter-id").value="";$("#chapter-number").value="1";$("#chapter-duration").value="0";$("#save-chapter").textContent="Lưu chương";$("#cancel-chapter").hidden=true;message($("#chapter-message"),"");}
+async function openChapters(id,story){
+ activeStoryId=id;$("#chapter-panel").hidden=false;$("#chapter-heading").textContent="Chương: "+(story?.title||"Truyện");resetChapterForm();await loadChapters();$("#chapter-panel").scrollIntoView({behavior:"smooth",block:"start"});
+}
+async function loadChapters(){
+ const box=$("#chapter-list");box.innerHTML='<p class="hint">Đang tải chương...</p>';
+ try{
+  const r=await api("/api/admin/stories/"+activeStoryId+"/chapters");
+  if(!r.chapters.length){box.innerHTML='<p class="hint">Chưa có chương nào.</p>';return}
+  box.innerHTML=r.chapters.map(c=>'<article class="story-item"><div class="story-main"><strong>Chương '+c.chapter_number+': '+escapeHtml(c.title)+'</strong><div class="story-meta"><span class="status">'+escapeHtml(c.status)+'</span> · '+(c.content?.length||0)+' ký tự</div></div><div class="story-actions"><button data-ch-edit="'+c.id+'">Sửa</button><button data-ch-delete="'+c.id+'">Xóa</button></div></article>').join("");
+  box.querySelectorAll("[data-ch-edit]").forEach(b=>b.onclick=()=>editChapter(r.chapters.find(c=>c.id===Number(b.dataset.chEdit))));
+  box.querySelectorAll("[data-ch-delete]").forEach(b=>b.onclick=()=>deleteChapter(Number(b.dataset.chDelete)));
+ }catch(err){box.innerHTML='<p class="message">'+escapeHtml(err.message)+'</p>'}
+}
+function editChapter(c){if(!c)return;$("#chapter-id").value=c.id;$("#chapter-title").value=c.title;$("#chapter-number").value=c.chapter_number;$("#chapter-content").value=c.content||"";$("#chapter-audio").value=c.audio_url||"";$("#chapter-duration").value=c.duration_seconds||0;$("#chapter-status").value=c.status;$("#save-chapter").textContent="Cập nhật chương";$("#cancel-chapter").hidden=false;$("#chapter-form").scrollIntoView({behavior:"smooth",block:"start"})}
+$("#chapter-form").addEventListener("submit",async e=>{
+ e.preventDefault();const id=$("#chapter-id").value;
+ const payload={title:$("#chapter-title").value,chapter_number:Number($("#chapter-number").value),content:$("#chapter-content").value,audio_url:$("#chapter-audio").value,duration_seconds:Number($("#chapter-duration").value),status:$("#chapter-status").value};
+ try{await api(id?"/api/admin/chapters/"+id:"/api/admin/stories/"+activeStoryId+"/chapters",{method:id?"PUT":"POST",body:JSON.stringify(payload)});message($("#chapter-message"),"Đã lưu chương.");resetChapterForm();await loadChapters()}
+ catch(err){message($("#chapter-message"),err.message,true)}
+});
+async function deleteChapter(id){if(!confirm("Xóa chương này?"))return;try{await api("/api/admin/chapters/"+id,{method:"DELETE"});await loadChapters()}catch(err){alert(err.message)}}
