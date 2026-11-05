@@ -143,7 +143,7 @@ export default {
       const email = clean(data.email, 190).toLowerCase();
       const name = clean(data.name, 80);
       const password = String(data.password || "");
-      if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email) || !name || password.length < 10) {
+      if (email.length < 6 || !email.includes('@') || !email.split('@')[1].includes('.') || !name || password.length < 10) {
         return json({ ok: false, error: "Email không hợp lệ, tên không được trống và mật khẩu phải có ít nhất 10 ký tự." }, 400);
       }
       const hash = await passwordHash(password);
