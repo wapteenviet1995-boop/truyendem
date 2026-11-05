@@ -54,6 +54,23 @@
       <p class="message" id="form-message" role="status"></p>
     </form>
     <div id="story-list" class="story-list"></div>
+    <section id="chapter-panel" class="admin-panel" hidden>
+      <div class="dash-top"><div><h2 id="chapter-heading">Quản lý chương</h2><p class="hint">Thêm nội dung từng chương cho truyện.</p></div><button class="outline" type="button" id="close-chapters">Đóng</button></div>
+      <form id="chapter-form">
+        <input type="hidden" id="chapter-id">
+        <label>Tên chương<input id="chapter-title" required maxlength="180" placeholder="Ví dụ: Chương 1 – Đêm mưa"></label>
+        <div class="form-grid">
+          <label>Số chương<input id="chapter-number" type="number" min="1" value="1" required></label>
+          <label>Trạng thái<select id="chapter-status"><option value="draft">Bản nháp</option><option value="published">Xuất bản</option><option value="hidden">Ẩn</option></select></label>
+        </div>
+        <label>Nội dung chương<textarea id="chapter-content" rows="8" required></textarea></label>
+        <label>Link audio (nếu có)<input id="chapter-audio" type="url" placeholder="https://..."></label>
+        <label>Thời lượng audio (giây)<input id="chapter-duration" type="number" min="0" value="0"></label>
+        <div class="form-actions"><button class="go" type="submit" id="save-chapter">Lưu chương</button><button class="outline" type="button" id="cancel-chapter" hidden>Hủy sửa</button></div>
+        <p class="message" id="chapter-message" role="status"></p>
+      </form>
+      <div id="chapter-list" class="story-list"></div>
+    </section>
   </section>
 </main>
 <script src="/admin.js"></script>
