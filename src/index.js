@@ -135,7 +135,7 @@ export default {
     }
 
     if (path === "/api/admin/setup" && method === "POST") {
-      if (!env.ADMIN_SETUP_KEY) return json({ ok: false, error: "Chưa cấu hình ADMIN_SETUP_KEY trong Cloudflare." }, 503);
+      if (!env.ADMIN_SETUP_KEY || !env.SESSION_SECRET) return json({ ok: false, error: "Hãy cấu hình ADMIN_SETUP_KEY và SESSION_SECRET trong Cloudflare trước." }, 503);
       const data = await bodyJson(request);
       if (!data || data.setup_key !== env.ADMIN_SETUP_KEY) return json({ ok: false, error: "Khóa khởi tạo không đúng." }, 403);
       const count = await env.DB.prepare("SELECT COUNT(*) AS total FROM users WHERE role = 'admin'").first();
