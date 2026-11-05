@@ -40,7 +40,7 @@ Vào `/admin.html` để:
 - Chọn trạng thái bản nháp, xuất bản hoặc ẩn.
 - Thêm, sửa, xóa chương và nội dung từng chương.
 - Chương ở trạng thái Xuất bản mới hiển thị công khai.
-
+Deploy Truyện Đêm.
 ## Lưu ý quan trọng
 
 - Không đưa `SESSION_SECRET` hoặc `ADMIN_SETUP_KEY` vào GitHub, mã HTML hay JavaScript phía trình duyệt. Chỉ lưu chúng dưới dạng Secret trong Cloudflare.
