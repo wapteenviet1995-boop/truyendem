@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Truyện Đêm – Đọc truyện và nghe truyện audio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="acct" id="acct"></div>
+    <h1>Truyện Đêm</h1>
+    <p class="sub">Đọc chậm trên màn hình tối, hoặc đặt máy xuống và nghe giọng đọc kể tiếp.</p>
+    <div class="tabs" role="group" aria-label="Lọc truyện">
+      <button class="tab" data-f="all" aria-pressed="true">Tất cả</button>
+      <button class="tab" data-f="text" aria-pressed="false">Truyện chữ</button>
+      <button class="tab" data-f="audio" aria-pressed="false">Audio</button>
+      <button class="tab" data-f="saved" aria-pressed="false">Đã lưu</button>
+    </div>
+  </header>
+  <ul class="list" id="list"></ul>
+  <footer>Giọng đọc dùng bộ đọc tiếng Việt có sẵn trên thiết bị của bạn.</footer>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mt">
+  <div class="box">
+    <div class="mhead"><h3 id="mt">Đăng nhập</h3><button id="mx" aria-label="Đóng">✕</button></div>
+    <div class="mtabs"><button id="tl" aria-pressed="true">Đăng nhập</button><button id="tr" aria-pressed="false">Đăng ký</button></div>
+    <form id="af" novalidate>
+      <label id="f-name" class="hid">Tên hiển thị<input id="a-name" autocomplete="name"></label>
+      <label>Email<input id="a-mail" type="email" autocomplete="email"></label>
+      <label>Mật khẩu<input id="a-pw" type="password" autocomplete="current-password"></label>
+      <label id="f-pw2" class="hid">Nhập lại mật khẩu<input id="a-pw2" type="password" autocomplete="new-password"></label>
+      <p class="err" id="aerr" role="alert"></p>
+      <button class="go" id="ago" type="submit">Đăng nhập</button>
+    </form>
+    <p class="note">Tài khoản được lưu trên trình duyệt này và chưa đồng bộ giữa các thiết bị.</p>
+  </div>
+</div>
+
+<section id="reader" aria-label="Trang đọc truyện">
+  <div class="bar">
+    <button id="back">‹ Thư viện</button>
+    <div class="size"><button id="fav" aria-pressed="false">♡ Lưu</button><button id="sm" aria-label="Giảm cỡ chữ">A−</button><button id="lg" aria-label="Tăng cỡ chữ">A+</button></div>
+  </div>
+  <article id="art"></article>
+</section>
+
+<div id="player">
+  <div class="pin">
+    <p class="ptitle" id="ptitle"></p>
+    <div class="prog"><i id="pbar"></i></div>
+    <div class="ctl">
+      <button id="prev" aria-label="Đoạn trước">⏮</button>
+      <button id="play" class="play" aria-label="Phát">▶</button>
+      <button id="next" aria-label="Đoạn sau">⏭</button>
+      <button id="spd" class="spd" aria-label="Tốc độ đọc">1×</button>
+    </div>
+    <p class="warn" id="warn" hidden>Thiết bị chưa có giọng đọc tiếng Việt. Bạn vẫn đọc chữ bình thường.</p>
+  </div>
+</div>
+
+<script src="/script.js"></script>
+</body>
+</html>
