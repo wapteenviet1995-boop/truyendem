@@ -40,9 +40,23 @@ document.querySelectorAll(".tab").forEach(function(b){b.onclick=function(){
   render();
 }});
 $("#list").onclick=function(e){var r=e.target.closest(".row");if(r)openStory(+r.dataset.id)};
-function openStory(id){
+async function openStory(id){
   stop();
-  cur=S.filter(function(s){return s.id==id})[0];idx=0;
+  var selected=S.filter(function(s){return s.id==id})[0];
+  if(!selected)return;
+  cur=selected;
+  if(selected.slug){
+    try{
+      var response=await fetch("/api/stories/"+encodeURIComponent(selected.slug));
+      var detail=await response.json();
+      if(response.ok&&detail.ok){
+        cur.p=(detail.chapters||[]).flatMap(function(ch){return ["Chương "+ch.chapter_number+": "+ch.title,ch.content||""]}).filter(Boolean);
+        cur.chapterItems=detail.chapters||[];
+      }
+    }catch(error){}
+  }
+  if(!cur.p||!cur.p.length)cur.p=[cur.d||"Truyện này chưa có chương được xuất bản."];
+  idx=0;
   var h='<h2>'+esc(cur.t)+'</h2><p class="by">'+esc(cur.a)+' • '+cur.m+' phút</p>';
   cur.p.forEach(function(p,i){h+='<p data-i="'+i+'">'+esc(p)+'</p>'});
   $("#art").innerHTML=h;
@@ -158,3 +172,17 @@ $("#fav").onclick=function(){
 };
 renderAcct();
 render();
+
+async function loadRemoteStories(){
+  try{
+    var response=await fetch("/api/stories",{cache:"no-store"});
+    var data=await response.json();
+    if(response.ok&&data.ok&&Array.isArray(data.stories)&&data.stories.length){
+      S=data.stories.map(function(s){
+        return {id:s.id,slug:s.slug,t:s.title,a:s.author||"Chưa rõ tác giả",m:0,au:s.story_type==="audio"||s.story_type==="both",c:"#4f5964",d:s.description||"",p:[]};
+      });
+      render();
+    }
+  }catch(error){}
+}
+loadRemoteStories();
