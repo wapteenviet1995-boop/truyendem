@@ -117,6 +117,18 @@ export default {
       }
     }
 
+    const publicStoryMatch = path.match(/^\/api\/stories\/([a-z0-9-]+)$/);
+    if (publicStoryMatch && method === "GET") {
+      const story = await env.DB.prepare(
+        "SELECT id, title, slug, author, description, cover_url, story_type, created_at FROM stories WHERE slug=? AND status='published'"
+      ).bind(publicStoryMatch[1]).first();
+      if (!story) return json({ ok: false, error: "Không tìm thấy truyện." }, 404);
+      const chapters = await env.DB.prepare(
+        "SELECT id, title, chapter_number, content, audio_url, duration_seconds FROM chapters WHERE story_id=? AND status='published' ORDER BY chapter_number ASC"
+      ).bind(story.id).all();
+      return json({ ok: true, story, chapters: chapters.results || [] });
+    }
+
     if (path === "/api/auth/me" && method === "GET") {
       const user = await currentUser(request, env);
       return json({ ok: true, user: user ? { id: user.id, email: user.email, name: user.name, role: user.role } : null });
