@@ -102,7 +102,7 @@ export default {
     }
 
     if (path === "/api/health" && method === "GET") {
-      return json({ ok: true, name: "Truyện Đêm", service: "Cloudflare Workers", database: Boolean(env.DB), time: new Date().toISOString() });
+      return json({ ok: true, name: "Truyện Đêm", service: "Cloudflare Workers", database: Boolean(env.DB), adminSetupKeyConfigured: Boolean(env.ADMIN_SETUP_KEY), sessionSecretConfigured: Boolean(env.SESSION_SECRET), time: new Date().toISOString() });
     }
 
     if (path === "/api/stories" && method === "GET") {
