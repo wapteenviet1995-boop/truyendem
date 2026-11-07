@@ -134,12 +134,15 @@ export default {
       return json({ ok: true, user: user ? { id: user.id, email: user.email, name: user.name, role: user.role } : null });
     }
 
-    if (path === "/api/admin/setup" && method === "POST") {
-      if (!env.ADMIN_SETUP_KEY || !env.SESSION_SECRET) return json({ ok: false, error: "Hãy cấu hình ADMIN_SETUP_KEY và SESSION_SECRET trong Cloudflare trước." }, 503);
-      const data = await bodyJson(request);
-      if (!data || data.setup_key !== env.ADMIN_SETUP_KEY) return json({ ok: false, error: "Khóa khởi tạo không đúng." }, 403);
+    if (path === "/api/admin/setup-status" && method === "GET") {
       const count = await env.DB.prepare("SELECT COUNT(*) AS total FROM users WHERE role = 'admin'").first();
-      if (count && count.total > 0) return json({ ok: false, error: "Tài khoản quản trị đã được tạo. Hãy đăng nhập." }, 409);
+      return json({ ok: true, setupRequired: !count || count.total === 0 });
+    }
+
+    if (path === "/api/admin/setup" && method === "POST") {
+      if (!env.SESSION_SECRET) return json({ ok: false, error: "SESSION_SECRET chưa được cấu hình trong Cloudflare." }, 503);
+      const data = await bodyJson(request);
+      if (!data) return json({ ok: false, error: "Dữ liệu gửi lên không hợp lệ." }, 400);
       const email = clean(data.email, 190).toLowerCase();
       const name = clean(data.name, 80);
       const password = String(data.password || "");
@@ -147,9 +150,11 @@ export default {
         return json({ ok: false, error: "Email không hợp lệ, tên không được trống và mật khẩu phải có ít nhất 10 ký tự." }, 400);
       }
       const hash = await passwordHash(password);
+      // Chỉ tài khoản quản trị đầu tiên được tạo; câu lệnh này ngăn hai yêu cầu đồng thời tạo thêm admin.
       const result = await env.DB.prepare(
-        "INSERT INTO users (email, display_name, password_hash, role) VALUES (?, ?, ?, 'admin')"
+        "INSERT INTO users (email, display_name, password_hash, role) SELECT ?, ?, ?, 'admin' WHERE NOT EXISTS (SELECT 1 FROM users WHERE role = 'admin')"
       ).bind(email, name, hash).run();
+      if (!result.meta.changes) return json({ ok: false, error: "Tài khoản quản trị đã được tạo. Hãy đăng nhập." }, 409);
       const user = { id: result.meta.last_row_id, email, display_name: name, role: "admin" };
       const token = await makeSession(user, env);
       return json({ ok: true, message: "Đã tạo tài khoản quản trị.", user: { email, name, role: "admin" } }, 201, { "set-cookie": sessionCookie(token) });
