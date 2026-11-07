@@ -16,7 +16,7 @@ $("#login-form").addEventListener("submit",async e=>{
 });
 $("#setup-form").addEventListener("submit",async e=>{
  e.preventDefault();const m=$("#auth-message");message(m,"Đang tạo tài khoản quản trị...");
- try{const r=await api("/api/admin/setup",{method:"POST",body:JSON.stringify({setup_key:$("#setup-key").value,name:$("#setup-name").value,email:$("#setup-email").value,password:$("#setup-password").value})});showDashboard(r.user)}
+ try{const r=await api("/api/admin/setup",{method:"POST",body:JSON.stringify({name:$("#setup-name").value,email:$("#setup-email").value,password:$("#setup-password").value})});showDashboard(r.user)}
  catch(err){message(m,err.message,true)}
 });
 $("#logout").onclick=async()=>{try{await api("/api/auth/logout",{method:"POST",body:"{}"})}catch{}showLogin()};
@@ -44,7 +44,15 @@ function editStory(s){if(!s)return;$("#story-id").value=s.id;$("#story-title").v
 async function deleteStory(id){if(!confirm("Bạn chắc chắn muốn xóa truyện này và các chương liên quan?"))return;try{await api("/api/admin/stories/"+id,{method:"DELETE"});await loadStories()}catch(err){alert(err.message)}}
 function escapeHtml(v){return String(v??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 function escapeAttr(v){return escapeHtml(v).replace(/'/g,"&#39;")}
-(async()=>{try{const r=await api("/api/auth/me");if(r.user&&r.user.role==="admin")showDashboard(r.user);else showLogin()}catch{showLogin()}})();
+(async()=>{
+ try{
+  const [me,status]=await Promise.all([api("/api/auth/me"),api("/api/admin/setup-status")]);
+  const setupBox=$("#setup-box");
+  if(status.setupRequired){setupBox.hidden=false;setupBox.open=true}
+  else{setupBox.hidden=true}
+  if(me.user&&me.user.role==="admin")showDashboard(me.user);else showLogin();
+ }catch{showLogin()}
+})();
 let activeStoryId=null;
 $("#close-chapters").onclick=()=>$("#chapter-panel").hidden=true;
 $("#cancel-chapter").onclick=resetChapterForm;
