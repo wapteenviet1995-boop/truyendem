@@ -22,11 +22,10 @@
       <label>Mật khẩu<input id="login-password" type="password" autocomplete="current-password" required></label>
       <button class="go" type="submit">Đăng nhập</button>
     </form>
-    <details class="setup-box">
-      <summary>Chưa có tài khoản quản trị? Khởi tạo lần đầu</summary>
-      <p class="hint">Chỉ dùng lần đầu. Cần ADMIN_SETUP_KEY đã cấu hình trong Cloudflare Workers.</p>
+    <details class="setup-box" id="setup-box">
+      <summary>Chưa có tài khoản quản trị? Tạo admin lần đầu</summary>
+      <p class="hint">Chỉ tạo được một tài khoản quản trị đầu tiên. Sau khi tạo, mục này sẽ tự khóa và bạn đăng nhập bằng email, mật khẩu.</p>
       <form id="setup-form">
-        <label>Khóa khởi tạo<input id="setup-key" type="password" required></label>
         <label>Tên quản trị<input id="setup-name" required maxlength="80"></label>
         <label>Email<input id="setup-email" type="email" required></label>
         <label>Mật khẩu (ít nhất 10 ký tự)<input id="setup-password" type="password" minlength="10" required></label>
