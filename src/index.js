@@ -46,28 +46,48 @@ async function verifyPassword(password, stored) {
   const actual = b64url(bits);
   return actual === expected;
 }
-async function sign(payload, secret) {
-  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-  return b64url(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(payload)));
+async function tokenHash(token) {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(token));
+  return b64url(digest);
 }
+
+async function ensureSessionTable(env) {
+  await env.DB.prepare(`
+    CREATE TABLE IF NOT EXISTS auth_sessions (
+      token_hash TEXT PRIMARY KEY,
+      user_id INTEGER NOT NULL,
+      expires_at INTEGER NOT NULL,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+  `).run();
+}
+
 async function makeSession(user, env) {
-  const payload = b64url(new TextEncoder().encode(JSON.stringify({
-    id: user.id, email: user.email, name: user.display_name, role: user.role,
-    exp: Math.floor(Date.now() / 1000) + SESSION_SECONDS
-  })));
-  return payload + "." + await sign(payload, env.SESSION_SECRET);
+  await ensureSessionTable(env);
+  const token = randomHex(32);
+  const expiresAt = Math.floor(Date.now() / 1000) + SESSION_SECONDS;
+  await env.DB.prepare(
+    "INSERT INTO auth_sessions (token_hash, user_id, expires_at) VALUES (?, ?, ?)"
+  ).bind(await tokenHash(token), user.id, expiresAt).run();
+  return token;
 }
+
 async function currentUser(request, env) {
   const cookie = request.headers.get("Cookie") || "";
   const match = cookie.match(new RegExp("(?:^|;\\s*)" + COOKIE + "=([^;]+)"));
-  if (!match || !env.SESSION_SECRET) return null;
-  const parts = match[1].split(".");
-  if (parts.length !== 2 || await sign(parts[0], env.SESSION_SECRET) !== parts[1]) return null;
+  if (!match || !env.DB) return null;
   try {
-    const user = JSON.parse(new TextDecoder().decode(fromB64url(parts[0])));
-    if (!user.exp || user.exp < Math.floor(Date.now() / 1000)) return null;
-    return user;
-  } catch { return null; }
+    await ensureSessionTable(env);
+    const row = await env.DB.prepare(
+      `SELECT u.id, u.email, u.display_name AS name, u.role
+       FROM auth_sessions s JOIN users u ON u.id = s.user_id
+       WHERE s.token_hash = ? AND s.expires_at > ? LIMIT 1`
+    ).bind(await tokenHash(match[1]), Math.floor(Date.now() / 1000)).first();
+    return row || null;
+  } catch {
+    return null;
+  }
 }
 function sessionCookie(value) {
   return `${COOKIE}=${value}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${SESSION_SECONDS}`;
@@ -102,7 +122,7 @@ export default {
     }
 
     if (path === "/api/health" && method === "GET") {
-      return json({ ok: true, name: "Truyện Đêm", service: "Cloudflare Workers", database: Boolean(env.DB), sessionSecretConfigured: Boolean(env.SESSION_SECRET), time: new Date().toISOString() });
+      return json({ ok: true, name: "Truyện Đêm", service: "Cloudflare Workers", database: Boolean(env.DB), sessionStorage: "D1", time: new Date().toISOString() });
     }
 
     if (path === "/api/stories" && method === "GET") {
@@ -140,7 +160,7 @@ export default {
     }
 
     if (path === "/api/admin/setup" && method === "POST") {
-      if (!env.SESSION_SECRET) return json({ ok: false, error: "SESSION_SECRET chưa được cấu hình trong Cloudflare." }, 503);
+      
       const data = await bodyJson(request);
       if (!data) return json({ ok: false, error: "Dữ liệu gửi lên không hợp lệ." }, 400);
       const email = clean(data.email, 190).toLowerCase();
