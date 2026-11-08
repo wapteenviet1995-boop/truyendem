@@ -73,6 +73,15 @@ async function makeSession(user, env) {
   return token;
 }
 
+async function revokeSession(request, env) {
+  const cookie = request.headers.get("Cookie") || "";
+  const match = cookie.match(new RegExp("(?:^|;\\s*)" + COOKIE + "=([^;]+)"));
+  if (!match || !env.DB) return;
+  await ensureSessionTable(env);
+  await env.DB.prepare("DELETE FROM auth_sessions WHERE token_hash = ?")
+    .bind(await tokenHash(match[1])).run();
+}
+
 async function currentUser(request, env) {
   const cookie = request.headers.get("Cookie") || "";
   const match = cookie.match(new RegExp("(?:^|;\\s*)" + COOKIE + "=([^;]+)"));
@@ -194,6 +203,7 @@ export default {
     }
 
     if (path === "/api/auth/logout" && method === "POST") {
+      await revokeSession(request, env);
       return json({ ok: true }, 200, { "set-cookie": clearCookie() });
     }
 
