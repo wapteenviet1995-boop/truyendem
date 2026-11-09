@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cung hoàng đạo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Lora:wght@500;600&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<main>
+<h1>Xem cung hoàng đạo</h1>
+<p class="lead">Nhập ngày sinh hoặc chạm vào một cung trên vòng tròn để xem tính cách và vận hạn hôm nay.</p>
+
+<p class="sunbar" id="sun"></p>
+<div class="lookup">
+  <label>Ngày <select id="d"></select></label>
+  <label>Tháng <select id="m"></select></label>
+  <button class="go" id="go">Xem cung của tôi</button>
+</div>
+<p class="err" id="err" role="alert"></p>
+<p class="saved" id="saved"></p>
+
+<svg class="wheel" id="wheel" viewBox="0 0 400 400" role="group" aria-label="Vòng 12 cung hoàng đạo"></svg>
+
+<section class="card" id="detail" aria-live="polite"></section>
+</main>
+
+<script src="js/script.js"></script>
+</body>
+</html>
