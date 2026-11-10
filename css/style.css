@@ -419,3 +419,9 @@ body.member-page{--bg:#151515;--surf:#202020;--ink:#f1eee8;--mute:#aaa49a;--acc:
 .member-secondary{flex:1;text-align:center;text-decoration:none;padding:11px 12px;border:1px solid #685637;border-radius:9px;background:#30291d}
 .member-logout{margin-top:8px;background:#393630;color:#f1eee8;border:1px solid #5a554b}
 @media(max-width:480px){.member-wrap{padding:26px 12px}.member-actions{flex-direction:column}}
+
+/* Thanh tai khoan trong menu */
+.member-nav-logout{display:inline-flex;align-items:center;margin:0;padding:0}
+.member-nav-logout button{border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;padding:0}
+.member-nav-logout button:hover{color:var(--acc)}
+@media(max-width:760px){.member-nav-logout{justify-content:center}}
