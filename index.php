@@ -26,6 +26,7 @@ require __DIR__ . '/includes/db.php';
       <a href="community.php">Cộng đồng</a>
       <a href="friends.php">Kết bạn</a>
       <a href="diary.php">Nhật ký</a>
+      <a href="messages.php">Tin nhắn</a>
       <a href="blog.php">Blog</a>
       <?php if (!empty($_SESSION['member_id'])): ?>
       <a href="account.php">Tài khoản</a>
@@ -83,5 +84,6 @@ require __DIR__ . '/includes/db.php';
   <a href="blog.php"><span aria-hidden="true">✎</span>Blog</a>
 </nav>
 <script src="js/script.js"></script>
+<script src="js/presence.js"></script>
 </body>
 </html>
