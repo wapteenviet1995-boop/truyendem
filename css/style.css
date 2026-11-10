@@ -464,3 +464,18 @@ body.member-page{--bg:#151515;--surf:#202020;--ink:#f1eee8;--mute:#aaa49a;--acc:
 .compat-again{display:inline-block;margin-top:20px;color:#e3c47e;font-weight:700;text-decoration:none}
 .compat-disclaimer{max-width:680px;text-align:center;color:#888174;font-size:.78rem;line-height:1.7;margin:18px auto 0}
 @media(max-width:560px){.compat-main{padding:22px 12px 45px}.compat-form{grid-template-columns:1fr;gap:12px}.compat-heart{text-align:center;padding:0;line-height:1}.compat-submit{grid-column:auto}.compat-insights{grid-template-columns:1fr}.compat-pair{gap:8px}.compat-pair>div>span{font-size:2.5rem}.compat-pair strong{font-size:1rem}.compat-pair small{font-size:.72rem}}
+
+
+/* Luu cap cung yeu thich trong tai khoan */
+.compat-save-form{max-width:420px;margin:18px auto 0}
+.compat-save-message{color:#e3c47e;font-size:.9rem;line-height:1.6;margin:16px auto 8px}
+.member-favorites{margin-top:22px;padding:18px;text-align:left;background:#191919;border:1px solid #393630;border-radius:12px}
+.member-favorites h2{margin:0 0 14px;color:#e3c47e;font:600 1.2rem Lora,Georgia,serif}
+.member-favorite-list{display:grid;gap:10px}
+.member-favorite-item{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;padding:12px;background:#222;border:1px solid #3d382e;border-radius:9px}
+.member-favorite-item>div{display:grid;gap:5px}
+.member-favorite-item strong{color:#f1eee8;font-size:.92rem}
+.member-favorite-item small{color:#9e978b;font-size:.76rem}
+.member-favorite-item>b{color:#e3c47e}
+.member-favorite-item>a{color:#e3c47e;text-decoration:none;font-size:.82rem;white-space:nowrap}
+@media(max-width:480px){.member-favorite-item{grid-template-columns:1fr auto;gap:8px}.member-favorite-item>a{grid-column:1/-1}}
