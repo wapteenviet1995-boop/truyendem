@@ -260,3 +260,23 @@ body.home-page{--bg:#151515;--surf:#202020;--ink:#f1eee8;--mute:#aaa49a;--acc:#d
  .zodiac-list{grid-template-columns:1fr;gap:7px}
  .zodiac-option{grid-template-columns:36px minmax(0,1fr) auto;padding:9px 11px}
 }
+
+
+/* Fix khung trang chu va chuyen 12 cung thanh hang cuon ngang */
+.home-page, .home-page main{min-width:0;width:100%;max-width:100%;overflow-x:hidden}
+.home-page main{max-width:760px;margin-left:auto;margin-right:auto}
+.home-page .zodiac-picker{display:block;width:100%;max-width:100%;min-width:0;overflow:hidden;padding:16px;margin:18px 0 24px}
+.home-page .zodiac-list{display:flex;flex-wrap:nowrap;gap:9px;width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;padding:2px 2px 12px;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#806b43 #292929}
+.home-page .zodiac-option{display:grid;flex:0 0 158px;width:158px;min-width:0;min-height:64px;scroll-snap-align:start}
+.home-page .zodiac-option:focus-visible{outline:2px solid #d6b36a;outline-offset:2px}
+.home-page .zodiac-picker>h2{margin:0;font-size:1.25rem}
+.home-page .picker-note{margin:4px 0 12px}
+@media(max-width:560px){
+ .home-page main{padding:22px 12px 48px}
+ .home-page .zodiac-picker{padding:12px 10px}
+ .home-page .zodiac-list{gap:8px}
+ .home-page .zodiac-option{flex-basis:142px;width:142px;min-height:60px;padding:9px 10px}
+ .home-page .zodiac-symbol{width:32px;height:32px;font-size:1.2rem}
+ .home-page .zodiac-name{font-size:.85rem}
+ .home-page .zodiac-date{font-size:.66rem}
+}
