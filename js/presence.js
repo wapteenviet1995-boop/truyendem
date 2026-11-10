@@ -1,0 +1,1 @@
+(function(){async function ping(){try{await fetch('presence.php',{method:'POST',cache:'no-store',credentials:'same-origin'});}catch(e){}}ping();setInterval(ping,60000);})();
