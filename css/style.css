@@ -384,3 +384,38 @@ body.home-page{--bg:#151515;--surf:#202020;--ink:#f1eee8;--mute:#aaa49a;--acc:#d
  .home-page #zodiac-list .zodiac-name{font-size:clamp(.52rem,2.05vw,.68rem)!important;line-height:1.15!important}
  .home-page #zodiac-list .zodiac-date{font-size:clamp(.43rem,1.65vw,.55rem)!important;line-height:1.15!important}
 }
+
+
+/* Tai khoan thanh vien */
+body.member-page{--bg:#151515;--surf:#202020;--ink:#f1eee8;--mute:#aaa49a;--acc:#d6b36a;--line:#393630;background:#151515;color:#f1eee8;color-scheme:dark;min-height:100vh;display:flex;flex-direction:column}
+.member-page .site-header{background:#1c1b19;border-bottom:1px solid #393630}
+.member-page .brand-mark{background:#30291d;color:#e3c47e;border:1px solid #685637;box-shadow:none}
+.member-page .brand-copy small{color:#b9ad91}
+.member-page .header-links a{color:#e7dfcf}
+.member-wrap{width:100%;max-width:560px;margin:0 auto;padding:42px 16px;flex:1}
+.member-panel{background:#202020;border:1px solid #494234;border-radius:18px;padding:clamp(22px,5vw,34px);box-shadow:0 12px 36px rgba(0,0,0,.28)}
+.member-symbol{width:52px;height:52px;display:grid;place-items:center;border-radius:16px;background:#30291d;border:1px solid #685637;color:#e3c47e;font-size:1.8rem;margin-bottom:16px}
+.member-panel h1{font:600 clamp(1.7rem,5vw,2.1rem) Lora,Georgia,serif;color:#e3c47e}
+.member-lead{color:#aaa49a;margin:8px 0 22px;line-height:1.65}
+.member-form{display:grid;gap:15px}
+.member-form label{display:grid;gap:7px;color:#e2ded6;font-size:.9rem;font-weight:600}
+.member-form input{width:100%;min-height:46px;padding:11px 13px;border:1px solid #494234;border-radius:10px;background:#171717;color:#f1eee8;font:inherit}
+.member-form input:focus{outline:2px solid #d6b36a;outline-offset:2px}
+.member-form small{color:#aaa49a;font-weight:400}
+.member-submit{width:100%;min-height:46px;border:0;border-radius:10px;background:#d6b36a;color:#171511;font:700 1rem "Be Vietnam Pro",sans-serif;cursor:pointer;padding:11px 16px}
+.member-submit:hover{filter:brightness(1.08)}
+.member-error,.member-success{padding:11px 13px;border-radius:9px;font-size:.9rem;line-height:1.5}
+.member-error{background:#3a211e;color:#ffb4a9;border:1px solid #75433c}
+.member-success{background:#203427;color:#a9e0b7;border:1px solid #3b6848}
+.member-switch{margin:20px 0 0;text-align:center;color:#aaa49a;font-size:.9rem}
+.member-switch a,.member-panel a{color:#e3c47e;font-weight:700}
+.member-footer{text-align:center;padding:18px;color:#9f988b;border-top:1px solid #393630;font-size:.8rem}
+.member-info{display:grid;gap:0;border:1px solid #393630;border-radius:12px;overflow:hidden;margin:20px 0}
+.member-info div{display:grid;gap:4px;padding:13px 15px;border-bottom:1px solid #393630}
+.member-info div:last-child{border-bottom:0}
+.member-info span{font-size:.78rem;color:#aaa49a}
+.member-info strong{font-size:.95rem;overflow-wrap:anywhere;color:#f1eee8}
+.member-actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.member-secondary{flex:1;text-align:center;text-decoration:none;padding:11px 12px;border:1px solid #685637;border-radius:9px;background:#30291d}
+.member-logout{margin-top:8px;background:#393630;color:#f1eee8;border:1px solid #5a554b}
+@media(max-width:480px){.member-wrap{padding:26px 12px}.member-actions{flex-direction:column}}
