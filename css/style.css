@@ -322,3 +322,46 @@ body.home-page{--bg:#151515;--surf:#202020;--ink:#f1eee8;--mute:#aaa49a;--acc:#d
  .home-page .zodiac-option .zodiac-name{font-size:.9rem!important}
  .home-page .zodiac-option .zodiac-date{font-size:.72rem!important}
 }
+
+/* Fix danh sach cung nam gon trong index, khong de cung cuoi tran khoi khung */
+.home-page .zodiac-picker{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  overflow:visible!important;
+}
+.home-page #zodiac-list.zodiac-list{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-auto-flow:row!important;
+  align-items:stretch;
+  gap:9px!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  padding:2px!important;
+  margin:0!important;
+}
+.home-page #zodiac-list .zodiac-option{
+  box-sizing:border-box!important;
+  flex:none!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  min-height:76px!important;
+  margin:0!important;
+}
+@media(max-width:560px){
+  .home-page #zodiac-list.zodiac-list{
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:8px!important;
+  }
+  .home-page #zodiac-list .zodiac-option{
+    width:100%!important;
+    min-height:70px!important;
+  }
+}
