@@ -125,3 +125,34 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom,0px))}
 .admin-table th,.admin-table td{text-align:left;padding:12px 9px;border-bottom:1px solid var(--line)}
 .inline-form{display:inline}
 @media(max-width:600px){.admin-panel{padding:18px}.admin-top{align-items:flex-start;flex-direction:column}.admin-table th,.admin-table td{font-size:.85rem}}
+
+
+/* Blog refresh: giao dien responsive, ro rang tren dien thoai */
+.blog-main{max-width:1100px;padding-top:42px;padding-bottom:64px}
+.blog-main>h1{color:var(--ink);letter-spacing:-.025em}
+.blog-main>.lead{font-size:1rem;max-width:620px;margin:12px 0 30px}
+.blog-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:22px}
+.blog-card{display:flex;flex-direction:column;min-width:0;box-shadow:0 8px 24px rgba(37,40,95,.07);transition:transform .2s ease,box-shadow .2s ease}
+.blog-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(37,40,95,.13)}
+.blog-card>a:first-child{display:block;overflow:hidden;background:linear-gradient(135deg,#dedcf5,#f8e7d2)}
+.blog-card>a:first-child img{height:210px;transition:transform .35s ease}
+.blog-card:hover>a:first-child img{transform:scale(1.035)}
+.blog-card-body{display:flex;flex:1;flex-direction:column;align-items:flex-start;padding:20px}
+.blog-card h2{font-size:clamp(1.2rem,3vw,1.45rem);margin:7px 0 10px}
+.blog-card-body>p:not(.blog-category){line-height:1.7}
+.blog-read{display:inline-flex;margin-top:auto;padding-top:8px}
+.blog-empty{padding:clamp(24px,5vw,42px);text-align:center;box-shadow:0 8px 24px rgba(37,40,95,.06)}
+.blog-empty h2{font-size:1.45rem;margin-bottom:8px}
+.blog-article{box-shadow:0 10px 32px rgba(37,40,95,.08)}
+.blog-article .meta{font-size:.88rem}
+.blog-content{white-space:normal;color:var(--ink)}
+.blog-back{display:inline-block;margin-bottom:18px}
+@media(max-width:600px){
+ .blog-main{padding:26px 14px 48px}
+ .blog-grid{grid-template-columns:1fr;gap:16px}
+ .blog-card>a:first-child img{height:190px}
+ .blog-card-body{padding:17px}
+ .blog-article{padding:21px 17px;border-radius:13px}
+ .blog-article h1{font-size:1.8rem}
+ .blog-content{font-size:1rem;line-height:1.85}
+}
