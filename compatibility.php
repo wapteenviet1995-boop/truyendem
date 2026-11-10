@@ -68,7 +68,7 @@ function h(string $s): string { return htmlspecialchars($s, ENT_QUOTES | ENT_SUB
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Độ tương hợp tình yêu | Góc Hoàng Đạo</title><link rel="stylesheet" href="css/style.css?v=socialdiary1"></head>
 <body class="blog-page compatibility-page">
-<header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">✦</span><span class="brand-copy"><strong>Góc Hoàng Đạo</strong><small>Khám phá câu chuyện của các vì sao</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="compatibility.php">Tương hợp</a><a href="community.php">Cộng đồng</a><a href="friends.php">Kết bạn</a><a href="diary.php">Nhật ký</a><a href="blog.php">Blog</a><?php if (!empty($_SESSION['member_id'])): ?><a href="account.php">Tài khoản</a><form class="member-nav-logout" method="post" action="logout.php"><input type="hidden" name="csrf" value="<?= h($_SESSION['member_csrf'] ?? '') ?>"><button type="submit">Đăng xuất</button></form><?php else: ?><a href="login.php">Đăng nhập</a><a href="register.php">Đăng ký</a><?php endif; ?></nav></div></header>
+<header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">✦</span><span class="brand-copy"><strong>Góc Hoàng Đạo</strong><small>Khám phá câu chuyện của các vì sao</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="compatibility.php">Tương hợp</a><a href="community.php">Cộng đồng</a><a href="friends.php">Kết bạn</a><a href="diary.php">Nhật ký</a><a href="messages.php">Tin nhắn</a><a href="blog.php">Blog</a><?php if (!empty($_SESSION['member_id'])): ?><a href="account.php">Tài khoản</a><form class="member-nav-logout" method="post" action="logout.php"><input type="hidden" name="csrf" value="<?= h($_SESSION['member_csrf'] ?? '') ?>"><button type="submit">Đăng xuất</button></form><?php else: ?><a href="login.php">Đăng nhập</a><a href="register.php">Đăng ký</a><?php endif; ?></nav></div></header>
 <main class="compat-main">
  <section class="compat-hero"><span class="compat-kicker">✦ BẢN ĐỒ KẾT NỐI ✦</span><h1>Hai cung hoàng đạo,<br><em>một câu chuyện</em></h1><p>Chọn cung của bạn và người ấy để khám phá điểm hòa hợp, khác biệt và cách hai bạn có thể thấu hiểu nhau hơn.</p></section>
  <section class="compat-panel">
@@ -94,4 +94,5 @@ function h(string $s): string { return htmlspecialchars($s, ENT_QUOTES | ENT_SUB
  <p class="compat-disclaimer">Lưu ý: Điểm số được xây dựng theo nguyên tố hoàng đạo để tham khảo và giải trí, không phải đánh giá khoa học hay dự đoán chắc chắn về một mối quan hệ.</p>
 </main>
 <footer class="site-footer"><div class="footer-bottom">© 2026 Góc Hoàng Đạo · Cùng bạn ngắm nhìn bầu trời</div></footer>
+<script src="js/presence.js"></script>
 </body></html>
