@@ -1,0 +1,5 @@
+# Không cho chạy file PHP trong thư mục ảnh tải lên
+<FilesMatch "\\.php$">
+  Require all denied
+</FilesMatch>
+Options -Indexes
