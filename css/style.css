@@ -479,3 +479,59 @@ body.member-page{--bg:#151515;--surf:#202020;--ink:#f1eee8;--mute:#aaa49a;--acc:
 .member-favorite-item>b{color:#e3c47e}
 .member-favorite-item>a{color:#e3c47e;text-decoration:none;font-size:.82rem;white-space:nowrap}
 @media(max-width:480px){.member-favorite-item{grid-template-columns:1fr auto;gap:8px}.member-favorite-item>a{grid-column:1/-1}}
+
+
+/* Cong dong 12 cung */
+.community-page{background:#151515;color:#f1eee8}
+.community-main{width:100%;max-width:850px;margin:0 auto;padding:30px 15px 60px}
+.community-hero{text-align:center;padding:20px 8px 26px}
+.community-hero h1{font:600 clamp(2rem,7vw,3rem)/1.2 Lora,Georgia,serif;color:#f1eee8;margin:12px 0}
+.community-hero h1 em{color:#e3c47e;font-style:normal}
+.community-hero>p{max-width:590px;margin:0 auto;color:#aaa49a;line-height:1.8}
+.community-stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:20px}
+.community-stats span{padding:8px 13px;border:1px solid #494234;border-radius:999px;background:#202020;color:#aaa49a;font-size:.8rem}
+.community-stats b{color:#e3c47e}
+.community-compose,.community-join,.community-post,.community-empty{background:#202020;border:1px solid #393630;border-radius:14px;box-shadow:0 7px 22px rgba(0,0,0,.2)}
+.community-compose{padding:18px;margin-bottom:20px}
+.community-compose h2,.community-feed-head h2,.community-join h2{font:600 1.2rem Lora,Georgia,serif;color:#e3c47e;margin:0 0 13px}
+.community-compose textarea{display:block;width:100%;resize:vertical;min-height:110px;padding:13px;border:1px solid #494234;border-radius:10px;background:#171717;color:#f1eee8;font:inherit;line-height:1.6}
+.community-compose textarea:focus,.community-comment-form input:focus{outline:2px solid #d6b36a;outline-offset:2px}
+.community-compose-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+.community-compose-foot small{color:#918a7e;font-size:.78rem}
+.community-compose-foot button,.community-follow button,.community-comment-form button{border:0;border-radius:9px;background:#d6b36a;color:#171511;font:700 .86rem "Be Vietnam Pro",sans-serif;padding:10px 15px;cursor:pointer}
+.community-join{padding:22px;margin-bottom:20px}
+.community-join p{color:#aaa49a;line-height:1.7}
+.community-join a{display:inline-block;margin:5px 10px 0 0;color:#e3c47e;font-weight:700}
+.community-flash,.community-error{padding:11px 14px;border-radius:9px;margin:0 0 15px;font-size:.9rem}
+.community-flash{background:#203427;color:#a9e0b7;border:1px solid #3b6848}
+.community-error{background:#3a211e;color:#ffb4a9;border:1px solid #75433c}
+.community-feed{display:grid;gap:14px}
+.community-feed-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 2px}
+.community-feed-head h2{margin:0}
+.community-feed-head>span{color:#918a7e;font-size:.8rem}
+.community-post{padding:17px}
+.community-post-head{display:flex;align-items:center;gap:10px}
+.community-avatar{width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:13px;background:#30291d;border:1px solid #685637;color:#e3c47e;font-size:1.3rem}
+.community-author{min-width:0;display:grid;gap:3px}
+.community-author strong{color:#f1eee8;font-size:.92rem}
+.community-author small{color:#918a7e;font-size:.75rem}
+.community-follow{margin-left:auto}
+.community-follow button{padding:8px 11px;background:#30291d;border:1px solid #685637;color:#e3c47e;font-size:.78rem}
+.community-post-content{white-space:normal;overflow-wrap:anywhere;color:#e2ded6;line-height:1.8;padding:15px 1px 12px}
+.community-post-actions{display:flex;align-items:center;gap:18px;border-top:1px solid #393630;padding:10px 0;color:#aaa49a;font-size:.82rem}
+.community-post-actions form{margin:0}
+.community-post-actions button{padding:0;border:0;background:none;color:#c9bda7;font:inherit;cursor:pointer}
+.community-post-actions button.is-liked{color:#e58b9b;font-weight:700}
+.community-comments{display:grid;gap:7px;padding:4px 0 10px}
+.community-comments p{margin:0;padding:9px 11px;border-radius:8px;background:#191919;color:#c8c1b5;font-size:.84rem;line-height:1.6;overflow-wrap:anywhere}
+.community-comments strong{color:#e3c47e;margin-right:4px}
+.community-comment-form{display:flex;gap:8px}
+.community-comment-form input{flex:1;min-width:0;border:1px solid #494234;border-radius:9px;background:#171717;color:#f1eee8;padding:10px 12px;font:inherit;font-size:.86rem}
+.community-comment-form button{padding:9px 14px}
+.community-login-hint{margin:8px 0 0;color:#918a7e;font-size:.82rem}
+.community-login-hint a{color:#e3c47e}
+.community-empty{text-align:center;padding:34px 18px}
+.community-empty>span{font-size:2rem;color:#e3c47e}
+.community-empty h3{color:#e3c47e;font:600 1.2rem Lora,Georgia,serif}
+.community-empty p{color:#aaa49a;font-size:.9rem}
+@media(max-width:560px){.community-main{padding:22px 11px 45px}.community-compose,.community-post{padding:14px}.community-post-head{gap:8px}.community-avatar{width:36px;height:36px}.community-follow button{padding:7px 8px;font-size:.72rem}.community-compose-foot{align-items:flex-end}.community-stats{gap:6px}.community-stats span{padding:7px 9px;font-size:.72rem}.community-comment-form{gap:6px}.community-comment-form button{padding:8px 11px}}
