@@ -593,3 +593,31 @@ body.member-page{--bg:#151515;--surf:#202020;--ink:#f1eee8;--mute:#aaa49a;--acc:
 .member-public-bio{color:#d1c9bb;line-height:1.8;white-space:normal;overflow-wrap:anywhere;margin:18px 0}
 .member-public-card form{margin:16px auto}
 .member-public-card>p:last-child{margin-top:22px}
+
+
+/* Trang thai online/offline va tin nhan rieng */
+.presence-online{color:#65d58a!important;font-weight:700}
+.presence-offline{color:#a49d91}
+.member-presence{font-size:.86rem;color:#aaa49a;margin:8px 0}
+.messages-main{max-width:760px}
+.chat-card{padding:0;overflow:hidden}
+.chat-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 18px;border-bottom:1px solid #393630;background:#191919}
+.chat-heading h2{margin:0 0 5px}
+.chat-heading small{font-size:.78rem;color:#aaa49a}
+.chat-messages{height:min(58vh,560px);min-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:17px;background:#171717}
+.chat-bubble{max-width:82%;padding:10px 13px;border-radius:13px;overflow-wrap:anywhere}
+.chat-bubble p{margin:0;color:#f1eee8;line-height:1.65;white-space:pre-wrap}
+.chat-bubble small{display:block;margin-top:5px;color:#b9ad91;font-size:.68rem;text-align:right}
+.chat-bubble.mine{align-self:flex-end;background:#493b22;border:1px solid #705b34;border-bottom-right-radius:4px}
+.chat-bubble.theirs{align-self:flex-start;background:#292929;border:1px solid #494234;border-bottom-left-radius:4px}
+.chat-empty{margin:auto;color:#918a7e;text-align:center}
+.chat-compose{display:flex;align-items:flex-end;gap:9px;padding:13px;border-top:1px solid #393630}
+.chat-compose textarea{flex:1;min-width:0;resize:vertical;min-height:45px;max-height:130px;padding:11px 12px;border:1px solid #494234;border-radius:10px;background:#171717;color:#f1eee8;font:inherit;line-height:1.5}
+.chat-compose textarea:focus{outline:2px solid #d6b36a;outline-offset:2px}
+.chat-friend{display:flex;align-items:center;gap:11px;padding:12px 2px;border-top:1px solid #393630;text-decoration:none;color:#f1eee8}
+.chat-avatar{width:42px;height:42px;display:grid;place-items:center;flex:none;border-radius:50%;background:#30291d;border:1px solid #685637;color:#e3c47e;font-weight:700}
+.chat-friend-info{display:grid;gap:5px;min-width:0;flex:1}
+.chat-friend-info strong{font-size:.9rem}
+.chat-friend-info small{font-size:.76rem;color:#aaa49a}
+.chat-unread{min-width:23px;height:23px;padding:0 6px;display:grid;place-items:center;border-radius:99px;background:#d6b36a;color:#171511;font-size:.72rem}
+@media(max-width:560px){.chat-compose{align-items:stretch;flex-direction:column}.chat-compose .social-button{align-self:flex-end}.chat-bubble{max-width:90%}.chat-heading{padding:14px}}
