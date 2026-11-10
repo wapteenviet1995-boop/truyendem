@@ -5,8 +5,8 @@ $posts = $stmt->fetchAll();
 ?>
 <!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Blog | Góc Hoàng Đạo</title><link rel="stylesheet" href="css/style.css?v=20261110"></head>
-<body>
+<title>Blog | Góc Hoàng Đạo</title><link rel="stylesheet" href="css/style.css?v=20261111"></head>
+<body class="blog-page">
 <header class="site-header"><div class="header-inner"><a class="brand" href="index.html"><span class="brand-mark">✦</span><span class="brand-copy"><strong>Góc Hoàng Đạo</strong><small>Khám phá câu chuyện của các vì sao</small></span></a><nav class="header-links"><a href="index.html">Trang chủ</a><a href="blog.php">Blog</a></nav></div></header>
 <main class="blog-main"><h1>Blog Góc Hoàng Đạo</h1><p class="lead">Những câu chuyện, góc nhìn và bài viết về 12 cung hoàng đạo.</p>
 <?php if (!$posts): ?><section class="blog-empty"><h2>Chưa có bài viết</h2><p>Các bài viết mới sẽ xuất hiện tại đây.</p></section>
