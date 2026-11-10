@@ -1,0 +1,83 @@
+<?php
+require __DIR__ . '/includes/db.php';
+?>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cung hoàng đạo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Lora:wght@500;600&display=swap">
+<link rel="stylesheet" href="css/style.css?v=20261116">
+</head>
+<body id="top" class="home-page">
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="#top" aria-label="Góc Hoàng Đạo - Trang chủ">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <span class="brand-copy"><strong>Góc Hoàng Đạo</strong><small>Khám phá câu chuyện của các vì sao</small></span>
+    </a>
+    <nav class="header-links" aria-label="Điều hướng chính">
+      <a href="#top">Trang chủ</a>
+      <a href="#lookup">Tra cứu ngày sinh</a>
+      <a href="#wheel">12 cung</a>
+      <a href="#detail">Luận giải</a>
+      <a href="blog.php">Blog</a>
+      <?php if (!empty($_SESSION['member_id'])): ?>
+      <a href="account.php">Tài khoản</a>
+      <form class="member-nav-logout" method="post" action="logout.php"><input type="hidden" name="csrf" value="<?= e($_SESSION['member_csrf'] ?? '') ?>"><button type="submit">Đăng xuất</button></form>
+      <?php else: ?>
+      <a href="login.php">Đăng nhập</a>
+      <a href="register.php">Đăng ký</a>
+      <?php endif; ?>
+    </nav>
+  </div>
+</header>
+<main>
+<h1>Xem cung hoàng đạo</h1>
+<p class="lead">Nhập ngày sinh hoặc chọn một trong 12 cung bên dưới để xem tính cách và vận hạn hôm nay.</p>
+
+<p class="sunbar" id="sun"></p>
+<div class="lookup" id="lookup">
+  <label>Ngày <select id="d"></select></label>
+  <label>Tháng <select id="m"></select></label>
+  <button class="go" id="go">Xem cung của tôi</button>
+</div>
+<p class="err" id="err" role="alert"></p>
+<p class="saved" id="saved"></p>
+
+<section class="zodiac-picker" id="wheel" aria-label="Danh sách 12 cung hoàng đạo"><h2>Chọn cung hoàng đạo</h2><p class="picker-note">Chạm vào cung bạn muốn khám phá</p><div class="zodiac-list" id="zodiac-list"></div></section>
+
+<section class="card" id="detail" aria-live="polite"></section>
+</main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-about">
+      <a class="footer-brand" href="#top"><span aria-hidden="true">✦</span> Góc Hoàng Đạo</a>
+      <p>Nơi khám phá 12 cung hoàng đạo, tính cách và những góc nhìn thú vị về bản thân.</p>
+    </div>
+    <div class="footer-links">
+      <strong>Khám phá</strong>
+      <a href="#lookup">Tra cứu ngày sinh</a>
+      <a href="#wheel">Vòng tròn 12 cung</a>
+      <a href="#detail">Bài luận giải</a>
+      <a href="blog.php">Blog</a>
+    </div>
+    <div class="footer-note">
+      <strong>Lưu ý</strong>
+      <p>Nội dung mang tính tham khảo và giải trí, không thay thế lời khuyên chuyên môn.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Góc Hoàng Đạo · Cùng bạn ngắm nhìn bầu trời</div>
+</footer>
+
+<nav class="bottom-nav" aria-label="Menu nhanh">
+  <a href="#top" data-target="top"><span aria-hidden="true">⌂</span>Trang chủ</a>
+  <a href="#lookup" data-target="lookup"><span aria-hidden="true">☼</span>Ngày sinh</a>
+  <a href="#wheel" data-target="wheel"><span aria-hidden="true">✧</span>12 cung</a>
+  <a href="#detail" data-target="detail"><span aria-hidden="true">☾</span>Luận giải</a>
+  <a href="blog.php"><span aria-hidden="true">✎</span>Blog</a>
+</nav>
+<script src="js/script.js"></script>
+</body>
+</html>
