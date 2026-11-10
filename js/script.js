@@ -135,3 +135,15 @@ function startClock(){setInterval(tick,60000);document.addEventListener("visibil
     $("detail").scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"nearest"});
   });
 })();
+
+// Điều hướng nhanh bằng thanh menu cố định cuối màn hình
+(function(){
+  var nav=document.querySelector(".bottom-nav");
+  if(!nav)return;
+  nav.addEventListener("click",function(e){
+    var a=e.target.closest("a[data-target]");
+    if(!a)return;
+    var target=document.getElementById(a.getAttribute("data-target"));
+    if(target){e.preventDefault();target.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});}
+  });
+})();
