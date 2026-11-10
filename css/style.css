@@ -89,3 +89,39 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom,0px))}
   .header-links a{font-size:.78rem;padding:7px 9px}
   .footer-inner{grid-template-columns:1fr;gap:22px;padding:28px 18px 22px}
 }
+
+
+/* Blog */
+.blog-main{max-width:980px}
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:26px}
+.blog-card,.blog-empty{overflow:hidden;background:var(--surf);border:1px solid var(--line);border-radius:16px}
+.blog-card> a img{display:block;width:100%;height:190px;object-fit:cover}
+.blog-card-body{padding:18px}
+.blog-card h2{font-size:1.25rem;line-height:1.35;margin:6px 0 10px}
+.blog-card h2 a{color:var(--ink);text-decoration:none}
+.blog-card p{color:var(--mute);margin:0 0 12px}
+.blog-category{color:var(--acc)!important;font-size:.82rem;font-weight:700;letter-spacing:.03em}
+.blog-read,.blog-back{color:var(--acc);font-weight:600;text-decoration:none}
+.blog-empty{padding:28px}
+.blog-article{max-width:760px;margin:0 auto;background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:clamp(20px,5vw,42px)}
+.blog-article h1{margin:8px 0 12px}
+.blog-hero{display:block;width:100%;max-height:460px;object-fit:cover;border-radius:12px;margin:22px 0}
+.blog-content{font-size:1.04rem;line-height:1.9;overflow-wrap:anywhere}
+.admin-wrap{max-width:850px;margin:0 auto;padding:28px 16px 70px}
+.admin-panel{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 8px 28px rgba(20,25,70,.08)}
+.admin-panel h1{font-size:1.8rem;margin-bottom:18px}
+.admin-panel form{display:grid;gap:14px}
+.admin-panel label{display:flex;flex-direction:column;gap:6px;color:var(--mute);font-weight:600}
+.admin-panel input,.admin-panel textarea,.admin-panel select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font:inherit}
+.admin-panel textarea{resize:vertical}
+.admin-panel .go{justify-self:start}
+.admin-panel a{color:var(--acc)}
+.admin-error,.admin-message{color:#b3261e}
+.admin-wide{max-width:100%}
+.admin-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.admin-new{display:inline-block;text-decoration:none;padding:10px 15px}
+.admin-table{overflow-x:auto}
+.admin-table table{width:100%;border-collapse:collapse}
+.admin-table th,.admin-table td{text-align:left;padding:12px 9px;border-bottom:1px solid var(--line)}
+.inline-form{display:inline}
+@media(max-width:600px){.admin-panel{padding:18px}.admin-top{align-items:flex-start;flex-direction:column}.admin-table th,.admin-table td{font-size:.85rem}}
