@@ -30,7 +30,7 @@ if (!empty($_FILES['cover_image']['name'])) {
     if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true)) { http_response_code(500); exit('Không tạo được thư mục lưu ảnh.'); }
     $filename = bin2hex(random_bytes(16)) . '.' . $types[$mime];
     if (!move_uploaded_file($file['tmp_name'], $uploadDir . '/' . $filename)) { http_response_code(500); exit('Không lưu được ảnh lên máy chủ.'); }
-    $image = '../uploads/' . $filename;
+    $image = '/uploads/' . $filename;
 }
 $published = $status === 'published' ? date('Y-m-d H:i:s') : null;
 try {
