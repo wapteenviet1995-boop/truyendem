@@ -425,3 +425,42 @@ body.member-page{--bg:#151515;--surf:#202020;--ink:#f1eee8;--mute:#aaa49a;--acc:
 .member-nav-logout button{border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;padding:0}
 .member-nav-logout button:hover{color:var(--acc)}
 @media(max-width:760px){.member-nav-logout{justify-content:center}}
+
+
+/* Do tuong hop tinh yeu */
+.compat-page{background:#151515;color:#f1eee8}
+.compat-main{max-width:900px;margin:0 auto;padding:34px 16px 60px}
+.compat-hero{text-align:center;padding:28px 8px 30px}
+.compat-kicker{display:block;color:#d6b36a;font-size:.75rem;font-weight:700;letter-spacing:.18em}
+.compat-hero h1{font:600 clamp(2rem,7vw,3.2rem)/1.18 Lora,Georgia,serif;color:#f1eee8;margin:15px 0}
+.compat-hero h1 em{color:#e3c47e;font-style:normal}
+.compat-hero>p:last-child{max-width:570px;margin:0 auto;color:#aaa49a;line-height:1.8}
+.compat-panel,.compat-result{background:radial-gradient(ellipse at top,#30291d 0%,#202020 58%);border:1px solid #55472e;border-radius:18px;padding:clamp(18px,4vw,30px);box-shadow:0 12px 32px rgba(0,0,0,.25)}
+.compat-form{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:15px}
+.compat-form label{display:grid;gap:9px;color:#e3c47e;font-weight:600}
+.compat-form select{width:100%;min-height:49px;background:#171717;color:#f1eee8;border:1px solid #685637;border-radius:10px;padding:10px 12px;font:inherit}
+.compat-heart{color:#d6b36a;font-size:1.8rem;padding-bottom:8px}
+.compat-submit{grid-column:1/-1;min-height:48px;border:0;border-radius:10px;background:linear-gradient(110deg,#e3c47e,#b68b43);color:#171511;font:700 1rem "Be Vietnam Pro",sans-serif;cursor:pointer}
+.compat-result{margin-top:24px;text-align:center}
+.compat-pair{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;margin:24px auto;max-width:560px}
+.compat-pair>div{display:grid;gap:5px}
+.compat-pair>div>span{font-size:3rem;color:#e3c47e}
+.compat-pair strong{font:600 1.15rem Lora,Georgia,serif;color:#f1eee8}
+.compat-pair small{color:#aaa49a}
+.compat-pair>b{color:#d6b36a;font-size:1.6rem}
+.compat-score{max-width:420px;margin:0 auto}
+.compat-score>strong{display:block;font:600 clamp(3rem,12vw,4.5rem) Lora,Georgia,serif;color:#e3c47e}
+.compat-score>span{display:block;color:#d8c69e;font-weight:600;margin:2px 0 14px}
+.compat-track{height:9px;background:#40382b;border-radius:99px;overflow:hidden}
+.compat-track i{display:block;height:100%;background:linear-gradient(90deg,#9d7540,#f0d28e);border-radius:99px}
+.compat-dynamic{color:#d6b36a;font-weight:700;margin:18px 0 24px}
+.compat-insights{display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:left}
+.compat-insights article,.compat-advice{padding:18px;background:#191919;border:1px solid #393630;border-radius:12px}
+.compat-insights article>span{color:#d6b36a;font-size:1.35rem}
+.compat-insights h2,.compat-advice h2{font:600 1.15rem Lora,Georgia,serif;color:#e3c47e;margin:7px 0 9px}
+.compat-insights p,.compat-advice p{color:#c8c1b5;font-size:.91rem;line-height:1.75;margin:0 0 9px}
+.compat-advice{text-align:left;margin-top:14px}
+.compat-advice p{margin:0}
+.compat-again{display:inline-block;margin-top:20px;color:#e3c47e;font-weight:700;text-decoration:none}
+.compat-disclaimer{max-width:680px;text-align:center;color:#888174;font-size:.78rem;line-height:1.7;margin:18px auto 0}
+@media(max-width:560px){.compat-main{padding:22px 12px 45px}.compat-form{grid-template-columns:1fr;gap:12px}.compat-heart{text-align:center;padding:0;line-height:1}.compat-submit{grid-column:auto}.compat-insights{grid-template-columns:1fr}.compat-pair{gap:8px}.compat-pair>div>span{font-size:2.5rem}.compat-pair strong{font-size:1rem}.compat-pair small{font-size:.72rem}}
