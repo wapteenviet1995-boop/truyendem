@@ -32,6 +32,29 @@ $me = filter_input(INPUT_GET, 'me', FILTER_VALIDATE_INT);
 $other = filter_input(INPUT_GET, 'other', FILTER_VALIDATE_INT);
 $valid = $me !== null && $me !== false && $other !== null && $other !== false && isset($signs[$me], $signs[$other]);
 $result = null;
+$saveMessage = '';
+if (empty($_SESSION['member_csrf'])) $_SESSION['member_csrf'] = bin2hex(random_bytes(32));
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_favorite') {
+ if (empty($_SESSION['member_id'])) {
+  $saveMessage = 'Bạn cần đăng nhập để lưu cặp cung yêu thích.';
+ } elseif (!hash_equals($_SESSION['member_csrf'], (string)($_POST['csrf'] ?? ''))) {
+  $saveMessage = 'Phiên đã hết hạn. Hãy tải lại trang rồi thử lại.';
+ } else {
+  $postMe = filter_input(INPUT_POST, 'me', FILTER_VALIDATE_INT);
+  $postOther = filter_input(INPUT_POST, 'other', FILTER_VALIDATE_INT);
+  if ($postMe === false || $postMe === null || $postOther === false || $postOther === null || !isset($signs[$postMe], $signs[$postOther])) {
+   $saveMessage = 'Cặp cung không hợp lệ. Vui lòng chọn lại.';
+  } else {
+   $first = min($postMe, $postOther); $second = max($postMe, $postOther);
+   $ea = $signs[$postMe]['element']; $eb = $signs[$postOther]['element'];
+   $savedScore = max(50, min(96, $scoreMap[$ea][$eb] + (($postMe*7 + $postOther*11) % 7) - 3));
+   $save = $pdo->prepare('INSERT INTO member_compatibility_favorites (member_id,sign_one,sign_two,score) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE score=VALUES(score)');
+   $save->execute([(int)$_SESSION['member_id'], $first, $second, $savedScore]);
+   header('Location: compatibility.php?me='.$postMe.'&other='.$postOther.'&saved=1'); exit;
+  }
+ }
+}
+if (isset($_GET['saved'])) $saveMessage = 'Đã lưu cặp cung này vào tài khoản của bạn.';
 if ($valid) {
  $a=$signs[$me]; $b=$signs[$other];
  $score=$scoreMap[$a['element']][$b['element']];
@@ -63,6 +86,8 @@ function h(string $s): string { return htmlspecialchars($s, ENT_QUOTES | ENT_SUB
   <p class="compat-dynamic"><?= h($result['dynamic']) ?></p>
   <div class="compat-insights"><article><span>✧</span><h2>Điểm mạnh</h2><p><?= h($result['a']['strength']) ?></p><p><?= h($result['b']['strength']) ?></p></article><article><span>☾</span><h2>Điều cần thấu hiểu</h2><p><?= h($result['a']['challenge']) ?></p><p><?= h($result['b']['challenge']) ?></p></article></div>
   <div class="compat-advice"><h2>Lời nhắn dành cho hai bạn</h2><p><?= h($result['a']['love']) ?> <?= h($result['b']['love']) ?> Hãy trò chuyện chân thành, tôn trọng ranh giới và cùng vun đắp mối quan hệ bằng những hành động nhỏ.</p></div>
+  <?php if ($saveMessage): ?><p class="compat-save-message" role="status"><?= h($saveMessage) ?></p><?php endif; ?>
+  <?php if (!empty($_SESSION['member_id'])): ?><form method="post" class="compat-save-form"><input type="hidden" name="action" value="save_favorite"><input type="hidden" name="csrf" value="<?= h($_SESSION['member_csrf']) ?>"><input type="hidden" name="me" value="<?= (int)$me ?>"><input type="hidden" name="other" value="<?= (int)$other ?>"><button class="compat-submit" type="submit">♡ Lưu cặp cung vào tài khoản</button></form><?php else: ?><p class="compat-save-message">Đăng nhập để lưu cặp cung yêu thích và xem lại trong tài khoản.</p><a class="compat-again" href="login.php">Đăng nhập để lưu ↗</a><?php endif; ?>
   <a class="compat-again" href="compatibility.php">Thử với cung khác ↗</a>
  </section>
  <?php endif; ?>
