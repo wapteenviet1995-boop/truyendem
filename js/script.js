@@ -33,32 +33,22 @@ function signOf(m,d){
 function range(i){var r=S[i].r;return r[1]+"/"+r[0]+" – "+r[3]+"/"+r[2]}
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 
-function sector(i){
-  var a0=(-90+i*30+0.6)*Math.PI/180,a1=(-90+(i+1)*30-0.6)*Math.PI/180,R=192,r=104,c=200;
-  var p=function(rad,a){return (c+rad*Math.cos(a)).toFixed(1)+" "+(c+rad*Math.sin(a)).toFixed(1)};
-  return "M"+p(R,a0)+" A"+R+" "+R+" 0 0 1 "+p(R,a1)+" L"+p(r,a1)+" A"+r+" "+r+" 0 0 0 "+p(r,a0)+" Z";
-}
 function buildWheel(){
-  var g="";
-  S.forEach(function(z,i){
-    var am=(-90+i*30+15)*Math.PI/180,x=200+148*Math.cos(am),y=200+148*Math.sin(am);
-    g+='<g class="sec" id="sec'+i+'" role="button" tabindex="0" aria-label="'+z.n+', '+range(i)+'" data-i="'+i+'"><path d="'+sector(i)+'"/><text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'">'+z.s+'</text></g>';
-  });
-  g+='<g id="hub"></g>';
-  $("wheel").innerHTML=g;
-  $("wheel").addEventListener("click",function(e){var t=e.target.closest(".sec");if(t)show(+t.dataset.i)});
-  $("wheel").addEventListener("keydown",function(e){
-    if(e.key==="Enter"||e.key===" "){var t=e.target.closest(".sec");if(t){e.preventDefault();show(+t.dataset.i)}}
+  var box=$("zodiac-list");
+  box.innerHTML=S.map(function(z,i){
+    return '<button type="button" class="zodiac-option" id="sec'+i+'" data-i="'+i+'" aria-pressed="false">'+
+      '<span class="zodiac-symbol">'+z.s+'</span><span class="zodiac-name">'+z.n+'</span>'+
+      '<span class="zodiac-date">'+range(i)+'</span><span class="zodiac-arrow">›</span></button>';
+  }).join("");
+  box.addEventListener("click",function(e){
+    var t=e.target.closest(".zodiac-option");
+    if(t)show(+t.dataset.i);
   });
 }
-function hub(i){
-  $("hub").innerHTML=i<0
-    ?'<text class="hub-d" x="200" y="196">Chọn một cung</text>'
-    :'<text class="hub-s" x="200" y="190">'+S[i].s+'</text><text class="hub-n" x="200" y="222">'+S[i].n+'</text><text class="hub-d" x="200" y="244">'+range(i)+'</text>';
-}
+function hub(i){}
 function show(i){
-  if(cur>=0)$("sec"+cur).classList.remove("on");
-  cur=i;$("sec"+i).classList.add("on");hub(i);
+  if(cur>=0){$("sec"+cur).classList.remove("on");$("sec"+cur).setAttribute("aria-pressed","false");}
+  cur=i;$("sec"+i).classList.add("on");$("sec"+i).setAttribute("aria-pressed","true");
   var z=S[i],t=new Date(),ds=t.getFullYear()+"-"+(t.getMonth()+1)+"-"+t.getDate(),k=z.n+ds;
   var vn=t.getDate()+"/"+(t.getMonth()+1)+"/"+t.getFullYear();
   $("detail").innerHTML=
@@ -125,7 +115,7 @@ function startClock(){setInterval(tick,60000);document.addEventListener("visibil
   for(var i=1;i<=31;i++)d.add(new Option(i,i));
   for(var j=1;j<=12;j++)m.add(new Option("Tháng "+j,j));
   buildWheel();hub(-1);sunBar();
-  $("detail").innerHTML='<p class="meta">Chưa chọn cung nào.</p><p>Nhập ngày sinh ở trên hoặc chạm vào một cung trên vòng tròn.</p>';
+  $("detail").innerHTML='<p class="meta">Chưa chọn cung nào.</p><p>Nhập ngày sinh ở trên hoặc chạm vào một cung trong danh sách bên trên.</p>';
   autoLoad();startClock();
   $("go").addEventListener("click",function(){
     var dd=+d.value,mm=+m.value,max=[31,29,31,30,31,30,31,31,30,31,30,31][mm-1];
