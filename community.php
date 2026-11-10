@@ -82,17 +82,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 if (isset($_GET['posted'])) $message = 'Bài viết của bạn đã được đăng.';
-$posts = $pdo->query(
-    'SELECT p.id,p.member_id,p.content,p.created_at,m.display_name,
-      (SELECT COUNT(*) FROM community_likes l WHERE l.post_id=p.id) AS like_count,
-      (SELECT COUNT(*) FROM community_comments c WHERE c.post_id=p.id) AS comment_count' .
-    ($currentId ? ', (SELECT COUNT(*) FROM community_likes mine WHERE mine.post_id=p.id AND mine.member_id=' . $currentId . ') AS liked_by_me,
-      (SELECT COUNT(*) FROM member_follows f WHERE f.follower_id=' . $currentId . ' AND f.following_id=p.member_id) AS following_author' : ', 0 AS liked_by_me, 0 AS following_author') .
-    ' FROM community_posts p INNER JOIN members m ON m.id=p.member_id WHERE m.is_active=1 ORDER BY p.created_at DESC,p.id DESC LIMIT 40'
-)->fetchAll();
-
-$commentStmt = $pdo->prepare('SELECT c.id,c.content,c.created_at,m.display_name FROM community_comments c INNER JOIN members m ON m.id=c.member_id WHERE c.post_id=? AND m.is_active=1 ORDER BY c.created_at DESC,c.id DESC LIMIT 3');
-$stats = $pdo->query('SELECT (SELECT COUNT(*) FROM members WHERE is_active=1) AS members, (SELECT COUNT(*) FROM community_posts) AS posts, (SELECT COUNT(*) FROM member_follows) AS follows')->fetch();
+$setupNeeded = false;
+$posts = [];
+$stats = ['members'=>0, 'posts'=>0, 'follows'=>0];
+$commentStmt = null;
+try {
+    $posts = $pdo->query(
+        'SELECT p.id,p.member_id,p.content,p.created_at,m.display_name,
+          (SELECT COUNT(*) FROM community_likes l WHERE l.post_id=p.id) AS like_count,
+          (SELECT COUNT(*) FROM community_comments c WHERE c.post_id=p.id) AS comment_count' .
+        ($currentId ? ', (SELECT COUNT(*) FROM community_likes mine WHERE mine.post_id=p.id AND mine.member_id=' . $currentId . ') AS liked_by_me,
+          (SELECT COUNT(*) FROM member_follows f WHERE f.follower_id=' . $currentId . ' AND f.following_id=p.member_id) AS following_author' : ', 0 AS liked_by_me, 0 AS following_author') .
+        ' FROM community_posts p INNER JOIN members m ON m.id=p.member_id WHERE m.is_active=1 ORDER BY p.created_at DESC,p.id DESC LIMIT 40'
+    )->fetchAll();
+    $commentStmt = $pdo->prepare('SELECT c.id,c.content,c.created_at,m.display_name FROM community_comments c INNER JOIN members m ON m.id=c.member_id WHERE c.post_id=? AND m.is_active=1 ORDER BY c.created_at DESC,c.id DESC LIMIT 3');
+    $stats = $pdo->query('SELECT (SELECT COUNT(*) FROM members WHERE is_active=1) AS members, (SELECT COUNT(*) FROM community_posts) AS posts, (SELECT COUNT(*) FROM member_follows) AS follows')->fetch();
+} catch (PDOException $ex) {
+    $setupNeeded = true;
+}
 function community_h(?string $value): string { return htmlspecialchars($value ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
 ?>
 <!doctype html>
@@ -102,6 +109,7 @@ function community_h(?string $value): string { return htmlspecialchars($value ??
 <header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">✦</span><span class="brand-copy"><strong>Góc Hoàng Đạo</strong><small>Khám phá câu chuyện của các vì sao</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="compatibility.php">Tương hợp</a><a href="blog.php">Blog</a><?php if ($currentId): ?><a href="account.php">Tài khoản</a><form class="member-nav-logout" method="post" action="logout.php"><input type="hidden" name="csrf" value="<?= community_h($_SESSION['member_csrf']) ?>"><button type="submit">Đăng xuất</button></form><?php else: ?><a href="login.php">Đăng nhập</a><a href="register.php">Đăng ký</a><?php endif; ?></nav></div></header>
 <main class="community-main">
  <section class="community-hero"><span class="compat-kicker">✦ KẾT NỐI DƯỚI BẦU TRỜI ✦</span><h1>Cộng đồng <em>12 cung</em></h1><p>Nơi mọi người chia sẻ câu chuyện, góc nhìn và những điều thú vị về cung hoàng đạo.</p><div class="community-stats"><span><b><?= (int)$stats['members'] ?></b> thành viên</span><span><b><?= (int)$stats['posts'] ?></b> bài viết</span><span><b><?= (int)$stats['follows'] ?></b> lượt theo dõi</span></div></section>
+ <?php if ($setupNeeded): ?><p class="community-error" role="alert">Cộng đồng chưa được cài đặt cơ sở dữ liệu. Hãy chạy file <strong>database/community.sql</strong> trong phpMyAdmin trước khi sử dụng.</p><?php endif; ?>
  <?php if ($message): ?><p class="community-flash"><?= community_h($message) ?></p><?php endif; ?>
  <?php if ($error): ?><p class="community-error" role="alert"><?= community_h($error) ?></p><?php endif; ?>
  <?php if ($currentId): ?><section class="community-compose"><h2>Chia sẻ điều bạn đang nghĩ</h2><form method="post"><input type="hidden" name="csrf" value="<?= community_h($_SESSION['member_csrf']) ?>"><input type="hidden" name="action" value="create_post"><textarea name="content" maxlength="2000" rows="4" placeholder="Hôm nay bầu trời của bạn thế nào?" required></textarea><div class="community-compose-foot"><small>Tối đa 2.000 ký tự</small><button type="submit">Đăng bài ✦</button></div></form></section><?php else: ?><section class="community-join"><h2>Cùng tham gia cuộc trò chuyện</h2><p>Đăng nhập để đăng bài, bình luận, thả tim và theo dõi thành viên khác.</p><a href="login.php">Đăng nhập</a><a href="register.php">Tạo tài khoản</a></section><?php endif; ?>
@@ -111,7 +119,7 @@ function community_h(?string $value): string { return htmlspecialchars($value ??
  <?php if ($currentId && $currentId !== (int)$post['member_id']): ?><form method="post" class="community-follow"><input type="hidden" name="csrf" value="<?= community_h($_SESSION['member_csrf']) ?>"><input type="hidden" name="action" value="toggle_follow"><input type="hidden" name="member_id" value="<?= (int)$post['member_id'] ?>"><button type="submit"><?= (int)$post['following_author'] ? 'Đang theo dõi' : '+ Theo dõi' ?></button></form><?php endif; ?></div>
  <div class="community-post-content"><?= nl2br(community_h($post['content'])) ?></div>
  <div class="community-post-actions"><?php if ($currentId): ?><form method="post"><input type="hidden" name="csrf" value="<?= community_h($_SESSION['member_csrf']) ?>"><input type="hidden" name="action" value="toggle_like"><input type="hidden" name="post_id" value="<?= (int)$post['id'] ?>"><button class="<?= (int)$post['liked_by_me'] ? 'is-liked' : '' ?>" type="submit"><?= (int)$post['liked_by_me'] ? '♥ Đã thích' : '♡ Thích' ?> · <?= (int)$post['like_count'] ?></button></form><?php else: ?><span>♡ <?= (int)$post['like_count'] ?> lượt thích</span><?php endif; ?><span>☾ <?= (int)$post['comment_count'] ?> bình luận</span></div>
- <?php $commentStmt->execute([(int)$post['id']]); $comments=$commentStmt->fetchAll(); ?>
+ <?php $comments=[]; if ($commentStmt) { $commentStmt->execute([(int)$post['id']]); $comments=$commentStmt->fetchAll(); } ?>
  <?php if ($comments): ?><div class="community-comments"><?php foreach (array_reverse($comments) as $comment): ?><p><strong><?= community_h($comment['display_name']) ?></strong> <?= community_h($comment['content']) ?></p><?php endforeach; ?></div><?php endif; ?>
  <?php if ($currentId): ?><form method="post" class="community-comment-form"><input type="hidden" name="csrf" value="<?= community_h($_SESSION['member_csrf']) ?>"><input type="hidden" name="action" value="add_comment"><input type="hidden" name="post_id" value="<?= (int)$post['id'] ?>"><input type="text" name="content" maxlength="1000" placeholder="Viết bình luận..." required><button type="submit">Gửi</button></form><?php else: ?><p class="community-login-hint"><a href="login.php">Đăng nhập</a> để bình luận.</p><?php endif; ?>
  </article><?php endforeach; ?></section>
