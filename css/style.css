@@ -214,3 +214,49 @@ body.blog-page{--bg:#151515;--surf:#202020;--ink:#f1eee8;--mute:#aaa49a;--acc:#d
 .blog-page .blog-article h1{font-size:1.35rem;line-height:1.35}
 .blog-page .blog-content{font-size:.94rem;line-height:1.8}
 }
+
+
+/* Trang chu: nen den nham va danh sach 12 cung dang menu */
+body.home-page{--bg:#151515;--surf:#202020;--ink:#f1eee8;--mute:#aaa49a;--acc:#d6b36a;--line:#393630;--hov:#302b22;--sel:#d6b36a;--onsel:#171511;background:#151515;color:#f1eee8;color-scheme:dark}
+.home-page .site-header{background:#1c1b19;border-bottom:1px solid #393630;box-shadow:0 4px 18px rgba(0,0,0,.35)}
+.home-page .brand-mark{background:#30291d;color:#e3c47e;box-shadow:none;border:1px solid #685637}
+.home-page .brand-copy small{color:#b9ad91}
+.home-page .header-links a{color:#e7dfcf}
+.home-page .header-links a:hover{background:#302b22;color:#f0d28e}
+.home-page main>h1{color:#e3c47e}
+.home-page .lead,.home-page .sunbar{color:#aaa49a}
+.home-page .card,.home-page .zodiac-picker{background:#202020;border:1px solid #393630;border-radius:14px;box-shadow:0 7px 22px rgba(0,0,0,.22)}
+.home-page .card{color:#e2ded6}
+.home-page .card h2,.home-page .card h3{color:#e3c47e}
+.home-page .chip{background:#30291d;border-color:#685637;color:#f0d28e}
+.home-page .lookup select{background:#202020;border-color:#494234;color:#f1eee8}
+.home-page .go{background:#d6b36a;color:#171511}
+.zodiac-picker{padding:18px;margin:20px 0 26px}
+.zodiac-picker>h2{font:600 1.35rem Lora,Georgia,serif;color:#e3c47e}
+.picker-note{margin:4px 0 14px;color:#aaa49a;font-size:.86rem}
+.zodiac-list{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.zodiac-option{min-width:0;display:grid;grid-template-columns:38px minmax(0,1fr) auto;grid-template-rows:auto auto;align-items:center;column-gap:10px;padding:10px 12px;text-align:left;background:#292929;border:1px solid #403d36;border-radius:10px;color:#eee9df;font:inherit;cursor:pointer;transition:background .16s,border-color .16s,transform .16s}
+.zodiac-option:hover{background:#302b22;border-color:#806b43}
+.zodiac-option:active{transform:scale(.985)}
+.zodiac-symbol{grid-row:1/3;width:36px;height:36px;display:grid;place-items:center;border-radius:10px;background:#393124;color:#e4c47e;font-size:1.35rem}
+.zodiac-name{font-size:.91rem;font-weight:700;line-height:1.3}
+.zodiac-date{font-size:.7rem;color:#aaa49a;line-height:1.3}
+.zodiac-arrow{grid-column:3;grid-row:1/3;color:#d6b36a;font-size:1.35rem}
+.zodiac-option.on{background:#382f20;border-color:#d6b36a;box-shadow:inset 3px 0 #d6b36a}
+.zodiac-option.on .zodiac-name{color:#f2d58f}
+.home-page .site-footer{background:#1c1b19;border-top:1px solid #393630}
+.home-page .footer-brand,.home-page .footer-links strong,.home-page .footer-note strong{color:#e3c47e}
+.home-page .footer-about p,.home-page .footer-note p,.home-page .footer-links a{color:#aaa49a}
+.home-page .footer-bottom{border-color:#393630;color:#9f988b}
+.home-page .bottom-nav{background:#202020;border-color:#393630}
+.home-page .bottom-nav a{box-shadow:none}
+.home-page .bottom-nav a:nth-child(1){background:#514238}
+.home-page .bottom-nav a:nth-child(2){background:#40534c}
+.home-page .bottom-nav a:nth-child(3){background:#4b465b}
+.home-page .bottom-nav a:nth-child(4){background:#5b4938}
+@media(max-width:560px){
+ .home-page main{padding:24px 13px 48px}
+ .zodiac-picker{padding:13px}
+ .zodiac-list{grid-template-columns:1fr;gap:7px}
+ .zodiac-option{grid-template-columns:36px minmax(0,1fr) auto;padding:9px 11px}
+}
