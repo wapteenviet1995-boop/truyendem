@@ -168,3 +168,49 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom,0px))}
 .editor-current-image img{width:min(100%,420px);max-height:240px;object-fit:cover;border-radius:12px;border:1px solid var(--line)}
 .admin-success{padding:10px 13px;border-radius:9px;background:#e5f6e9;color:#176b32}
 @media(max-width:520px){.editor-actions{align-items:stretch;flex-direction:column}.editor-actions>*{text-align:center}.post-editor h1{font-size:1.55rem}}
+
+
+/* Blog den nham: anh nho ben trai, noi dung ben phai */
+body.blog-page{--bg:#151515;--surf:#202020;--ink:#f1eee8;--mute:#aaa49a;--acc:#d6b36a;--line:#393630;--hov:#302b22;--sel:#d6b36a;--onsel:#171511;background:#151515;color:#f1eee8;color-scheme:dark}
+.blog-page .site-header{background:#1c1b19;border-bottom:1px solid #393630;box-shadow:0 4px 18px rgba(0,0,0,.35)}
+.blog-page .brand-mark{background:#30291d;color:#e3c47e;box-shadow:none;border:1px solid #685637}
+.blog-page .brand-copy small{color:#b9ad91}
+.blog-page .header-links a{color:#e7dfcf}
+.blog-page .header-links a:hover{background:#302b22;color:#f0d28e}
+.blog-page .blog-main{max-width:920px;padding-top:34px}
+.blog-page .blog-main>h1{color:#e3c47e}
+.blog-page .blog-main>.lead{color:#aaa49a}
+.blog-page .blog-grid{display:grid;grid-template-columns:1fr;gap:14px}
+.blog-page .blog-card{display:flex;flex-direction:row;align-items:stretch;min-height:142px;background:#202020;border:1px solid #393630;border-radius:12px;box-shadow:0 5px 16px rgba(0,0,0,.22);transition:border-color .18s,background .18s}
+.blog-page .blog-card:hover{transform:none;background:#25231f;border-color:#76613b;box-shadow:0 7px 20px rgba(0,0,0,.3)}
+.blog-page .blog-card>a:first-child{flex:0 0 150px;width:150px;min-height:142px;overflow:hidden;background:#292722}
+.blog-page .blog-card>a:first-child img{display:block;width:100%;height:100%;min-height:142px;max-height:170px;object-fit:cover;transition:transform .25s}
+.blog-page .blog-card:hover>a:first-child img{transform:scale(1.025)}
+.blog-page .blog-card-body{min-width:0;padding:14px 17px;display:flex;flex:1;flex-direction:column;align-items:flex-start}
+.blog-page .blog-card h2{font-size:1.15rem;line-height:1.4;margin:4px 0 6px}
+.blog-page .blog-card h2 a{color:#f0e8d8}
+.blog-page .blog-card p{color:#aaa49a;font-size:.9rem;line-height:1.55;margin:0 0 8px}
+.blog-page .blog-card .blog-category{color:#d6b36a!important;font-size:.73rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.blog-page .blog-read,.blog-page .blog-back{color:#d6b36a;font-size:.88rem}
+.blog-page .blog-article{max-width:820px;background:#202020;border:1px solid #393630;box-shadow:0 8px 28px rgba(0,0,0,.28)}
+.blog-page .blog-hero{display:block;width:min(100%,220px);height:150px;max-height:150px;object-fit:cover;border:1px solid #494234;border-radius:10px;margin:18px 0}
+.blog-page .blog-article h1{color:#f0e8d8}
+.blog-page .blog-content{color:#e2ded6;font-size:1rem;line-height:1.9}
+.blog-page .blog-empty{background:#202020;border-color:#393630;color:#f1eee8}
+.blog-page .site-footer{background:#1c1b19;border-top:1px solid #393630}
+.blog-page .footer-bottom{border-color:#393630;color:#9f988b}
+@media(max-width:560px){
+.blog-page .blog-main{padding:24px 12px 46px}
+.blog-page .blog-card{min-height:112px}
+.blog-page .blog-card>a:first-child{flex-basis:108px;width:108px;min-height:112px}
+.blog-page .blog-card>a:first-child img{min-height:112px;max-height:132px}
+.blog-page .blog-card-body{padding:10px 11px}
+.blog-page .blog-card h2{font-size:1rem;line-height:1.32}
+.blog-page .blog-card p{font-size:.79rem;line-height:1.45;margin-bottom:5px}
+.blog-page .blog-card .blog-category{font-size:.66rem}
+.blog-page .blog-read{font-size:.78rem}
+.blog-page .blog-article{padding:16px 13px;border-radius:11px}
+.blog-page .blog-hero{width:min(100%,160px);height:112px;max-height:112px;margin:14px 0}
+.blog-page .blog-article h1{font-size:1.35rem;line-height:1.35}
+.blog-page .blog-content{font-size:.94rem;line-height:1.8}
+}
