@@ -365,3 +365,22 @@ body.home-page{--bg:#151515;--surf:#202020;--ink:#f1eee8;--mute:#aaa49a;--acc:#d
     min-height:70px!important;
   }
 }
+
+
+/* Danh sach 12 cung: 6 cung moi hang, nam gon trong khung tren ca dien thoai */
+.home-page .zodiac-picker{width:100%;max-width:100%;min-width:0;overflow:hidden;padding:14px}
+.home-page #zodiac-list.zodiac-list{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;grid-auto-flow:row!important;gap:8px!important;width:100%!important;max-width:100%!important;min-width:0!important;overflow:hidden!important;padding:2px!important;margin:0!important}
+.home-page #zodiac-list .zodiac-option{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;min-height:100px!important;height:auto!important;padding:7px 3px!important;overflow:hidden!important;text-align:center!important;border-radius:9px}
+.home-page #zodiac-list .zodiac-symbol{display:grid!important;flex:none!important;width:30px!important;height:30px!important;margin:0!important;font-size:1.05rem!important}
+.home-page #zodiac-list .zodiac-name{display:block!important;width:100%!important;min-width:0!important;margin:0!important;padding:0!important;font-size:clamp(.58rem,1.5vw,.78rem)!important;line-height:1.2!important;text-align:center!important;white-space:normal!important;overflow-wrap:anywhere!important;word-break:normal!important}
+.home-page #zodiac-list .zodiac-date{display:block!important;width:100%!important;min-width:0!important;margin:0!important;padding:0!important;font-size:clamp(.48rem,1.15vw,.62rem)!important;line-height:1.2!important;text-align:center!important;white-space:normal!important;overflow-wrap:anywhere!important}
+.home-page #zodiac-list .zodiac-arrow{display:none!important}
+@media(max-width:560px){
+ .home-page main{padding-left:8px!important;padding-right:8px!important}
+ .home-page .zodiac-picker{padding:9px 6px!important}
+ .home-page #zodiac-list.zodiac-list{grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:4px!important;padding:1px!important}
+ .home-page #zodiac-list .zodiac-option{min-height:86px!important;padding:5px 1px!important;gap:4px!important}
+ .home-page #zodiac-list .zodiac-symbol{width:25px!important;height:25px!important;font-size:.9rem!important;border-radius:7px}
+ .home-page #zodiac-list .zodiac-name{font-size:clamp(.52rem,2.05vw,.68rem)!important;line-height:1.15!important}
+ .home-page #zodiac-list .zodiac-date{font-size:clamp(.43rem,1.65vw,.55rem)!important;line-height:1.15!important}
+}
