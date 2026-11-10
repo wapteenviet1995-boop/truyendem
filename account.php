@@ -23,7 +23,7 @@ $favoritePairs = $favoriteStmt->fetchAll();
 ?>
 <!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tài khoản của tôi | Góc Hoàng Đạo</title><link rel="stylesheet" href="css/style.css?v=20261117"></head>
+<title>Tài khoản của tôi | Góc Hoàng Đạo</title><link rel="stylesheet" href="css/style.css?v=20261118"></head>
 <body class="member-page">
 <header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">✦</span><span class="brand-copy"><strong>Góc Hoàng Đạo</strong><small>Khám phá câu chuyện của các vì sao</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="compatibility.php">Tương hợp tình yêu</a><a href="blog.php">Blog</a><a href="account.php">Tài khoản</a><form class="member-nav-logout" method="post" action="logout.php"><input type="hidden" name="csrf" value="<?= e($_SESSION['member_csrf'] ?? '') ?>"><button type="submit">Đăng xuất</button></form></nav></div></header>
 <main class="member-wrap"><section class="member-panel account-panel"><div class="member-symbol">✦</div><h1>Tài khoản của tôi</h1>
