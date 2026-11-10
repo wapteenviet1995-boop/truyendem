@@ -298,3 +298,27 @@ body.home-page{--bg:#151515;--surf:#202020;--ink:#f1eee8;--mute:#aaa49a;--acc:#d
  .home-page .zodiac-name{font-size:.9rem}
  .home-page .zodiac-date{font-size:.73rem}
 }
+
+/* Fix rieng khung cung Song Tu va cac ten cung co dau/khoang trang */
+.home-page .zodiac-option{
+  display:grid!important;
+  grid-template-columns:36px minmax(0,1fr) 16px!important;
+  grid-template-rows:minmax(20px,auto) minmax(18px,auto)!important;
+  grid-template-areas:"symbol name arrow" "symbol date arrow"!important;
+  align-content:center;
+  align-items:center;
+  column-gap:9px;
+  row-gap:5px!important;
+  min-height:76px!important;
+  height:auto!important;
+  overflow:hidden;
+}
+.home-page .zodiac-option .zodiac-symbol{grid-area:symbol!important;justify-self:center;align-self:center}
+.home-page .zodiac-option .zodiac-name{grid-area:name!important;display:block!important;min-width:0!important;width:100%;margin:0!important;padding:0!important;line-height:1.35!important;white-space:normal!important;overflow-wrap:normal!important;word-break:normal!important}
+.home-page .zodiac-option .zodiac-date{grid-area:date!important;display:block!important;min-width:0!important;width:100%;margin:0!important;padding:0!important;font-size:.72rem!important;line-height:1.35!important;white-space:normal!important;overflow-wrap:normal!important}
+.home-page .zodiac-option .zodiac-arrow{grid-area:arrow!important;justify-self:end}
+@media(max-width:560px){
+ .home-page .zodiac-option{min-height:72px!important;padding:9px 11px!important;column-gap:8px;row-gap:5px!important}
+ .home-page .zodiac-option .zodiac-name{font-size:.9rem!important}
+ .home-page .zodiac-option .zodiac-date{font-size:.72rem!important}
+}
