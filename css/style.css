@@ -582,3 +582,14 @@ body.member-page{--bg:#151515;--surf:#202020;--ink:#f1eee8;--mute:#aaa49a;--acc:
 .diary-entry h3{font:600 1.12rem Lora,Georgia,serif;color:#f1eee8;margin:12px 0 8px}
 .diary-entry>p{color:#c8c1b5;font-size:.9rem;line-height:1.8;white-space:normal;overflow-wrap:anywhere;margin:0}
 @media(max-width:560px){.social-main,.diary-main{padding:20px 11px 44px}.social-card{padding:14px}.social-person{align-items:flex-start}.social-actions{flex-direction:column}.social-search{grid-template-columns:1fr 1fr}.social-search button{grid-column:1/-1}.diary-fields{grid-template-columns:1fr}.diary-form-actions{align-items:flex-start}.diary-form-actions small{width:100%}.diary-entry{padding:14px}.diary-entry-top{align-items:flex-start;flex-wrap:wrap}}
+
+
+.social-name-link{color:#e3c47e;text-decoration:none}
+.social-name-link:hover{text-decoration:underline}
+.member-public-card{text-align:center;max-width:600px;margin:25px auto;padding:clamp(24px,6vw,42px)}
+.member-public-symbol{width:86px;height:86px;display:grid;place-items:center;margin:0 auto 18px;border-radius:25px;background:#30291d;border:1px solid #685637;color:#e3c47e;font-size:3rem;box-shadow:0 0 35px rgba(214,179,106,.12)}
+.member-public-card h1{font:600 clamp(1.8rem,7vw,2.5rem) Lora,Georgia,serif;color:#f1eee8;margin:12px 0 5px}
+.member-public-sign{color:#e3c47e;font-weight:700;margin:0 0 15px}
+.member-public-bio{color:#d1c9bb;line-height:1.8;white-space:normal;overflow-wrap:anywhere;margin:18px 0}
+.member-public-card form{margin:16px auto}
+.member-public-card>p:last-child{margin-top:22px}
