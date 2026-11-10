@@ -156,3 +156,15 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom,0px))}
  .blog-article h1{font-size:1.8rem}
  .blog-content{font-size:1rem;line-height:1.85}
 }
+
+/* Trình soạn và đăng bài */
+.post-editor .editor-help{color:var(--mute);margin:-8px 0 20px}
+.post-editor form{gap:17px}
+.post-editor label small{font-weight:400;line-height:1.5}
+.editor-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.editor-actions .go,.editor-actions .save-draft{justify-self:auto;min-height:44px;padding:10px 17px;border-radius:9px;font:inherit;font-weight:700;cursor:pointer}
+.editor-actions .save-draft{border:1px solid var(--line);background:var(--hov);color:var(--ink)}
+.editor-current-image{display:grid;gap:7px;color:var(--mute);font-size:.85rem}
+.editor-current-image img{width:min(100%,420px);max-height:240px;object-fit:cover;border-radius:12px;border:1px solid var(--line)}
+.admin-success{padding:10px 13px;border-radius:9px;background:#e5f6e9;color:#176b32}
+@media(max-width:520px){.editor-actions{align-items:stretch;flex-direction:column}.editor-actions>*{text-align:center}.post-editor h1{font-size:1.55rem}}
