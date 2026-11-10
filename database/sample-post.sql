@@ -1,0 +1,16 @@
+-- BAI VIET MAU CHO BLOG GOC HOANG DAO
+-- Chon database if0_43395839_blog truoc khi chay file nay trong phpMyAdmin.
+-- Script an toan khi chay lai: khong tao bai trung slug.
+
+INSERT INTO posts
+(title, slug, excerpt, content, image_url, category, status, published_at)
+SELECT
+'12 cung hoàng đạo: Khám phá tính cách và điểm mạnh của bạn',
+'12-cung-hoang-dao-kham-pha-tinh-cach',
+'12 cung hoàng đạo mang 12 sắc thái tính cách khác nhau. Cùng khám phá những nét nổi bật của từng cung và tìm hiểu điều khiến bạn trở nên đặc biệt.',
+'12 cung hoàng đạo là một chủ đề chiêm tinh quen thuộc, được nhiều người yêu thích khi muốn tìm hiểu thêm về tính cách, cảm xúc và cách mỗi người nhìn nhận thế giới. Mỗi cung gắn với một khoảng thời gian trong năm và thường được mô tả bằng những nét đặc trưng riêng. Nội dung dưới đây mang tính tham khảo và giải trí.\n\nBẠCH DƯƠNG (21/3 – 19/4)\nBạch Dương thường được gắn với sự chủ động, nhiệt tình và tinh thần thích bắt đầu. Họ yêu thử thách, thích hành động nhanh và có xu hướng truyền năng lượng cho những người xung quanh.\n\nKIM NGƯU (20/4 – 20/5)\nKim Ngưu thường được nhắc đến với sự kiên trì, thực tế và yêu thích cảm giác ổn định. Họ trân trọng những điều bền vững, sự thoải mái và các mối quan hệ đáng tin cậy.\n\nSONG TỬ (21/5 – 20/6)\nSong Tử gắn với sự tò mò, linh hoạt và khả năng giao tiếp. Họ thích học hỏi, khám phá nhiều chủ đề và thường có nhiều ý tưởng thú vị.\n\nCỰ GIẢI (21/6 – 22/7)\nCự Giải thường được mô tả là giàu tình cảm, quan tâm đến gia đình và những người thân thiết. Họ coi trọng sự an toàn về cảm xúc và sự gắn kết.\n\nSƯ TỬ (23/7 – 22/8)\nSư Tử gắn với sự tự tin, hào phóng và mong muốn tạo dấu ấn. Khi theo đuổi điều mình tin tưởng, họ thường thể hiện sự nhiệt thành và lòng trung thành.\n\nXỬ NỮ (23/8 – 22/9)\nXử Nữ thường được liên hệ với tính cẩn thận, khả năng quan sát và tinh thần cầu toàn. Họ thích sắp xếp mọi thứ rõ ràng và chú ý đến những chi tiết nhỏ.\n\nTHIÊN BÌNH (23/9 – 22/10)\nThiên Bình đề cao sự hài hòa, công bằng và cách cư xử tinh tế. Họ thường quan tâm đến cảm nhận của người khác và mong muốn xây dựng những mối quan hệ cân bằng.\n\nBỌ CẠP (23/10 – 21/11)\nBọ Cạp thường được mô tả là sâu sắc, quyết tâm và kín đáo. Họ coi trọng sự chân thành, có cảm xúc mạnh mẽ và thường theo đuổi mục tiêu đến cùng.\n\nNHÂN MÃ (22/11 – 21/12)\nNhân Mã gắn với tinh thần tự do, lạc quan và yêu khám phá. Họ thích trải nghiệm mới, mở rộng hiểu biết và nhìn cuộc sống theo hướng tích cực.\n\nMA KẾT (22/12 – 19/1)\nMa Kết thường được nhắc đến với sự kỷ luật, trách nhiệm và định hướng mục tiêu. Họ kiên nhẫn xây dựng thành quả từng bước và coi trọng sự đáng tin cậy.\n\nBẢO BÌNH (20/1 – 18/2)\nBảo Bình gắn với tư duy độc lập, sáng tạo và yêu thích những ý tưởng mới. Họ thường quan tâm đến cộng đồng và không ngại nhìn vấn đề theo góc độ khác biệt.\n\nSONG NGƯ (19/2 – 20/3)\nSong Ngư thường được mô tả là giàu trí tưởng tượng, nhạy cảm và đồng cảm. Họ yêu nghệ thuật, có đời sống nội tâm phong phú và dễ rung động trước những câu chuyện xung quanh.\n\nDù thuộc cung nào, mỗi người vẫn là một cá thể riêng biệt. Hãy xem chiêm tinh như một góc tham khảo vui vẻ để hiểu thêm về bản thân, không phải khuôn mẫu cố định quyết định con người bạn.',
+NULL,
+'12 cung hoàng đạo',
+'published',
+NOW()
+WHERE NOT EXISTS (SELECT 1 FROM posts WHERE slug='12-cung-hoang-dao-kham-pha-tinh-cach');
