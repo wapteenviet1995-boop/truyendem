@@ -8,7 +8,7 @@ require __DIR__ . '/includes/db.php';
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cung hoàng đạo</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Lora:wght@500;600&display=swap">
-<link rel="stylesheet" href="css/style.css?v=20261116">
+<link rel="stylesheet" href="css/style.css?v=20261117">
 </head>
 <body id="top" class="home-page">
 <header class="site-header">
@@ -22,6 +22,7 @@ require __DIR__ . '/includes/db.php';
       <a href="#lookup">Tra cứu ngày sinh</a>
       <a href="#wheel">12 cung</a>
       <a href="#detail">Luận giải</a>
+      <a href="compatibility.php">Tương hợp tình yêu</a>
       <a href="blog.php">Blog</a>
       <?php if (!empty($_SESSION['member_id'])): ?>
       <a href="account.php">Tài khoản</a>
