@@ -136,10 +136,21 @@ function startClock(){setInterval(tick,60000);document.addEventListener("visibil
   });
 })();
 
-// Điều hướng nhanh bằng thanh menu cố định cuối màn hình
+// Menu tự ẩn khi cuộn xuống, hiện lại khi cuộn lên
 (function(){
   var nav=document.querySelector(".bottom-nav");
   if(!nav)return;
+  var lastY=window.scrollY||0,ticking=false;
+  function update(){
+    var y=window.scrollY||0;
+    if(y<40){nav.classList.remove("nav-hidden");}
+    else if(y>lastY+5){nav.classList.add("nav-hidden");}
+    else if(y<lastY-5){nav.classList.remove("nav-hidden");}
+    lastY=y;ticking=false;
+  }
+  window.addEventListener("scroll",function(){
+    if(!ticking){window.requestAnimationFrame(update);ticking=true;}
+  },{passive:true});
   nav.addEventListener("click",function(e){
     var a=e.target.closest("a[data-target]");
     if(!a)return;
