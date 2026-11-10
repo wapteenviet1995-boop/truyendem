@@ -1,0 +1,24 @@
+CREATE TABLE IF NOT EXISTS posts (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  title VARCHAR(220) NOT NULL,
+  slug VARCHAR(240) NOT NULL,
+  excerpt TEXT NULL,
+  content MEDIUMTEXT NOT NULL,
+  image_url VARCHAR(500) NULL,
+  category VARCHAR(100) NOT NULL DEFAULT 'Góc Hoàng Đạo',
+  status ENUM('draft','published') NOT NULL DEFAULT 'draft',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  published_at DATETIME NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_posts_slug (slug),
+  KEY idx_posts_status_date (status, published_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS blog_admins (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  username VARCHAR(80) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
