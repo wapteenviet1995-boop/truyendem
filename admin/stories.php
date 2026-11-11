@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: stories.php?edit=' . $storyId . '&deleted=chapter');
                 exit;
             }
-        } catch (PDOException $exception) {
+        } catch (Throwable $exception) {
             $error = $exception instanceof RuntimeException ? $exception->getMessage() : 'Không lưu được. Có thể slug hoặc số chương đã bị trùng, hoặc dữ liệu chưa đúng.';
         }
     }
@@ -257,5 +257,6 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <?php endif; ?>
 </section>
 </main>
+<script>(()=>{const kind=document.getElementById('story-kind'),shortBox=document.getElementById('short-content-box'),chapter=document.getElementById('chapter-panel');if(!kind)return;function sync(){const isShort=kind.value==='short';shortBox.style.display=isShort?'block':'none';chapter.style.display=isShort?'none':'block';}kind.addEventListener('change',sync);sync();})();</script>
 </body>
 </html>
