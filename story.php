@@ -3,6 +3,7 @@ declare(strict_types=1);
 require __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/notifications.php';
 require_once __DIR__ . '/includes/experience.php';
+require_once __DIR__ . '/includes/story_rewards.php';
 $slug=trim((string)($_GET['slug']??''));
 $q=$pdo->prepare("SELECT s.*, (SELECT COUNT(*) FROM chapters c WHERE c.story_id=s.id AND c.status='published') chapter_count FROM stories s WHERE s.slug=? AND s.status='published' LIMIT 1");
 $q->execute([$slug]);$story=$q->fetch();
@@ -10,6 +11,7 @@ if(!$story){http_response_code(404);}
 $chapters=[];
 if($story){$q=$pdo->prepare("SELECT id,chapter_number,title,created_at FROM chapters WHERE story_id=? AND status='published' ORDER BY chapter_number");$q->execute([$story['id']]);$chapters=$q->fetchAll();}
 $memberId=(int)($_SESSION['member_id']??0);$favorite=false;$liked=false;$likeCount=0;$viewCount=0;
+if(empty($_SESSION['member_csrf']))$_SESSION['member_csrf']=bin2hex(random_bytes(32));
 if($story){
  $viewKey='story_viewed_'.(int)$story['id'];
  if(empty($_SESSION[$viewKey])){
@@ -17,6 +19,9 @@ if($story){
   $_SESSION[$viewKey]=1;
  }
  $q=$pdo->prepare('SELECT views_count FROM stories WHERE id=?');$q->execute([(int)$story['id']]);$viewCount=(int)$q->fetchColumn();
+ if($memberId && ($story['story_kind']??'serial')==='short'){
+  td_reward_story_view($pdo,(int)$story['id'],$memberId,(int)($story['member_id']??0),'short_story',(int)$story['id']);
+ }
  $q=$pdo->prepare('SELECT COUNT(*) FROM story_likes WHERE story_id=?');$q->execute([(int)$story['id']]);$likeCount=(int)$q->fetchColumn();
  if($memberId){$q=$pdo->prepare('SELECT 1 FROM story_likes WHERE member_id=? AND story_id=?');$q->execute([$memberId,$story['id']]);$liked=(bool)$q->fetchColumn();}
 }
@@ -38,6 +43,33 @@ if($story&&$memberId&&$_SERVER['REQUEST_METHOD']==='POST'&&($_POST['action']??''
  if($favorite){$pdo->prepare('DELETE FROM story_favorites WHERE member_id=? AND story_id=?')->execute([$memberId,$story['id']]);}
  else{$pdo->prepare('INSERT IGNORE INTO story_favorites(member_id,story_id) VALUES(?,?)')->execute([$memberId,$story['id']]);}
  header('Location: '.((($story['story_kind']??'serial')==='short'?'truyen-ngan/':'truyen/').rawurlencode($slug).'.html'));exit;
+}
+
+/* Tặng Xu trực tiếp cho tác giả. */
+if($story&&$memberId&&$_SERVER['REQUEST_METHOD']==='POST'&&($_POST['action']??'')==='gift_author'){
+ if(empty($_SESSION['member_csrf'])||!hash_equals($_SESSION['member_csrf'],(string)($_POST['csrf']??''))){http_response_code(400);exit('Phiên đã hết hạn.');}
+ $authorId=(int)($story['member_id']??0);$amount=(int)($_POST['amount']??0);
+ if($authorId<1||$authorId===$memberId||!in_array($amount,[5,10,20,50,100],true)){
+  $_SESSION['story_gift_error']='Không thể tặng Xu cho tác giả của truyện này.';
+ }else{
+  try{
+   $pdo->beginTransaction();
+   $pdo->prepare('INSERT IGNORE INTO member_wallets(member_id,balance) VALUES(?,0)')->execute([$memberId]);
+   $pdo->prepare('INSERT IGNORE INTO member_wallets(member_id,balance) VALUES(?,0)')->execute([$authorId]);
+   $ids=[$memberId,$authorId];sort($ids);
+   $lock=$pdo->prepare('SELECT member_id,balance FROM member_wallets WHERE member_id IN (?,?) ORDER BY member_id FOR UPDATE');$lock->execute($ids);
+   $balances=$lock->fetchAll();$mine=0;foreach($balances as $row){if((int)$row['member_id']===$memberId)$mine=(int)$row['balance'];}
+   if($mine<$amount){$pdo->rollBack();$_SESSION['story_gift_error']='Ví Xu của bạn không đủ.';}
+   else{
+    $pdo->prepare('UPDATE member_wallets SET balance=balance-? WHERE member_id=?')->execute([$amount,$memberId]);
+    $pdo->prepare('UPDATE member_wallets SET balance=balance+? WHERE member_id=?')->execute([$amount,$authorId]);
+    $pdo->prepare("INSERT INTO wallet_transactions(member_id,amount,type,description,reference_id) VALUES(?,?,'gift_sent',?,?)")->execute([$memberId,-$amount,'Tặng Xu cho tác giả truyện: '.$story['title'],(int)$story['id']]);
+    $pdo->prepare("INSERT INTO wallet_transactions(member_id,amount,type,description,reference_id) VALUES(?,?,'gift_received',?,?)")->execute([$authorId,$amount,'Nhận Xu từ truyện: '.$story['title'],(int)$story['id']]);
+    $pdo->commit();$_SESSION['story_gift_notice']='Đã gửi '.$amount.' Xu đến tác giả!';
+   }
+  }catch(Throwable $e){if($pdo->inTransaction())$pdo->rollBack();$_SESSION['story_gift_error']='Giao dịch chưa thành công. Vui lòng thử lại.';}
+ }
+ header('Location: '.$storyUrl.'#story-gift');exit;
 }
 
 /* Bình luận truyện: chỉ thành viên đăng nhập mới được gửi hoặc thích. */
@@ -100,7 +132,6 @@ if ($story) {
  }
 }
 
-if(empty($_SESSION['member_csrf']))$_SESSION['member_csrf']=bin2hex(random_bytes(32));
 function st_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
 function st_render_content($value): string {
  $value=trim((string)$value);
@@ -123,6 +154,7 @@ function st_render_content($value): string {
 <div class="story-detail-copy"><span class="story-tag"><?=st_h($story['category'])?></span><h1><?=st_h($story['title'])?></h1><p class="story-author">Tác giả: <?=st_h($story['author'])?></p><p class="story-stats">◉ <?=number_format($viewCount)?> lượt xem <span>♥ <?=number_format($likeCount)?> lượt thích</span></p></div><section class="story-description-box" aria-label="Giới thiệu truyện"><h2 class="story-description-title">GIỚI THIỆU TRUYỆN</h2><p class="story-description"><?=nl2br(st_h($story['description']))?></p></section><div class="story-detail-actions"><p class="story-meta"><?=($story['story_kind']??'serial')==='short'?'Truyện ngắn':count($chapters).' chương'?> · <?= $story['story_type']==='audio'?'Truyện audio':($story['story_type']==='both'?'Đọc & nghe':'Truyện chữ') ?></p>
 <?php if(($story['story_kind']??'serial')==='short'):?><a class="story-btn" href="#short-story-content">Đọc truyện</a><?php elseif($chapters):?><a class="story-btn" href="/read.php?id=<?=(int)$chapters[0]['id']?>">Đọc từ đầu</a><?php endif;?>
 <?php if($memberId):?><form method="post" class="favorite-form"><input type="hidden" name="csrf" value="<?=st_h($_SESSION['member_csrf'])?>"><input type="hidden" name="action" value="like"><button class="story-btn <?=$liked?'':'story-btn-quiet'?>"><?=$liked?'♥ Đã thích':'♡ Thích truyện'?></button></form><form method="post" class="favorite-form"><input type="hidden" name="csrf" value="<?=st_h($_SESSION['member_csrf'])?>"><input type="hidden" name="action" value="favorite"><button class="story-btn story-btn-quiet"><?=$favorite?'♥ Bỏ khỏi yêu thích':'♡ Thêm vào yêu thích'?></button></form><?php else:?><a class="story-btn story-btn-quiet" href="/login.php">Đăng nhập để thích truyện</a><a class="story-btn story-btn-quiet" href="/login.php">Đăng nhập để lưu truyện</a><?php endif;?></div></section>
+<?php if($memberId && (int)($story['member_id']??0)>0 && (int)$story['member_id']!==$memberId):?><section class="story-panel story-gift-panel" id="story-gift"><h2>✦ Ủng hộ tác giả</h2><p>Tặng một chút Xu để động viên người viết tiếp tục sáng tác.</p><?php if(!empty($_SESSION['story_gift_notice'])):?><p class="story-gift-notice"><?=st_h($_SESSION['story_gift_notice'])?></p><?php unset($_SESSION['story_gift_notice']);endif;?><?php if(!empty($_SESSION['story_gift_error'])):?><p class="story-gift-error"><?=st_h($_SESSION['story_gift_error'])?></p><?php unset($_SESSION['story_gift_error']);endif;?><form method="post"><input type="hidden" name="csrf" value="<?=st_h($_SESSION['member_csrf'])?>"><input type="hidden" name="action" value="gift_author"><label for="story-gift-amount">Số Xu muốn tặng</label><select id="story-gift-amount" name="amount"><option value="5">5 Xu</option><option value="10">10 Xu</option><option value="20">20 Xu</option><option value="50">50 Xu</option><option value="100">100 Xu</option></select><button class="story-btn" type="submit">Tặng Xu</button></form></section><?php endif;?>
 <?php if(($story['story_kind']??'serial')==='short'):?><article class="story-panel short-story-content" id="short-story-content"><h2>Nội dung truyện</h2><div class="short-story-text"><?=st_render_content($story['short_content']??'')?></div></article><?php else:?><section class="story-panel"><h2>Danh sách chương</h2><?php if(!$chapters):?><p>Truyện chưa có chương được xuất bản.</p><?php else:?><div class="chapter-list"><?php foreach($chapters as $c):?><a href="/read.php?id=<?=(int)$c['id']?>"><span>Chương <?= (int)$c['chapter_number'] ?> · <?=st_h($c['title'])?></span><small><?=st_h(date('d/m/Y',strtotime($c['created_at'])))?></small></a><?php endforeach;?></div><?php endif;?></section><?php endif;?><?php endif;?>
 <section class="story-comments" id="story-comments">
  <div class="story-comments-head"><div><span class="story-tag">GÓC TRÒ CHUYỆN</span><h2>Bình luận <small><?=count($topComments) + array_sum(array_map('count',$commentReplies))?></small></h2></div><p>Cùng chia sẻ cảm nhận của bạn về câu chuyện này.</p></div>
