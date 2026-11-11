@@ -401,3 +401,19 @@ body.reader-site article.reader-content p{
 .story-stats span{color:#d9a9c7}
 .story-detail-actions .favorite-form{display:inline-block}
 @media(max-width:650px){.story-stats{font-size:.76rem;gap:10px}}
+
+
+/* Images uploaded from the story editor */
+.story-inline-image,.reader-inline-image{
+  display:block;
+  width:auto;
+  max-width:100%;
+  max-height:720px;
+  height:auto;
+  margin:22px auto;
+  border-radius:12px;
+  object-fit:contain;
+  box-shadow:0 8px 26px rgba(0,0,0,.28);
+}
+.short-story-text .story-inline-image{margin:24px auto}
+.reader-content .reader-inline-image{margin:28px auto}
