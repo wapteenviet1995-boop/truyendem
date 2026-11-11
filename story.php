@@ -21,8 +21,14 @@ if($story){
 if($story&&$memberId){$q=$pdo->prepare('SELECT 1 FROM story_favorites WHERE member_id=? AND story_id=?');$q->execute([$memberId,$story['id']]);$favorite=(bool)$q->fetchColumn();}
 if($story&&$memberId&&$_SERVER['REQUEST_METHOD']==='POST'&&($_POST['action']??'')==='like'){
  if(empty($_SESSION['member_csrf'])||!hash_equals($_SESSION['member_csrf'],(string)($_POST['csrf']??''))){http_response_code(400);exit('Phiên đã hết hạn.');}
- if($liked){$pdo->prepare('DELETE FROM story_likes WHERE member_id=? AND story_id=?')->execute([$memberId,$story['id']]);}
- else{$pdo->prepare('INSERT IGNORE INTO story_likes(member_id,story_id) VALUES(?,?)')->execute([$memberId,$story['id']]);}
+ if($liked){
+  $pdo->prepare('DELETE FROM story_likes WHERE member_id=? AND story_id=?')->execute([$memberId,$story['id']]);
+  $pdo->prepare('UPDATE stories SET likes_count=GREATEST(likes_count-1,0) WHERE id=?')->execute([$story['id']]);
+ }else{
+  $ins=$pdo->prepare('INSERT IGNORE INTO story_likes(member_id,story_id) VALUES(?,?)');
+  $ins->execute([$memberId,$story['id']]);
+  if($ins->rowCount())$pdo->prepare('UPDATE stories SET likes_count=likes_count+1 WHERE id=?')->execute([$story['id']]);
+ }
  header('Location: story.php?slug='.rawurlencode($slug));exit;
 }
 if($story&&$memberId&&$_SERVER['REQUEST_METHOD']==='POST'&&($_POST['action']??'')==='favorite'){
