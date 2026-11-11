@@ -2,6 +2,7 @@
 declare(strict_types=1);
 require __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/notifications.php';
+require_once __DIR__ . '/includes/experience.php';
 $slug=trim((string)($_GET['slug']??''));
 $q=$pdo->prepare("SELECT s.*, (SELECT COUNT(*) FROM chapters c WHERE c.story_id=s.id AND c.status='published') chapter_count FROM stories s WHERE s.slug=? AND s.status='published' LIMIT 1");
 $q->execute([$slug]);$story=$q->fetch();
@@ -76,6 +77,7 @@ if ($story && $_SERVER['REQUEST_METHOD'] === 'POST' && in_array((string)($_POST[
    }
    $insert = $pdo->prepare('INSERT INTO story_comments(story_id,member_id,parent_id,content) VALUES(?,?,?,?)');
    $insert->execute([(int)$story['id'], $memberId, $parentId ?: null, $content]);
+   td_add_xp($pdo, $memberId, 'story_comment:' . (int)$pdo->lastInsertId(), 5, 'Bình luận truyện');
    if($parentId>0){
     $owner=$pdo->prepare('SELECT member_id FROM story_comments WHERE id=?');$owner->execute([$parentId]);
     td_notify($pdo,(int)$owner->fetchColumn(),$memberId,'story_comment_reply','Bạn có câu trả lời mới',($_SESSION['member_name']??'Một thành viên').' đã trả lời bình luận của bạn.',$storyUrl.'#story-comments');
