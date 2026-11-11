@@ -6,6 +6,8 @@ if (empty($_SESSION['member_csrf'])) $_SESSION['member_csrf'] = bin2hex(random_b
 $currentId = (int)($_SESSION['member_id'] ?? 0);
 $message = '';
 $error = '';
+$commentsEnabled = true;
+try { $setting = $pdo->query("SELECT setting_value FROM site_settings WHERE setting_key='comments_enabled' LIMIT 1")->fetchColumn(); if ($setting !== false) $commentsEnabled = ($setting === '1'); } catch (PDOException $ex) { $commentsEnabled = true; }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($currentId < 1) {
@@ -27,6 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     header('Location: community.php?posted=1'); exit;
                 }
             } elseif ($action === 'add_comment' && $postId && $postId > 0) {
+                if (!$commentsEnabled) { $error = 'Bình luận hiện đang được quản trị viên tạm khóa.'; }
+                else {
                 $content = trim((string)($_POST['content'] ?? ''));
                 if ($content === '' || mb_strlen($content) > 1000) {
                     $error = 'Bình luận cần có nội dung từ 1 đến 1.000 ký tự.';
@@ -39,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $stmt->execute([$postId, $currentId, $content]);
                         header('Location: community.php#post-' . $postId); exit;
                     }
+                }
                 }
             } elseif ($action === 'toggle_like' && $postId && $postId > 0) {
                 $check = $pdo->prepare('SELECT id FROM community_posts WHERE id=? LIMIT 1');
@@ -121,7 +126,7 @@ function community_h(?string $value): string { return htmlspecialchars($value ??
  <div class="community-post-actions"><?php if ($currentId): ?><form method="post"><input type="hidden" name="csrf" value="<?= community_h($_SESSION['member_csrf']) ?>"><input type="hidden" name="action" value="toggle_like"><input type="hidden" name="post_id" value="<?= (int)$post['id'] ?>"><button class="<?= (int)$post['liked_by_me'] ? 'is-liked' : '' ?>" type="submit"><?= (int)$post['liked_by_me'] ? '♥ Đã thích' : '♡ Thích' ?> · <?= (int)$post['like_count'] ?></button></form><?php else: ?><span>♡ <?= (int)$post['like_count'] ?> lượt thích</span><?php endif; ?><span>☾ <?= (int)$post['comment_count'] ?> bình luận</span></div>
  <?php $comments=[]; if ($commentStmt) { $commentStmt->execute([(int)$post['id']]); $comments=$commentStmt->fetchAll(); } ?>
  <?php if ($comments): ?><div class="community-comments"><?php foreach (array_reverse($comments) as $comment): ?><p><strong><?= community_h($comment['display_name']) ?></strong> <?= community_h($comment['content']) ?></p><?php endforeach; ?></div><?php endif; ?>
- <?php if ($currentId): ?><form method="post" class="community-comment-form"><input type="hidden" name="csrf" value="<?= community_h($_SESSION['member_csrf']) ?>"><input type="hidden" name="action" value="add_comment"><input type="hidden" name="post_id" value="<?= (int)$post['id'] ?>"><input type="text" name="content" maxlength="1000" placeholder="Viết bình luận..." required><button type="submit">Gửi</button></form><?php else: ?><p class="community-login-hint"><a href="login.php">Đăng nhập</a> để bình luận.</p><?php endif; ?>
+ <?php if (!$commentsEnabled): ?><p class="community-login-hint">Bình luận đang tạm thời được tắt.</p><?php elseif ($currentId): ?><form method="post" class="community-comment-form"><input type="hidden" name="csrf" value="<?= community_h($_SESSION['member_csrf']) ?>"><input type="hidden" name="action" value="add_comment"><input type="hidden" name="post_id" value="<?= (int)$post['id'] ?>"><input type="text" name="content" maxlength="1000" placeholder="Viết bình luận..." required><button type="submit">Gửi</button></form><?php else: ?><p class="community-login-hint"><a href="login.php">Đăng nhập</a> để bình luận.</p><?php endif; ?>
  </article><?php endforeach; ?></section>
 </main><footer class="site-footer"><div class="footer-bottom">© 2026 Góc Hoàng Đạo · Cùng nhau kết nối</div></footer>
 <script src="js/presence.js"></script>
