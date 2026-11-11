@@ -185,11 +185,13 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <label>Slug (để trống tự tạo)<input name="slug" value="<?=e((string)$storyForm['slug'])?>"></label>
 <label>Tác giả<input name="author" value="<?=e((string)$storyForm['author'])?>"></label>
 <label>Thể loại<input name="category" value="<?=e((string)$storyForm['category'])?>"></label>
-<label>Hình thức nội dung<select name="story_kind" id="story-kind"><option value="serial" <?=($storyForm['story_kind']??'serial')==='serial'?'selected':''?>>Truyện dài nhiều chương</option><option value="short" <?=($storyForm['story_kind']??'serial')==='short'?'selected':''?>>Truyện ngắn (một bài)</option></select></label>\n<label>Loại truyện<select name="story_type"><option value="text" <?=$storyForm['story_type']==='text'?'selected':''?>>Truyện chữ</option><option value="audio" <?=$storyForm['story_type']==='audio'?'selected':''?>>Truyện audio</option><option value="both" <?=$storyForm['story_type']==='both'?'selected':''?>>Chữ + audio</option></select></label>
+<label>Hình thức nội dung<select name="story_kind" id="story-kind"><option value="serial" <?=($storyForm['story_kind']??'serial')==='serial'?'selected':''?>>Truyện dài nhiều chương</option><option value="short" <?=($storyForm['story_kind']??'serial')==='short'?'selected':''?>>Truyện ngắn (một bài)</option></select></label>
+<label>Loại truyện<select name="story_type"><option value="text" <?=$storyForm['story_type']==='text'?'selected':''?>>Truyện chữ</option><option value="audio" <?=$storyForm['story_type']==='audio'?'selected':''?>>Truyện audio</option><option value="both" <?=$storyForm['story_type']==='both'?'selected':''?>>Chữ + audio</option></select></label>
 <label>Trạng thái<select name="status"><option value="draft" <?=$storyForm['status']==='draft'?'selected':''?>>Bản nháp</option><option value="published" <?=$storyForm['status']==='published'?'selected':''?>>Xuất bản</option></select></label>
 </div>
 <label>Link ảnh bìa<input type="url" name="cover_url" value="<?=e((string)$storyForm['cover_url'])?>" placeholder="https://..."></label>
-<label>Mô tả truyện<textarea name="description" rows="4"><?=e((string)$storyForm['description'])?></textarea></label>\n<div id="short-content-box"><label>Nội dung truyện ngắn *<textarea name="short_content" rows="16" placeholder="Nhập toàn bộ nội dung truyện ngắn..."><?=e((string)($storyForm['short_content']??''))?></textarea></label></div>
+<label>Mô tả truyện<textarea name="description" rows="4"><?=e((string)$storyForm['description'])?></textarea></label>
+<div id="short-content-box"><label>Nội dung truyện ngắn *<textarea name="short_content" rows="16" placeholder="Nhập toàn bộ nội dung truyện ngắn..."><?=e((string)($storyForm['short_content']??''))?></textarea></label></div>
 <div class="admin-story-actions"><button type="submit"><?=((int)$storyForm['id'] > 0)?'Lưu thay đổi':'Đăng truyện'?></button><?php if ((int)$storyForm['id'] > 0): ?><a class="admin-story-btn" href="stories.php">＋ Truyện mới</a><?php endif; ?></div>
 </form>
 </section>
