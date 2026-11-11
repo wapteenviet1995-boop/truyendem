@@ -17,7 +17,7 @@ try{
 }catch(PDOException $e){$setupError=true;}
 function home_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
 ?>
-<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090a10"><title>Truyện Đêm - Thư viện truyện chữ và audio</title><meta name="description" content="Khám phá truyện kinh dị, tình cảm, huyền huyễn và nhiều câu chuyện hấp dẫn tại Truyện Đêm."><link rel="stylesheet" href="/css/style.css?v=20261111-routes1"><link rel="stylesheet" href="/css/stories.css?v=20261111-routes1"></head><body class="story-site" id="top">
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090a10"><title>Truyện Đêm - Thư viện truyện chữ và audio</title><meta name="description" content="Khám phá truyện kinh dị, tình cảm, huyền huyễn và nhiều câu chuyện hấp dẫn tại Truyện Đêm."><link rel="stylesheet" href="/css/style.css?v=20261111-routes1"><link rel="stylesheet" href="/css/stories.css?v=20261111-routes1"><link rel="stylesheet" href="/css/member-hub.css?v=20261111-leaderboard"></head><body class="story-site" id="top">
 <header class="site-header"><div class="header-inner"><a class="brand" href="/index.php"><span class="brand-mark">☾</span><span class="brand-copy"><strong>Truyện Đêm</strong><small>Mỗi đêm, một thế giới khác</small></span></a><nav class="header-links"><a href="/index.php">Trang chủ</a><a href="#library">Thư viện</a><?php if(!empty($_SESSION['member_id'])):?><a href="/library.php">Tủ sách</a><a href="/notifications.php">Thông báo</a><?php endif;?><a href="/community.php">Cộng đồng</a><a href="/friends.php">Bạn bè</a><a href="/messages.php">Tin nhắn</a><a href="/shop.php">Cửa hàng</a><?php if(!empty($_SESSION['member_id'])):?><a href="/account.php">Tài khoản</a><form class="member-nav-logout" method="post" action="/logout.php"><input type="hidden" name="csrf" value="<?=home_h($_SESSION['member_csrf']??'')?>"><button type="submit">Đăng xuất</button></form><?php else:?><a href="/login.php">Đăng nhập</a><a href="/register.php">Đăng ký</a><?php endif;?></nav></div></header>
 <main class="story-main"><section class="story-hero"><span class="story-kicker">✦ CHÀO MỪNG ĐẾN VỚI TRUYỆN ĐÊM ✦</span><h1>Đêm xuống,<br>mở ra một câu chuyện.</h1><p>Truyện kinh dị, tình cảm, huyền huyễn và nhiều thế giới đang chờ bạn khám phá. Đọc tiếp nơi bạn đã dừng lại, hoặc tìm một câu chuyện mới cho đêm nay.</p><form class="story-search" method="get" action="/index.php"><input type="search" name="q" value="<?=home_h($q)?>" placeholder="Tìm tên truyện, tác giả..." aria-label="Tìm truyện"><button type="submit">Tìm truyện</button></form></section>
 <?php if(!empty($setupError)):?><section class="story-empty"><h2>Thư viện đang chờ khởi tạo</h2><p>Hãy chạy file <strong>database/stories.sql</strong> trong phpMyAdmin để tạo dữ liệu truyện và chương.</p></section><?php else:?>
@@ -25,4 +25,27 @@ function home_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBS
 <section class="story-section" id="library"><div class="story-section-head"><h2><?= $q!==''?'Kết quả tìm kiếm':'✧ Thư viện truyện' ?></h2><span><?=count($stories)?> truyện</span></div>
 <?php if($categories):?><div class="story-categories"><a class="<?= $category===''?'active':''?>" href="/index.php#library">Tất cả</a><?php foreach($categories as $cat):?><a class="<?= $category===$cat?'active':''?>" href="/chuyen-muc/<?=home_slug((string)$cat)?>.html"><?=home_h($cat)?></a><?php endforeach;?></div><?php endif;?>
 <?php if(!$stories):?><div class="story-empty"><h3>Chưa tìm thấy truyện phù hợp</h3><p>Thư viện sẽ sớm có thêm những câu chuyện mới.</p></div><?php else:?><div class="story-grid"><?php foreach($stories as $s):?><article class="story-card"><a class="story-card-cover" href="<?=($s['story_kind']??'serial')==='short'?'/truyen-ngan/':'/truyen/'?><?=rawurlencode($s['slug'])?>.html"><?php if($s['cover_url']):?><img src="<?=home_h($s['cover_url'])?>" alt="<?=home_h($s['title'])?>" loading="lazy"><?php else:?>☾<?php endif;?></a><div class="story-card-body"><span class="story-tag"><?=home_h($s['category'])?></span><h3><a href="<?=($s['story_kind']??'serial')==='short'?'/truyen-ngan/':'/truyen/'?><?=rawurlencode($s['slug'])?>.html"><?=home_h($s['title'])?></a></h3><p><?=home_h(mb_strimwidth((string)$s['description'],0,115,'…','UTF-8'))?></p><div class="story-card-meta"><?=home_h($s['author'])?> · <?=($s['story_kind']??'serial')==='short'?'Truyện ngắn':(int)$s['chapter_count'].' chương'?><br>◉ <?=number_format((int)$s['views_count'])?> · ♥ <?=number_format((int)$s['likes_count'])?></div></div></article><?php endforeach;?></div><?php endif;?></section><?php endif;?>
+<?php
+$leaderboard=[];
+try {
+ $leaderboard=$pdo->query("SELECT m.id,m.display_name,m.avatar_url,w.balance FROM member_wallets w JOIN members m ON m.id=w.member_id WHERE m.is_active=1 ORDER BY w.balance DESC,w.updated_at ASC,m.id ASC LIMIT 5")->fetchAll();
+} catch(PDOException $e) { $leaderboard=[]; }
+function home_level(int $xu): array {
+ if($xu>=5000)return ['Huyền Thoại','✦'];
+ if($xu>=1500)return ['Tinh Tú','🌟'];
+ if($xu>=500)return ['Người Kể Chuyện','📜'];
+ if($xu>=100)return ['Nhà Khám Phá','☾'];
+ return ['Tân Binh','✧'];
+}
+?>
+<section class="leaderboard-section" aria-labelledby="leaderboard-title">
+ <div class="leaderboard-heading"><div><span class="leaderboard-kicker">✦ VINH DANH THÀNH VIÊN ✦</span><h2 id="leaderboard-title">Bảng xếp hạng Truyện Đêm</h2><p>Top 5 thành viên có số dư Xu cao nhất</p></div><a href="/shop.php">Kiếm thêm Xu <span>→</span></a></div>
+ <?php if($leaderboard):?><ol class="leaderboard-list"><?php foreach($leaderboard as $i=>$person):$level=home_level((int)$person['balance']);?>
+ <li class="leaderboard-row rank-<?=($i+1)?>">
+  <span class="leaderboard-rank"><?=($i+1)?></span>
+  <a class="leaderboard-avatar" href="/member.php?id=<?=(int)$person['id']?>"><?php if(!empty($person['avatar_url'])):?><img src="<?=home_h($person['avatar_url'])?>" alt=""><?php else:?><?=home_h(mb_substr((string)$person['display_name'],0,1,'UTF-8'))?><?php endif;?></a>
+  <div class="leaderboard-member"><a href="/member.php?id=<?=(int)$person['id']?>"><?=home_h($person['display_name'])?></a><small><?=home_h($level[1].' '.$level[0])?></small></div>
+  <strong class="leaderboard-xu"><?=number_format((int)$person['balance'])?> <small>Xu</small></strong>
+ </li><?php endforeach;?></ol><?php else:?><div class="leaderboard-empty">Chưa có dữ liệu xếp hạng. Hãy bắt đầu tích lũy Xu nhé!</div><?php endif;?>
+</section>
 </main><footer class="site-footer"><div class="footer-bottom">© 2026 Truyện Đêm · Mỗi đêm, một thế giới khác</div></footer><nav class="bottom-nav story-bottom-nav"><a href="#top"><span>⌂</span>Trang chủ</a><a href="#library"><span>▤</span>Thư viện</a><a href="/community.php"><span>♡</span>Cộng đồng</a><a href="/shop.php"><span>✦</span>Cửa hàng</a><a href="/account.php"><span>♙</span>Tài khoản</a></nav><script src="/js/presence.js"></script></body></html>
