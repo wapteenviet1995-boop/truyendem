@@ -56,3 +56,14 @@
 .leaderboard-xu small{font-size:.72rem;color:#bca878}
 .leaderboard-empty{padding:18px;border:1px dashed #463952;border-radius:12px;text-align:center;color:#a79db2}
 @media(max-width:600px){.leaderboard-section{margin:25px 12px 32px;padding:18px 13px}.leaderboard-heading{align-items:flex-start;flex-direction:column}.leaderboard-row{gap:9px;padding:9px}.leaderboard-avatar{width:38px;height:38px;flex-basis:38px}.leaderboard-xu{font-size:.82rem}}
+
+
+/* Two compact homepage rankings */
+.leaderboard-wrap{max-width:1040px;margin:30px auto 42px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.leaderboard-wrap .leaderboard-section{width:100%;min-width:0;box-sizing:border-box;margin:0}
+.leaderboard-wrap .leaderboard-heading{align-items:center;margin-bottom:13px}
+.leaderboard-wrap .leaderboard-heading h2{font-size:1.08rem;letter-spacing:.04em}
+.leaderboard-subtitle{color:#a99ab9;font-size:.76rem}
+.leaderboard-xp{display:flex;flex-direction:column;align-items:flex-end;gap:3px;white-space:nowrap;color:#d7b9f4;font-size:.9rem}
+.leaderboard-xp small{color:#a99ab9;font-size:.68rem;font-weight:500}
+@media(max-width:700px){.leaderboard-wrap{grid-template-columns:1fr;margin:22px 12px 32px;gap:12px}.leaderboard-wrap .leaderboard-section{padding:17px 13px}.leaderboard-wrap .leaderboard-heading{flex-direction:row;align-items:center}}
