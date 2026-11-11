@@ -29,13 +29,13 @@ if($story&&$memberId&&$_SERVER['REQUEST_METHOD']==='POST'&&($_POST['action']??''
   $ins->execute([$memberId,$story['id']]);
   if($ins->rowCount())$pdo->prepare('UPDATE stories SET likes_count=likes_count+1 WHERE id=?')->execute([$story['id']]);
  }
- header('Location: story.php?slug='.rawurlencode($slug));exit;
+ header('Location: '.((($story['story_kind']??'serial')==='short'?'truyen-ngan/':'truyen/').rawurlencode($slug).'.html'));exit;
 }
 if($story&&$memberId&&$_SERVER['REQUEST_METHOD']==='POST'&&($_POST['action']??'')==='favorite'){
  if(empty($_SESSION['member_csrf'])||!hash_equals($_SESSION['member_csrf'],(string)($_POST['csrf']??''))){http_response_code(400);exit('Phiên đã hết hạn.');}
  if($favorite){$pdo->prepare('DELETE FROM story_favorites WHERE member_id=? AND story_id=?')->execute([$memberId,$story['id']]);}
  else{$pdo->prepare('INSERT IGNORE INTO story_favorites(member_id,story_id) VALUES(?,?)')->execute([$memberId,$story['id']]);}
- header('Location: story.php?slug='.rawurlencode($slug));exit;
+ header('Location: '.((($story['story_kind']??'serial')==='short'?'truyen-ngan/':'truyen/').rawurlencode($slug).'.html'));exit;
 }
 if(empty($_SESSION['member_csrf']))$_SESSION['member_csrf']=bin2hex(random_bytes(32));
 function st_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
