@@ -38,7 +38,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     if(!$check->fetchColumn())$error='Không tìm thấy truyện của bạn.';
     elseif($title===''||$body==='')$error='Hãy nhập tên và nội dung chương.';
     else{
-     $pdo->beginTransaction();$q=$pdo->prepare('SELECT COALESCE(MAX(chapter_number),0)+1 FROM chapters WHERE story_id=? FOR UPDATE');$q->execute([$storyId]);$number=(int)$q->fetchColumn();
+     $pdo->beginTransaction();$lock=$pdo->prepare('SELECT id FROM stories WHERE id=? AND member_id=? FOR UPDATE');$lock->execute([$storyId,$memberId]);if(!$lock->fetchColumn())throw new RuntimeException('Truyện không còn thuộc tài khoản của bạn.');$q=$pdo->prepare('SELECT COALESCE(MAX(chapter_number),0)+1 FROM chapters WHERE story_id=?');$q->execute([$storyId]);$number=(int)$q->fetchColumn();
      $pdo->prepare("INSERT INTO chapters(story_id,chapter_number,title,content,status) VALUES(?,?,?,?,'draft')")->execute([$storyId,$number,$title,$body]);
      $pdo->commit();header('Location: submit_story.php?chapter_added=1');exit;
     }
