@@ -193,3 +193,41 @@ body.reader-site article.reader-content p{
   .story-detail .story-description-title{font-size:.78rem;margin-bottom:7px}
   .story-detail .story-description{font-size:.91rem;line-height:1.75}
 }
+
+
+/* Synopsis typography: match the calm, book-like feel of the story text */
+.story-detail .story-description-box{
+  grid-column:1 / -1;
+  margin:8px 0 0;
+  padding:22px 24px 24px;
+  border:1px solid #30283a;
+  border-radius:12px;
+  background:rgba(12,11,18,.58);
+  box-shadow:none;
+}
+.story-detail .story-description-title{
+  display:block;
+  margin:0 0 14px;
+  color:#bda5d9;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:.9rem;
+  font-weight:600;
+  letter-spacing:.04em;
+}
+.story-detail .story-description-title:before{display:none}
+.story-detail .story-description{
+  color:#e6e0eb;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:1.08rem;
+  font-weight:400;
+  line-height:2;
+  letter-spacing:.005em;
+  text-align:justify;
+  text-indent:1.5em;
+  overflow-wrap:break-word;
+}
+@media(max-width:650px){
+  .story-detail .story-description-box{padding:18px 17px 20px;margin-top:5px}
+  .story-detail .story-description-title{font-size:.86rem;margin-bottom:11px}
+  .story-detail .story-description{font-size:1rem;line-height:1.95;text-align:justify;text-indent:1.2em}
+}
