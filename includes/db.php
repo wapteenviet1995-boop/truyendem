@@ -28,6 +28,18 @@ try {
     exit('Không kết nối được database. Hãy kiểm tra cấu hình MySQL trong includes/config.php.');
 }
 
+/* Buoc tai khoan bi khoa ra khoi phien dang nhap dang ton tai. */
+if (!empty($_SESSION['member_id'])) {
+    $checkMember = $pdo->prepare('SELECT is_active FROM members WHERE id=? LIMIT 1');
+    $checkMember->execute([(int)$_SESSION['member_id']]);
+    if ((int)$checkMember->fetchColumn() !== 1) {
+        unset($_SESSION['member_id'], $_SESSION['member_name']);
+        session_regenerate_id(true);
+        header('Location: ' . (str_contains($_SERVER['PHP_SELF'] ?? '', '/admin/') ? '../login.php?locked=1' : 'login.php?locked=1'));
+        exit;
+    }
+}
+
 function e(?string $value): string {
     return htmlspecialchars($value ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
