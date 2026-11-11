@@ -1,0 +1,12 @@
+Options -Indexes
+RewriteEngine On
+RewriteBase /
+
+# Clean story detail URLs
+RewriteRule ^truyen-ngan/([a-zA-Z0-9-]+)\.html$ story.php?slug=$1 [L,QSA]
+RewriteRule ^truyen/([a-zA-Z0-9-]+)\.html$ story.php?slug=$1 [L,QSA]
+
+# Clean category URLs
+RewriteRule ^chuyen-muc/([a-zA-Z0-9-]+)\.html$ index.php?category_slug=$1 [L,QSA]
+
+# Keep existing files and folders working
