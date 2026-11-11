@@ -65,7 +65,7 @@ function msg_presence_label(?string $lastSeen): string {
 $unreadQ=$pdo->prepare('SELECT COUNT(*) FROM member_messages WHERE recipient_id=? AND read_at IS NULL');$unreadQ->execute([$currentId]);$totalUnread=(int)$unreadQ->fetchColumn();
 ?>
 <!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tin nhắn riêng | Góc Hoàng Đạo</title><link rel="stylesheet" href="css/style.css?v=messaging1"></head>
-<body class="blog-page social-page"><header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">✦</span><span class="brand-copy"><strong>Góc Hoàng Đạo</strong><small>Khám phá câu chuyện của các vì sao</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="friends.php">Kết bạn</a><a href="community.php">Cộng đồng</a><a href="account.php">Tài khoản</a></nav></div></header>
+<body class="blog-page social-page"><header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">✦</span><span class="brand-copy"><strong>Truyện Đêm</strong><small>Mỗi đêm, một thế giới khác</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="friends.php">Kết bạn</a><a href="community.php">Cộng đồng</a><a href="account.php">Tài khoản</a></nav></div></header>
 <main class="social-main messages-main"><section class="social-hero"><span class="compat-kicker">✦ KẾT NỐI RIÊNG TƯ ✦</span><h1>Tin nhắn <em>riêng</em></h1><p>Trò chuyện thân mật cùng những người bạn dưới bầu trời hoàng đạo.</p></section>
 <?php if($error):?><p class="community-error"><?=msg_h($error)?></p><?php endif;?>
 <?php if($person):?>
@@ -75,7 +75,7 @@ $unreadQ=$pdo->prepare('SELECT COUNT(*) FROM member_messages WHERE recipient_id=
 <?php else:?>
 <section class="social-card"><div class="social-section-title"><h2>Bạn bè của tôi</h2><span><?=$totalUnread?> tin chưa đọc</span></div><?php if(!$friends):?><p class="social-muted">Bạn chưa có bạn bè. Hãy kết bạn trước để bắt đầu trò chuyện.</p><a class="social-button" href="friends.php">Tìm bạn bè</a><?php else:foreach($friends as $f):?><a class="chat-friend" href="messages.php?with=<?=(int)$f['id']?>"><span class="chat-avatar"><?=msg_h((preg_match('/^./us',(string)$f['display_name'],$first)?$first[0]:'✦'))?></span><span class="chat-friend-info"><strong><?=msg_h($f['display_name'])?></strong><small><?=msg_h(msg_presence_label($f['last_seen_at']))?></small></span><?php if((int)$f['unread']>0):?><b class="chat-unread"><?=(int)$f['unread']?></b><?php endif;?></a><?php endforeach;endif;?></section>
 <?php endif;?>
-</main><footer class="site-footer"><div class="footer-bottom">© 2026 Góc Hoàng Đạo · Tin nhắn riêng</div></footer>
+</main><footer class="site-footer"><div class="footer-bottom">© 2026 Truyện Đêm · Tin nhắn riêng</div></footer>
 <script src="js/presence.js"></script>
 <?php if($person):?><script>
 (function(){
