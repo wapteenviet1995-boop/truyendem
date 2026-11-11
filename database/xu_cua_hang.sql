@@ -21,6 +21,15 @@ CREATE TABLE IF NOT EXISTS wallet_transactions (
   CONSTRAINT fk_wallet_tx_member FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS wallet_daily_claims (
+  member_id INT UNSIGNED NOT NULL,
+  claim_date DATE NOT NULL,
+  amount INT UNSIGNED NOT NULL DEFAULT 20,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (member_id,claim_date),
+  CONSTRAINT fk_daily_claim_member FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS shop_items (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
