@@ -464,3 +464,13 @@ body.reader-site article.reader-content p{
  .comment-reply-form button{align-self:flex-end}
  .comment-replies{padding-left:10px}
 }
+
+
+/* Expandable reply composer */
+.comment-reply-toggle{display:inline-flex;align-items:center;margin-top:9px;padding:6px 10px;border:1px solid #453753;border-radius:8px;background:#211b2d;color:#d7baf5;font-size:.78rem;font-weight:700;cursor:pointer}
+.comment-reply-form[hidden]{display:none!important}
+.comment-reply-form{display:flex;flex-wrap:wrap;align-items:flex-start;gap:9px;margin-top:12px;padding:11px;border:1px solid #332b40;border-radius:11px;background:#0d0e16}
+.comment-reply-form textarea{flex:1 1 100%}
+.comment-reply-form-actions{display:flex;justify-content:flex-end;gap:8px;width:100%}
+.comment-reply-form-actions button{padding:8px 12px;border:1px solid #514064;border-radius:8px;background:#292139;color:#e0c9fb;font-weight:700;cursor:pointer}
+.comment-reply-form-actions .comment-reply-cancel{background:transparent;color:#aaa1b8;border-color:#393448}
