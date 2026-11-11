@@ -27,6 +27,7 @@ require __DIR__ . '/includes/db.php';
       <a href="friends.php">Kết bạn</a>
       <a href="diary.php">Nhật ký</a>
       <a href="messages.php">Tin nhắn</a>
+      <a href="shop.php">Xu & Cửa hàng</a>
       <a href="blog.php">Blog</a>
       <?php if (!empty($_SESSION['member_id'])): ?>
       <a href="account.php">Tài khoản</a>
