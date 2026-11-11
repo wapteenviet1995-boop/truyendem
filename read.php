@@ -10,16 +10,18 @@ $q=$pdo->prepare("SELECT id,chapter_number,title FROM chapters WHERE story_id=? 
 foreach($all as $i=>$c){if((int)$c['id']===(int)$chapter['id']){$prev=$all[$i-1]??null;$next=$all[$i+1]??null;break;}}
 function rd_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
 function rd_paragraphs($value): string {
-    $value = str_replace(["\r\n", "\r"], "\n", trim((string)$value));
+    $value = str_replace(["\\r\\n", "\\r"], "\\n", trim((string)$value));
     if ($value === '') return '';
-    $blocks = preg_split('/\n[ \t]*\n+/', $value) ?: [];
+    $blocks = preg_split('/\\n[ \\t]*\\n+/', $value) ?: [];
     $html = [];
     foreach ($blocks as $block) {
-        $block = trim($block);
-        if ($block === '') continue;
-        $safe = htmlspecialchars($block, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-        $html[] = '<p>' . nl2br($safe, false) . '</p>';
+        $safe = rd_h(trim($block));
+        $safe = preg_replace_callback('~\\[img\\](/uploads/stories/[a-zA-Z0-9._-]+)\\[/img\\]~', function($m) {
+            return '<img class="reader-inline-image" src="' . rd_h($m[1]) . '" alt="Ảnh minh họa truyện" loading="lazy">';
+        }, $safe);
+        if (trim(strip_tags($safe)) === '' && str_contains($safe, '<img')) $html[] = $safe;
+        elseif (trim($safe) !== '') $html[] = '<p>' . nl2br($safe, false) . '</p>';
     }
-    return implode("\n", $html);
+    return implode("\\n", $html);
 }
-?><!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?=rd_h($chapter['story_title'])?> - Chương <?= (int)$chapter['chapter_number']?> | Truyện Đêm</title><link rel="stylesheet" href="css/style.css?v=20261111-story1"><link rel="stylesheet" href="css/stories.css?v=1"></head><body class="story-site reader-site"><header class="reader-top"><a href="story.php?slug=<?=rawurlencode($chapter['slug'])?>">← <?=rd_h($chapter['story_title'])?></a><a href="index.php">☾ Truyện Đêm</a></header><main class="reader-main"><p class="reader-kicker">TRUYỆN ĐÊM · CHƯƠNG <?= (int)$chapter['chapter_number']?></p><h1><?=rd_h($chapter['title'])?></h1><?php if($chapter['audio_url']):?><audio class="story-audio" controls preload="none" src="<?=rd_h($chapter['audio_url'])?>">Trình duyệt không hỗ trợ audio.</audio><?php endif;?><article class="reader-content"><?=rd_paragraphs($chapter['content'])?></article><nav class="reader-pagination"><?php if($prev):?><a href="read.php?id=<?=(int)$prev['id']?>">← Chương trước</a><?php else:?><span></span><?php endif;?><?php if($next):?><a href="read.php?id=<?=(int)$next['id']?>">Chương tiếp theo →</a><?php else:?><a href="story.php?slug=<?=rawurlencode($chapter['slug'])?>">Danh sách chương</a><?php endif;?></nav></main></body></html>
+?><!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?=rd_h($chapter['story_title'])?> - Chương <?= (int)$chapter['chapter_number']?> | Truyện Đêm</title><link rel="stylesheet" href="css/style.css?v=20261111-story1"><link rel="stylesheet" href="css/stories.css?v=4"></head><body class="story-site reader-site"><header class="reader-top"><a href="story.php?slug=<?=rawurlencode($chapter['slug'])?>">← <?=rd_h($chapter['story_title'])?></a><a href="index.php">☾ Truyện Đêm</a></header><main class="reader-main"><p class="reader-kicker">TRUYỆN ĐÊM · CHƯƠNG <?= (int)$chapter['chapter_number']?></p><h1><?=rd_h($chapter['title'])?></h1><?php if($chapter['audio_url']):?><audio class="story-audio" controls preload="none" src="<?=rd_h($chapter['audio_url'])?>">Trình duyệt không hỗ trợ audio.</audio><?php endif;?><article class="reader-content"><?=rd_paragraphs($chapter['content'])?></article><nav class="reader-pagination"><?php if($prev):?><a href="read.php?id=<?=(int)$prev['id']?>">← Chương trước</a><?php else:?><span></span><?php endif;?><?php if($next):?><a href="read.php?id=<?=(int)$next['id']?>">Chương tiếp theo →</a><?php else:?><a href="story.php?slug=<?=rawurlencode($chapter['slug'])?>">Danh sách chương</a><?php endif;?></nav></main></body></html>
