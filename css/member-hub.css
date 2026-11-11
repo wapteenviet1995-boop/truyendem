@@ -32,3 +32,27 @@
 .member-notice-tools button{padding:8px 12px;border:1px solid #493858;border-radius:9px;background:#241d30;color:#dfc9f2}
 .member-hub-flash{padding:11px 14px;border-radius:10px;background:#1c2b27;color:#b9efd0}
 @media(max-width:600px){.member-hub-main{padding:18px 12px 40px}.member-hub-hero{padding:19px}.member-hub-grid{grid-template-columns:1fr}.member-hub-card{padding:11px}}
+
+
+/* Homepage member leaderboard */
+.leaderboard-section{max-width:1040px;margin:34px auto 42px;padding:23px 20px;border:1px solid #342b46;border-radius:18px;background:linear-gradient(145deg,#191626,#10121c);color:#eee8f5}
+.leaderboard-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;margin-bottom:17px}
+.leaderboard-kicker{font-size:.68rem;letter-spacing:.16em;font-weight:800;color:#bda1df}
+.leaderboard-heading h2{margin:6px 0 4px;font-size:clamp(1.2rem,4vw,1.65rem)}
+.leaderboard-heading p{margin:0;color:#9f96aa;font-size:.84rem}
+.leaderboard-heading>a{flex-shrink:0;color:#d8baf2;text-decoration:none;font-size:.82rem}
+.leaderboard-list{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.leaderboard-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid #302a3d;border-radius:12px;background:#151520;min-width:0}
+.leaderboard-rank{display:grid;place-items:center;width:28px;height:28px;flex:0 0 28px;border-radius:9px;background:#282236;color:#cfc2df;font-weight:800}
+.leaderboard-row.rank-1 .leaderboard-rank{background:#49391e;color:#ffda86}
+.leaderboard-row.rank-2 .leaderboard-rank{background:#343943;color:#e1e5ef}
+.leaderboard-row.rank-3 .leaderboard-rank{background:#493329;color:#edb18e}
+.leaderboard-avatar{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;overflow:hidden;border-radius:50%;background:#292139;color:#e2c5f6;text-decoration:none;font-weight:800}
+.leaderboard-avatar img{width:100%;height:100%;object-fit:cover}
+.leaderboard-member{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+.leaderboard-member>a{color:#f0e9f7;text-decoration:none;font-weight:700;overflow-wrap:anywhere}
+.leaderboard-member small{color:#a99ab9;font-size:.74rem}
+.leaderboard-xu{white-space:nowrap;color:#e8c98b;font-size:.92rem}
+.leaderboard-xu small{font-size:.72rem;color:#bca878}
+.leaderboard-empty{padding:18px;border:1px dashed #463952;border-radius:12px;text-align:center;color:#a79db2}
+@media(max-width:600px){.leaderboard-section{margin:25px 12px 32px;padding:18px 13px}.leaderboard-heading{align-items:flex-start;flex-direction:column}.leaderboard-row{gap:9px;padding:9px}.leaderboard-avatar{width:38px;height:38px;flex-basis:38px}.leaderboard-xu{font-size:.82rem}}
