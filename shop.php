@@ -16,12 +16,21 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
   try {
    if($action==='daily'){
     $pdo->beginTransaction();
-    $claim=$pdo->prepare('INSERT IGNORE INTO wallet_daily_claims(member_id,claim_date,amount) VALUES(?,CURDATE(),20)');$claim->execute([$me]);
+    $pdo->prepare('INSERT IGNORE INTO member_daily_streaks(member_id) VALUES(?)')->execute([$me]);
+    $st=$pdo->prepare('SELECT last_claim_date,current_streak,best_streak,total_days FROM member_daily_streaks WHERE member_id=? FOR UPDATE');$st->execute([$me]);$streakRow=$st->fetch();
+    $today=(string)$pdo->query('SELECT CURDATE()')->fetchColumn();
+    $yesterday=(string)$pdo->query('SELECT DATE_SUB(CURDATE(), INTERVAL 1 DAY)')->fetchColumn();
+    $streak=((string)($streakRow['last_claim_date']??'')===$yesterday)?((int)$streakRow['current_streak']+1):1;
+    $bonus=($streak%7===0)?30:0;$reward=20+$bonus;
+    $claim=$pdo->prepare('INSERT IGNORE INTO wallet_daily_claims(member_id,claim_date,amount) VALUES(?,?,?)');$claim->execute([$me,$today,$reward]);
     if($claim->rowCount()!==1){$pdo->rollBack();$error='Bạn đã nhận Xu điểm danh hôm nay rồi. Mai quay lại nhé!';}
     else{
-     $pdo->prepare('UPDATE member_wallets SET balance=balance+20 WHERE member_id=?')->execute([$me]);
-     $pdo->prepare("INSERT INTO wallet_transactions(member_id,amount,type,description) VALUES(?,20,'daily','Điểm danh hằng ngày')")->execute([$me]);
-     $pdo->commit();header('Location: shop.php?claimed=1');exit;
+     $best=max((int)$streakRow['best_streak'],$streak);
+     $pdo->prepare('UPDATE member_daily_streaks SET last_claim_date=?,current_streak=?,best_streak=?,total_days=total_days+1 WHERE member_id=?')->execute([$today,$streak,$best,$me]);
+     $pdo->prepare('UPDATE member_wallets SET balance=balance+? WHERE member_id=?')->execute([$reward,$me]);
+     $description='Điểm danh ngày '.$streak.($bonus?' · thưởng chuỗi 7 ngày +30 Xu':'');
+     $pdo->prepare("INSERT INTO wallet_transactions(member_id,amount,type,description) VALUES(?,?,'daily',?)")->execute([$me,$reward,$description]);
+     $pdo->commit();header('Location: shop.php?claimed=1&reward='.$reward.'&streak='.$streak);exit;
     }
    } elseif($action==='buy'){
     $item=(int)($_POST['item_id']??0);$pdo->beginTransaction();
@@ -73,9 +82,10 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
   } catch(PDOException $e){if($pdo->inTransaction())$pdo->rollBack();$error='Giao dịch chưa thành công. Hãy thử lại sau.';}
  }
 }
-if(isset($_GET['claimed']))$notice='Bạn nhận được 20 Xu điểm danh!';if(isset($_GET['bought']))$notice='Mua vật phẩm thành công!';if(isset($_GET['equipped']))$notice='Đã trang bị vật phẩm.';if(isset($_GET['gifted']))$notice='Đã gửi Xu cho bạn bè.';
+if(isset($_GET['claimed']))$notice='Bạn nhận được '.max(20,(int)($_GET['reward']??20)).' Xu điểm danh! Chuỗi hiện tại: '.max(1,(int)($_GET['streak']??1)).' ngày.';if(isset($_GET['bought']))$notice='Mua vật phẩm thành công!';if(isset($_GET['equipped']))$notice='Đã trang bị vật phẩm.';if(isset($_GET['gifted']))$notice='Đã gửi Xu cho bạn bè.';
 $q=$pdo->prepare('SELECT balance FROM member_wallets WHERE member_id=?');$q->execute([$me]);$balance=(int)$q->fetchColumn();
 $q=$pdo->prepare('SELECT member_id FROM wallet_daily_claims WHERE member_id=? AND claim_date=CURDATE()');$q->execute([$me]);$claimed=(bool)$q->fetchColumn();
+$q=$pdo->prepare('SELECT current_streak,best_streak,total_days FROM member_daily_streaks WHERE member_id=?');$q->execute([$me]);$streakInfo=$q->fetch()?:['current_streak'=>0,'best_streak'=>0,'total_days'=>0];
 $items=$pdo->query('SELECT s.*,i.id AS inventory_id FROM shop_items s LEFT JOIN member_inventory i ON i.item_id=s.id AND i.member_id='.(int)$me.' WHERE s.is_active=1 ORDER BY s.price')->fetchAll();
 $q=$pdo->prepare('SELECT i.id AS inventory_id,i.is_equipped,s.name,s.description,s.item_type,s.icon FROM member_inventory i JOIN shop_items s ON s.id=i.item_id WHERE i.member_id=? ORDER BY i.purchased_at DESC');$q->execute([$me]);$inventory=$q->fetchAll();
 $q=$pdo->prepare("SELECT id,amount,type,description,created_at FROM wallet_transactions WHERE member_id=? ORDER BY id DESC LIMIT 12");$q->execute([$me]);$history=$q->fetchAll();
@@ -85,7 +95,7 @@ $q=$pdo->prepare("SELECT m.id,m.display_name FROM friend_requests f JOIN members
 <body class="blog-page social-page shop-page"><header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">✦</span><span class="brand-copy"><strong>Truyện Đêm</strong><small>Mỗi đêm, một thế giới khác</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="community.php">Cộng đồng</a><a href="friends.php">Kết bạn</a><a href="account.php">Tài khoản</a><a href="shop.php">Xu & Cửa hàng</a></nav></div></header>
 <main class="shop-main"><section class="shop-hero"><span class="compat-kicker">✦ NGÂN HÀ VŨ TRỤ ✦</span><h1>Ví Xu <em>& Cửa hàng</em></h1><p>Tích lũy Xu, sưu tầm vật phẩm và tô điểm hồ sơ của bạn.</p><div class="shop-balance"><span>✦ Số dư của bạn</span><strong><?=number_format($balance)?> Xu</strong></div></section>
 <?php if($notice):?><p class="shop-flash"><?=shop_h($notice)?></p><?php endif;?><?php if($error):?><p class="community-error"><?=shop_h($error)?></p><?php endif;?>
-<section class="shop-daily"><div><strong>☀ Điểm danh mỗi ngày</strong><p>Nhận miễn phí 20 Xu mỗi ngày khi ghé thăm cửa hàng.</p></div><form method="post"><input type="hidden" name="csrf" value="<?=shop_h($csrf)?>"><input type="hidden" name="action" value="daily"><button class="shop-button" <?=$claimed?'disabled':''?>><?=$claimed?'Đã nhận hôm nay':'Nhận 20 Xu'?></button></form></section>
+<section class="shop-daily"><div><strong>☀ Điểm danh mỗi ngày</strong><p>Nhận 20 Xu mỗi ngày. Cứ đủ 7 ngày liên tiếp, bạn được thưởng thêm 30 Xu.</p><small>🔥 Chuỗi hiện tại: <?= (int)$streakInfo['current_streak'] ?> ngày · Kỷ lục: <?= (int)$streakInfo['best_streak'] ?> ngày · Tổng: <?= (int)$streakInfo['total_days'] ?> lần</small></div><form method="post"><input type="hidden" name="csrf" value="<?=shop_h($csrf)?>"><input type="hidden" name="action" value="daily"><button class="shop-button" <?=$claimed?'disabled':''?>><?=$claimed?'Đã nhận hôm nay':'Nhận 20 Xu'?></button></form></section>
 <section class="shop-section"><h2>✧ Cửa hàng vật phẩm</h2><div class="shop-grid"><?php foreach($items as $item):?><article class="shop-item"><div class="shop-icon"><?=shop_h($item['icon'])?></div><h3><?=shop_h($item['name'])?></h3><p><?=shop_h($item['description'])?></p><strong><?=number_format((int)$item['price'])?> Xu</strong><?php if($item['inventory_id']):?><span class="shop-owned">✓ Đã sở hữu</span><?php else:?><form method="post"><input type="hidden" name="csrf" value="<?=shop_h($csrf)?>"><input type="hidden" name="action" value="buy"><input type="hidden" name="item_id" value="<?=(int)$item['id']?>"><button class="shop-button">Mua vật phẩm</button></form><?php endif;?></article><?php endforeach;?></div></section>
 <section class="shop-section"><h2>🎒 Túi đồ của tôi</h2><?php if(!$inventory):?><p class="shop-empty">Túi đồ đang trống. Ghé cửa hàng chọn món bạn thích nhé!</p><?php else:?><div class="shop-inventory"><?php foreach($inventory as $item):?><div class="shop-inventory-item"><span class="shop-icon"><?=shop_h($item['icon'])?></span><div><strong><?=shop_h($item['name'])?></strong><small><?=shop_h($item['description'])?></small></div><?php if((int)$item['is_equipped']):?><span class="shop-owned">Đang dùng</span><?php else:?><form method="post"><input type="hidden" name="csrf" value="<?=shop_h($csrf)?>"><input type="hidden" name="action" value="equip"><input type="hidden" name="inventory_id" value="<?=(int)$item['inventory_id']?>"><button class="shop-button shop-small">Trang bị</button></form><?php endif;?></div><?php endforeach;?></div><?php endif;?></section>
 <section class="shop-section"><h2>♡ Tặng Xu cho bạn bè</h2><?php if(!$friends):?><p class="shop-empty">Bạn cần kết bạn trước khi gửi Xu.</p><?php else:?><form method="post" class="shop-gift"><input type="hidden" name="csrf" value="<?=shop_h($csrf)?>"><input type="hidden" name="action" value="gift"><label>Người nhận<select name="recipient_id" required><?php foreach($friends as $f):?><option value="<?=(int)$f['id']?>"><?=shop_h($f['display_name'])?></option><?php endforeach;?></select></label><label>Số Xu<input type="number" name="amount" min="1" max="5000" required placeholder="Ví dụ: 50"></label><button class="shop-button">Gửi Xu</button></form><?php endif;?></section>
