@@ -36,6 +36,10 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
       else{
        $pdo->prepare('UPDATE member_wallets SET balance=balance-? WHERE member_id=?')->execute([(int)$product['price'],$me]);
        $pdo->prepare('INSERT INTO member_inventory(member_id,item_id) VALUES(?,?)')->execute([$me,$item]);
+       $inventoryId=(int)$pdo->lastInsertId();
+       // Tu dong trang bi vat pham vua mua, moi loai chi dung mot vat pham.
+       $pdo->prepare('UPDATE member_inventory SET is_equipped=0 WHERE member_id=? AND item_id IN (SELECT id FROM shop_items WHERE item_type=?)')->execute([$me,$product['item_type']]);
+       $pdo->prepare('UPDATE member_inventory SET is_equipped=1 WHERE id=? AND member_id=?')->execute([$inventoryId,$me]);
        $pdo->prepare("INSERT INTO wallet_transactions(member_id,amount,type,description,reference_id) VALUES(?,?,'purchase',?,?)")->execute([$me,-(int)$product['price'],'Mua '.$product['name'],$item]);
        $pdo->commit();header('Location: shop.php?bought=1');exit;
       }
