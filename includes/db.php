@@ -29,7 +29,7 @@ try {
 }
 
 /* Buoc tai khoan bi khoa ra khoi phien dang nhap dang ton tai. */
-if (!empty($_SESSION['member_id'])) {
+if (!str_contains($_SERVER['PHP_SELF'] ?? '', '/admin/') && !empty($_SESSION['member_id'])) {
     $checkMember = $pdo->prepare('SELECT is_active FROM members WHERE id=? LIMIT 1');
     $checkMember->execute([(int)$_SESSION['member_id']]);
     if ((int)$checkMember->fetchColumn() !== 1) {
