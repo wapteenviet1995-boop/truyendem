@@ -1,0 +1,28 @@
+<?php
+declare(strict_types=1);
+require __DIR__ . '/includes/db.php';
+$slug=trim((string)($_GET['slug']??''));
+$q=$pdo->prepare("SELECT s.*, (SELECT COUNT(*) FROM chapters c WHERE c.story_id=s.id AND c.status='published') chapter_count FROM stories s WHERE s.slug=? AND s.status='published' LIMIT 1");
+$q->execute([$slug]);$story=$q->fetch();
+if(!$story){http_response_code(404);}
+$chapters=[];
+if($story){$q=$pdo->prepare("SELECT id,chapter_number,title,created_at FROM chapters WHERE story_id=? AND status='published' ORDER BY chapter_number");$q->execute([$story['id']]);$chapters=$q->fetchAll();}
+$memberId=(int)($_SESSION['member_id']??0);$favorite=false;
+if($story&&$memberId){$q=$pdo->prepare('SELECT 1 FROM story_favorites WHERE member_id=? AND story_id=?');$q->execute([$memberId,$story['id']]);$favorite=(bool)$q->fetchColumn();}
+if($story&&$memberId&&$_SERVER['REQUEST_METHOD']==='POST'&&($_POST['action']??'')==='favorite'){
+ if(empty($_SESSION['member_csrf'])||!hash_equals($_SESSION['member_csrf'],(string)($_POST['csrf']??''))){http_response_code(400);exit('Phiên đã hết hạn.');}
+ if($favorite){$pdo->prepare('DELETE FROM story_favorites WHERE member_id=? AND story_id=?')->execute([$memberId,$story['id']]);}
+ else{$pdo->prepare('INSERT IGNORE INTO story_favorites(member_id,story_id) VALUES(?,?)')->execute([$memberId,$story['id']]);}
+ header('Location: story.php?slug='.rawurlencode($slug));exit;
+}
+if(empty($_SESSION['member_csrf']))$_SESSION['member_csrf']=bin2hex(random_bytes(32));
+function st_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
+?><!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?= $story?st_h($story['title']).' | Truyện Đêm':'Không tìm thấy truyện' ?></title><link rel="stylesheet" href="css/style.css?v=20261111-story1"><link rel="stylesheet" href="css/stories.css?v=1"></head><body class="story-site">
+<header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">☾</span><span class="brand-copy"><strong>Truyện Đêm</strong><small>Thế giới truyện dành cho bạn</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="index.php#library">Thư viện</a><a href="community.php">Cộng đồng</a><a href="friends.php">Bạn bè</a><a href="shop.php">Cửa hàng</a><?php if($memberId):?><a href="account.php">Tài khoản</a><?php else:?><a href="login.php">Đăng nhập</a><?php endif;?></nav></div></header>
+<main class="story-main"><?php if(!$story):?><section class="story-panel"><h1>Không tìm thấy truyện</h1><a class="story-btn" href="index.php">Về thư viện truyện</a></section><?php else:?>
+<a class="story-back" href="index.php">← Thư viện truyện</a><section class="story-detail">
+<?php if($story['cover_url']):?><img class="story-cover-large" src="<?=st_h($story['cover_url'])?>" alt="<?=st_h($story['title'])?>"><?php else:?><div class="story-cover-large cover-placeholder">☾</div><?php endif;?>
+<div class="story-detail-copy"><span class="story-tag"><?=st_h($story['category'])?></span><h1><?=st_h($story['title'])?></h1><p class="story-author">Tác giả: <?=st_h($story['author'])?></p><p><?=nl2br(st_h($story['description']))?></p><p class="story-meta"><?=count($chapters)?> chương · <?= $story['story_type']==='audio'?'Truyện audio':($story['story_type']==='both'?'Đọc & nghe':'Truyện chữ') ?></p>
+<?php if($chapters):?><a class="story-btn" href="read.php?id=<?=(int)$chapters[0]['id']?>">Đọc từ đầu</a><?php endif;?>
+<?php if($memberId):?><form method="post" class="favorite-form"><input type="hidden" name="csrf" value="<?=st_h($_SESSION['member_csrf'])?>"><input type="hidden" name="action" value="favorite"><button class="story-btn story-btn-quiet"><?=$favorite?'♥ Bỏ khỏi yêu thích':'♡ Thêm vào yêu thích'?></button></form><?php else:?><a class="story-btn story-btn-quiet" href="login.php">Đăng nhập để lưu truyện</a><?php endif;?></div></section>
+<section class="story-panel"><h2>Danh sách chương</h2><?php if(!$chapters):?><p>Truyện chưa có chương được xuất bản.</p><?php else:?><div class="chapter-list"><?php foreach($chapters as $c):?><a href="read.php?id=<?=(int)$c['id']?>"><span>Chương <?= (int)$c['chapter_number'] ?> · <?=st_h($c['title'])?></span><small><?=st_h(date('d/m/Y',strtotime($c['created_at'])))?></small></a><?php endforeach;?></div><?php endif;?></section><?php endif;?></main><footer class="site-footer"><div class="footer-bottom">© 2026 Truyện Đêm</div></footer></body></html>
