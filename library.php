@@ -1,0 +1,28 @@
+<?php
+declare(strict_types=1);
+require __DIR__ . '/includes/db.php';
+if (empty($_SESSION['member_id'])) { header('Location: /login.php?next=library.php'); exit; }
+$me=(int)$_SESSION['member_id'];
+if(empty($_SESSION['member_csrf']))$_SESSION['member_csrf']=bin2hex(random_bytes(32));
+$csrf=$_SESSION['member_csrf'];$error='';
+if($_SERVER['REQUEST_METHOD']==='POST'&&($_POST['action']??'')==='remove_favorite'){
+ if(!hash_equals($csrf,(string)($_POST['csrf']??''))){$error='Phiên đã hết hạn. Hãy tải lại trang.';}
+ else{$storyId=(int)($_POST['story_id']??0);$pdo->prepare('DELETE FROM story_favorites WHERE member_id=? AND story_id=?')->execute([$me,$storyId]);header('Location: /library.php?removed=1');exit;}
+}
+$favorites=[];$history=[];
+try{
+ $q=$pdo->prepare("SELECT s.id,s.title,s.slug,s.author,s.cover_url,s.story_kind,s.category,s.story_type,s.updated_at FROM story_favorites f JOIN stories s ON s.id=f.story_id WHERE f.member_id=? AND s.status='published' ORDER BY f.created_at DESC");
+ $q->execute([$me]);$favorites=$q->fetchAll();
+ $q=$pdo->prepare("SELECT s.id story_id,s.title,s.slug,s.author,s.cover_url,s.story_kind,c.id chapter_id,c.chapter_number,c.title chapter_title,r.updated_at FROM story_reading_history r JOIN stories s ON s.id=r.story_id JOIN chapters c ON c.id=r.chapter_id WHERE r.member_id=? AND s.status='published' AND c.status='published' ORDER BY r.updated_at DESC LIMIT 30");
+ $q->execute([$me]);$history=$q->fetchAll();
+}catch(PDOException $e){http_response_code(500);exit('Chưa cài đặt dữ liệu truyện. Hãy kiểm tra database/stories.sql.');}
+function lib_h($v):string{return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
+function lib_url(array $s):string{return (($s['story_kind']??'serial')==='short'?'/truyen-ngan/':'/truyen/').rawurlencode((string)$s['slug']).'.html';}
+?>
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tủ sách của tôi | Truyện Đêm</title><link rel="stylesheet" href="/css/style.css?v=memberhub1"><link rel="stylesheet" href="/css/stories.css?v=memberhub1"><link rel="stylesheet" href="/css/member-hub.css?v=1"></head>
+<body class="story-site"><header class="site-header"><div class="header-inner"><a class="brand" href="/index.php"><span class="brand-mark">☾</span><span class="brand-copy"><strong>Truyện Đêm</strong><small>Mỗi đêm, một thế giới khác</small></span></a><nav class="header-links"><a href="/index.php">Trang chủ</a><a href="/library.php">Tủ sách</a><a href="/community.php">Cộng đồng</a><a href="/notifications.php">Thông báo</a><a href="/account.php">Tài khoản</a></nav></div></header>
+<main class="member-hub-main"><section class="member-hub-hero"><span class="kicker">✦ KHÔNG GIAN RIÊNG CỦA BẠN ✦</span><h1>Tủ sách cá nhân</h1><p>Lưu lại những câu chuyện yêu thích và tiếp tục đọc từ nơi bạn đã dừng.</p></section>
+<nav class="member-hub-tabs"><a href="/library.php">▣ Tủ sách</a><a href="/notifications.php">♧ Thông báo</a><a href="/shop.php">✧ Điểm danh & Xu</a><a href="/account.php">Hồ sơ</a></nav>
+<?php if(isset($_GET['removed'])):?><p class="member-hub-flash">Đã bỏ truyện khỏi tủ sách.</p><?php endif;?><?php if($error):?><p class="member-hub-flash"><?=lib_h($error)?></p><?php endif;?>
+<section class="member-hub-section"><h2>♡ Truyện đã lưu (<?=count($favorites)?>)</h2><?php if(!$favorites):?><div class="member-hub-empty">Bạn chưa lưu truyện nào. Hãy mở một truyện và chọn “Thêm vào yêu thích”.</div><?php else:?><div class="member-hub-grid"><?php foreach($favorites as $s):?><article class="member-hub-card"><?php if($s['cover_url']):?><img class="member-hub-cover" src="<?=lib_h($s['cover_url'])?>" alt=""><?php else:?><div class="member-hub-cover member-hub-cover-placeholder">☾</div><?php endif;?><div class="member-hub-card-copy"><strong><?=lib_h($s['title'])?></strong><small><?=lib_h($s['author'])?> · <?=($s['story_kind']==='short'?'Truyện ngắn':'Truyện dài')?></small><a href="<?=lib_h(lib_url($s))?>">Mở truyện →</a><form method="post" onsubmit="return confirm('Bỏ truyện này khỏi tủ sách?')"><input type="hidden" name="csrf" value="<?=lib_h($csrf)?>"><input type="hidden" name="action" value="remove_favorite"><input type="hidden" name="story_id" value="<?=(int)$s['id']?>"><button class="member-hub-remove" type="submit">Bỏ khỏi tủ sách</button></form></div></article><?php endforeach;?></div><?php endif;?></section>
+<section class="member-hub-section"><h2>◷ Đọc gần đây (<?=count($history)?>)</h2><?php if(!$history):?><div class="member-hub-empty">Bạn chưa có lịch sử đọc. Khi đăng nhập và mở chương truyện, lịch sử sẽ tự lưu tại đây.</div><?php else:?><div class="member-hub-grid"><?php foreach($history as $s):?><article class="member-hub-card"><?php if($s['cover_url']):?><img class="member-hub-cover" src="<?=lib_h($s['cover_url'])?>" alt=""><?php else:?><div class="member-hub-cover member-hub-cover-placeholder">☾</div><?php endif;?><div class="member-hub-card-copy"><strong><?=lib_h($s['title'])?></strong><small>Chương <?=(int)$s['chapter_number']?> · <?=lib_h($s['chapter_title'])?></small><small>Đọc lần cuối: <?=lib_h(date('d/m/Y H:i',strtotime($s['updated_at'])))?></small><a href="/read.php?id=<?=(int)$s['chapter_id']?>">Đọc tiếp →</a></div></article><?php endforeach;?></div><?php endif;?></section></main><footer class="site-footer"><div class="footer-bottom">© 2026 Truyện Đêm</div></footer></body></html>
