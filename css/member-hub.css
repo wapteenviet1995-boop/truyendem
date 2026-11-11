@@ -67,3 +67,24 @@
 .leaderboard-xp{display:flex;flex-direction:column;align-items:flex-end;gap:3px;white-space:nowrap;color:#d7b9f4;font-size:.9rem}
 .leaderboard-xp small{color:#a99ab9;font-size:.68rem;font-weight:500}
 @media(max-width:700px){.leaderboard-wrap{grid-template-columns:1fr;margin:22px 12px 32px;gap:12px}.leaderboard-wrap .leaderboard-section{padding:17px 13px}.leaderboard-wrap .leaderboard-heading{flex-direction:row;align-items:center}}
+
+
+/* Compact tabbed leaderboard */
+.leaderboard-section.leaderboard-compact{max-width:720px;margin:26px auto 34px;padding:16px 17px;border-radius:15px}
+.leaderboard-compact .leaderboard-heading{align-items:center;flex-direction:row;margin-bottom:12px}
+.leaderboard-compact .leaderboard-heading h2{font-size:.98rem;margin:0;letter-spacing:.05em}
+.leaderboard-tabs{display:flex;gap:5px;padding:4px;border:1px solid #342b46;border-radius:10px;background:#100f19}
+.leaderboard-tab{border:0;border-radius:7px;padding:7px 11px;background:transparent;color:#a99ab9;font-size:.73rem;font-weight:800;cursor:pointer}
+.leaderboard-tab.is-active{background:linear-gradient(120deg,#7650a0,#49316d);color:#fff;box-shadow:0 2px 12px #8053aa44}
+.leaderboard-compact .leaderboard-list{gap:6px}
+.leaderboard-compact .leaderboard-row{padding:7px 9px;gap:9px;border-radius:10px}
+.leaderboard-compact .leaderboard-avatar{width:34px;height:34px;flex-basis:34px}
+.leaderboard-compact .leaderboard-rank{width:24px;height:24px;flex-basis:24px;font-size:.78rem}
+.leaderboard-name{display:inline-block;color:#eee5fb!important;text-decoration:none;font-weight:750;transition:color .25s ease,text-shadow .25s ease,letter-spacing .25s ease}
+.leaderboard-name:hover{color:#fff!important;letter-spacing:.025em;text-shadow:0 0 7px #c99aff,0 0 16px #9662cc}
+.leaderboard-name.name-rank-1{background:linear-gradient(90deg,#ffe7a2,#fff8d9,#d9a94d);background-size:180% auto;background-clip:text;-webkit-background-clip:text;color:transparent!important;animation:leaderGold 3.5s linear infinite;text-shadow:0 0 10px #d7a94b55}
+.leaderboard-name.name-rank-2{color:#e5e9f4!important;text-shadow:0 0 8px #c5d2f477}
+.leaderboard-name.name-rank-3{color:#e8b69b!important;text-shadow:0 0 8px #c47c5b66}
+@keyframes leaderGold{to{background-position:180% center}}
+@media(max-width:600px){.leaderboard-section.leaderboard-compact{margin:20px 12px 28px;padding:13px 11px}.leaderboard-compact .leaderboard-heading{flex-direction:row;align-items:center}.leaderboard-tab{padding:7px 9px}.leaderboard-compact .leaderboard-xu,.leaderboard-compact .leaderboard-xp{font-size:.78rem}}
+@media(prefers-reduced-motion:reduce){.leaderboard-name.name-rank-1{animation:none}.leaderboard-name{transition:none}}
