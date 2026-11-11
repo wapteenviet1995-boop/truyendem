@@ -14,7 +14,7 @@ if($target!==$currentId){
  $q=$pdo->prepare("SELECT id,requester_id,status FROM friend_requests WHERE (requester_id=? AND addressee_id=?) OR (requester_id=? AND addressee_id=?) ORDER BY id DESC LIMIT 1");$q->execute([$currentId,$target,$target,$currentId]);$r=$q->fetch();
  if($r){$requestId=(int)$r['id'];if($r['status']==='accepted')$relation='friend';elseif($r['status']==='pending')$relation=((int)$r['requester_id']===$currentId?'outgoing':'incoming');}
 }
-$q=$pdo->prepare('SELECT s.name,s.item_type,s.icon FROM member_inventory i JOIN shop_items s ON s.id=i.item_id WHERE i.member_id=? AND i.is_equipped=1 ORDER BY s.item_type');$q->execute([$target]);$equippedItems=$q->fetchAll();
+$equippedItems=[];try{$q=$pdo->prepare('SELECT s.name,s.item_type,s.icon FROM member_inventory i JOIN shop_items s ON s.id=i.item_id WHERE i.member_id=? AND i.is_equipped=1 ORDER BY s.item_type');$q->execute([$target]);$equippedItems=$q->fetchAll();}catch(PDOException $e){}
 $visibility=$person['profile_visibility']?:'public';
 if($target!==$currentId && (($visibility==='private') || ($visibility==='friends' && $relation!=='friend'))){http_response_code(403);exit('Thành viên này chỉ cho phép bạn bè xem hồ sơ.');}
 
