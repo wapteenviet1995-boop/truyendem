@@ -27,7 +27,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $action = (string)($_POST['action'] ?? '');
         try {
-            if ($action === 'save_story') {
+            if ($action === 'upload_image') {
+                header('Content-Type: application/json; charset=utf-8');
+                if (empty($_FILES['image']) || !is_uploaded_file($_FILES['image']['tmp_name'])) {
+                    http_response_code(400); echo json_encode(['ok'=>false,'message'=>'Bạn chưa chọn ảnh.']); exit;
+                }
+                $file = $_FILES['image'];
+                if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK || (int)$file['size'] > 5 * 1024 * 1024) {
+                    http_response_code(400); echo json_encode(['ok'=>false,'message'=>'Ảnh lỗi hoặc vượt quá 5 MB.']); exit;
+                }
+                $finfo = new finfo(FILEINFO_MIME_TYPE);
+                $mime = $finfo->file($file['tmp_name']);
+                $extensions = ['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp'];
+                if (!isset($extensions[$mime]) || @getimagesize($file['tmp_name']) === false) {
+                    http_response_code(400); echo json_encode(['ok'=>false,'message'=>'Chỉ nhận ảnh JPG, PNG hoặc WEBP hợp lệ.']); exit;
+                }
+                $uploadDir = __DIR__ . '/../uploads/stories';
+                if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true) && !is_dir($uploadDir)) {
+                    http_response_code(500); echo json_encode(['ok'=>false,'message'=>'Không tạo được thư mục lưu ảnh.']); exit;
+                }
+                $filename = bin2hex(random_bytes(16)) . '.' . $extensions[$mime];
+                if (!move_uploaded_file($file['tmp_name'], $uploadDir . '/' . $filename)) {
+                    http_response_code(500); echo json_encode(['ok'=>false,'message'=>'Không lưu được ảnh lên hosting.']); exit;
+                }
+                echo json_encode(['ok'=>true,'url'=>'/uploads/stories/' . $filename]); exit;
+            } elseif ($action === 'save_story') {
                 $id = (int)($_POST['story_id'] ?? 0);
                 $title = trim((string)($_POST['title'] ?? ''));
                 $slugInput = trim((string)($_POST['slug'] ?? ''));
@@ -156,6 +180,10 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 .admin-story-panel label{display:block;margin:12px 0;color:#d9d2e5}
 .admin-story-panel input,.admin-story-panel textarea,.admin-story-panel select{display:block;width:100%;box-sizing:border-box;margin-top:6px;padding:12px;border:1px solid #494052;border-radius:9px;background:#0d0b12;color:#fff;font:inherit}
 .admin-story-panel textarea{min-height:110px;resize:vertical}
+.admin-story-panel input[type=file]{padding:9px;background:#17131f}
+.admin-story-panel small.muted{display:block;margin-top:5px}
+.image-upload-trigger{margin:0 0 12px;background:#3b3150!important;border:1px solid #6b568e!important}
+.image-upload-status{display:block;margin:7px 0;color:#c9b7ef;font-size:13px}
 .admin-story-panel button,.admin-story-btn{display:inline-block;border:0;border-radius:9px;padding:10px 15px;background:#8b5cf6;color:#fff;text-decoration:none;font-weight:700;cursor:pointer}
 .admin-story-panel .danger{background:#7f2938}
 .admin-story-panel .muted{color:#aaa}
@@ -200,9 +228,9 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <label>Loại truyện<select name="story_type"><option value="text" <?=$storyForm['story_type']==='text'?'selected':''?>>Truyện chữ</option><option value="audio" <?=$storyForm['story_type']==='audio'?'selected':''?>>Truyện audio</option><option value="both" <?=$storyForm['story_type']==='both'?'selected':''?>>Chữ + audio</option></select></label>
 <label>Trạng thái<select name="status"><option value="draft" <?=$storyForm['status']==='draft'?'selected':''?>>Bản nháp</option><option value="published" <?=$storyForm['status']==='published'?'selected':''?>>Xuất bản</option></select></label>
 </div>
-<label>Link ảnh bìa<input type="url" name="cover_url" value="<?=e((string)$storyForm['cover_url'])?>" placeholder="https://..."></label>
+<label>Ảnh bìa truyện<input type="url" id="cover-url" name="cover_url" value="<?=e((string)$storyForm['cover_url'])?>" placeholder="Link ảnh hoặc tải ảnh từ điện thoại"><input type="file" id="cover-image-file" accept="image/jpeg,image/png,image/webp"><small class="muted">JPG, PNG, WEBP · tối đa 5 MB</small><img id="cover-preview" src="<?=e((string)$storyForm['cover_url'])?>" alt="" style="display:<?=!empty($storyForm['cover_url'])?'block':'none'?>;max-width:150px;max-height:180px;object-fit:cover;border-radius:10px;margin-top:10px"></label>
 <label>Mô tả truyện<textarea name="description" rows="4"><?=e((string)$storyForm['description'])?></textarea></label>
-<div id="short-content-box"><label>Nội dung truyện ngắn *<textarea name="short_content" rows="16" placeholder="Nhập toàn bộ nội dung truyện ngắn..."><?=e((string)($storyForm['short_content']??''))?></textarea></label></div>
+<div id="short-content-box"><label>Nội dung truyện ngắn *<textarea name="short_content" id="short-content" rows="16" placeholder="Nhập toàn bộ nội dung truyện ngắn..."><?=e((string)($storyForm['short_content']??''))?></textarea></label><button type="button" class="image-upload-trigger" data-target="short-content">＋ Chèn ảnh vào truyện ngắn</button></div>
 <div class="admin-story-actions"><button type="submit"><?=((int)$storyForm['id'] > 0)?'Lưu thay đổi':'Đăng truyện'?></button><?php if ((int)$storyForm['id'] > 0): ?><a class="admin-story-btn" href="stories.php">＋ Truyện mới</a><?php endif; ?></div>
 </form>
 </section>
@@ -222,7 +250,7 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <label>Trạng thái<select name="chapter_status"><option value="draft" <?=$chapterForm['status']==='draft'?'selected':''?>>Bản nháp</option><option value="published" <?=$chapterForm['status']==='published'?'selected':''?>>Xuất bản</option></select></label>
 </div>
 <label>Link audio (không bắt buộc)<input type="url" name="audio_url" value="<?=e((string)$chapterForm['audio_url'])?>" placeholder="https://..."></label>
-<label>Nội dung chương *<textarea name="content" rows="14" required><?=e((string)$chapterForm['content'])?></textarea></label>
+<label>Nội dung chương *<textarea name="content" id="chapter-content" rows="14" required><?=e((string)$chapterForm['content'])?></textarea></label><button type="button" class="image-upload-trigger" data-target="chapter-content">＋ Chèn ảnh vào chương</button>
 <div class="admin-story-actions"><button type="submit"><?=$editChapter?'Lưu chương':'Lưu chương mới'?></button><?php if ($editChapter): ?><a class="admin-story-btn" href="stories.php?edit=<?=$selectedId?>">Hủy sửa chương</a><?php endif; ?></div>
 </form>
 </section>
@@ -278,6 +306,20 @@ $renderStoryList = function(array $items, string $heading, string $empty, bool $
 <?php if ($listType === 'all' || $listType === 'short') $renderStoryList($shortStories, 'Danh sách truyện ngắn', 'Chưa có truyện ngắn nào.', false); ?>
 <?php if ($listType === 'all' || $listType === 'serial') $renderStoryList($serialStories, 'Danh sách truyện nhiều chương', 'Chưa có truyện nhiều chương nào.', true); ?>
 </main>
-<script>(()=>{const kind=document.getElementById('story-kind'),shortBox=document.getElementById('short-content-box'),chapter=document.getElementById('chapter-panel');if(!kind)return;function sync(){const isShort=kind.value==='short';shortBox.style.display=isShort?'block':'none';chapter.style.display=isShort?'none':'block';}kind.addEventListener('change',sync);sync();})();</script>
+<input type="file" id="content-image-file" accept="image/jpeg,image/png,image/webp" hidden>
+<span class="image-upload-status" id="image-upload-status" aria-live="polite"></span>
+<script>(()=> {
+const kind=document.getElementById('story-kind'),shortBox=document.getElementById('short-content-box'),chapter=document.getElementById('chapter-panel');
+if(kind){function sync(){const isShort=kind.value==='short';shortBox.style.display=isShort?'block':'none';if(chapter)chapter.style.display=isShort?'none':'block';}kind.addEventListener('change',sync);sync();}
+const csrf=document.querySelector('input[name="csrf"]')?.value||'';
+const status=document.getElementById('image-upload-status');
+const contentFile=document.getElementById('content-image-file');
+let activeTarget=null;
+async function upload(file){const data=new FormData();data.append('csrf',csrf);data.append('action','upload_image');data.append('image',file);const response=await fetch('stories.php',{method:'POST',body:data,credentials:'same-origin'});const result=await response.json();if(!response.ok||!result.ok)throw new Error(result.message||'Tải ảnh thất bại');return result.url;}
+document.querySelectorAll('.image-upload-trigger').forEach(button=>button.addEventListener('click',()=>{activeTarget=document.getElementById(button.dataset.target);contentFile.click();}));
+contentFile.addEventListener('change',async()=>{const file=contentFile.files[0];if(!file||!activeTarget)return;try{status.textContent='Đang tải ảnh lên...';const url=await upload(file);const marker='\\n\\n[img]'+url+'[/img]\\n\\n';const start=activeTarget.selectionStart??activeTarget.value.length,end=activeTarget.selectionEnd??start;activeTarget.setRangeText(marker,start,end,'end');activeTarget.focus();status.textContent='✓ Đã tải ảnh và chèn vào nội dung.';}catch(error){status.textContent=error.message;}finally{contentFile.value='';}});
+const coverFile=document.getElementById('cover-image-file'),coverUrl=document.getElementById('cover-url'),preview=document.getElementById('cover-preview');
+coverFile?.addEventListener('change',async()=>{const file=coverFile.files[0];if(!file)return;try{status.textContent='Đang tải ảnh bìa...';const url=await upload(file);coverUrl.value=url;preview.src=url;preview.style.display='block';status.textContent='✓ Đã tải ảnh bìa lên.';}catch(error){status.textContent=error.message;}finally{coverFile.value='';}});
+})();</script>
 </body>
 </html>
