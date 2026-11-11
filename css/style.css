@@ -725,3 +725,76 @@ body.home-page .site-footer{margin-top:22px}
  body.home-page #zodiac-list.zodiac-list>.zodiac-option{min-height:70px!important}
  body.home-page #zodiac-list .zodiac-symbol{width:22px!important;height:22px!important;font-size:.78rem!important}
 }
+
+
+/* BLOG: anh dai dien bo tron, nam rieng ben trai; mo ta ngan gon ben phai */
+.blog-page .blog-card{
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  gap:12px;
+  padding:10px;
+}
+.blog-page .blog-card>a:first-child{
+  display:block;
+  flex:0 0 132px;
+  width:132px;
+  height:112px;
+  min-height:0;
+  padding:0;
+  overflow:hidden;
+  border-radius:13px;
+  background:#292722;
+}
+.blog-page .blog-card>a:first-child img{
+  display:block;
+  width:100%;
+  height:100%;
+  min-height:0;
+  max-height:none;
+  object-fit:cover;
+  border-radius:13px;
+}
+.blog-page .blog-card-body{
+  min-width:0;
+  padding:4px 5px 4px 0;
+}
+.blog-page .blog-card-body>p:not(.blog-category){
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  line-clamp:2;
+  overflow:hidden;
+  margin:0 0 7px;
+  font-size:.84rem;
+  line-height:1.45;
+}
+.blog-page .blog-card h2{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  line-clamp:2;
+  overflow:hidden;
+}
+@media(max-width:560px){
+  .blog-page .blog-card{gap:9px;padding:8px}
+  .blog-page .blog-card>a:first-child{
+    flex-basis:104px;
+    width:104px;
+    height:96px;
+    min-height:0;
+    border-radius:11px;
+  }
+  .blog-page .blog-card>a:first-child img{
+    height:96px;
+    min-height:0;
+    border-radius:11px;
+  }
+  .blog-page .blog-card-body{padding:2px 2px 2px 0}
+  .blog-page .blog-card-body>p:not(.blog-category){
+    -webkit-line-clamp:2;
+    line-clamp:2;
+    font-size:.76rem;
+    line-height:1.4;
+  }
+}
