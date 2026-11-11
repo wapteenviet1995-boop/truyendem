@@ -40,9 +40,9 @@ if($story&&$memberId&&$_SERVER['REQUEST_METHOD']==='POST'&&($_POST['action']??''
 if(empty($_SESSION['member_csrf']))$_SESSION['member_csrf']=bin2hex(random_bytes(32));
 function st_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
 function st_render_content($value): string {
- $value=str_replace(["\\r\\n","\\r"],"\\n",trim((string)$value));
+ $value=trim((string)$value);
  if($value==='')return '';
- $blocks=preg_split('/\\n[ \\t]*\\n+/', $value) ?: [];
+ $blocks=preg_split('/\\R{2,}/u', $value) ?: [];
  $out=[];
  foreach($blocks as $block){
   $safe=st_h(trim($block));
@@ -50,7 +50,7 @@ function st_render_content($value): string {
   if(trim(strip_tags($safe))==='' && str_contains($safe,'<img'))$out[]=$safe;
   elseif(trim($safe)!=='')$out[]='<p>'.$safe.'</p>';
  }
- return implode("\\n",$out);
+ return implode("\n",$out);
 }
 ?><!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?= $story?st_h($story['title']).' | Truyện Đêm':'Không tìm thấy truyện' ?></title><link rel="stylesheet" href="css/style.css?v=20261111-story1"><link rel="stylesheet" href="css/stories.css?v=4"></head><body class="story-site">
 <header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">☾</span><span class="brand-copy"><strong>Truyện Đêm</strong><small>Thế giới truyện dành cho bạn</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="index.php#library">Thư viện</a><a href="community.php">Cộng đồng</a><a href="friends.php">Bạn bè</a><a href="shop.php">Cửa hàng</a><?php if($memberId):?><a href="account.php">Tài khoản</a><?php else:?><a href="login.php">Đăng nhập</a><?php endif;?></nav></div></header>
