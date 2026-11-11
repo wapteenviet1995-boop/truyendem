@@ -33,7 +33,7 @@ $searchMood=(string)($_GET['mood']??'');$where='member_id=?';$params=[$currentId
 $q=$pdo->prepare("SELECT * FROM member_diary WHERE $where ORDER BY entry_date DESC,id DESC LIMIT 100");$q->execute($params);$entries=$q->fetchAll();
 function diary_h(?string $s):string{return htmlspecialchars($s??'',ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
 ?>
-<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nhật ký vũ trụ | Góc Hoàng Đạo</title><link rel="stylesheet" href="css/style.css?v=socialdiary1"></head>
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nhật ký vũ trụ | Truyện Đêm</title><link rel="stylesheet" href="css/style.css?v=socialdiary1"></head>
 <body class="blog-page diary-page"><header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">✦</span><span class="brand-copy"><strong>Truyện Đêm</strong><small>Mỗi đêm, một thế giới khác</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="friends.php">Kết bạn</a><a href="community.php">Cộng đồng</a><a href="messages.php">Tin nhắn</a><a href="account.php">Tài khoản</a></nav></div></header>
 <main class="diary-main"><section class="social-hero"><span class="compat-kicker">✦ KHOẢNG TRỜI RIÊNG CỦA BẠN ✦</span><h1>Nhật ký <em>vũ trụ</em></h1><p>Ghi lại một ngày đã qua, một điều đáng nhớ hoặc cảm xúc bạn muốn giữ lại. Chỉ bạn mới xem được những trang này.</p></section>
 <?php if($notice):?><p class="social-notice"><?=diary_h($notice)?></p><?php endif;?><?php if($error):?><p class="community-error"><?=diary_h($error)?></p><?php endif;?>
