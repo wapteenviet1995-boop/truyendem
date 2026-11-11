@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/notifications.php';
 
 if (empty($_SESSION['member_csrf'])) $_SESSION['member_csrf'] = bin2hex(random_bytes(32));
 $currentId = (int)($_SESSION['member_id'] ?? 0);
@@ -39,8 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $check->execute([$postId]);
                     if (!$check->fetch()) $error = 'Bài viết không còn tồn tại.';
                     else {
+                        $owner = $pdo->prepare('SELECT member_id FROM community_posts WHERE id=?');$owner->execute([$postId]);$postOwner=(int)$owner->fetchColumn();
                         $stmt = $pdo->prepare('INSERT INTO community_comments (post_id, member_id, content) VALUES (?, ?, ?)');
                         $stmt->execute([$postId, $currentId, $content]);
+                        td_notify($pdo,$postOwner,$currentId,'community_comment','Bài viết có bình luận mới',($_SESSION['member_name']??'Một thành viên').' đã bình luận bài viết của bạn.','/community.php#post-'.$postId);
                         header('Location: community.php#post-' . $postId); exit;
                     }
                 }
@@ -54,7 +57,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($like->fetch()) {
                         $pdo->prepare('DELETE FROM community_likes WHERE post_id=? AND member_id=?')->execute([$postId, $currentId]);
                     } else {
-                        $pdo->prepare('INSERT IGNORE INTO community_likes (post_id, member_id) VALUES (?, ?)')->execute([$postId, $currentId]);
+                        $insLike=$pdo->prepare('INSERT IGNORE INTO community_likes (post_id, member_id) VALUES (?, ?)');$insLike->execute([$postId, $currentId]);
+                        if($insLike->rowCount()){
+                            $owner=$pdo->prepare('SELECT member_id FROM community_posts WHERE id=?');$owner->execute([$postId]);
+                            td_notify($pdo,(int)$owner->fetchColumn(),$currentId,'community_like','Bài viết được yêu thích',($_SESSION['member_name']??'Một thành viên').' đã thích bài viết của bạn.','/community.php#post-'.$postId);
+                        }
                     }
                 }
                 header('Location: community.php#post-' . $postId); exit;
@@ -72,7 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         if ($follow->fetch()) {
                             $pdo->prepare('DELETE FROM member_follows WHERE follower_id=? AND following_id=?')->execute([$currentId, $targetId]);
                         } else {
-                            $pdo->prepare('INSERT IGNORE INTO member_follows (follower_id, following_id) VALUES (?, ?)')->execute([$currentId, $targetId]);
+                            $insFollow=$pdo->prepare('INSERT IGNORE INTO member_follows (follower_id, following_id) VALUES (?, ?)');$insFollow->execute([$currentId, $targetId]);
+                            if($insFollow->rowCount())td_notify($pdo,$targetId,$currentId,'new_follower','Bạn có người theo dõi mới',($_SESSION['member_name']??'Một thành viên').' đã bắt đầu theo dõi bạn.','/member.php?id='.$currentId);
                         }
                     }
                     header('Location: community.php'); exit;
