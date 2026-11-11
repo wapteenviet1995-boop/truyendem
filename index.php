@@ -38,17 +38,21 @@ function home_level_name(int $xp): string {
  return 'Tân Binh';
 }
 ?>
-<section class="leaderboard-wrap">
- <section class="leaderboard-section" aria-labelledby="leaderboard-xu-title">
-  <div class="leaderboard-heading"><div><h2 id="leaderboard-xu-title">TOP BXH XU</h2></div><a href="/shop.php">Kiếm Xu →</a></div>
-  <?php if($topXu):?><ol class="leaderboard-list"><?php foreach($topXu as $i=>$person):?>
-   <li class="leaderboard-row rank-<?=($i+1)?>"><span class="leaderboard-rank"><?=($i+1)?></span><a class="leaderboard-avatar" href="/member.php?id=<?=(int)$person['id']?>"><?php if(!empty($person['avatar_url'])):?><img src="<?=home_h($person['avatar_url'])?>" alt=""><?php else:?><?=home_h(mb_substr((string)$person['display_name'],0,1,'UTF-8'))?><?php endif;?></a><div class="leaderboard-member"><a href="/member.php?id=<?=(int)$person['id']?>"><?=home_h($person['display_name'])?></a></div><strong class="leaderboard-xu"><?=number_format((int)$person['balance'])?> <small>Xu</small></strong></li>
-  <?php endforeach;?></ol><?php else:?><div class="leaderboard-empty">Chưa có dữ liệu Xu.</div><?php endif;?>
- </section>
- <section class="leaderboard-section" aria-labelledby="leaderboard-lv-title">
-  <div class="leaderboard-heading"><div><h2 id="leaderboard-lv-title">TOP LV</h2></div><span class="leaderboard-subtitle">Xếp theo EXP</span></div>
-  <?php if($topLv):?><ol class="leaderboard-list"><?php foreach($topLv as $i=>$person):$xp=(int)$person['total_xp'];?>
-   <li class="leaderboard-row rank-<?=($i+1)?>"><span class="leaderboard-rank"><?=($i+1)?></span><a class="leaderboard-avatar" href="/member.php?id=<?=(int)$person['id']?>"><?php if(!empty($person['avatar_url'])):?><img src="<?=home_h($person['avatar_url'])?>" alt=""><?php else:?><?=home_h(mb_substr((string)$person['display_name'],0,1,'UTF-8'))?><?php endif;?></a><div class="leaderboard-member"><a href="/member.php?id=<?=(int)$person['id']?>"><?=home_h($person['display_name'])?></a><small><?=home_level_name($xp)?></small></div><strong class="leaderboard-xp">LV <?=1+(int)floor($xp/100)?> <small><?=number_format($xp)?> EXP</small></strong></li>
-  <?php endforeach;?></ol><?php else:?><div class="leaderboard-empty">Chưa có dữ liệu EXP.</div><?php endif;?>
- </section>
+<section class="leaderboard-section leaderboard-compact" aria-labelledby="leaderboard-title">
+ <div class="leaderboard-heading"><h2 id="leaderboard-title">✦ BẢNG XẾP HẠNG</h2><div class="leaderboard-tabs" role="tablist" aria-label="Chọn bảng xếp hạng"><button type="button" class="leaderboard-tab is-active" id="tab-xu" role="tab" aria-selected="true" aria-controls="panel-xu" data-board="xu">TOP XU</button><button type="button" class="leaderboard-tab" id="tab-lv" role="tab" aria-selected="false" aria-controls="panel-lv" data-board="lv">TOP LV</button></div></div>
+ <div class="leaderboard-panel" id="panel-xu" role="tabpanel" aria-labelledby="tab-xu">
+ <?php if($topXu):?><ol class="leaderboard-list"><?php foreach($topXu as $i=>$person):?><li class="leaderboard-row rank-<?=($i+1)?>"><span class="leaderboard-rank"><?=($i+1)?></span><a class="leaderboard-avatar" href="/member.php?id=<?=(int)$person['id']?>"><?php if(!empty($person['avatar_url'])):?><img src="<?=home_h($person['avatar_url'])?>" alt=""><?php else:?><?=home_h(mb_substr((string)$person['display_name'],0,1,'UTF-8'))?><?php endif;?></a><div class="leaderboard-member"><a class="leaderboard-name name-rank-<?=($i+1)?>" href="/member.php?id=<?=(int)$person['id']?>"><?=home_h($person['display_name'])?></a></div><strong class="leaderboard-xu"><?=number_format((int)$person['balance'])?> <small>Xu</small></strong></li><?php endforeach;?></ol><?php else:?><div class="leaderboard-empty">Chưa có dữ liệu Xu.</div><?php endif;?>
+ </div>
+ <div class="leaderboard-panel" id="panel-lv" role="tabpanel" aria-labelledby="tab-lv" hidden>
+ <?php if($topLv):?><ol class="leaderboard-list"><?php foreach($topLv as $i=>$person):$xp=(int)$person['total_xp'];?><li class="leaderboard-row rank-<?=($i+1)?>"><span class="leaderboard-rank"><?=($i+1)?></span><a class="leaderboard-avatar" href="/member.php?id=<?=(int)$person['id']?>"><?php if(!empty($person['avatar_url'])):?><img src="<?=home_h($person['avatar_url'])?>" alt=""><?php else:?><?=home_h(mb_substr((string)$person['display_name'],0,1,'UTF-8'))?><?php endif;?></a><div class="leaderboard-member"><a class="leaderboard-name name-rank-<?=($i+1)?>" href="/member.php?id=<?=(int)$person['id']?>"><?=home_h($person['display_name'])?></a><small><?=home_level_name($xp)?></small></div><strong class="leaderboard-xp">LV <?=1+(int)floor($xp/100)?> <small><?=number_format($xp)?> EXP</small></strong></li><?php endforeach;?></ol><?php else:?><div class="leaderboard-empty">Chưa có dữ liệu EXP.</div><?php endif;?>
+ </div>
+</section>
+<script>
+document.querySelectorAll('.leaderboard-tab').forEach(function(tab){
+ tab.addEventListener('click',function(){
+  document.querySelectorAll('.leaderboard-tab').forEach(function(item){item.classList.toggle('is-active',item===tab);item.setAttribute('aria-selected',item===tab?'true':'false');});
+  document.querySelectorAll('.leaderboard-panel').forEach(function(panel){panel.hidden=panel.id!=='panel-'+tab.dataset.board;});
+ });
+});
+</script>
 </main><footer class="site-footer"><div class="footer-bottom">© 2026 Truyện Đêm · Mỗi đêm, một thế giới khác</div></footer><nav class="bottom-nav story-bottom-nav"><a href="#top"><span>⌂</span>Trang chủ</a><a href="#library"><span>▤</span>Thư viện</a><a href="/community.php"><span>♡</span>Cộng đồng</a><a href="/shop.php"><span>✦</span>Cửa hàng</a><a href="/account.php"><span>♙</span>Tài khoản</a></nav><script src="/js/presence.js"></script></body></html>
