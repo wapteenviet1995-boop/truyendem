@@ -135,7 +135,7 @@ function st_render_content($value): string {
     <div class="comment-actions">
      <?php if($memberId): ?><form method="post" action="<?=$storyUrl?>#story-comments"><input type="hidden" name="csrf" value="<?=st_h($_SESSION['member_csrf'])?>"><input type="hidden" name="action" value="like_comment"><input type="hidden" name="comment_id" value="<?=(int)$comment['id']?>"><button class="comment-like <?=$comment['liked']?'is-liked':''?>" type="submit"><?=$comment['liked']?'♥ Đã thích':'♡ Thích'?> · <?=(int)$comment['likes_count']?></button></form><?php else: ?><span class="comment-like-static">♡ <?=(int)$comment['likes_count']?> thích</span><?php endif; ?>
     </div>
-    <?php if($memberId): ?><button class="comment-reply-toggle" type="button" aria-expanded="false" aria-controls="reply-form-<?=(int)$comment['id']?>" data-reply-toggle>↩ Trả lời</button><form id="reply-form-<?=(int)$comment['id']?>" class="comment-reply-form" method="post" action="<?=$storyUrl?>#story-comments" hidden><input type="hidden" name="csrf" value="<?=st_h($_SESSION['member_csrf'])?>"><input type="hidden" name="action" value="reply_comment"><input type="hidden" name="parent_id" value="<?=(int)$comment['id']?>"><textarea name="content" rows="2" maxlength="3000" required placeholder="Viết câu trả lời..."></textarea><div class="comment-reply-form-actions"><button type="submit">Gửi trả lời</button><button type="button" class="comment-reply-cancel" data-reply-cancel>Hủy</button></div></form><?php endif; ?>
+    <?php if($memberId): ?><button class="comment-reply-toggle" type="button" aria-expanded="false" aria-controls="reply-form-<?=(int)$comment['id']?>" data-reply-toggle>↩ Trả lời</button><form id="reply-form-<?=(int)$comment['id']?>" class="comment-reply-form" method="post" action="<?=$storyUrl?>#story-comments" hidden style="display:none"><input type="hidden" name="csrf" value="<?=st_h($_SESSION['member_csrf'])?>"><input type="hidden" name="action" value="reply_comment"><input type="hidden" name="parent_id" value="<?=(int)$comment['id']?>"><textarea name="content" rows="2" maxlength="3000" required placeholder="Viết câu trả lời..."></textarea><div class="comment-reply-form-actions"><button type="submit">Gửi trả lời</button><button type="button" class="comment-reply-cancel" data-reply-cancel>Hủy</button></div></form><?php endif; ?>
     <?php if(!empty($commentReplies[(int)$comment['id']])): ?><div class="comment-replies">
      <?php foreach($commentReplies[(int)$comment['id']] as $reply): ?>
       <article class="comment-reply"><div class="comment-avatar reply-avatar"><?=st_h(mb_strtoupper(mb_substr((string)$reply['display_name'],0,1,'UTF-8'),'UTF-8'))?></div><div class="comment-body"><div class="comment-meta"><strong><?=st_h($reply['display_name'])?></strong><time><?=st_h(date('d/m/Y H:i',strtotime($reply['created_at'])))?></time></div><p class="comment-content"><?=nl2br(st_h($reply['content']))?></p><div class="comment-actions"><?php if($memberId): ?><form method="post" action="<?=$storyUrl?>#story-comments"><input type="hidden" name="csrf" value="<?=st_h($_SESSION['member_csrf'])?>"><input type="hidden" name="action" value="like_comment"><input type="hidden" name="comment_id" value="<?=(int)$reply['id']?>"><button class="comment-like <?=$reply['liked']?'is-liked':''?>" type="submit"><?=$reply['liked']?'♥ Đã thích':'♡ Thích'?> · <?=(int)$reply['likes_count']?></button></form><?php else: ?><span class="comment-like-static">♡ <?=(int)$reply['likes_count']?> thích</span><?php endif; ?></div></div></article>
@@ -155,6 +155,7 @@ document.querySelectorAll('[data-reply-toggle]').forEach(function(toggle){
   if(!form)return;
   var opening=form.hidden;
   form.hidden=!opening;
+  form.style.display=opening?'flex':'none';
   toggle.setAttribute('aria-expanded',opening?'true':'false');
   toggle.textContent=opening?'↩ Đóng trả lời':'↩ Trả lời';
   if(opening){var field=form.querySelector('textarea');if(field)field.focus();}
@@ -165,6 +166,7 @@ document.querySelectorAll('[data-reply-cancel]').forEach(function(cancel){
   var form=cancel.closest('.comment-reply-form');
   if(!form)return;
   form.hidden=true;
+  form.style.display='none';
   var toggle=document.querySelector('[aria-controls="'+form.id+'"]');
   if(toggle){toggle.setAttribute('aria-expanded','false');toggle.textContent='↩ Trả lời';}
  });
