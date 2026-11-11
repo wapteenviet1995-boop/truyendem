@@ -16,8 +16,8 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
   try {
    if($action==='daily'){
     $pdo->beginTransaction();
-    $q=$pdo->prepare("SELECT id FROM wallet_transactions WHERE member_id=? AND type='daily' AND DATE(created_at)=CURDATE() LIMIT 1 FOR UPDATE");$q->execute([$me]);
-    if($q->fetch()){$pdo->rollBack();$error='Bạn đã nhận Xu điểm danh hôm nay rồi. Mai quay lại nhé!';}
+    $claim=$pdo->prepare('INSERT IGNORE INTO wallet_daily_claims(member_id,claim_date,amount) VALUES(?,CURDATE(),20)');$claim->execute([$me]);
+    if($claim->rowCount()!==1){$pdo->rollBack();$error='Bạn đã nhận Xu điểm danh hôm nay rồi. Mai quay lại nhé!';}
     else{
      $pdo->prepare('UPDATE member_wallets SET balance=balance+20 WHERE member_id=?')->execute([$me]);
      $pdo->prepare("INSERT INTO wallet_transactions(member_id,amount,type,description) VALUES(?,20,'daily','Điểm danh hằng ngày')")->execute([$me]);
@@ -71,7 +71,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
 }
 if(isset($_GET['claimed']))$notice='Bạn nhận được 20 Xu điểm danh!';if(isset($_GET['bought']))$notice='Mua vật phẩm thành công!';if(isset($_GET['equipped']))$notice='Đã trang bị vật phẩm.';if(isset($_GET['gifted']))$notice='Đã gửi Xu cho bạn bè.';
 $q=$pdo->prepare('SELECT balance FROM member_wallets WHERE member_id=?');$q->execute([$me]);$balance=(int)$q->fetchColumn();
-$q=$pdo->prepare("SELECT id FROM wallet_transactions WHERE member_id=? AND type='daily' AND DATE(created_at)=CURDATE() LIMIT 1");$q->execute([$me]);$claimed=(bool)$q->fetchColumn();
+$q=$pdo->prepare('SELECT member_id FROM wallet_daily_claims WHERE member_id=? AND claim_date=CURDATE()');$q->execute([$me]);$claimed=(bool)$q->fetchColumn();
 $items=$pdo->query('SELECT s.*,i.id AS inventory_id FROM shop_items s LEFT JOIN member_inventory i ON i.item_id=s.id AND i.member_id='.(int)$me.' WHERE s.is_active=1 ORDER BY s.price')->fetchAll();
 $q=$pdo->prepare('SELECT i.id AS inventory_id,i.is_equipped,s.name,s.description,s.item_type,s.icon FROM member_inventory i JOIN shop_items s ON s.id=i.item_id WHERE i.member_id=? ORDER BY i.purchased_at DESC');$q->execute([$me]);$inventory=$q->fetchAll();
 $q=$pdo->prepare("SELECT id,amount,type,description,created_at FROM wallet_transactions WHERE member_id=? ORDER BY id DESC LIMIT 12");$q->execute([$me]);$history=$q->fetchAll();
