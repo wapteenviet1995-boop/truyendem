@@ -147,3 +147,49 @@ body.reader-site article.reader-content p{
 .short-story-content h2{color:#e3c47e;margin:0 0 18px}
 .short-story-text{max-width:760px;margin:0 auto;color:#e8e1ed;font-family:Georgia,"Times New Roman",serif;font-size:1.12rem;line-height:2;white-space:pre-wrap;overflow-wrap:break-word}
 @media(max-width:600px){.short-story-content{padding:19px 16px}.short-story-text{font-size:1rem;line-height:1.9}}
+
+
+/* Story synopsis: clean, compact reading-page introduction */
+.story-detail .story-description-box{
+  grid-column:1 / -1;
+  min-width:0;
+  margin:4px 0 0;
+  padding:18px 20px;
+  border:1px solid #342b43;
+  border-radius:14px;
+  background:linear-gradient(135deg,rgba(37,29,49,.72),rgba(17,17,26,.92));
+  box-sizing:border-box;
+}
+.story-detail .story-description-title{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin:0 0 9px;
+  color:#c9a9f3;
+  font-size:.83rem;
+  font-weight:800;
+  letter-spacing:.07em;
+}
+.story-detail .story-description-title:before{
+  content:"";
+  width:3px;
+  height:15px;
+  border-radius:5px;
+  background:#b995e8;
+}
+.story-detail .story-description{
+  display:block;
+  margin:0;
+  padding:0;
+  border:0;
+  color:#d5cfdf;
+  font-size:.96rem;
+  line-height:1.8;
+  overflow-wrap:break-word;
+  white-space:normal;
+}
+@media(max-width:650px){
+  .story-detail .story-description-box{padding:15px 16px;margin-top:2px;border-radius:12px}
+  .story-detail .story-description-title{font-size:.78rem;margin-bottom:7px}
+  .story-detail .story-description{font-size:.91rem;line-height:1.75}
+}
