@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $error = 'Vui lòng nhập tên truyện hợp lệ.';
                 } elseif ($kind === 'short' && $shortContent === '') {
                     $error = 'Truyện ngắn cần có nội dung đầy đủ.';
-                } elseif ($cover !== '' && !filter_var($cover, FILTER_VALIDATE_URL)) {
+                } elseif ($cover !== '' && !filter_var($cover, FILTER_VALIDATE_URL) && !preg_match('~^/uploads/stories/[a-zA-Z0-9._-]+$~', $cover)) {
                     $error = 'Đường dẫn ảnh bìa không hợp lệ.';
                 } else {
                     if ($id > 0) {
@@ -228,7 +228,7 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <label>Loại truyện<select name="story_type"><option value="text" <?=$storyForm['story_type']==='text'?'selected':''?>>Truyện chữ</option><option value="audio" <?=$storyForm['story_type']==='audio'?'selected':''?>>Truyện audio</option><option value="both" <?=$storyForm['story_type']==='both'?'selected':''?>>Chữ + audio</option></select></label>
 <label>Trạng thái<select name="status"><option value="draft" <?=$storyForm['status']==='draft'?'selected':''?>>Bản nháp</option><option value="published" <?=$storyForm['status']==='published'?'selected':''?>>Xuất bản</option></select></label>
 </div>
-<label>Ảnh bìa truyện<input type="url" id="cover-url" name="cover_url" value="<?=e((string)$storyForm['cover_url'])?>" placeholder="Link ảnh hoặc tải ảnh từ điện thoại"><input type="file" id="cover-image-file" accept="image/jpeg,image/png,image/webp"><small class="muted">JPG, PNG, WEBP · tối đa 5 MB</small><img id="cover-preview" src="<?=e((string)$storyForm['cover_url'])?>" alt="" style="display:<?=!empty($storyForm['cover_url'])?'block':'none'?>;max-width:150px;max-height:180px;object-fit:cover;border-radius:10px;margin-top:10px"></label>
+<label>Ảnh bìa truyện<input type="text" id="cover-url" name="cover_url" value="<?=e((string)$storyForm['cover_url'])?>" placeholder="Link ảnh hoặc tải ảnh từ điện thoại"><input type="file" id="cover-image-file" accept="image/jpeg,image/png,image/webp"><small class="muted">JPG, PNG, WEBP · tối đa 5 MB</small><img id="cover-preview" src="<?=e((string)$storyForm['cover_url'])?>" alt="" style="display:<?=!empty($storyForm['cover_url'])?'block':'none'?>;max-width:150px;max-height:180px;object-fit:cover;border-radius:10px;margin-top:10px"></label>
 <label>Mô tả truyện<textarea name="description" rows="4"><?=e((string)$storyForm['description'])?></textarea></label>
 <div id="short-content-box"><label>Nội dung truyện ngắn *<textarea name="short_content" id="short-content" rows="16" placeholder="Nhập toàn bộ nội dung truyện ngắn..."><?=e((string)($storyForm['short_content']??''))?></textarea></label><button type="button" class="image-upload-trigger" data-target="short-content">＋ Chèn ảnh vào truyện ngắn</button></div>
 <div class="admin-story-actions"><button type="submit"><?=((int)$storyForm['id'] > 0)?'Lưu thay đổi':'Đăng truyện'?></button><?php if ((int)$storyForm['id'] > 0): ?><a class="admin-story-btn" href="stories.php">＋ Truyện mới</a><?php endif; ?></div>
