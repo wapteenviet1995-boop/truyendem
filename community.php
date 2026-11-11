@@ -2,6 +2,7 @@
 declare(strict_types=1);
 require __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/notifications.php';
+require_once __DIR__ . '/includes/experience.php';
 
 if (empty($_SESSION['member_csrf'])) $_SESSION['member_csrf'] = bin2hex(random_bytes(32));
 $currentId = (int)($_SESSION['member_id'] ?? 0);
@@ -27,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     $stmt = $pdo->prepare('INSERT INTO community_posts (member_id, content) VALUES (?, ?)');
                     $stmt->execute([$currentId, $content]);
+                    td_add_xp($pdo, $currentId, 'community_post:' . (int)$pdo->lastInsertId(), 20, 'Đăng bài cộng đồng');
                     header('Location: community.php?posted=1'); exit;
                 }
             } elseif ($action === 'add_comment' && $postId && $postId > 0) {
@@ -43,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $owner = $pdo->prepare('SELECT member_id FROM community_posts WHERE id=?');$owner->execute([$postId]);$postOwner=(int)$owner->fetchColumn();
                         $stmt = $pdo->prepare('INSERT INTO community_comments (post_id, member_id, content) VALUES (?, ?, ?)');
                         $stmt->execute([$postId, $currentId, $content]);
+                        td_add_xp($pdo, $currentId, 'community_comment:' . (int)$pdo->lastInsertId(), 5, 'Bình luận cộng đồng');
                         td_notify($pdo,$postOwner,$currentId,'community_comment','Bài viết có bình luận mới',($_SESSION['member_name']??'Một thành viên').' đã bình luận bài viết của bạn.','/community.php#post-'.$postId);
                         header('Location: community.php#post-' . $postId); exit;
                     }
