@@ -26,26 +26,32 @@ function home_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBS
 <?php if($categories):?><div class="story-categories"><a class="<?= $category===''?'active':''?>" href="/index.php#library">Tất cả</a><?php foreach($categories as $cat):?><a class="<?= $category===$cat?'active':''?>" href="/chuyen-muc/<?=home_slug((string)$cat)?>.html"><?=home_h($cat)?></a><?php endforeach;?></div><?php endif;?>
 <?php if(!$stories):?><div class="story-empty"><h3>Chưa tìm thấy truyện phù hợp</h3><p>Thư viện sẽ sớm có thêm những câu chuyện mới.</p></div><?php else:?><div class="story-grid"><?php foreach($stories as $s):?><article class="story-card"><a class="story-card-cover" href="<?=($s['story_kind']??'serial')==='short'?'/truyen-ngan/':'/truyen/'?><?=rawurlencode($s['slug'])?>.html"><?php if($s['cover_url']):?><img src="<?=home_h($s['cover_url'])?>" alt="<?=home_h($s['title'])?>" loading="lazy"><?php else:?>☾<?php endif;?></a><div class="story-card-body"><span class="story-tag"><?=home_h($s['category'])?></span><h3><a href="<?=($s['story_kind']??'serial')==='short'?'/truyen-ngan/':'/truyen/'?><?=rawurlencode($s['slug'])?>.html"><?=home_h($s['title'])?></a></h3><p><?=home_h(mb_strimwidth((string)$s['description'],0,115,'…','UTF-8'))?></p><div class="story-card-meta"><?=home_h($s['author'])?> · <?=($s['story_kind']??'serial')==='short'?'Truyện ngắn':(int)$s['chapter_count'].' chương'?><br>◉ <?=number_format((int)$s['views_count'])?> · ♥ <?=number_format((int)$s['likes_count'])?></div></div></article><?php endforeach;?></div><?php endif;?></section><?php endif;?>
 <?php
-$leaderboard=[];
+$topXu=[];$topLv=[];
 try {
- $leaderboard=$pdo->query("SELECT m.id,m.display_name,m.avatar_url,COALESCE(w.balance,0) AS balance FROM members m LEFT JOIN member_wallets w ON w.member_id=m.id WHERE m.is_active=1 ORDER BY COALESCE(w.balance,0) DESC,w.updated_at ASC,m.id ASC LIMIT 5")->fetchAll();
-} catch(PDOException $e) { $leaderboard=[]; }
-function home_level(int $xu): array {
- if($xu>=5000)return ['Huyền Thoại','✦'];
- if($xu>=1500)return ['Tinh Tú','🌟'];
- if($xu>=500)return ['Người Kể Chuyện','📜'];
- if($xu>=100)return ['Nhà Khám Phá','☾'];
- return ['Tân Binh','✧'];
+ $topXu=$pdo->query("SELECT m.id,m.display_name,m.avatar_url,COALESCE(w.balance,0) AS balance FROM members m LEFT JOIN member_wallets w ON w.member_id=m.id WHERE m.is_active=1 ORDER BY COALESCE(w.balance,0) DESC,m.id ASC LIMIT 5")->fetchAll();
+ $topLv=$pdo->query("SELECT m.id,m.display_name,m.avatar_url,COALESCE(x.total_xp,0) AS total_xp FROM members m LEFT JOIN member_experience x ON x.member_id=m.id WHERE m.is_active=1 ORDER BY COALESCE(x.total_xp,0) DESC,m.id ASC LIMIT 5")->fetchAll();
+} catch(PDOException $e) { $topXu=[];$topLv=[]; }
+function home_level_name(int $xp): string {
+ if($xp>=5000)return 'Huyền Thoại';
+ if($xp>=2500)return 'Tinh Tú';
+ if($xp>=1000)return 'Người Kể Chuyện';
+ if($xp>=300)return 'Nhà Khám Phá';
+ if($xp>=100)return 'Độc Giả';
+ return 'Tân Binh';
 }
 ?>
-<section class="leaderboard-section" aria-labelledby="leaderboard-title">
- <div class="leaderboard-heading"><div><span class="leaderboard-kicker">✦ VINH DANH THÀNH VIÊN ✦</span><h2 id="leaderboard-title">Bảng xếp hạng Truyện Đêm</h2><p>Top 5 thành viên có số dư Xu cao nhất</p></div><a href="/shop.php">Kiếm thêm Xu <span>→</span></a></div>
- <?php if($leaderboard):?><ol class="leaderboard-list"><?php foreach($leaderboard as $i=>$person):$level=home_level((int)$person['balance']);?>
- <li class="leaderboard-row rank-<?=($i+1)?>">
-  <span class="leaderboard-rank"><?=($i+1)?></span>
-  <a class="leaderboard-avatar" href="/member.php?id=<?=(int)$person['id']?>"><?php if(!empty($person['avatar_url'])):?><img src="<?=home_h($person['avatar_url'])?>" alt=""><?php else:?><?=home_h(mb_substr((string)$person['display_name'],0,1,'UTF-8'))?><?php endif;?></a>
-  <div class="leaderboard-member"><a href="/member.php?id=<?=(int)$person['id']?>"><?=home_h($person['display_name'])?></a><small><?=home_h($level[1].' '.$level[0])?></small></div>
-  <strong class="leaderboard-xu"><?=number_format((int)$person['balance'])?> <small>Xu</small></strong>
- </li><?php endforeach;?></ol><?php else:?><div class="leaderboard-empty">Chưa có dữ liệu xếp hạng. Hãy bắt đầu tích lũy Xu nhé!</div><?php endif;?>
+<section class="leaderboard-wrap">
+ <section class="leaderboard-section" aria-labelledby="leaderboard-xu-title">
+  <div class="leaderboard-heading"><div><h2 id="leaderboard-xu-title">TOP BXH XU</h2></div><a href="/shop.php">Kiếm Xu →</a></div>
+  <?php if($topXu):?><ol class="leaderboard-list"><?php foreach($topXu as $i=>$person):?>
+   <li class="leaderboard-row rank-<?=($i+1)?>"><span class="leaderboard-rank"><?=($i+1)?></span><a class="leaderboard-avatar" href="/member.php?id=<?=(int)$person['id']?>"><?php if(!empty($person['avatar_url'])):?><img src="<?=home_h($person['avatar_url'])?>" alt=""><?php else:?><?=home_h(mb_substr((string)$person['display_name'],0,1,'UTF-8'))?><?php endif;?></a><div class="leaderboard-member"><a href="/member.php?id=<?=(int)$person['id']?>"><?=home_h($person['display_name'])?></a></div><strong class="leaderboard-xu"><?=number_format((int)$person['balance'])?> <small>Xu</small></strong></li>
+  <?php endforeach;?></ol><?php else:?><div class="leaderboard-empty">Chưa có dữ liệu Xu.</div><?php endif;?>
+ </section>
+ <section class="leaderboard-section" aria-labelledby="leaderboard-lv-title">
+  <div class="leaderboard-heading"><div><h2 id="leaderboard-lv-title">TOP LV</h2></div><span class="leaderboard-subtitle">Xếp theo EXP</span></div>
+  <?php if($topLv):?><ol class="leaderboard-list"><?php foreach($topLv as $i=>$person):$xp=(int)$person['total_xp'];?>
+   <li class="leaderboard-row rank-<?=($i+1)?>"><span class="leaderboard-rank"><?=($i+1)?></span><a class="leaderboard-avatar" href="/member.php?id=<?=(int)$person['id']?>"><?php if(!empty($person['avatar_url'])):?><img src="<?=home_h($person['avatar_url'])?>" alt=""><?php else:?><?=home_h(mb_substr((string)$person['display_name'],0,1,'UTF-8'))?><?php endif;?></a><div class="leaderboard-member"><a href="/member.php?id=<?=(int)$person['id']?>"><?=home_h($person['display_name'])?></a><small><?=home_level_name($xp)?></small></div><strong class="leaderboard-xp">LV <?=1+(int)floor($xp/100)?> <small><?=number_format($xp)?> EXP</small></strong></li>
+  <?php endforeach;?></ol><?php else:?><div class="leaderboard-empty">Chưa có dữ liệu EXP.</div><?php endif;?>
+ </section>
 </section>
 </main><footer class="site-footer"><div class="footer-bottom">© 2026 Truyện Đêm · Mỗi đêm, một thế giới khác</div></footer><nav class="bottom-nav story-bottom-nav"><a href="#top"><span>⌂</span>Trang chủ</a><a href="#library"><span>▤</span>Thư viện</a><a href="/community.php"><span>♡</span>Cộng đồng</a><a href="/shop.php"><span>✦</span>Cửa hàng</a><a href="/account.php"><span>♙</span>Tài khoản</a></nav><script src="/js/presence.js"></script></body></html>
