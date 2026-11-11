@@ -53,6 +53,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
      $q=$pdo->prepare("SELECT id FROM friend_requests WHERE status='accepted' AND ((requester_id=? AND addressee_id=?) OR (requester_id=? AND addressee_id=?)) LIMIT 1");$q->execute([$me,$to,$to,$me]);
      if(!$q->fetch())$error='Bạn chỉ có thể tặng Xu cho bạn bè.';
      else{
+      $pdo->prepare('INSERT IGNORE INTO member_wallets(member_id,balance) VALUES(?,0)')->execute([$to]);
       $pdo->beginTransaction();
       $ids=[$me,$to];sort($ids);$lock=$pdo->prepare('SELECT member_id,balance FROM member_wallets WHERE member_id IN (?,?) ORDER BY member_id FOR UPDATE');$lock->execute($ids);$balances=$lock->fetchAll();$mine=0;foreach($balances as $row){if((int)$row['member_id']===$me)$mine=(int)$row['balance'];}
       if($mine<$amount){$pdo->rollBack();$error='Số dư Xu của bạn không đủ.';}
