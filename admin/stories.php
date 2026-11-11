@@ -234,7 +234,7 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <button type="submit" class="danger">Xóa truyện</button>
 </form>
 </div>
-<?php if ($selectedStory && (int)$selectedStory['id']===(int)$s['id']): ?>
+<?php if ($selectedStory && (int)$selectedStory['id']===(int)$s['id'] && (($s['story_kind'] ?? 'serial') !== 'short')): ?>
 <div class="admin-story-item">
 <strong>Danh sách chương</strong>
 <?php if (!$chapters): ?><p class="muted">Truyện chưa có chương nào.</p><?php else: ?>
