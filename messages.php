@@ -64,7 +64,7 @@ function msg_presence_label(?string $lastSeen): string {
 }
 $unreadQ=$pdo->prepare('SELECT COUNT(*) FROM member_messages WHERE recipient_id=? AND read_at IS NULL');$unreadQ->execute([$currentId]);$totalUnread=(int)$unreadQ->fetchColumn();
 ?>
-<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tin nhắn riêng | Góc Hoàng Đạo</title><link rel="stylesheet" href="css/style.css?v=messaging1"></head>
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tin nhắn riêng | Truyện Đêm</title><link rel="stylesheet" href="css/style.css?v=messaging1"></head>
 <body class="blog-page social-page"><header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">✦</span><span class="brand-copy"><strong>Truyện Đêm</strong><small>Mỗi đêm, một thế giới khác</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="friends.php">Kết bạn</a><a href="community.php">Cộng đồng</a><a href="account.php">Tài khoản</a></nav></div></header>
 <main class="social-main messages-main"><section class="social-hero"><span class="compat-kicker">✦ KẾT NỐI RIÊNG TƯ ✦</span><h1>Tin nhắn <em>riêng</em></h1><p>Trò chuyện thân mật cùng những người bạn dưới bầu trời hoàng đạo.</p></section>
 <?php if($error):?><p class="community-error"><?=msg_h($error)?></p><?php endif;?>
