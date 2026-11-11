@@ -38,18 +38,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $cover = trim((string)($_POST['cover_url'] ?? ''));
                 $type = in_array($_POST['story_type'] ?? 'text', ['text', 'audio', 'both'], true) ? (string)$_POST['story_type'] : 'text';
                 $status = ($_POST['status'] ?? 'draft') === 'published' ? 'published' : 'draft';
+                $kind = ($_POST['story_kind'] ?? 'serial') === 'short' ? 'short' : 'serial';
+                $shortContent = trim((string)($_POST['short_content'] ?? ''));
 
                 if ($title === '' || $slug === '') {
                     $error = 'Vui lòng nhập tên truyện hợp lệ.';
+                } elseif ($kind === 'short' && $shortContent === '') {
+                    $error = 'Truyện ngắn cần có nội dung đầy đủ.';
                 } elseif ($cover !== '' && !filter_var($cover, FILTER_VALIDATE_URL)) {
                     $error = 'Đường dẫn ảnh bìa không hợp lệ.';
                 } else {
                     if ($id > 0) {
-                        $stmt = $pdo->prepare('UPDATE stories SET title=?, slug=?, author=?, description=?, cover_url=?, category=?, story_type=?, status=? WHERE id=?');
-                        $stmt->execute([$title, $slug, $author, $description, $cover, $category, $type, $status, $id]);
+                        $stmt = $pdo->prepare('UPDATE stories SET title=?, slug=?, author=?, description=?, cover_url=?, category=?, story_type=?, status=?, story_kind=?, short_content=? WHERE id=?');
+                        $stmt->execute([$title, $slug, $author, $description, $cover, $category, $type, $status, $kind, $kind === 'short' ? $shortContent : null, $id]);
                     } else {
-                        $stmt = $pdo->prepare('INSERT INTO stories(title,slug,author,description,cover_url,category,story_type,status) VALUES(?,?,?,?,?,?,?,?)');
-                        $stmt->execute([$title, $slug, $author, $description, $cover, $category, $type, $status]);
+                        $stmt = $pdo->prepare('INSERT INTO stories(title,slug,author,description,cover_url,category,story_type,status,story_kind,short_content) VALUES(?,?,?,?,?,?,?,?,?,?)');
+                        $stmt->execute([$title, $slug, $author, $description, $cover, $category, $type, $status, $kind, $kind === 'short' ? $shortContent : null]);
                         $id = (int)$pdo->lastInsertId();
                     }
                     header('Location: stories.php?edit=' . $id . '&saved=story');
@@ -58,6 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } elseif ($action === 'save_chapter') {
                 $chapterId = (int)($_POST['chapter_id'] ?? 0);
                 $storyId = (int)($_POST['story_id'] ?? 0);
+                $kindCheck = $pdo->prepare('SELECT story_kind FROM stories WHERE id=?');
+                $kindCheck->execute([$storyId]);
+                if ($kindCheck->fetchColumn() === 'short') { throw new RuntimeException('Truyện ngắn không có chương.'); }
                 $number = max(1, (int)($_POST['chapter_number'] ?? 1));
                 $title = trim((string)($_POST['chapter_title'] ?? ''));
                 $body = trim((string)($_POST['content'] ?? ''));
@@ -99,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             }
         } catch (PDOException $exception) {
-            $error = 'Không lưu được. Có thể slug hoặc số chương đã bị trùng, hoặc dữ liệu chưa đúng.';
+            $error = $exception instanceof RuntimeException ? $exception->getMessage() : 'Không lưu được. Có thể slug hoặc số chương đã bị trùng, hoặc dữ liệu chưa đúng.';
         }
     }
 }
@@ -131,7 +138,7 @@ if ($selectedStory) {
     $stmt->execute([(int)$selectedStory['id']]);
     $chapters = $stmt->fetchAll();
 }
-$storyForm = $selectedStory ?: ['id'=>0,'title'=>'','slug'=>'','author'=>'Khuyết danh','category'=>'Truyện dài','description'=>'','cover_url'=>'','story_type'=>'text','status'=>'draft'];
+$storyForm = $selectedStory ?: ['id'=>0,'title'=>'','slug'=>'','author'=>'Khuyết danh','category'=>'Truyện dài','description'=>'','cover_url'=>'','story_type'=>'text','story_kind'=>'serial','short_content'=>'','status'=>'draft'];
 $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'title'=>'','content'=>'','audio_url'=>'','duration_seconds'=>0,'status'=>'draft'];
 ?><!doctype html>
 <html lang="vi">
@@ -160,7 +167,7 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <body class="story-site">
 <main class="admin-story-wrap">
 <section class="admin-story-panel">
-<h1>Quản lý truyện & chương</h1>
+<h1>Quản lý nội dung</h1><p class="muted">Chọn đăng truyện dài nhiều chương hoặc truyện ngắn đọc liền một mạch.</p>
 <p><a href="index.php">← Trang quản trị</a> · <a href="../index.php" target="_blank">Xem thư viện</a></p>
 <?php if ($error !== ''): ?><p class="admin-story-notice"><?=e($error)?></p><?php endif; ?>
 <?php if (($_GET['saved'] ?? '') === 'story'): ?><p class="admin-story-notice">✓ Đã lưu thông tin truyện.</p><?php elseif (($_GET['saved'] ?? '') === 'chapter'): ?><p class="admin-story-notice">✓ Đã lưu chương truyện.</p><?php endif; ?>
@@ -168,7 +175,7 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 </section>
 
 <section class="admin-story-panel">
-<h2><?=((int)$storyForm['id'] > 0) ? 'Chỉnh sửa truyện' : 'Đăng truyện mới'?></h2>
+<h2><?=((int)$storyForm['id'] > 0) ? 'Chỉnh sửa nội dung' : '＋ Đăng nội dung mới'?></h2>
 <form method="post">
 <input type="hidden" name="csrf" value="<?=e($csrf)?>">
 <input type="hidden" name="action" value="save_story">
@@ -178,11 +185,11 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <label>Slug (để trống tự tạo)<input name="slug" value="<?=e((string)$storyForm['slug'])?>"></label>
 <label>Tác giả<input name="author" value="<?=e((string)$storyForm['author'])?>"></label>
 <label>Thể loại<input name="category" value="<?=e((string)$storyForm['category'])?>"></label>
-<label>Loại truyện<select name="story_type"><option value="text" <?=$storyForm['story_type']==='text'?'selected':''?>>Truyện chữ</option><option value="audio" <?=$storyForm['story_type']==='audio'?'selected':''?>>Truyện audio</option><option value="both" <?=$storyForm['story_type']==='both'?'selected':''?>>Chữ + audio</option></select></label>
+<label>Hình thức nội dung<select name="story_kind" id="story-kind"><option value="serial" <?=($storyForm['story_kind']??'serial')==='serial'?'selected':''?>>Truyện dài nhiều chương</option><option value="short" <?=($storyForm['story_kind']??'serial')==='short'?'selected':''?>>Truyện ngắn (một bài)</option></select></label>\n<label>Loại truyện<select name="story_type"><option value="text" <?=$storyForm['story_type']==='text'?'selected':''?>>Truyện chữ</option><option value="audio" <?=$storyForm['story_type']==='audio'?'selected':''?>>Truyện audio</option><option value="both" <?=$storyForm['story_type']==='both'?'selected':''?>>Chữ + audio</option></select></label>
 <label>Trạng thái<select name="status"><option value="draft" <?=$storyForm['status']==='draft'?'selected':''?>>Bản nháp</option><option value="published" <?=$storyForm['status']==='published'?'selected':''?>>Xuất bản</option></select></label>
 </div>
 <label>Link ảnh bìa<input type="url" name="cover_url" value="<?=e((string)$storyForm['cover_url'])?>" placeholder="https://..."></label>
-<label>Mô tả truyện<textarea name="description" rows="4"><?=e((string)$storyForm['description'])?></textarea></label>
+<label>Mô tả truyện<textarea name="description" rows="4"><?=e((string)$storyForm['description'])?></textarea></label>\n<div id="short-content-box"><label>Nội dung truyện ngắn *<textarea name="short_content" rows="16" placeholder="Nhập toàn bộ nội dung truyện ngắn..."><?=e((string)($storyForm['short_content']??''))?></textarea></label></div>
 <div class="admin-story-actions"><button type="submit"><?=((int)$storyForm['id'] > 0)?'Lưu thay đổi':'Đăng truyện'?></button><?php if ((int)$storyForm['id'] > 0): ?><a class="admin-story-btn" href="stories.php">＋ Truyện mới</a><?php endif; ?></div>
 </form>
 </section>
@@ -214,7 +221,7 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <?php foreach ($stories as $s): ?>
 <article class="admin-story-item">
 <strong><?=e($s['title'])?></strong>
-<div class="muted"><?=e($s['category'])?> · <?=(int)$s['chapter_count']?> chương · <?=$s['status']==='published'?'Đã xuất bản':'Bản nháp'?></div>
+<div class="muted"><?=e($s['category'])?> · <?=($s['story_kind']??'serial')==='short'?'Truyện ngắn':'Truyện dài · '.(int)$s['chapter_count'].' chương'?> · <?=$s['status']==='published'?'Đã xuất bản':'Bản nháp'?></div>
 <div class="admin-story-actions">
 <a class="admin-story-btn" href="stories.php?edit=<?=(int)$s['id']?>">Sửa truyện / chương</a>
 <a href="../story.php?slug=<?=rawurlencode($s['slug'])?>" target="_blank">Xem trang truyện</a>
