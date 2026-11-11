@@ -9,4 +9,17 @@ if($memberId){$q=$pdo->prepare('INSERT INTO story_reading_history(member_id,stor
 $q=$pdo->prepare("SELECT id,chapter_number,title FROM chapters WHERE story_id=? AND status='published' ORDER BY chapter_number");$q->execute([$chapter['story_id']]);$all=$q->fetchAll();$prev=$next=null;
 foreach($all as $i=>$c){if((int)$c['id']===(int)$chapter['id']){$prev=$all[$i-1]??null;$next=$all[$i+1]??null;break;}}
 function rd_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
-?><!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?=rd_h($chapter['story_title'])?> - Chương <?= (int)$chapter['chapter_number']?> | Truyện Đêm</title><link rel="stylesheet" href="css/style.css?v=20261111-story1"><link rel="stylesheet" href="css/stories.css?v=1"></head><body class="story-site reader-site"><header class="reader-top"><a href="story.php?slug=<?=rawurlencode($chapter['slug'])?>">← <?=rd_h($chapter['story_title'])?></a><a href="index.php">☾ Truyện Đêm</a></header><main class="reader-main"><p class="reader-kicker">TRUYỆN ĐÊM · CHƯƠNG <?= (int)$chapter['chapter_number']?></p><h1><?=rd_h($chapter['title'])?></h1><?php if($chapter['audio_url']):?><audio class="story-audio" controls preload="none" src="<?=rd_h($chapter['audio_url'])?>">Trình duyệt không hỗ trợ audio.</audio><?php endif;?><article class="reader-content"><?=nl2br(rd_h($chapter['content']))?></article><nav class="reader-pagination"><?php if($prev):?><a href="read.php?id=<?=(int)$prev['id']?>">← Chương trước</a><?php else:?><span></span><?php endif;?><?php if($next):?><a href="read.php?id=<?=(int)$next['id']?>">Chương tiếp theo →</a><?php else:?><a href="story.php?slug=<?=rawurlencode($chapter['slug'])?>">Danh sách chương</a><?php endif;?></nav></main></body></html>
+function rd_paragraphs($value): string {
+    $value = str_replace(["\r\n", "\r"], "\n", trim((string)$value));
+    if ($value === '') return '';
+    $blocks = preg_split('/\n[ \t]*\n+/', $value) ?: [];
+    $html = [];
+    foreach ($blocks as $block) {
+        $block = trim($block);
+        if ($block === '') continue;
+        $safe = htmlspecialchars($block, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $html[] = '<p>' . nl2br($safe, false) . '</p>';
+    }
+    return implode("\n", $html);
+}
+?><!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?=rd_h($chapter['story_title'])?> - Chương <?= (int)$chapter['chapter_number']?> | Truyện Đêm</title><link rel="stylesheet" href="css/style.css?v=20261111-story1"><link rel="stylesheet" href="css/stories.css?v=1"></head><body class="story-site reader-site"><header class="reader-top"><a href="story.php?slug=<?=rawurlencode($chapter['slug'])?>">← <?=rd_h($chapter['story_title'])?></a><a href="index.php">☾ Truyện Đêm</a></header><main class="reader-main"><p class="reader-kicker">TRUYỆN ĐÊM · CHƯƠNG <?= (int)$chapter['chapter_number']?></p><h1><?=rd_h($chapter['title'])?></h1><?php if($chapter['audio_url']):?><audio class="story-audio" controls preload="none" src="<?=rd_h($chapter['audio_url'])?>">Trình duyệt không hỗ trợ audio.</audio><?php endif;?><article class="reader-content"><?=rd_paragraphs($chapter['content'])?></article><nav class="reader-pagination"><?php if($prev):?><a href="read.php?id=<?=(int)$prev['id']?>">← Chương trước</a><?php else:?><span></span><?php endif;?><?php if($next):?><a href="read.php?id=<?=(int)$next['id']?>">Chương tiếp theo →</a><?php else:?><a href="story.php?slug=<?=rawurlencode($chapter['slug'])?>">Danh sách chương</a><?php endif;?></nav></main></body></html>
