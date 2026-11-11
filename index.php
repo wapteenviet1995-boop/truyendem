@@ -28,7 +28,7 @@ function home_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBS
 <?php
 $leaderboard=[];
 try {
- $leaderboard=$pdo->query("SELECT m.id,m.display_name,m.avatar_url,w.balance FROM member_wallets w JOIN members m ON m.id=w.member_id WHERE m.is_active=1 ORDER BY w.balance DESC,w.updated_at ASC,m.id ASC LIMIT 5")->fetchAll();
+ $leaderboard=$pdo->query("SELECT m.id,m.display_name,m.avatar_url,COALESCE(w.balance,0) AS balance FROM members m LEFT JOIN member_wallets w ON w.member_id=m.id WHERE m.is_active=1 ORDER BY COALESCE(w.balance,0) DESC,w.updated_at ASC,m.id ASC LIMIT 5")->fetchAll();
 } catch(PDOException $e) { $leaderboard=[]; }
 function home_level(int $xu): array {
  if($xu>=5000)return ['Huyền Thoại','✦'];
