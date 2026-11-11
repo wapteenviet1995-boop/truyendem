@@ -231,3 +231,105 @@ body.reader-site article.reader-content p{
   .story-detail .story-description-title{font-size:.86rem;margin-bottom:11px}
   .story-detail .story-description{font-size:1rem;line-height:1.95;text-align:justify;text-indent:1.2em}
 }
+
+
+/* Homepage story cards — polished book shelf */
+.story-site .story-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(215px,1fr));
+  gap:20px;
+  align-items:stretch;
+}
+.story-site .story-card{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  overflow:hidden;
+  border:1px solid #302b3d;
+  border-radius:14px;
+  background:#11121b;
+  box-shadow:0 8px 24px rgba(0,0,0,.22);
+  transition:transform .18s ease,border-color .18s ease;
+}
+.story-site .story-card:hover{
+  transform:translateY(-3px);
+  border-color:#8068a4;
+}
+.story-site .story-card-cover{
+  display:block;
+  position:relative;
+  width:100%;
+  height:auto;
+  aspect-ratio:3 / 4;
+  overflow:hidden;
+  background:linear-gradient(145deg,#302447,#151927);
+  color:#c7a9ff;
+  text-decoration:none;
+}
+.story-site .story-card-cover img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .35s ease;
+}
+.story-site .story-card:hover .story-card-cover img{transform:scale(1.035)}
+.story-site .story-card-body{
+  display:flex;
+  flex:1;
+  flex-direction:column;
+  align-items:flex-start;
+  padding:14px 15px 15px;
+  min-width:0;
+}
+.story-site .story-card-body .story-tag{
+  display:inline-block;
+  max-width:100%;
+  margin-bottom:5px;
+  color:#c5a9ed;
+  font-size:.73rem;
+  line-height:1.4;
+}
+.story-site .story-card h3{
+  width:100%;
+  margin:3px 0 8px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:1.08rem;
+  font-weight:700;
+  line-height:1.42;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.story-site .story-card h3 a{color:#f0ebf7;text-decoration:none}
+.story-site .story-card h3 a:hover{color:#d2b8f5}
+.story-site .story-card p{
+  display:-webkit-box;
+  width:100%;
+  margin:0 0 13px;
+  color:#aaa6b6;
+  font-size:.86rem;
+  line-height:1.65;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.story-site .story-card-meta{
+  width:100%;
+  margin-top:auto;
+  padding-top:10px;
+  border-top:1px solid #292534;
+  color:#928ba0;
+  font-size:.76rem;
+  line-height:1.5;
+}
+@media(max-width:650px){
+  .story-site .story-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .story-site .story-card{border-radius:12px}
+  .story-site .story-card-body{padding:10px 10px 11px}
+  .story-site .story-card-body .story-tag{font-size:.68rem}
+  .story-site .story-card h3{font-size:.93rem;line-height:1.4;margin:3px 0 6px}
+  .story-site .story-card p{font-size:.78rem;line-height:1.5;-webkit-line-clamp:3;margin-bottom:10px}
+  .story-site .story-card-meta{font-size:.69rem;padding-top:8px}
+}
