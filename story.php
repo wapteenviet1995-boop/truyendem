@@ -11,6 +11,7 @@ if(!$story){http_response_code(404);}
 $chapters=[];
 if($story){$q=$pdo->prepare("SELECT id,chapter_number,title,created_at FROM chapters WHERE story_id=? AND status='published' ORDER BY chapter_number");$q->execute([$story['id']]);$chapters=$q->fetchAll();}
 $memberId=(int)($_SESSION['member_id']??0);$favorite=false;$liked=false;$likeCount=0;$viewCount=0;
+$storyUrl = (($story['story_kind'] ?? 'serial') === 'short' ? '/truyen-ngan/' : '/truyen/') . rawurlencode($slug) . '.html';
 if(empty($_SESSION['member_csrf']))$_SESSION['member_csrf']=bin2hex(random_bytes(32));
 if($story){
  $viewKey='story_viewed_'.(int)$story['id'];
@@ -73,7 +74,6 @@ if($story&&$memberId&&$_SERVER['REQUEST_METHOD']==='POST'&&($_POST['action']??''
 }
 
 /* Bình luận truyện: chỉ thành viên đăng nhập mới được gửi hoặc thích. */
-$storyUrl = (($story['story_kind'] ?? 'serial') === 'short' ? '/truyen-ngan/' : '/truyen/') . rawurlencode($slug) . '.html';
 if ($story && $_SERVER['REQUEST_METHOD'] === 'POST' && in_array((string)($_POST['action'] ?? ''), ['add_comment','reply_comment','like_comment'], true)) {
  if (!$memberId) { header('Location: /login.php'); exit; }
  if (empty($_SESSION['member_csrf']) || !hash_equals($_SESSION['member_csrf'], (string)($_POST['csrf'] ?? ''))) { http_response_code(400); exit('Phiên đã hết hạn. Vui lòng tải lại trang.'); }
