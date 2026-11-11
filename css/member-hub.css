@@ -88,3 +88,25 @@
 @keyframes leaderGold{to{background-position:180% center}}
 @media(max-width:600px){.leaderboard-section.leaderboard-compact{margin:20px 12px 28px;padding:13px 11px}.leaderboard-compact .leaderboard-heading{flex-direction:row;align-items:center}.leaderboard-tab{padding:7px 9px}.leaderboard-compact .leaderboard-xu,.leaderboard-compact .leaderboard-xp{font-size:.78rem}}
 @media(prefers-reduced-motion:reduce){.leaderboard-name.name-rank-1{animation:none}.leaderboard-name{transition:none}}
+
+
+/* Stronger visible leaderboard name effects */
+body.story-site .leaderboard-section.leaderboard-compact .leaderboard-name.name-rank-1{
+  color:#ffe7a2!important;
+  background:linear-gradient(90deg,#ffdc73 0%,#fff9d9 25%,#e6ae35 50%,#fff2b0 75%,#ffdc73 100%);
+  background-size:250% 100%;
+  background-clip:text;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 0 5px #ffc94d,0 0 12px #e9ae35,0 0 22px #d99b2b99;
+  animation:leaderGoldStrong 2.4s linear infinite;
+}
+body.story-site .leaderboard-section.leaderboard-compact .leaderboard-name.name-rank-2{
+  color:#f0f4ff!important;
+  text-shadow:0 0 5px #cbd8ff,0 0 13px #aabceaaa;
+}
+body.story-site .leaderboard-section.leaderboard-compact .leaderboard-name.name-rank-3{
+  color:#ffc39f!important;
+  text-shadow:0 0 5px #e99b6d,0 0 13px #c8784caa;
+}
+@keyframes leaderGoldStrong{to{background-position:250% 0}}
