@@ -112,6 +112,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $stories = $pdo->query("SELECT s.*, (SELECT COUNT(*) FROM chapters c WHERE c.story_id=s.id) AS chapter_count FROM stories s ORDER BY s.updated_at DESC, s.id DESC")->fetchAll();
+$shortStories = array_values(array_filter($stories, fn($s) => ($s['story_kind'] ?? 'serial') === 'short'));
+$serialStories = array_values(array_filter($stories, fn($s) => ($s['story_kind'] ?? 'serial') !== 'short'));
+$listType = in_array($_GET['list'] ?? 'all', ['all','short','serial'], true) ? (string)($_GET['list'] ?? 'all') : 'all';
 $selectedId = (int)($_GET['edit'] ?? $_POST['story_id'] ?? 0);
 $selectedStory = null;
 if ($selectedId > 0) {
@@ -161,6 +164,9 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 .admin-story-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
 .admin-story-actions form{display:inline}
 .admin-story-notice{padding:11px;border-radius:9px;background:#252039;margin:10px 0}
+.admin-story-tabs{display:flex;gap:9px;flex-wrap:wrap;margin:18px 0 4px}
+.admin-story-tabs a{display:inline-block;padding:10px 14px;border:1px solid #493b5d;border-radius:10px;color:#ddd;text-decoration:none;background:#100e16}
+.admin-story-tabs a.active{background:#7546c8;border-color:#9b76df;color:#fff;font-weight:700}
 @media(max-width:600px){.admin-story-wrap{padding:0 10px}.admin-story-panel{padding:14px}}
 </style>
 </head>
@@ -169,6 +175,11 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <section class="admin-story-panel">
 <h1>Quản lý nội dung</h1><p class="muted">Chọn đăng truyện dài nhiều chương hoặc truyện ngắn đọc liền một mạch.</p>
 <p><a href="index.php">← Trang quản trị</a> · <a href="../index.php" target="_blank">Xem thư viện</a></p>
+<nav class="admin-story-tabs">
+<a class="<?=$listType==='all'?'active':''?>" href="stories.php?list=all">Tất cả (<?=count($stories)?>)</a>
+<a class="<?=$listType==='short'?'active':''?>" href="stories.php?list=short">Truyện ngắn (<?=count($shortStories)?>)</a>
+<a class="<?=$listType==='serial'?'active':''?>" href="stories.php?list=serial">Truyện nhiều chương (<?=count($serialStories)?>)</a>
+</nav>
 <?php if ($error !== ''): ?><p class="admin-story-notice"><?=e($error)?></p><?php endif; ?>
 <?php if (($_GET['saved'] ?? '') === 'story'): ?><p class="admin-story-notice">✓ Đã lưu thông tin truyện.</p><?php elseif (($_GET['saved'] ?? '') === 'chapter'): ?><p class="admin-story-notice">✓ Đã lưu chương truyện.</p><?php endif; ?>
 <?php if (($_GET['deleted'] ?? '') === 'story'): ?><p class="admin-story-notice">✓ Đã xóa truyện.</p><?php elseif (($_GET['deleted'] ?? '') === 'chapter'): ?><p class="admin-story-notice">✓ Đã xóa chương.</p><?php endif; ?>
@@ -217,15 +228,19 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <?php endif; ?>
 </section>
 
+
+<?php
+$renderStoryList = function(array $items, string $heading, string $empty, bool $showChapters) use ($csrf, $selectedStory, $chapters, $selectedId) {
+?>
 <section class="admin-story-panel">
-<h2>Danh sách truyện (<?=count($stories)?>)</h2>
-<?php if (!$stories): ?><p class="muted">Chưa có truyện nào. Hãy dùng biểu mẫu phía trên để đăng truyện đầu tiên.</p><?php else: ?>
-<?php foreach ($stories as $s): ?>
+<h2><?=e($heading)?> (<?=count($items)?>)</h2>
+<?php if (!$items): ?><p class="muted"><?=e($empty)?></p><?php else: ?>
+<?php foreach ($items as $s): ?>
 <article class="admin-story-item">
 <strong><?=e($s['title'])?></strong>
-<div class="muted"><?=e($s['category'])?> · <?=($s['story_kind']??'serial')==='short'?'Truyện ngắn':'Truyện dài · '.(int)$s['chapter_count'].' chương'?> · <?=$s['status']==='published'?'Đã xuất bản':'Bản nháp'?></div>
+<div class="muted"><?=e($s['category'])?> · <?=($s['story_kind']??'serial')==='short'?'Truyện ngắn':'Truyện nhiều chương · '.(int)$s['chapter_count'].' chương'?> · <?=$s['status']==='published'?'Đã xuất bản':'Bản nháp'?></div>
 <div class="admin-story-actions">
-<a class="admin-story-btn" href="stories.php?edit=<?=(int)$s['id']?>">Sửa truyện / chương</a>
+<a class="admin-story-btn" href="stories.php?list=<?=($s['story_kind']??'serial')==='short'?'short':'serial'?>&edit=<?=(int)$s['id']?>">Sửa truyện<?=($s['story_kind']??'serial')==='short'?'':' / chương'?></a>
 <a href="../story.php?slug=<?=rawurlencode($s['slug'])?>" target="_blank">Xem trang truyện</a>
 <form method="post" onsubmit="return confirm('Xóa truyện này và toàn bộ chương của truyện?')">
 <input type="hidden" name="csrf" value="<?=e($csrf)?>">
@@ -234,19 +249,19 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <button type="submit" class="danger">Xóa truyện</button>
 </form>
 </div>
-<?php if ($selectedStory && (int)$selectedStory['id']===(int)$s['id'] && (($s['story_kind'] ?? 'serial') !== 'short')): ?>
+<?php if ($showChapters && $selectedStory && (int)$selectedStory['id']===(int)$s['id']): ?>
 <div class="admin-story-item">
 <strong>Danh sách chương</strong>
 <?php if (!$chapters): ?><p class="muted">Truyện chưa có chương nào.</p><?php else: ?>
-<?php foreach ($chapters as $c): ?>
+<?php foreach ($chapters as $ch): ?>
 <div class="admin-story-actions">
-<span>Chương <?=(int)$c['chapter_number']?>: <?=e($c['title'])?> · <?=$c['status']==='published'?'Đã xuất bản':'Bản nháp'?></span>
-<a href="stories.php?edit=<?=(int)$s['id']?>&chapter=<?=(int)$c['id']?>">Sửa</a>
+<span>Chương <?=(int)$ch['chapter_number']?>: <?=e($ch['title'])?> · <?=$ch['status']==='published'?'Đã xuất bản':'Bản nháp'?></span>
+<a href="stories.php?list=serial&edit=<?=(int)$s['id']?>&chapter=<?=(int)$ch['id']?>">Sửa</a>
 <form method="post" onsubmit="return confirm('Xóa chương này?')">
 <input type="hidden" name="csrf" value="<?=e($csrf)?>">
 <input type="hidden" name="action" value="delete_chapter">
 <input type="hidden" name="story_id" value="<?=(int)$s['id']?>">
-<input type="hidden" name="chapter_id" value="<?=(int)$c['id']?>">
+<input type="hidden" name="chapter_id" value="<?=(int)$ch['id']?>">
 <button type="submit" class="danger">Xóa</button>
 </form>
 </div>
@@ -258,6 +273,9 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <?php endforeach; ?>
 <?php endif; ?>
 </section>
+<?php }; ?>
+<?php if ($listType === 'all' || $listType === 'short') $renderStoryList($shortStories, 'Danh sách truyện ngắn', 'Chưa có truyện ngắn nào.', false); ?>
+<?php if ($listType === 'all' || $listType === 'serial') $renderStoryList($serialStories, 'Danh sách truyện nhiều chương', 'Chưa có truyện nhiều chương nào.', true); ?>
 </main>
 <script>(()=>{const kind=document.getElementById('story-kind'),shortBox=document.getElementById('short-content-box'),chapter=document.getElementById('chapter-panel');if(!kind)return;function sync(){const isShort=kind.value==='short';shortBox.style.display=isShort?'block':'none';chapter.style.display=isShort?'none':'block';}kind.addEventListener('change',sync);sync();})();</script>
 </body>
