@@ -1,90 +1,26 @@
 <?php
+declare(strict_types=1);
 require __DIR__ . '/includes/db.php';
+$q=trim((string)($_GET['q']??''));$category=trim((string)($_GET['category']??''));
+$stories=[];$categories=[];$history=[];
+try{
+ $categories=$pdo->query("SELECT DISTINCT category FROM stories WHERE status='published' AND category<>'' ORDER BY category")->fetchAll(PDO::FETCH_COLUMN);
+ $sql="SELECT s.id,s.title,s.slug,s.author,s.description,s.cover_url,s.category,s.story_type,(SELECT COUNT(*) FROM chapters c WHERE c.story_id=s.id AND c.status='published') chapter_count,(SELECT MAX(c.updated_at) FROM chapters c WHERE c.story_id=s.id AND c.status='published') latest_chapter FROM stories s WHERE s.status='published'";
+ $params=[];
+ if($q!==''){$sql.=" AND (s.title LIKE ? OR s.author LIKE ? OR s.description LIKE ?)";$like='%'.$q.'%';$params=[$like,$like,$like];}
+ if($category!==''){$sql.=" AND s.category=?";$params[]=$category;}
+ $sql.=" ORDER BY COALESCE((SELECT MAX(c.updated_at) FROM chapters c WHERE c.story_id=s.id AND c.status='published'),s.updated_at) DESC LIMIT 60";
+ $stmt=$pdo->prepare($sql);$stmt->execute($params);$stories=$stmt->fetchAll();
+ if(!empty($_SESSION['member_id'])){$h=$pdo->prepare("SELECT s.title,s.slug,c.id chapter_id,c.chapter_number,c.title chapter_title FROM story_reading_history r JOIN stories s ON s.id=r.story_id JOIN chapters c ON c.id=r.chapter_id WHERE r.member_id=? AND s.status='published' ORDER BY r.updated_at DESC LIMIT 6");$h->execute([(int)$_SESSION['member_id']]);$history=$h->fetchAll();}
+}catch(PDOException $e){$setupError=true;}
+function home_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
 ?>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Cung hoàng đạo</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Lora:wght@500;600&display=swap">
-<link rel="stylesheet" href="css/style.css?v=20261111-3">
-</head>
-<body id="top" class="home-page">
-<header class="site-header">
-  <div class="header-inner">
-    <a class="brand" href="#top" aria-label="Góc Hoàng Đạo - Trang chủ">
-      <span class="brand-mark" aria-hidden="true">✦</span>
-      <span class="brand-copy"><strong>Góc Hoàng Đạo</strong><small>Khám phá câu chuyện của các vì sao</small></span>
-    </a>
-    <nav class="header-links" aria-label="Điều hướng chính">
-      <a href="#top">Trang chủ</a>
-      <a href="#lookup">Tra cứu ngày sinh</a>
-      <a href="#wheel">12 cung</a>
-      <a href="#detail">Luận giải</a>
-      <a href="compatibility.php">Tương hợp tình yêu</a>
-      <a href="community.php">Cộng đồng</a>
-      <a href="friends.php">Kết bạn</a>
-      <a href="diary.php">Nhật ký</a>
-      <a href="messages.php">Tin nhắn</a>
-      <a href="shop.php">Xu & Cửa hàng</a>
-      <a href="blog.php">Blog</a>
-      <?php if (!empty($_SESSION['member_id'])): ?>
-      <a href="account.php">Tài khoản</a>
-      <form class="member-nav-logout" method="post" action="logout.php"><input type="hidden" name="csrf" value="<?= e($_SESSION['member_csrf'] ?? '') ?>"><button type="submit">Đăng xuất</button></form>
-      <?php else: ?>
-      <a href="login.php">Đăng nhập</a>
-      <a href="register.php">Đăng ký</a>
-      <?php endif; ?>
-    </nav>
-  </div>
-</header>
-<main>
-<h1>Xem cung hoàng đạo</h1>
-<p class="lead">Nhập ngày sinh hoặc chọn một trong 12 cung bên dưới để xem tính cách và vận hạn hôm nay.</p>
-
-<p class="sunbar" id="sun"></p>
-<div class="lookup" id="lookup">
-  <label>Ngày <select id="d"></select></label>
-  <label>Tháng <select id="m"></select></label>
-  <button class="go" id="go">Xem cung của tôi</button>
-</div>
-<p class="err" id="err" role="alert"></p>
-<p class="saved" id="saved"></p>
-
-<section class="zodiac-picker" id="wheel" aria-label="Danh sách 12 cung hoàng đạo"><h2>Chọn cung hoàng đạo</h2><p class="picker-note">Chạm vào cung bạn muốn khám phá</p><div class="zodiac-list" id="zodiac-list"></div></section>
-
-<section class="card" id="detail" aria-live="polite"></section>
-</main>
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-about">
-      <a class="footer-brand" href="#top"><span aria-hidden="true">✦</span> Góc Hoàng Đạo</a>
-      <p>Nơi khám phá 12 cung hoàng đạo, tính cách và những góc nhìn thú vị về bản thân.</p>
-    </div>
-    <div class="footer-links">
-      <strong>Khám phá</strong>
-      <a href="#lookup">Tra cứu ngày sinh</a>
-      <a href="#wheel">Vòng tròn 12 cung</a>
-      <a href="#detail">Bài luận giải</a>
-      <a href="blog.php">Blog</a>
-    </div>
-    <div class="footer-note">
-      <strong>Lưu ý</strong>
-      <p>Nội dung mang tính tham khảo và giải trí, không thay thế lời khuyên chuyên môn.</p>
-    </div>
-  </div>
-  <div class="footer-bottom">© 2026 Góc Hoàng Đạo · Cùng bạn ngắm nhìn bầu trời</div>
-</footer>
-
-<nav class="bottom-nav" aria-label="Menu nhanh">
-  <a href="#top" data-target="top"><span aria-hidden="true">⌂</span>Trang chủ</a>
-  <a href="#lookup" data-target="lookup"><span aria-hidden="true">☼</span>Ngày sinh</a>
-  <a href="#wheel" data-target="wheel"><span aria-hidden="true">✧</span>12 cung</a>
-  <a href="#detail" data-target="detail"><span aria-hidden="true">☾</span>Luận giải</a>
-  <a href="blog.php"><span aria-hidden="true">✎</span>Blog</a>
-</nav>
-<script src="js/script.js"></script>
-<script src="js/presence.js"></script>
-</body>
-</html>
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090a10"><title>Truyện Đêm - Thư viện truyện chữ và audio</title><meta name="description" content="Khám phá truyện kinh dị, tình cảm, huyền huyễn và nhiều câu chuyện hấp dẫn tại Truyện Đêm."><link rel="stylesheet" href="css/style.css?v=20261111-story1"><link rel="stylesheet" href="css/stories.css?v=1"></head><body class="story-site" id="top">
+<header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">☾</span><span class="brand-copy"><strong>Truyện Đêm</strong><small>Mỗi đêm, một thế giới khác</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="#library">Thư viện</a><a href="community.php">Cộng đồng</a><a href="friends.php">Bạn bè</a><a href="messages.php">Tin nhắn</a><a href="shop.php">Cửa hàng</a><?php if(!empty($_SESSION['member_id'])):?><a href="account.php">Tài khoản</a><form class="member-nav-logout" method="post" action="logout.php"><input type="hidden" name="csrf" value="<?=home_h($_SESSION['member_csrf']??'')?>"><button type="submit">Đăng xuất</button></form><?php else:?><a href="login.php">Đăng nhập</a><a href="register.php">Đăng ký</a><?php endif;?></nav></div></header>
+<main class="story-main"><section class="story-hero"><span class="story-kicker">✦ CHÀO MỪNG ĐẾN VỚI TRUYỆN ĐÊM ✦</span><h1>Đêm xuống,<br>mở ra một câu chuyện.</h1><p>Truyện kinh dị, tình cảm, huyền huyễn và nhiều thế giới đang chờ bạn khám phá. Đọc tiếp nơi bạn đã dừng lại, hoặc tìm một câu chuyện mới cho đêm nay.</p><form class="story-search" method="get" action="index.php"><input type="search" name="q" value="<?=home_h($q)?>" placeholder="Tìm tên truyện, tác giả..." aria-label="Tìm truyện"><button type="submit">Tìm truyện</button></form></section>
+<?php if(!empty($setupError)):?><section class="story-empty"><h2>Thư viện đang chờ khởi tạo</h2><p>Hãy chạy file <strong>database/stories.sql</strong> trong phpMyAdmin để tạo dữ liệu truyện và chương.</p></section><?php else:?>
+<?php if($history):?><section class="story-section"><div class="story-section-head"><h2>☾ Đọc tiếp</h2></div><div class="chapter-list"><?php foreach($history as $h):?><a href="read.php?id=<?=(int)$h['chapter_id']?>"><span><?=home_h($h['title'])?> · Chương <?= (int)$h['chapter_number']?> — <?=home_h($h['chapter_title'])?></span><small>Đọc tiếp →</small></a><?php endforeach;?></div></section><?php endif;?>
+<section class="story-section" id="library"><div class="story-section-head"><h2><?= $q!==''?'Kết quả tìm kiếm':'✧ Thư viện truyện' ?></h2><span><?=count($stories)?> truyện</span></div>
+<?php if($categories):?><div class="story-categories"><a class="<?= $category===''?'active':''?>" href="index.php#library">Tất cả</a><?php foreach($categories as $cat):?><a class="<?= $category===$cat?'active':''?>" href="index.php?category=<?=rawurlencode($cat)?>#library"><?=home_h($cat)?></a><?php endforeach;?></div><?php endif;?>
+<?php if(!$stories):?><div class="story-empty"><h3>Chưa tìm thấy truyện phù hợp</h3><p>Thư viện sẽ sớm có thêm những câu chuyện mới.</p></div><?php else:?><div class="story-grid"><?php foreach($stories as $s):?><article class="story-card"><a class="story-card-cover" href="story.php?slug=<?=rawurlencode($s['slug'])?>"><?php if($s['cover_url']):?><img src="<?=home_h($s['cover_url'])?>" alt="<?=home_h($s['title'])?>" loading="lazy"><?php else:?>☾<?php endif;?></a><div class="story-card-body"><span class="story-tag"><?=home_h($s['category'])?></span><h3><a href="story.php?slug=<?=rawurlencode($s['slug'])?>"><?=home_h($s['title'])?></a></h3><p><?=home_h(mb_strimwidth((string)$s['description'],0,115,'…','UTF-8'))?></p><div class="story-card-meta"><?=home_h($s['author'])?> · <?= (int)$s['chapter_count']?> chương</div></div></article><?php endforeach;?></div><?php endif;?></section><?php endif;?>
+</main><footer class="site-footer"><div class="footer-bottom">© 2026 Truyện Đêm · Mỗi đêm, một thế giới khác</div></footer><nav class="bottom-nav story-bottom-nav"><a href="#top"><span>⌂</span>Trang chủ</a><a href="#library"><span>▤</span>Thư viện</a><a href="community.php"><span>♡</span>Cộng đồng</a><a href="shop.php"><span>✦</span>Cửa hàng</a><a href="account.php"><span>♙</span>Tài khoản</a></nav><script src="js/presence.js"></script></body></html>
