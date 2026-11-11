@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS stories (
  story_type ENUM('text','audio','both') NOT NULL DEFAULT 'text',
  story_kind ENUM('serial','short') NOT NULL DEFAULT 'serial',
  status ENUM('draft','published') NOT NULL DEFAULT 'draft',
+ views_count BIGINT UNSIGNED NOT NULL DEFAULT 0,
+ likes_count BIGINT UNSIGNED NOT NULL DEFAULT 0,
  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
  PRIMARY KEY(id), UNIQUE KEY uq_story_slug(slug), KEY idx_story_status(status,updated_at)
@@ -52,4 +54,16 @@ CREATE TABLE IF NOT EXISTS story_reading_history (
  CONSTRAINT fk_read_member FOREIGN KEY(member_id) REFERENCES members(id) ON DELETE CASCADE,
  CONSTRAINT fk_read_story FOREIGN KEY(story_id) REFERENCES stories(id) ON DELETE CASCADE,
  CONSTRAINT fk_read_chapter FOREIGN KEY(chapter_id) REFERENCES chapters(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ 
+-- Bang luot thich (moi tai khoan chi thich mot lan cho moi truyen)
+CREATE TABLE IF NOT EXISTS story_likes (
+ member_id INT UNSIGNED NOT NULL,
+ story_id INT UNSIGNED NOT NULL,
+ created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY(member_id,story_id),
+ KEY idx_story_likes_story(story_id),
+ CONSTRAINT fk_story_like_member FOREIGN KEY(member_id) REFERENCES members(id) ON DELETE CASCADE,
+ CONSTRAINT fk_story_like_story FOREIGN KEY(story_id) REFERENCES stories(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
