@@ -25,7 +25,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     }
    } elseif($action==='buy'){
     $item=(int)($_POST['item_id']??0);$pdo->beginTransaction();
-    $q=$pdo->prepare('SELECT id,name,price FROM shop_items WHERE id=? AND is_active=1 FOR UPDATE');$q->execute([$item]);$product=$q->fetch();
+    $q=$pdo->prepare('SELECT id,name,price,item_type FROM shop_items WHERE id=? AND is_active=1 FOR UPDATE');$q->execute([$item]);$product=$q->fetch();
     if(!$product){$pdo->rollBack();$error='Vật phẩm không còn bán.';}
     else{
      $q=$pdo->prepare('SELECT id FROM member_inventory WHERE member_id=? AND item_id=?');$q->execute([$me,$item]);
