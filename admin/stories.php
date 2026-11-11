@@ -207,14 +207,14 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 </form>
 </section>
 
-<section class="admin-story-panel">
+<?php if ($serialStories && (!$selectedStory || ($selectedStory['story_kind'] ?? 'serial') !== 'short')): ?>
+<section class="admin-story-panel" id="chapter-panel">
 <h2><?=$editChapter ? 'Chỉnh sửa chương' : 'Thêm chương mới'?></h2>
-<?php if (!$stories): ?><p class="muted">Hãy tạo truyện trước khi thêm chương.</p><?php else: ?>
 <form method="post">
 <input type="hidden" name="csrf" value="<?=e($csrf)?>">
 <input type="hidden" name="action" value="save_chapter">
 <input type="hidden" name="chapter_id" value="<?=(int)$chapterForm['id']?>">
-<label>Thuộc truyện<select name="story_id" required><?php foreach ($stories as $s): ?><option value="<?=(int)$s['id']?>" <?=(int)$s['id']===$selectedId?'selected':''?>><?=e($s['title'])?></option><?php endforeach; ?></select></label>
+<label>Thuộc truyện<select name="story_id" required><?php foreach ($serialStories as $s): ?><option value="<?=(int)$s['id']?>" <?=(int)$s['id']===$selectedId?'selected':''?>><?=e($s['title'])?></option><?php endforeach; ?></select></label>
 <div class="admin-story-grid">
 <label>Số chương<input type="number" name="chapter_number" min="1" required value="<?=(int)$chapterForm['chapter_number']?>"></label>
 <label>Tên chương<input name="chapter_title" required maxlength="220" value="<?=e((string)$chapterForm['title'])?>"></label>
@@ -225,9 +225,10 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <label>Nội dung chương *<textarea name="content" rows="14" required><?=e((string)$chapterForm['content'])?></textarea></label>
 <div class="admin-story-actions"><button type="submit"><?=$editChapter?'Lưu chương':'Lưu chương mới'?></button><?php if ($editChapter): ?><a class="admin-story-btn" href="stories.php?edit=<?=$selectedId?>">Hủy sửa chương</a><?php endif; ?></div>
 </form>
-<?php endif; ?>
 </section>
-
+<?php elseif ($selectedStory && ($selectedStory['story_kind'] ?? 'serial') === 'short'): ?>
+<section class="admin-story-panel"><p class="muted">Đây là truyện ngắn nên không cần thêm chương. Hãy sửa nội dung trong phần đăng truyện ở phía trên.</p></section>
+<?php endif; ?>
 
 <?php
 $renderStoryList = function(array $items, string $heading, string $empty, bool $showChapters) use ($csrf, $selectedStory, $chapters, $selectedId) {
