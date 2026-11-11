@@ -35,3 +35,42 @@ body.story-site{background:radial-gradient(ellipse at 50% -15%,#24203e 0,#0b0c13
 .reader-site .reader-pagination a{display:flex;align-items:center;justify-content:center;min-height:56px;padding:12px;border:1px solid #3b3048;border-radius:12px;background:#17131e;color:#e4d5f5;text-decoration:none;text-align:center;font-size:.88rem;line-height:1.4}
 .reader-site .reader-pagination a:hover{border-color:#9b78c8;background:#211a2c}
 @media(max-width:600px){.reader-site .reader-top{padding:12px 13px;height:56px}.reader-site .reader-main{padding:34px 13px 45px}.reader-site .reader-main h1{font-size:1.8rem;margin:15px 0 24px}.reader-site .reader-content{padding:28px 20px;font-size:1.12rem;line-height:1.95;border-radius:14px}.reader-site .reader-pagination{gap:8px}.reader-site .reader-pagination a{font-size:.78rem;padding:10px 8px;min-height:54px}}
+
+
+/* Typography: format story text as readable novel paragraphs */
+.reader-site .reader-content{
+    display:block;
+    max-width:700px;
+    margin:0 auto;
+    padding:clamp(24px,5vw,52px) clamp(20px,6vw,64px);
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:20px;
+    line-height:2;
+    font-weight:400;
+    letter-spacing:0;
+    text-align:left;
+    color:#e8e1ed;
+    overflow-wrap:break-word;
+    word-break:normal;
+}
+.reader-site .reader-content p{
+    display:block;
+    margin:0 0 1.15em;
+    padding:0;
+    text-indent:1.5em;
+    line-height:inherit;
+}
+.reader-site .reader-content p:last-child{margin-bottom:0}
+.reader-site .reader-content br{display:block;content:"";margin:0}
+.reader-site .reader-content p br{margin:0}
+@media(max-width:600px){
+    .reader-site .reader-content{
+        padding:25px 19px;
+        font-size:18px;
+        line-height:1.95;
+    }
+    .reader-site .reader-content p{
+        margin-bottom:1.05em;
+        text-indent:1.25em;
+    }
+}
