@@ -99,3 +99,44 @@ body.story-site{background:radial-gradient(ellipse at 50% -15%,#24203e 0,#0b0c13
  .story-description{font-size:.98rem;line-height:1.85;padding:16px 2px 2px}
  .story-detail-actions{grid-column:1 / -1}
 }
+
+
+/* FINAL FIX: keep the chapter text block centered and its text aligned left */
+html,body.reader-site{width:100%;max-width:100%;overflow-x:hidden}
+body.reader-site main.reader-main{
+  display:block!important;
+  width:100%!important;
+  max-width:760px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding-left:16px!important;
+  padding-right:16px!important;
+  float:none!important;
+  transform:none!important;
+  box-sizing:border-box!important;
+}
+body.reader-site article.reader-content{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  box-sizing:border-box!important;
+  text-align:left!important;
+  direction:ltr!important;
+  float:none!important;
+  transform:none!important;
+}
+body.reader-site article.reader-content p{
+  width:100%!important;
+  max-width:100%!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  text-align:left!important;
+  direction:ltr!important;
+  transform:none!important;
+}
+@media(max-width:600px){
+  body.reader-site main.reader-main{padding-left:12px!important;padding-right:12px!important}
+  body.reader-site article.reader-content{padding-left:18px!important;padding-right:18px!important}
+}
