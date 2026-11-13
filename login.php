@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Đăng nhập | Góc Hoàng Đạo</title><link rel="stylesheet" href="css/style.css?v=member1"></head>
+<title>Đăng nhập | Góc Hoàng Đạo</title><link rel="stylesheet" href="css/style.css?v=member1"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"></head>
 <body class="member-page">
 <header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">✦</span><span class="brand-copy"><strong>Góc Hoàng Đạo</strong><small>Khám phá câu chuyện của các vì sao</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="register.php">Đăng ký</a></nav></div></header>
 <main class="member-wrap"><section class="member-panel"><div class="member-symbol">☾</div><h1>Chào mừng trở lại</h1><p class="member-lead">Đăng nhập để tiếp tục hành trình cùng những vì sao.</p>
