@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $slugInput = trim((string)($_POST['slug'] ?? ''));
                 $slug = $slugInput !== '' ? story_slug($slugInput) : story_slug($title);
                 $author = trim((string)($_POST['author'] ?? '')) ?: 'Khuyết danh';
-                $category = trim((string)($_POST['category'] ?? '')) ?: 'Truyện dài';
+                $category = trim((string)($_POST['category'] ?? ''));
                 $description = trim((string)($_POST['description'] ?? ''));
                 $cover = trim((string)($_POST['cover_url'] ?? ''));
                 $type = in_array($_POST['story_type'] ?? 'text', ['text', 'audio', 'both'], true) ? (string)$_POST['story_type'] : 'text';
@@ -67,6 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 if ($title === '' || $slug === '') {
                     $error = 'Vui lòng nhập tên truyện hợp lệ.';
+                } elseif ($category === '') {
+                    $error = 'Vui lòng chọn hoặc nhập thể loại truyện, ví dụ: Kinh dị, Tình cảm, Bí ẩn.';
                 } elseif ($kind === 'short' && $shortContent === '') {
                     $error = 'Truyện ngắn cần có nội dung đầy đủ.';
                 } elseif ($cover !== '' && !filter_var($cover, FILTER_VALIDATE_URL) && !preg_match('~^/uploads/stories/[a-zA-Z0-9._-]+$~', $cover)) {
@@ -165,7 +167,7 @@ if ($selectedStory) {
     $stmt->execute([(int)$selectedStory['id']]);
     $chapters = $stmt->fetchAll();
 }
-$storyForm = $selectedStory ?: ['id'=>0,'title'=>'','slug'=>'','author'=>'Khuyết danh','category'=>'Truyện dài','description'=>'','cover_url'=>'','story_type'=>'text','story_kind'=>'serial','short_content'=>'','status'=>'draft'];
+$storyForm = $selectedStory ?: ['id'=>0,'title'=>'','slug'=>'','author'=>'Khuyết danh','category'=>'','description'=>'','cover_url'=>'','story_type'=>'text','story_kind'=>'serial','short_content'=>'','status'=>'draft'];
 $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'title'=>'','content'=>'','audio_url'=>'','duration_seconds'=>0,'status'=>'draft'];
 ?><!doctype html>
 <html lang="vi">
@@ -223,7 +225,7 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <label>Tên truyện *<input name="title" required maxlength="220" value="<?=e((string)$storyForm['title'])?>"></label>
 <label>Slug (để trống tự tạo)<input name="slug" value="<?=e((string)$storyForm['slug'])?>"></label>
 <label>Tác giả<input name="author" value="<?=e((string)$storyForm['author'])?>"></label>
-<label>Thể loại<input name="category" value="<?=e((string)$storyForm['category'])?>"></label>
+<label>Thể loại *<input name="category" required placeholder="Ví dụ: Kinh dị, Tình cảm, Bí ẩn" value="<?=e((string)$storyForm['category'])?>"></label>
 <label>Hình thức nội dung<select name="story_kind" id="story-kind"><option value="serial" <?=($storyForm['story_kind']??'serial')==='serial'?'selected':''?>>Truyện dài nhiều chương</option><option value="short" <?=($storyForm['story_kind']??'serial')==='short'?'selected':''?>>Truyện ngắn (một bài)</option></select></label>
 <label>Loại truyện<select name="story_type"><option value="text" <?=$storyForm['story_type']==='text'?'selected':''?>>Truyện chữ</option><option value="audio" <?=$storyForm['story_type']==='audio'?'selected':''?>>Truyện audio</option><option value="both" <?=$storyForm['story_type']==='both'?'selected':''?>>Chữ + audio</option></select></label>
 <label>Trạng thái<select name="status"><option value="draft" <?=$storyForm['status']==='draft'?'selected':''?>>Bản nháp</option><option value="published" <?=$storyForm['status']==='published'?'selected':''?>>Xuất bản</option></select></label>
