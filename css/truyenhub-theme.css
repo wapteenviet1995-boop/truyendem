@@ -53,3 +53,22 @@ body.story-site{background:radial-gradient(ellipse at 50% -18%,#30204d 0,#100e1b
  .story-site .story-tag{font-size:.58rem!important}
 }
 @media(max-width:380px){.home-shortcuts{gap:7px}.home-shortcuts a{min-height:80px}.story-site .story-grid{gap:7px!important}.story-site .story-card-body{padding:6px!important}.story-site .story-card h3{font-size:.7rem!important}}
+
+/* Member sign-in pages */
+body.member-page{min-height:100vh;background:radial-gradient(ellipse at 50% 0,#35204f 0,#100d19 48%,#0b0a12 100%)!important;color:#f5efff!important}
+.member-page .site-header{background:rgba(13,11,23,.94)!important;border-bottom:1px solid #3c2c50}
+.member-page .header-inner{min-height:66px;flex-direction:row;align-items:center;padding:10px 16px}
+.member-page .brand-mark{background:linear-gradient(145deg,#b45aff,#6423df);color:white}
+.member-page .brand-copy strong{font-family:system-ui,sans-serif;color:#fff}
+.member-page .brand-copy small{display:none}
+.member-page .header-links a{color:#e7d8f7}
+.member-page .member-wrap{min-height:calc(100vh - 130px);display:grid;place-items:center;padding:30px 14px}
+.member-page .member-panel{width:min(100%,460px);padding:28px 24px;border:1px solid #49345f;border-radius:22px;background:linear-gradient(145deg,#211a2e,#15121e);box-shadow:0 18px 55px #0008}
+.member-page .member-panel h1{color:#fff;font-family:system-ui,sans-serif;font-weight:800}
+.member-page .member-lead{color:#bdb0ce}
+.member-page .member-symbol{color:#bd78ff}
+.member-page .member-form label{color:#e4d9f0}
+.member-page .member-form input{width:100%;box-sizing:border-box;padding:13px;border:1px solid #514064;border-radius:11px;background:#100d18;color:#fff}
+.member-page .member-submit{width:100%;border:0;border-radius:12px;padding:13px;background:linear-gradient(100deg,#8d36f5,#b44bff);color:#fff;font-weight:800}
+.member-page .member-switch a{color:#c78aff}
+.member-page .member-footer{background:#151220;color:#a99bbd}
