@@ -32,9 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Đăng nhập | Góc Hoàng Đạo</title><link rel="stylesheet" href="css/style.css?v=member1"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"></head>
+<title>Đăng nhập | Truyện Đêm</title><link rel="stylesheet" href="css/style.css?v=member1"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"></head>
 <body class="member-page">
-<header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">✦</span><span class="brand-copy"><strong>Góc Hoàng Đạo</strong><small>Khám phá câu chuyện của các vì sao</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="register.php">Đăng ký</a></nav></div></header>
+<header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">✦</span><span class="brand-copy"><strong>Truyện Đêm</strong><small>Mỗi đêm, một thế giới khác</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="register.php">Đăng ký</a></nav></div></header>
 <main class="member-wrap"><section class="member-panel"><div class="member-symbol">☾</div><h1>Chào mừng trở lại</h1><p class="member-lead">Đăng nhập để tiếp tục hành trình cùng những vì sao.</p>
 <?php if ($error): ?><p class="member-error" role="alert"><?= e($error) ?></p><?php endif; ?>
 <form method="post" class="member-form">
@@ -43,5 +43,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <label>Mật khẩu<input type="password" name="password" autocomplete="current-password" required></label>
 <button class="member-submit" type="submit">Đăng nhập</button>
 </form><p class="member-switch">Chưa có tài khoản? <a href="register.php">Đăng ký ngay</a></p>
-</section></main><footer class="member-footer">© 2026 Góc Hoàng Đạo</footer>
+</section></main><footer class="member-footer">© 2026 Truyện Đêm</footer>
 </body></html>
