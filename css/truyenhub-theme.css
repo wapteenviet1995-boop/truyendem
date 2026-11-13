@@ -1,0 +1,55 @@
+/* Truyen Dem - TruyenHub inspired responsive redesign */
+:root{--hub-bg:#0d0c18;--hub-panel:#1b192a;--hub-panel2:#211e32;--hub-purple:#963cff;--hub-purple2:#bd68ff;--hub-text:#f7f2ff;--hub-muted:#b9afcb}
+html{scroll-padding-bottom:100px}
+body.story-site{background:radial-gradient(ellipse at 50% -18%,#30204d 0,#100e1b 42%,#0b0a13 100%)!important;color:var(--hub-text)!important;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.story-site .site-header{position:sticky;top:0;z-index:80;background:rgba(13,11,23,.94)!important;border-bottom:1px solid rgba(190,145,255,.13);backdrop-filter:blur(18px);box-shadow:0 8px 28px #0006}
+.story-site .header-inner{max-width:1180px;min-height:68px;padding:10px 20px;flex-direction:row;align-items:center}
+.story-site .brand{gap:12px}.story-site .brand-mark{width:48px;height:48px;border-radius:15px;background:linear-gradient(145deg,#b45aff,#6423df);color:#fff;font-size:1.9rem;box-shadow:0 5px 20px #8c35ff55}
+.story-site .brand-copy strong{font-family:system-ui,sans-serif;font-size:1.28rem;font-weight:850;letter-spacing:-.04em;color:#fff}
+.story-site .brand-copy small{display:none}
+.story-site .header-links{gap:4px}.story-site .header-links a{border-radius:10px;padding:9px 11px;color:#e7def5;font-size:.86rem}
+.story-site .header-links a:hover{background:#322344;color:#d8a7ff}
+.mobile-menu-toggle{display:none;border:0;background:transparent;color:#fff;font-size:1.65rem;padding:5px 8px;cursor:pointer}
+.story-main{max-width:1180px!important;padding:18px 18px 105px!important}
+.story-site .story-hero{position:relative;isolation:isolate;min-height:300px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;margin:0 0 22px;padding:34px clamp(22px,5vw,48px);border:1px solid #6b4c91;border-radius:22px;background:linear-gradient(90deg,rgba(13,10,25,.96),rgba(18,12,32,.78) 48%,rgba(18,12,32,.16)),linear-gradient(120deg,#372052,#18152b 65%,#111421);box-shadow:0 16px 36px #0006}
+.story-site .story-hero:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(135deg,transparent 40%,rgba(147,60,255,.18))}
+.story-site .story-hero h1{max-width:580px;font-family:system-ui,sans-serif;font-size:clamp(2rem,6vw,3.2rem);line-height:1.12;font-weight:850;letter-spacing:-.045em;color:#fff}
+.story-site .story-hero p{max-width:500px;color:#e1d7ef;font-size:1rem;line-height:1.65}
+.story-site .story-kicker{display:inline-flex;align-self:flex-start;padding:7px 11px;border:1px solid #a66aff66;border-radius:30px;background:#25163c99;color:#d5aaff;letter-spacing:.08em;font-size:.7rem}
+.story-site .story-search{max-width:520px;flex-direction:row;gap:8px}.story-site .story-search input{border:1px solid #57436f;border-radius:13px;background:#171324;color:#fff}.story-site .story-search button,.story-site .story-btn{border-radius:13px;background:linear-gradient(100deg,#8d36f5,#b44bff);color:#fff;box-shadow:0 6px 18px #963cff44}
+.home-shortcuts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin:0 0 30px}
+.home-shortcuts a{min-height:94px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px 6px;border:1px solid #30283f;border-radius:16px;background:linear-gradient(145deg,#242033,#191725);color:#f5edff;text-decoration:none;box-shadow:0 8px 20px #0003;transition:.18s}
+.home-shortcuts a:hover{border-color:#9860d3;transform:translateY(-2px)}.home-shortcuts span{font-size:1.8rem;line-height:1.1}.home-shortcuts b{font-size:.86rem;font-weight:650}
+.story-site .story-section{margin:28px 0}.story-site .story-section-head{align-items:center;margin-bottom:15px}.story-site .story-section-head h2{font-family:system-ui,sans-serif;font-size:1.45rem;font-weight:800;letter-spacing:-.03em;color:#fff}.story-site .story-section-head>span,.story-site .story-section-head>a{color:#bd80ff}
+.story-site .story-categories a{background:#201b2d;border-color:#393047;color:#d8cce8}.story-site .story-categories a.active,.story-site .story-categories a:hover{background:#923cf0;border-color:#923cf0;color:#fff}
+.story-site .story-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:13px!important}
+.story-site .story-card{display:flex!important;flex-direction:column!important;min-height:0!important;border:1px solid #30283e!important;border-radius:15px!important;background:#1b1928!important;box-shadow:0 9px 24px #0005!important;overflow:hidden}
+.story-site .story-card-cover{display:block!important;flex:0 0 auto!important;width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:3/4!important;background:#2a2038!important}
+.story-site .story-card-body{padding:10px!important;display:flex;flex:1;flex-direction:column}
+.story-site .story-card h3{font-family:system-ui,sans-serif!important;font-size:.88rem!important;line-height:1.35!important;margin:3px 0 6px!important}
+.story-site .story-card p{font-size:.73rem!important;line-height:1.45!important;-webkit-line-clamp:2!important;color:#b8aec8!important}
+.story-site .story-card-meta{font-size:.68rem!important;color:#a99bbd!important;border-top:1px solid #342c41!important}
+.story-site .story-tag{font-size:.65rem!important;color:#c28bff!important}
+.story-site .leaderboard-section{padding:18px;border:1px solid #332a43;border-radius:18px;background:#191624}
+.story-site .leaderboard-heading h2{color:#fff}.story-site .leaderboard-tab{border-radius:30px!important}.story-site .leaderboard-tab.is-active{background:#8d39ee!important;color:#fff!important}
+.story-site .site-footer{background:#151220!important;border-top:1px solid #30263e}
+.story-site .bottom-nav{z-index:100!important;display:flex!important;justify-content:space-around;gap:2px!important;padding:8px 5px calc(8px + env(safe-area-inset-bottom,0px))!important;background:rgba(17,14,27,.96)!important;border-top:1px solid #4a365e!important;box-shadow:0 -8px 28px #0008!important;backdrop-filter:blur(18px)}
+.story-site .bottom-nav a,.story-site .story-bottom-nav a{flex:1 1 20%!important;min-width:0!important;min-height:58px!important;padding:5px 2px!important;gap:3px!important;border-radius:10px!important;background:transparent!important;box-shadow:none!important;color:#c7bdd5!important;font-size:.68rem!important;font-weight:600!important}
+.story-site .bottom-nav a span{font-size:1.45rem!important;color:#d5c9e4!important}.story-site .bottom-nav a.is-current,.story-site .bottom-nav a:focus-visible{color:#c28aff!important}.story-site .bottom-nav a.is-current span{color:#a64dff!important}
+.story-site .bottom-nav a:nth-child(n){background:transparent!important}
+.story-site .story-empty{background:#1b1928;border-color:#332a43}
+@media(max-width:700px){
+ .story-site .header-inner{min-height:64px;padding:8px 14px}.story-site .header-links{display:none;position:absolute;top:100%;left:0;right:0;padding:12px 14px 16px;background:#15111f;border-bottom:1px solid #3b2d4e;box-shadow:0 12px 22px #0008;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .story-site .header-links.is-open{display:grid}.story-site .header-links a{background:#211b2d;padding:10px 12px}.mobile-menu-toggle{display:block}
+ .story-main{padding:14px 12px 105px!important}
+ .story-site .story-hero{min-height:255px;padding:23px 18px;border-radius:17px;background-position:center}
+ .story-site .story-hero h1{font-size:2rem}.story-site .story-hero p{font-size:.86rem;max-width:310px;margin:8px 0}
+ .story-site .story-search{margin-top:13px}.story-site .story-search input{padding:11px;font-size:.85rem}.story-site .story-search button{padding:10px 13px;font-size:.82rem}
+ .home-shortcuts{gap:9px;margin-bottom:24px}.home-shortcuts a{min-height:88px;border-radius:13px}.home-shortcuts span{font-size:1.65rem}.home-shortcuts b{font-size:.76rem}
+ .story-site .story-section-head h2{font-size:1.2rem}
+ .story-site .story-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important}
+ .story-site .story-card{border-radius:12px!important}.story-site .story-card-body{padding:8px!important}
+ .story-site .story-card h3{font-size:.76rem!important}.story-site .story-card p{display:none!important}.story-site .story-card-meta{font-size:.62rem!important;line-height:1.35!important;padding-top:6px!important}
+ .story-site .story-tag{font-size:.58rem!important}
+}
+@media(max-width:380px){.home-shortcuts{gap:7px}.home-shortcuts a{min-height:80px}.story-site .story-grid{gap:7px!important}.story-site .story-card-body{padding:6px!important}.story-site .story-card h3{font-size:.7rem!important}}
