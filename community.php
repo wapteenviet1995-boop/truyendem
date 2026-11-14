@@ -120,7 +120,8 @@ function community_h(?string $value): string { return htmlspecialchars($value ??
 ?>
 <!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cộng đồng | Truyện Đêm</title><link rel="stylesheet" href="css/style.css?v=socialdiary1"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"></head>
+<title>Cộng đồng | Truyện Đêm</title><link rel="stylesheet" href="css/style.css?v=socialdiary1"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1">
+</head>
 <body class="blog-page community-page">
 <header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">✦</span><span class="brand-copy"><strong>Truyện Đêm</strong><small>Mỗi đêm, một thế giới khác</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="index.php#library">Thư viện truyện</a><?php if ($currentId): ?><a href="library.php">Tủ sách</a><a href="notifications.php">Thông báo</a><?php endif; ?><a href="friends.php">Kết bạn</a><a href="diary.php">Nhật ký</a><a href="messages.php">Tin nhắn</a><a href="index.php#library">Thư viện truyện</a><?php if ($currentId): ?><a href="account.php">Tài khoản</a><form class="member-nav-logout" method="post" action="logout.php"><input type="hidden" name="csrf" value="<?= community_h($_SESSION['member_csrf']) ?>"><button type="submit">Đăng xuất</button></form><?php else: ?><a href="login.php">Đăng nhập</a><a href="register.php">Đăng ký</a><?php endif; ?></nav></div></header>
 <main class="community-main">
