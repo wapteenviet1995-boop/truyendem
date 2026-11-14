@@ -13,8 +13,9 @@ if ($id) {
 if (empty($_SESSION['csrf'])) { $_SESSION['csrf'] = bin2hex(random_bytes(32)); }
 ?><!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title><?= $id ? 'Sửa bài viết' : 'Đăng bài mới' ?> | Góc Hoàng Đạo</title><link rel="stylesheet" href="../css/style.css?v=20261110"></head>
-<body><main class="admin-wrap"><section class="admin-panel admin-wide post-editor">
+<title><?= $id ? 'Sửa bài viết' : 'Đăng bài mới' ?> | Góc Hoàng Đạo</title><link rel="stylesheet" href="../css/style.css?v=20261110"><link rel="stylesheet" href="../css/admin-white.css?v=20261114-white1">
+</head>
+<body class="admin-theme"><main class="admin-wrap"><section class="admin-panel admin-wide post-editor">
 <div class="admin-top"><h1><?= $id ? 'Sửa bài viết' : 'Đăng bài mới' ?></h1><a href="index.php">← Quản lý bài viết</a></div>
 <p class="editor-help">Soạn nội dung, thêm ảnh minh họa rồi chọn lưu nháp hoặc xuất bản.</p>
 <form method="post" action="save.php" enctype="multipart/form-data">
