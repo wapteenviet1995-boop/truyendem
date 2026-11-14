@@ -1,0 +1,36 @@
+/* TRUYEN DEM — clean white admin workspace */
+html,body{background:#f4f5f8!important;color:#24232b!important;color-scheme:light}
+body.admin-theme{background:#f4f5f8!important;color:#24232b!important;min-height:100vh}
+body.admin-theme header,body.admin-theme nav,body.admin-theme footer{background:#fff!important;color:#292632!important;border-color:#e6e4eb!important}
+body.admin-theme main,body.admin-theme .admin-wrap,body.admin-theme .admin-story-wrap,
+body.admin-theme .container,body.admin-theme .wrap{background:transparent!important;color:#24232b!important}
+body.admin-theme section,body.admin-theme article,body.admin-theme .panel,body.admin-theme .card,
+body.admin-theme .box,body.admin-theme .admin-card,body.admin-theme .admin-panel,
+body.admin-theme .admin-story-panel,body.admin-theme .admin-story-item{
+ background:#fff!important;color:#292632!important;border:1px solid #e4e2e9!important;
+ border-radius:12px;box-shadow:0 3px 14px #1713230a
+}
+body.admin-theme h1,body.admin-theme h2,body.admin-theme h3,body.admin-theme h4,
+body.admin-theme strong,body.admin-theme label{color:#292632!important}
+body.admin-theme p,body.admin-theme small,body.admin-theme .muted{color:#777382!important}
+body.admin-theme a{color:#6941a5}
+body.admin-theme input,body.admin-theme textarea,body.admin-theme select{
+ background:#fff!important;color:#25232c!important;border:1px solid #d9d6e0!important;
+ border-radius:8px!important;box-shadow:none
+}
+body.admin-theme input:focus,body.admin-theme textarea:focus,body.admin-theme select:focus{
+ outline:none;border-color:#8b5cf6!important;box-shadow:0 0 0 3px #8b5cf61c!important
+}
+body.admin-theme button,body.admin-theme .btn,body.admin-theme .admin-story-btn{
+ background:#7546b8!important;color:#fff!important;border:1px solid #7546b8!important;border-radius:8px!important
+}
+body.admin-theme button.danger,body.admin-theme .danger{background:#fff0f1!important;color:#a52e42!important;border-color:#f0cbd1!important}
+body.admin-theme table{background:#fff!important;color:#292632!important;border-color:#e6e3eb!important}
+body.admin-theme th{background:#f4f1f8!important;color:#4d3b62!important}
+body.admin-theme td,body.admin-theme th{border-color:#e8e5ed!important}
+body.admin-theme .admin-story-tabs a{background:#f7f6f9!important;color:#554b63!important;border-color:#e2deea!important}
+body.admin-theme .admin-story-tabs a.active{background:#eee7f8!important;color:#643b9c!important;border-color:#cbb7e4!important}
+body.admin-theme #chapter-panel,body.admin-theme #chapter-panel .admin-story-item{background:#fff!important}
+body.admin-theme #chapter-content,body.admin-theme #short-content{
+ background:#fff!important;color:#292632!important;border-color:#d9d5e0!important
+}
