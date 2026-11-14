@@ -1,0 +1,37 @@
+/* TRUYEN DEM — matte black public website theme */
+:root{color-scheme:dark;--td-bg:#09090d;--td-panel:#121218;--td-panel-2:#181820;--td-line:#292832;--td-text:#eeeaf4;--td-muted:#a7a1b1;--td-purple:#b58be8;--td-purple-2:#8d63c5}
+html,body{background:#09090d!important;color:#eeeaf4!important}
+body.story-site,body.blog-page,body.member-page{background:#09090d!important;color:#eeeaf4!important}
+body.story-site main,body.blog-page main,body.member-page main{color:#eeeaf4}
+body.story-site header,body.blog-page header,body.member-page header,
+body.story-site .site-header,body.blog-page .site-header,body.member-page .site-header,
+body.story-site .main-header,body.blog-page .main-header{background:#0c0c12!important;border-color:#292832!important}
+body.story-site nav,body.blog-page nav,body.member-page nav,
+body.story-site .bottom-nav,body.blog-page .bottom-nav,body.member-page .bottom-nav,
+body.story-site .mobile-nav,body.blog-page .mobile-nav{background:#100f17!important;border-color:#30283a!important}
+body.story-site .card,body.story-site .story-card,body.story-site .post-card,
+body.story-site .panel,body.story-site .box,body.story-site .content-box,
+body.blog-page .card,body.blog-page .post-card,body.blog-page .panel,
+body.member-page .card,body.member-page .panel,
+body.story-site article,body.blog-page article,body.member-page article{
+ background:#14131b!important;color:#eeeaf4!important;border-color:#302b39!important;box-shadow:0 8px 24px #0004
+}
+body.story-site h1,body.story-site h2,body.story-site h3,body.story-site h4,
+body.blog-page h1,body.blog-page h2,body.blog-page h3,body.blog-page h4,
+body.member-page h1,body.member-page h2,body.member-page h3,body.member-page h4{color:#f4effb}
+body.story-site p,body.blog-page p,body.member-page p,
+body.story-site .muted,body.blog-page .muted,body.member-page .muted{color:#aaa4b3}
+body.story-site a,body.blog-page a,body.member-page a{color:#c5a0f1}
+body.story-site input,body.story-site textarea,body.story-site select,
+body.blog-page input,body.blog-page textarea,body.blog-page select,
+body.member-page input,body.member-page textarea,body.member-page select{
+ background:#0d0c12!important;color:#f4effb!important;border:1px solid #393344!important;border-radius:9px
+}
+body.story-site button,body.blog-page button,body.member-page button,
+body.story-site .btn,body.blog-page .btn,body.member-page .btn{
+ border-radius:9px
+}
+body.story-site footer,body.blog-page footer,body.member-page footer{background:#0c0b11!important;color:#aaa4b3!important;border-color:#292832!important}
+body.story-site hr,body.blog-page hr,body.member-page hr{border-color:#302b39}
+body.story-site .story-content,body.story-site .chapter-content,body.story-site .reader-content,
+body.story-site .reading-content{background:#111016!important;color:#e9e3ee!important}
