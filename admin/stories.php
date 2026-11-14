@@ -199,6 +199,7 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 .admin-story-tabs a.active{background:#7546c8;border-color:#9b76df;color:#fff;font-weight:700}
 @media(max-width:600px){.admin-story-wrap{padding:0 10px}.admin-story-panel{padding:14px}}
 </style>
+<link rel="stylesheet" href="../css/story-editor.css?v=20261114-1">
 </head>
 <body class="story-site">
 <main class="admin-story-wrap">
