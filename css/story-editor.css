@@ -1,0 +1,246 @@
+/* Truyen Dem — focused writing layout for long stories */
+.story-site .admin-story-wrap,
+.story-site .submit-wrap{
+  width:min(100% - 28px, 980px);
+  max-width:980px;
+  margin:24px auto 70px;
+  padding:0 0 48px;
+  color:#eee9f6;
+}
+.story-site .admin-story-panel,
+.story-site .submit-panel{
+  background:linear-gradient(155deg,#191522 0%,#12111a 100%);
+  border:1px solid #352b46;
+  border-radius:18px;
+  padding:clamp(16px,3vw,26px);
+  margin:0 0 18px;
+  box-shadow:0 14px 38px #0003;
+}
+.story-site .admin-story-panel h1,
+.story-site .submit-panel h1{
+  font-size:clamp(1.45rem,4vw,2rem);
+  line-height:1.25;
+  margin:0 0 8px;
+  color:#f6efff;
+}
+.story-site .admin-story-panel h2,
+.story-site .submit-panel h2{
+  font-size:1.18rem;
+  line-height:1.4;
+  margin:0 0 16px;
+  color:#e8d9ff;
+}
+.story-site .admin-story-panel p,
+.story-site .submit-panel p{color:#aaa2b7;line-height:1.65}
+.story-site .admin-story-grid,
+.story-site .submit-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:4px 16px;
+}
+.story-site .admin-story-panel label,
+.story-site .submit-form label{
+  display:block;
+  min-width:0;
+  margin:13px 0;
+  color:#ddd4eb;
+  font-size:.91rem;
+  font-weight:650;
+  line-height:1.5;
+}
+.story-site .admin-story-panel input:not([type=file]),
+.story-site .admin-story-panel textarea,
+.story-site .admin-story-panel select,
+.story-site .submit-form input,
+.story-site .submit-form textarea,
+.story-site .submit-form select{
+  display:block;
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  margin-top:7px;
+  padding:13px 14px;
+  border:1px solid #453a55;
+  border-radius:11px;
+  background:#0d0b13;
+  color:#f7f2ff;
+  font:400 16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;
+  outline:none;
+}
+.story-site .admin-story-panel input:focus,
+.story-site .admin-story-panel textarea:focus,
+.story-site .admin-story-panel select:focus,
+.story-site .submit-form input:focus,
+.story-site .submit-form textarea:focus,
+.story-site .submit-form select:focus{
+  border-color:#b18be8;
+  box-shadow:0 0 0 3px #a879e826;
+}
+.story-site .admin-story-panel textarea,
+.story-site .submit-form textarea{
+  min-height:150px;
+  resize:vertical;
+  line-height:1.8;
+  tab-size:4;
+}
+.story-site #chapter-panel,
+.story-site #submit-serial{
+  border-color:#6b518d;
+  background:linear-gradient(155deg,#21192d 0%,#14121c 70%);
+}
+.story-site #chapter-panel h2,
+.story-site #submit-serial > label:first-child{
+  color:#e5d1ff;
+}
+.story-site #chapter-content,
+.story-site #submit-serial textarea[name="chapter_content"]{
+  min-height:clamp(380px,62vh,680px);
+  padding:19px 18px;
+  background:#0b0a11;
+  border:1px solid #554267;
+  border-radius:13px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:17px;
+  line-height:1.95;
+  letter-spacing:.01em;
+  color:#f0eaf7;
+}
+.story-site #short-content,
+.story-site #submit-short textarea[name="short_content"]{
+  min-height:clamp(300px,48vh,560px);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:17px;
+  line-height:1.9;
+}
+.story-site .admin-story-panel input[type=file]{
+  width:100%;
+  box-sizing:border-box;
+  padding:10px;
+  border:1px dashed #59486d;
+  border-radius:10px;
+  background:#15111d;
+  color:#d8cce8;
+}
+.story-site .admin-story-panel small.muted,
+.story-site .submit-muted{
+  display:block;
+  color:#9f96ad;
+  font-size:.82rem;
+  line-height:1.5;
+}
+.story-site .admin-story-actions{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px;
+  margin-top:18px;
+}
+.story-site .admin-story-actions button,
+.story-site .admin-story-panel button,
+.story-site .admin-story-btn,
+.story-site .submit-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:11px 18px;
+  border:1px solid transparent;
+  border-radius:11px;
+  background:linear-gradient(135deg,#c5a2f2,#9870ce);
+  color:#171020;
+  font-size:.92rem;
+  font-weight:800;
+  text-decoration:none;
+  cursor:pointer;
+}
+.story-site .admin-story-actions .danger,
+.story-site .admin-story-panel button.danger{
+  background:#512632;
+  border-color:#854153;
+  color:#ffe4eb;
+}
+.story-site .image-upload-trigger{
+  min-height:40px!important;
+  margin:0 0 12px;
+  background:#2a2137!important;
+  border:1px solid #665080!important;
+  color:#e7d7fb!important;
+}
+.story-site .image-upload-status{
+  display:block;
+  margin:12px 0;
+  color:#d4b9ff;
+  font-size:.85rem;
+}
+.story-site .admin-story-item,
+.story-site .submit-story-item{
+  padding:15px;
+  margin:12px 0;
+  border:1px solid #393044;
+  border-radius:13px;
+  background:#100e17;
+}
+.story-site .admin-story-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:18px 0 4px;
+}
+.story-site .admin-story-tabs a{
+  padding:9px 13px;
+  border:1px solid #493b5d;
+  border-radius:999px;
+  background:#100e16;
+  color:#dcd1eb;
+  text-decoration:none;
+  font-size:.85rem;
+}
+.story-site .admin-story-tabs a.active{
+  background:#8057b4;
+  border-color:#b18be8;
+  color:#fff;
+}
+.story-site .admin-story-notice,
+.story-site .submit-flash,
+.story-site .submit-error{
+  padding:12px 14px;
+  border-radius:11px;
+  line-height:1.55;
+}
+.story-site .admin-story-notice,
+.story-site .submit-flash{background:#1c3027;color:#c9f2d8}
+.story-site .submit-error{background:#3b2029;color:#ffd1da}
+@media(max-width:640px){
+  .story-site .admin-story-wrap,
+  .story-site .submit-wrap{
+    width:auto;
+    margin:14px 10px 55px;
+    padding:0 0 30px;
+  }
+  .story-site .admin-story-panel,
+  .story-site .submit-panel{
+    padding:15px;
+    border-radius:15px;
+    margin-bottom:13px;
+  }
+  .story-site .admin-story-grid,
+  .story-site .submit-grid{grid-template-columns:minmax(0,1fr);gap:0}
+  .story-site #chapter-content,
+  .story-site #submit-serial textarea[name="chapter_content"]{
+    min-height:58vh;
+    padding:16px 14px;
+    font-size:16px;
+    line-height:1.85;
+  }
+  .story-site #short-content,
+  .story-site #submit-short textarea[name="short_content"]{
+    min-height:48vh;
+    font-size:16px;
+  }
+  .story-site .admin-story-actions button,
+  .story-site .admin-story-panel button,
+  .story-site .admin-story-btn,
+  .story-site .submit-btn{width:100%;box-sizing:border-box}
+  .story-site .admin-story-tabs{gap:6px}
+  .story-site .admin-story-tabs a{font-size:.78rem;padding:8px 10px}
+}
