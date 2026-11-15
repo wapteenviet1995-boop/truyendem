@@ -542,3 +542,180 @@ Từ cuối con đường, tiếng máy ảnh lại vang lên.',
 'short',
 'published'
 );
+
+INSERT IGNORE INTO stories
+(title, slug, author, description, short_content, category, story_type, story_kind, status)
+VALUES
+(
+'Căn Phòng Trọ Số 9',
+'can-phong-tro-so-9',
+'Truyện Đêm',
+'Người thuê căn phòng trọ giá rẻ được dặn không khóa cửa nhà vệ sinh. Đằng sau lời dặn ấy là câu chuyện về hai mẹ con mắc kẹt trong một đêm hỏa hoạn.',
+'Căn phòng trọ số 9 nằm cuối dãy nhà, sát bức tường rêu phủ của một bệnh viện cũ. Giá thuê rẻ hơn những phòng khác gần một nửa. Chủ nhà chỉ có một yêu cầu: người thuê không được khóa cửa nhà vệ sinh từ bên trong.
+
+Nam chuyển đến đó vào đầu tháng mười. Cậu làm ca đêm ở cửa hàng tiện lợi, ban ngày ngủ bù nên chẳng mấy khi gặp hàng xóm. Căn phòng nhỏ, có một chiếc giường đơn, bàn gỗ và nhà vệ sinh ngăn bằng cánh cửa nhựa mờ. Trên cánh cửa có một vết xước dài từ tay nắm xuống gần sàn.
+
+Ngày nhận phòng, bà chủ tên Liên đưa chìa khóa rồi nhắc lại:
+
+“Đi vệ sinh thì cứ khép cửa thôi, đừng gài chốt. Cái chốt bị hỏng, gài vào dễ kẹt.”
+
+Nam thử đẩy chốt. Nó vẫn hoạt động bình thường. Cậu nghĩ bà chủ muốn phòng trường hợp người thuê ngất trong đó nên không hỏi thêm.
+
+Đêm đầu tiên trôi qua yên ổn. Đến đêm thứ hai, khi Nam đang nằm xem điện thoại, cậu nghe tiếng nước chảy trong nhà vệ sinh. Cậu ngẩng đầu. Vòi nước đã được khóa, nhưng tiếng nước vẫn róc rách như có ai đang rửa tay.
+
+Nam gọi:
+
+“Ai trong đó vậy?”
+
+Tiếng nước dừng lại.
+
+Cậu đứng dậy, đẩy cửa. Bên trong không có ai. Sàn khô, bồn rửa sạch sẽ. Chỉ có chiếc gương phía trên lavabo phủ một lớp hơi nước mỏng. Trên mặt gương xuất hiện một dòng chữ viết bằng ngón tay:
+
+“Đừng khóa cửa.”
+
+Nam lau đi, trở về giường. Cậu cho rằng có thể người thuê trước nghịch ngợm để lại dấu vết, hoặc hơi nước từ đường ống tạo thành hình kỳ lạ.
+
+Đêm thứ ba, cậu đi làm về muộn. Vừa mở cửa phòng, Nam đã thấy đôi dép của mình nằm ngay ngắn trước nhà vệ sinh, mũi dép hướng vào trong. Cậu nhớ rõ trước khi đi làm đã để chúng cạnh giường.
+
+Cậu cúi xuống nhặt dép. Bên trong nhà vệ sinh vang lên ba tiếng gõ.
+
+Cộc. Cộc. Cộc.
+
+Nam đứng thẳng người.
+
+“Bà Liên?”
+
+Không ai đáp.
+
+Cậu mở cửa. Chiếc đèn nhỏ trên trần chớp tắt. Trong gương, Nam thấy mình đứng trước lavabo, nhưng hình phản chiếu chậm hơn cậu một nhịp. Cậu giơ tay phải lên. Hình trong gương vẫn để tay xuôi xuống. Một giây sau, nó mới từ từ giơ tay.
+
+Nam lùi lại.
+
+Hình phản chiếu không lùi. Nó nhìn thẳng vào cậu, rồi đưa ngón tay lên môi, ra hiệu im lặng.
+
+Đèn tắt phụt.
+
+Nam đóng sầm cửa, bật toàn bộ đèn trong phòng và gọi cho bà chủ. Bà Liên không nghe máy. Cậu nhắn tin kể chuyện, nhưng tin nhắn chỉ hiện một dấu tích. Đến gần sáng, cậu mới thiếp đi.
+
+Trong giấc mơ, Nam thấy mình đứng trong một căn phòng bệnh viện. Một người phụ nữ nằm trên giường, mặt phủ khăn trắng. Bên cạnh giường là một bé gái mặc áo bệnh nhân, chân trần, tóc cắt ngang vai. Cô bé nhìn Nam và hỏi:
+
+“Chú có thấy mẹ cháu trong gương không?”
+
+Nam tỉnh dậy, mồ hôi lạnh ướt lưng áo.
+
+Sáng hôm sau, cậu gặp bà Liên ở đầu dãy trọ. Bà đang quét lá. Nam hỏi thẳng về căn phòng số 9 và chuyện nhà vệ sinh. Bà cụ ngừng chổi, nhìn cậu hồi lâu.
+
+“Cậu đã nghe tiếng nước rồi à?”
+
+Nam gật đầu.
+
+Bà Liên thở dài, kể rằng trước đây căn phòng ấy từng là phòng của một y tá tên Hường. Bệnh viện phía sau đã đóng cửa sau một vụ hỏa hoạn. Trong đêm cháy, Hường đưa con gái vào phòng vệ sinh để trốn khói. Cánh cửa bị kẹt chốt. Khi lính cứu hỏa tìm được, người mẹ đã chết, còn đứa bé mất tích. Không ai biết nó đã thoát ra ngoài hay bị vùi dưới đống đổ nát.
+
+“Vậy sao bà vẫn cho thuê?” Nam hỏi.
+
+“Vì ban ngày chẳng có chuyện gì. Chỉ khi đêm xuống, nó mới tìm người mở cửa.”
+
+Nam quyết định chuyển đi ngay. Nhưng bà Liên nói hợp đồng đã đóng tiền một tháng, nếu muốn trả phòng phải báo trước. Nam bực bội, bảo sẽ tự chịu mất tiền. Bà cụ không ngăn, chỉ dặn cậu đừng sử dụng nhà vệ sinh lần cuối trước khi rời đi.
+
+Nam thu dọn đồ đạc trong ngày. Đến tối, cậu gọi xe chuyển nhà. Tài xế báo còn mười phút nữa mới đến. Nam ngồi trên giường, cố không nhìn về phía cánh cửa nhựa.
+
+Đúng mười hai giờ, tiếng nước chảy vang lên.
+
+Lần này, tiếng nước không phát ra từ vòi. Nó giống như có ai đang ngâm mình trong bồn, khuấy nước bằng hai bàn tay nhỏ.
+
+Một giọng bé gái vang lên:
+
+“Chú ơi, mẹ cháu đâu?”
+
+Nam bịt tai.
+
+“Chú đưa mẹ cháu về được không?”
+
+Cậu bật dậy, lao đến cửa phòng. Tay nắm cửa xoay nhưng cửa không mở. Cậu kéo mạnh. Cánh cửa vẫn đứng im, như bị khóa từ bên ngoài.
+
+Phía sau, cửa nhà vệ sinh từ từ hé ra.
+
+Nam không quay đầu. Cậu đập cửa phòng, gọi hàng xóm. Không ai trả lời. Dãy trọ im lìm, dù cậu biết vài phòng vẫn có người ở.
+
+Giọng bé gái tiếp tục:
+
+“Chú nhìn cháu đi. Cháu lạnh lắm.”
+
+Nam quay lại.
+
+Một bàn tay nhỏ đang bám trên mép cửa nhà vệ sinh. Những ngón tay trắng bệch, móng tay tím tái. Rồi một cái đầu từ từ nhô ra. Cô bé trong giấc mơ đứng đó, tóc ướt dính vào má, trên cổ có vệt đen như bị khói ám.
+
+“Chú thấy mẹ cháu chưa?”
+
+Nam lắc đầu.
+
+Cô bé nhìn vào chiếc gương. Trong gương, phía sau Nam xuất hiện một người phụ nữ mặc đồng phục y tá cũ. Mặt bà bị che bởi một mảng da cháy sẫm. Bà đặt hai tay lên vai cậu.
+
+“Con đã bảo đừng khóa cửa,” người phụ nữ nói.
+
+Nam vùng vẫy. Cậu nhìn thấy cánh cửa phòng trọ trong gương đang mở rộng, nhưng ngoài đời nó vẫn đóng kín. Hình phản chiếu của cậu bỗng quay sang nhìn cậu, miệng mấp máy:
+
+“Đừng để họ ra.”
+
+Nam không hiểu. Cậu đập chiếc gương bằng khuỷu tay. Kính vỡ tung, rơi xuống lavabo và nền gạch. Tiếng nước lập tức ngừng lại.
+
+Cánh cửa phòng bật mở.
+
+Bà Liên đứng ngoài, tay cầm một chiếc chìa khóa lớn. Bà kéo Nam ra hành lang, đóng cửa phòng số 9 rồi tra chìa khóa vào ổ. Bà không nhìn vào trong, chỉ lẩm nhẩm một câu gì đó.
+
+Nam thở hổn hển:
+
+“Bà biết chuyện này từ trước?”
+
+Bà Liên gật đầu.
+
+“Con bé không tìm người để hại. Nó chỉ muốn tìm mẹ. Nhưng người mẹ đã chết rồi. Mỗi lần có ai nhìn thấy nó trong gương, nó tưởng người đó có thể đưa mẹ về.”
+
+“Còn người phụ nữ?”
+
+Bà Liên cúi đầu.
+
+“Có lẽ bà ấy vẫn đứng đợi bên kia cánh cửa.”
+
+Xe chuyển nhà gọi đến. Nam rời khỏi dãy trọ ngay trong đêm. Cậu không lấy lại tiền cọc, cũng không quay đầu nhìn căn phòng số 9.
+
+Một tuần sau, Nam nhận được cuộc gọi từ số lạ. Đầu dây bên kia là giọng bà Liên, run rẩy:
+
+“Cậu còn giữ chìa khóa phòng không?”
+
+Nam kiểm tra túi. Chiếc chìa khóa phòng số 9 vẫn nằm trong ngăn nhỏ của ba lô. Cậu đã quên trả lại.
+
+“Cháu sẽ gửi chuyển phát cho bà.”
+
+“Đừng mở cửa nữa,” bà Liên nói. “Có người mới thuê phòng. Nó bảo nghe tiếng trẻ con khóc trong nhà vệ sinh.”
+
+Cuộc gọi bị ngắt.
+
+Nam nhìn chiếc chìa khóa. Trên thân kim loại có một vệt nước nhỏ đang chảy xuống, dù nó vừa nằm trong túi khô.
+
+Tối hôm đó, cậu đặt chìa khóa lên bàn và chụp ảnh gửi cho bà Liên. Khi xem lại ảnh, Nam thấy phía sau chìa khóa có một dòng chữ nhỏ khắc trên mặt bàn:
+
+“Chú ơi, mở cửa cho mẹ cháu.”
+
+Cậu xóa ảnh, ném chìa khóa vào thùng rác ngoài phố.
+
+Sáng hôm sau, chiếc chìa khóa nằm lại trên bàn, bên cạnh điện thoại. Cùng lúc đó, điện thoại nhận được một tin nhắn từ số của bà Liên:
+
+“Cậu đừng trả chìa khóa. Căn phòng không còn ở đó nữa.”
+
+Nam gọi lại ngay. Thuê bao không liên lạc được.
+
+Cậu mở ứng dụng bản đồ, tìm địa chỉ dãy trọ. Vị trí hiện lên là khu đất trống phía sau bệnh viện cũ. Dãy nhà trọ chưa từng tồn tại trên bản đồ.
+
+Nam nhìn chiếc chìa khóa. Ở mặt sau, một giọt nước đen từ từ trồi ra từ khe kim loại. Rồi tiếng nước chảy vang lên trong phòng tắm căn hộ mới của cậu.
+
+Cánh cửa nhà vệ sinh khép hờ.
+
+Từ bên trong, giọng bé gái thì thầm:
+
+“Chú ơi, lần này chú đừng khóa cửa nhé.”',
+'Kinh dị',
+'text',
+'short',
+'published'
+);
