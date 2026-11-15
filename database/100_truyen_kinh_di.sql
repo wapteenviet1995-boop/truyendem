@@ -719,3 +719,230 @@ Từ bên trong, giọng bé gái thì thầm:
 'short',
 'published'
 );
+
+INSERT IGNORE INTO stories
+(title, slug, author, description, short_content, category, story_type, story_kind, status)
+VALUES
+(
+'Ca Trực Đêm Trên Đồi Mù',
+'ca-truc-dem-tren-doi-mu',
+'Truyện Đêm',
+'Người trực trạm khí tượng trên đồi hẻo lánh được dặn không mở cửa sau hai giờ sáng. Những tiếng gọi trong sương lại mang giọng của người thân đã mất.',
+'Khi nhận ca trực đêm ở trạm khí tượng trên đồi Mù, Phúc được người quản lý dặn không được mở cửa phòng quan sát sau hai giờ sáng. Anh nghĩ đó chỉ là quy định an toàn vì khu vực thường có gió lớn. Trạm nằm cách thị trấn gần mười cây số, quanh năm phủ sương. Ban ngày, từ cửa sổ có thể nhìn thấy thung lũng và con đường ngoằn ngoèo dẫn xuống núi. Ban đêm, tất cả biến mất trong một màu trắng đục.
+
+Người quản lý tên Vinh đưa cho Phúc chìa khóa, sổ ghi chép và chiếc radio cũ.
+
+“Máy phát điện có thể chập chờn. Nếu nghe ai gọi ngoài cửa, cứ mặc kệ. Trên đồi không có nhà dân.”
+
+Phúc hỏi vì sao lại có người gọi.
+
+Ông Vinh chỉ đáp:
+
+“Cứ nhớ lời tôi.”
+
+Đêm đầu tiên yên tĩnh. Phúc kiểm tra nhiệt độ, tốc độ gió rồi ngồi đọc sách. Gần hai giờ, radio phát ra tiếng rè. Một giọng phụ nữ yếu ớt chen vào:
+
+“Trạm Mù nghe rõ không? Có ai ở đó không?”
+
+Phúc nhấc micro.
+
+“Đây là trạm khí tượng. Ai đang gọi?”
+
+Không có câu trả lời. Chỉ có tiếng thở gấp, sau đó là ba tiếng gõ vang lên từ cửa chính.
+
+Cộc. Cộc. Cộc.
+
+Phúc nhớ lời ông Vinh, không đứng dậy. Tiếng gõ lặp lại, lần này nhẹ hơn. Một giọng nữ cất lên ngay ngoài cửa:
+
+“Anh ơi, cho tôi vào trú mưa.”
+
+Phúc nhìn qua ô kính. Sương dày đến mức chỉ thấy một khoảng trắng. Anh bật đèn hiên. Không có ai.
+
+Sáng hôm sau, anh kể chuyện cho ông Vinh. Ông già đang ghi số liệu, bàn tay bỗng khựng lại.
+
+“Cậu có trả lời radio không?”
+
+“Có. Tôi hỏi ai gọi.”
+
+Ông Vinh thở dài.
+
+“Lần sau đừng hỏi. Nó sẽ biết trong trạm có người.”
+
+Phúc định hỏi thêm nhưng ông đã quay đi.
+
+Ngày thứ hai, mưa lớn kéo đến từ chiều. Đường lên đồi bị sạt một đoạn nên Phúc phải ở lại trạm. Anh kiểm tra cửa sổ, khóa cửa chính rồi chuẩn bị đồ ăn. Đến gần nửa đêm, máy đo gió đột ngột báo tốc độ bằng không. Kim đồng hồ đứng yên dù ngoài trời cây cối đang nghiêng ngả.
+
+Radio bật lên dù công tắc đang tắt.
+
+“Anh Phúc…”
+
+Anh giật mình. Giọng nói lần này gọi đúng tên anh.
+
+“Anh Phúc, em biết anh đang ở trong đó.”
+
+Phúc đứng bất động. Giọng phụ nữ tiếp tục:
+
+“Em là Hương. Anh nhớ em không?”
+
+Hương là em gái Phúc, mất tích khi mười sáu tuổi trong một chuyến đi dã ngoại ở vùng núi. Gia đình tìm kiếm nhiều tháng nhưng không có kết quả. Phúc chưa từng kể chuyện đó với ai ở trạm.
+
+“Anh mở cửa đi. Em lạnh lắm.”
+
+Anh lùi khỏi radio. Một tiếng gõ vang lên từ cửa sổ phía sau. Phúc quay lại. Bên ngoài kính, một cô gái đứng sát vào cửa, tóc ướt bết vào mặt. Cô mặc chiếc áo khoác vàng Hương từng mặc trong ngày mất tích.
+
+Phúc không dám nhìn lâu. Anh kéo rèm, tắt đèn phòng quan sát rồi ngồi co ro cạnh bàn.
+
+Suốt đêm, tiếng gõ xuất hiện ở nhiều nơi: cửa chính, cửa sổ, mái tôn và cả mặt kính phía trên đầu. Có lúc tiếng gõ vang lên từ bên trong tủ hồ sơ.
+
+Sáng ra, Phúc mở cửa kiểm tra. Trên nền hiên có dấu chân ướt, nhỏ như chân trẻ con. Dấu chân đi từ mép đồi đến cửa, nhưng không có dấu quay trở lại.
+
+Trong phòng trực, anh tìm thấy một cuốn sổ cũ giấu dưới ngăn bàn. Những trang đầu ghi số liệu thời tiết từ nhiều năm trước. Các trang cuối có nét chữ run rẩy:
+
+“Ngày 14 tháng 8. Lại có người gọi bằng giọng của vợ tôi. Tôi không mở cửa.”
+
+“Ngày 15 tháng 8. Nó biết tên con trai tôi.”
+
+“Ngày 16 tháng 8. Vinh bảo phải thay ca. Không ai được trực quá ba đêm liên tiếp.”
+
+Trang cuối cùng chỉ có một câu được viết đi viết lại kín mặt giấy:
+
+“Nếu nghe thấy giọng người thân, hãy nhớ họ không biết mình đã chết.”
+
+Phúc đem cuốn sổ hỏi ông Vinh. Nhưng văn phòng quản lý khóa cửa. Điện thoại không có sóng. Anh tìm trong tủ hồ sơ danh sách nhân viên và thấy tên mình được ghi ở dòng trực ca đêm, bên dưới là một cái tên đã bị gạch đi: Nguyễn Hương.
+
+Ngày sinh của người ấy trùng với ngày sinh em gái anh.
+
+Phúc chạy xuống phòng máy phát, định gọi cứu hộ bằng đường dây khẩn cấp. Trong ngăn tủ có một tập hồ sơ cũ. Anh mở ra và thấy bản báo cáo tai nạn cách đây mười hai năm: một chiếc xe chở đoàn học sinh trượt khỏi đường đèo trong đêm mưa. Nhiều người mất tích, trong đó có Nguyễn Hương. Một nhân viên cứu hộ tên Vinh là người duy nhất sống sót sau khi tìm kiếm ở khu vực đồi Mù.
+
+Phúc nghe tiếng cửa phòng máy khép lại.
+
+Ông Vinh đứng ở cuối hành lang.
+
+“Cậu tìm được rồi à?”
+
+“Ông biết em gái tôi?”
+
+“Ta đã tìm thấy chiếc khăn của nó dưới chân đồi. Không tìm thấy người.”
+
+“Vậy tại sao tên nó lại ở danh sách trực?”
+
+Ông Vinh cúi đầu.
+
+“Vì từ đêm đó, nó vẫn gọi lên trạm. Mỗi năm, cứ đến ngày tai nạn, nó lại gọi. Ban đầu ta tưởng nó cần giúp đỡ. Ta mở cửa.”
+
+Phúc nhìn ông.
+
+“Rồi sao?”
+
+Ông Vinh kéo tay áo lên. Trên cổ tay ông có một vệt bầm đen như dấu bàn tay siết chặt.
+
+“Ta đã thấy thứ đứng ngoài sương. Nó mang mặt vợ ta. Nhưng vợ ta đã chết trước vụ tai nạn nhiều năm.”
+
+Một tiếng chuông báo vang lên. Đồng hồ trên tường chỉ hai giờ đúng.
+
+Radio trong phòng quan sát tự bật.
+
+“Anh Phúc…”
+
+Giọng Hương vang lên rõ ràng, dịu dàng như ngày còn sống.
+
+“Em tìm thấy đường về rồi. Anh ra đón em nhé.”
+
+Phúc lao về phía cầu thang. Ông Vinh giữ chặt vai anh.
+
+“Đừng đi!”
+
+“Đó là em tôi!”
+
+“Không phải nữa rồi!”
+
+Cả trạm rung lên. Tất cả cửa sổ đồng loạt mờ đục, rồi từ phía bên kia lớp kính xuất hiện những khuôn mặt. Người già, trẻ nhỏ, đàn ông, phụ nữ. Họ đứng chen chúc trong sương, im lặng nhìn vào trong. Ở giữa đám đông là Hương, vẫn mặc chiếc áo khoác vàng.
+
+Cô bé áp hai bàn tay lên kính.
+
+“Anh không thương em nữa sao?”
+
+Phúc bật khóc. Anh muốn chạy đến, muốn mở cửa, muốn hỏi em đã ở đâu suốt mười hai năm. Nhưng anh nhìn thấy sau lưng Hương có một người khác. Người ấy cao hơn, gầy như cành cây khô, đầu cúi gập. Từ cổ người đó mọc ra những sợi tóc dài quấn quanh vai cô bé.
+
+Ông Vinh đẩy Phúc vào phòng điều khiển, khóa cửa.
+
+“Đừng nhìn nữa. Nó mượn ký ức để kéo người sống ra ngoài.”
+
+Phúc nghe tiếng đập cửa dồn dập. Rồi giọng Hương đổi khác, không còn là tiếng gọi mà trở thành tiếng khóc nghẹn.
+
+“Anh ơi, em không muốn ở đây một mình…”
+
+Phúc quỳ xuống, bịt tai. Ông Vinh mở ngăn kéo, lấy ra một cuộn băng cassette.
+
+“Đây là bản ghi đêm đầu tiên ta nghe thấy nó. Nếu cậu muốn biết sự thật, hãy nghe.”
+
+Băng chạy. Tiếng mưa, tiếng radio rè, rồi giọng một cô gái:
+
+“Chú Vinh ơi, cháu bị kẹt dưới xe. Có ai nghe không?”
+
+Tiếp đó là giọng ông Vinh trẻ hơn, hốt hoảng:
+
+“Đừng sợ, chú đang đến.”
+
+Một tiếng động lớn vang lên. Băng im lặng vài giây rồi phát ra giọng khác, trầm và méo mó:
+
+“Ông đã hứa sẽ đưa tất cả chúng tôi về.”
+
+Ông Vinh tắt máy. Mắt ông đỏ hoe.
+
+“Ta đã nghe thấy tiếng cầu cứu đêm ấy. Nhưng sương quá dày, đường sạt lở. Ta sợ và bỏ chạy. Sáng hôm sau, đội cứu hộ mới tìm đến. Ta đã sống với chuyện đó cả đời.”
+
+Phúc nhìn ông, hiểu ra rằng thứ ngoài kia không chỉ gọi người chết. Nó gọi cả những người mang nỗi ân hận.
+
+Cửa phòng điều khiển rung lên. Một giọng Hương vang ngay bên kia:
+
+“Anh Phúc, em biết anh nhớ đêm đó. Anh đã bỏ em lại.”
+
+Phúc sững người. Anh không hề có mặt trong chuyến đi ấy. Nhưng trong ký ức của anh, bỗng xuất hiện hình ảnh một con đường núi, chiếc xe nghiêng bên vực và bàn tay Hương chìa ra từ cửa kính vỡ. Anh nhớ mình đã nắm lấy tay em rồi buông ra.
+
+Ông Vinh hét lên:
+
+“Đó không phải ký ức của cậu!”
+
+Nhưng Phúc đã đứng dậy. Anh nhìn về phía cửa. Hương đang gọi. Anh bước một bước, rồi thêm một bước.
+
+Ông Vinh ôm lấy anh. Hai người vật lộn giữa căn phòng tối. Bỗng đèn bật sáng. Radio im bặt. Tiếng gõ ngoài cửa biến mất.
+
+Khi bình minh lên, đội cứu hộ tìm thấy trạm khí tượng mở toang. Ông Vinh nằm bất tỉnh cạnh bàn điều khiển. Phúc biến mất. Trên sàn có một chiếc áo khoác vàng ướt sũng.
+
+Người ta đưa ông Vinh xuống núi. Ông không nói chuyện suốt nhiều tháng. Trạm khí tượng bị đóng cửa, thiết bị tháo dỡ. Từ đó, không ai còn trực đêm trên đồi Mù.
+
+Mười năm sau, một nhóm khảo sát đến khu vực để lắp trạm phát sóng. Trong căn phòng quan sát bỏ hoang, họ tìm thấy cuốn sổ ghi chép mới tinh, dù tòa nhà đã dột nát và phủ đầy rêu.
+
+Trang đầu ghi ngày hôm đó. Nét chữ là của Phúc:
+
+“Ca trực thứ nhất. Có người gọi ngoài cửa. Tôi đã không mở.”
+
+Trang thứ hai:
+
+“Ca trực thứ hai. Họ đang gọi bằng giọng của em gái tôi.”
+
+Trang cuối cùng còn ướt:
+
+“Ca trực thứ ba. Tôi đã nhìn thấy mình đứng ngoài sương.”
+
+Nhóm khảo sát tưởng đó là trò đùa. Họ chụp ảnh cuốn sổ rồi rời đi trước khi trời tối.
+
+Đêm ấy, một người trong nhóm nhận được cuộc gọi từ số máy không tồn tại. Đầu dây bên kia là giọng đàn ông khản đặc:
+
+“Đừng để trạm sáng đèn sau hai giờ.”
+
+Người ấy hỏi ai đang gọi.
+
+Giọng kia đáp:
+
+“Tôi là Phúc. Tôi vẫn ở ngoài cửa.”
+
+Sáng hôm sau, bức ảnh chụp cuốn sổ được đăng lên mạng. Trong ảnh, ở ô cửa sổ phía sau nhóm khảo sát, có một người đàn ông mặc áo trực màu xanh đang đứng nhìn vào máy ảnh. Bên cạnh anh là cô gái mặc áo khoác vàng.
+
+Cả hai đều không có bóng.',
+'Kinh dị',
+'text',
+'short',
+'published'
+);
