@@ -156,3 +156,190 @@ Nó mang giọng của bà Hảo.
 'short',
 'published'
 );
+
+INSERT IGNORE INTO stories
+(title, slug, author, description, short_content, category, story_type, story_kind, status)
+VALUES
+(
+'Tầng 13 Không Có Trên Bản Vẽ',
+'tang-13-khong-co-tren-ban-ve',
+'Truyện Đêm',
+'Một cư dân mới phát hiện tầng 13 bí ẩn trong tòa nhà chỉ có mười hai tầng, nơi những người bị lãng quên vẫn chờ người thân trở về.',
+'Tòa nhà An Phúc có mười hai tầng, nằm lọt giữa hai con phố đông đúc. Người ta thuê căn hộ ở đó vì giá rẻ, thang máy mới, bảo vệ trực suốt đêm. Chỉ có một điều kỳ lạ: bảng điều khiển thang máy có nút số 13, dù tòa nhà chỉ được xây đến tầng 12.
+
+Nút ấy không sáng vào ban ngày. Nó chỉ hiện lên sau mười một giờ đêm, khi hành lang vắng người và camera an ninh chuyển sang chế độ hồng ngoại. Ban quản lý giải thích đó là lỗi bảng điện tử. Họ đã thay bảng điều khiển ba lần, nhưng nút số 13 vẫn xuất hiện.
+
+Minh chuyển đến căn hộ 1206 vào đầu tháng mưa. Cậu làm thiết kế tự do, thường thức khuya nên chuyện về nhà lúc nửa đêm không có gì lạ. Ngày đầu tiên, bác bảo vệ tên Lâm đưa chìa khóa rồi dặn một câu khó hiểu:
+
+“Đi thang máy thì cứ bấm tầng mình ở. Nếu thấy số 13 sáng lên, đừng tò mò.”
+
+Minh cười, nghĩ ông già thích dọa người mới. Cậu mang đồ lên căn hộ, dọn dẹp đến gần một giờ sáng mới xuống sảnh mua mì. Khi trở lại, thang máy đang mở cửa. Bên trong không có ai, nhưng bảng số tầng hiện 13 màu đỏ.
+
+Minh bước vào. Cậu định bấm số 12 thì nút tầng 13 tự tắt. Thang máy đóng cửa, đi lên rất êm. Màn hình lần lượt hiện 8, 9, 10, 11, 12. Sau đó nó không dừng mà tiếp tục nhảy sang 13.
+
+Một tiếng chuông khẽ vang.
+
+Cửa mở ra một hành lang tối, hẹp và dài hơn hẳn hành lang tầng 12. Đèn trần chớp tắt. Hai bên là những cánh cửa gỗ cũ, trên mỗi cửa đều có số căn hộ viết bằng sơn trắng. Minh nhìn thấy căn 1206 ở cuối hành lang.
+
+Cậu bước ra, ngỡ thang máy đưa mình đến một tầng kỹ thuật. Không khí ở đây lạnh và có mùi nước mưa ngâm lâu ngày. Cửa căn 1206 khép hờ. Minh lấy điện thoại bật đèn pin, gọi thử:
+
+“Có ai không?”
+
+Không có tiếng trả lời.
+
+Bên trong căn hộ giống hệt nhà cậu, nhưng đồ đạc cũ kỹ và phủ bụi. Trên bàn là một chiếc điện thoại bàn màu đen. Bên cạnh đặt tấm ảnh chụp một gia đình ba người: người cha, người mẹ và một cậu bé khoảng mười tuổi. Khuôn mặt cậu bé giống Minh đến kỳ lạ.
+
+Điện thoại bàn reo.
+
+Minh giật mình, lùi lại. Chuông reo liên tục, như thể người gọi biết có ai đang đứng trong phòng. Cậu không định nghe, nhưng khi nhìn màn hình điện thoại của mình, cậu thấy một cuộc gọi đến từ số của chính mình.
+
+Minh bắt máy.
+
+Đầu dây bên kia là giọng một đứa trẻ đang khóc:
+
+“Anh đừng ở lại. Mẹ sắp về rồi.”
+
+“Ai đấy?”
+
+“Em ở trong tủ. Đừng để mẹ nhìn thấy anh.”
+
+Ngay lúc đó, ngoài hành lang vang lên tiếng dép kéo lê. Một người phụ nữ vừa đi vừa ngân nga một bài hát ru. Tiếng hát đến gần cửa căn hộ. Minh hoảng hốt chạy vào phòng ngủ, kéo cánh tủ quần áo ra.
+
+Bên trong có một cậu bé ngồi co ro, mặc áo đồng phục học sinh cũ. Da nó trắng bệch, hai đầu gối ôm sát ngực. Nó đưa ngón tay lên môi ra hiệu im lặng.
+
+“Anh là ai?” Minh thì thầm.
+
+Cậu bé nhìn cậu, đôi mắt đỏ hoe.
+
+“Em là Minh.”
+
+Minh tưởng mình nghe nhầm.
+
+“Không. Anh là Minh.”
+
+“Anh lớn lên rồi nên quên thôi. Mẹ bảo anh đã chết trong vụ cháy.”
+
+Tiếng hát ngoài cửa đột ngột dừng lại.
+
+Một bàn tay gõ lên cánh cửa phòng ngủ. Ba tiếng chậm rãi.
+
+Cộc. Cộc. Cộc.
+
+Giọng phụ nữ dịu dàng vang lên:
+
+“Minh ơi, con về rồi à?”
+
+Cậu bé trong tủ run bần bật. Nó kéo tay Minh, chỉ xuống khe tủ. Bên ngoài, bóng một đôi chân trần đứng ngay trước cửa phòng. Những ngón chân dài ngoằng, móng đen bám đầy đất.
+
+“Đừng trả lời,” đứa trẻ thì thào. “Mẹ không còn là mẹ nữa.”
+
+Tay nắm cửa xoay nhẹ.
+
+Minh lùi sâu vào tủ, cố nén hơi thở. Cánh cửa phòng mở ra. Tiếng dép kéo lê đi quanh phòng, dừng trước tủ quần áo. Một giọng nói cất lên ngay bên ngoài:
+
+“Con trốn ở đây làm gì? Mẹ tìm con cả đêm.”
+
+Cánh tủ rung lên. Một móng tay cào dọc mặt gỗ, kéo thành tiếng ken két. Minh nhắm mắt. Cậu bé bên cạnh bỗng bật khóc, nhưng không phát ra âm thanh.
+
+Rồi điện thoại của Minh rung trong túi. Màn hình sáng lên, hiện thông báo từ ứng dụng camera căn hộ. Cậu mở ra xem. Hình ảnh trực tiếp cho thấy phòng ngủ căn hộ 1206 của cậu ở tầng 12. Trong hình, Minh đang đứng cạnh giường, một mình, nhìn thẳng vào camera.
+
+Nhưng cậu đang ở trong tủ của căn hộ tầng 13.
+
+Trong đoạn video, cánh cửa phòng ngủ tầng 12 từ từ mở ra. Một người phụ nữ bước vào, tóc dài phủ kín mặt. Bà ta đi đến bên giường, cúi xuống thì thầm với người đang đứng đó.
+
+Người trong video quay đầu nhìn camera.
+
+Đó là Minh, nhưng khuôn mặt cậu tái nhợt, đôi mắt đen đặc. Miệng cậu mấp máy:
+
+“Đừng để nó đưa anh xuống.”
+
+Màn hình điện thoại tối đen.
+
+Cánh tủ bật mở.
+
+Người phụ nữ đứng trước mặt Minh. Bà mặc chiếc váy hoa cũ, tóc ướt rũ xuống vai. Khuôn mặt bà có những vết bỏng kéo dài từ trán đến cằm. Nhưng điều khiến Minh chết lặng là đôi mắt. Đó là đôi mắt trong tấm ảnh gia đình trên bàn.
+
+“Mẹ…” cậu vô thức gọi.
+
+Người phụ nữ mỉm cười. Những vết nứt trên da mặt tách rộng ra như miệng một vết thương.
+
+“Con nhớ mẹ rồi.”
+
+Cậu bé trong tủ hét lên:
+
+“Chạy đi!”
+
+Minh lao khỏi phòng. Hành lang tầng 13 dài hun hút, những cánh cửa hai bên đồng loạt mở hé. Từ trong mỗi căn hộ đều có người đứng nhìn. Có người không có mặt. Có người cúi ngược đầu. Có người mang khuôn mặt của chính Minh ở những độ tuổi khác nhau.
+
+Cuối hành lang, thang máy vẫn mở cửa. Minh chạy đến, đập nút đóng. Cửa khép lại vừa lúc người phụ nữ xuất hiện ở đầu hành lang. Bà không chạy. Bà chỉ đứng yên, giơ một bàn tay cháy đen vẫy cậu.
+
+Thang máy đi xuống.
+
+Màn hình hiện 13, rồi 12, 11, 10. Minh thở dốc, dựa lưng vào vách. Khi cửa mở ở tầng trệt, bác bảo vệ Lâm đang đứng chờ. Ông nhìn cậu, không hề ngạc nhiên.
+
+“Cậu đã gặp nó rồi.”
+
+Minh túm lấy tay áo ông.
+
+“Tầng 13 là cái gì? Cậu bé đó là ai? Người phụ nữ kia…”
+
+Bác Lâm nhìn lên bảng số tầng. Nút 13 đã biến mất.
+
+“Cậu có nhớ hồi nhỏ mình từng sống ở đây không?”
+
+Minh lắc đầu.
+
+“Căn hộ 1206 từng có một gia đình. Một đêm, chập điện gây cháy. Người mẹ và đứa con nhỏ không thoát được. Người cha sống sót, nhưng sau đó phát điên, cứ khăng khăng rằng trong nhà còn một đứa con nữa.”
+
+Minh thấy tai mình ù đi.
+
+“Người cha tên gì?”
+
+Bác Lâm không trả lời ngay. Ông lấy từ ngăn bàn một tờ báo cũ, đặt trước mặt Minh. Bài báo đã ố vàng, ghi vụ cháy xảy ra hai mươi năm trước. Ảnh người đàn ông sống sót ở cuối bài chính là cha Minh.
+
+Minh nhìn xuống dòng chữ cuối cùng: “Người con lớn, được cho là đã tử vong trước đó nhiều năm, không có mặt tại hiện trường.”
+
+Cậu không hiểu. Cậu vẫn nhớ tuổi thơ, nhớ trường học, nhớ cha mẹ. Nhưng tất cả ký ức ấy bỗng như những đoạn phim bị cắt ghép.
+
+Bác Lâm nói nhỏ:
+
+“Cậu bé trong tủ là đứa trẻ đã chết. Còn cậu… cậu là người đã rời khỏi tòa nhà đêm đó.”
+
+“Vậy tại sao tôi lại thấy nó?”
+
+Ông già nhìn cậu rất lâu.
+
+“Vì tầng 13 không phải tầng của người chết. Nó là tầng dành cho những người bị bỏ quên.”
+
+Minh quay đầu nhìn cửa thang máy. Trong lớp kim loại bóng loáng, hình phản chiếu của cậu không đứng cạnh bác Lâm. Nó đang đứng trong căn hộ cũ, mặc bộ đồng phục học sinh, hai tay áp lên cửa tủ.
+
+Và phía sau hình phản chiếu ấy, người phụ nữ tóc ướt đang cúi xuống, thì thầm vào tai cậu bé:
+
+“Đêm nay mẹ sẽ đón đủ cả hai đứa.”
+
+Sáng hôm sau, ban quản lý phát hiện camera thang máy ghi lại cảnh Minh bước vào lúc một giờ mười ba phút. Cậu đứng một mình, không bấm nút nào. Cửa đóng lại, màn hình nhảy lên số 13 rồi tắt.
+
+Không có cảnh thang máy đi xuống.
+
+Bác Lâm xin nghỉ việc ngay trong ngày. Trước khi rời đi, ông dán một mảnh giấy lên bảng điều khiển: “Nếu thấy nút 13, hãy chờ chuyến sau.”
+
+Một tuần sau, căn hộ 1206 có người thuê mới. Đêm đầu tiên, cô gái trẻ vừa dọn đồ xong thì nghe tiếng trẻ con khóc trong tủ quần áo.
+
+Cô mở tủ.
+
+Không có ai bên trong, chỉ có một chiếc điện thoại cũ nằm trên sàn. Màn hình sáng lên, hiện cuộc gọi đến từ số máy của cô.
+
+Cô bắt máy.
+
+Một giọng đàn ông thì thầm:
+
+“Đừng lên tầng 13. Nếu mẹ gõ cửa, đừng nhận mình là con.”
+
+Ngoài hành lang, thang máy phát ra tiếng chuông.
+
+Bảng điện tử sáng lên con số 13.',
+'Kinh dị',
+'text',
+'short',
+'published'
+);
