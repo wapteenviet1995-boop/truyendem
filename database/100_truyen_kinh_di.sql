@@ -946,3 +946,140 @@ Cả hai đều không có bóng.',
 'short',
 'published'
 );
+
+INSERT IGNORE INTO stories
+(title, slug, author, description, short_content, category, story_type, story_kind, status)
+VALUES
+(
+'Chiếc Áo Phơi Qua Đêm',
+'chiec-ao-phoi-qua-dem',
+'Truyện Đêm',
+'Ở xóm ven sông, người ta kiêng phơi quần áo qua đêm. Một cô gái trở về nhà cũ và nghe tiếng người cha đã mất gọi mình từ màn sương.',
+'Người dân ở xóm Cồn không bao giờ phơi quần áo qua đêm. Họ bảo sương ở khúc sông ấy có thể mang theo mùi của người chết. Sáng ra, nếu thấy trên áo có một vệt bùn hình bàn tay, phải đem đốt ngay, tuyệt đối không giặt. Bà ngoại kể điều đó cho Thư từ lúc cô còn nhỏ. Khi ấy Thư chỉ nghĩ người lớn bày chuyện để trẻ con chịu khó thu quần áo trước khi trời tối.
+
+Hai mươi năm sau, Thư trở về xóm Cồn để sửa lại căn nhà của bà ngoại vừa mất. Căn nhà nằm sát bờ sông, phía sau có một giàn phơi bằng tre đã nghiêng. Thư định ở vài ngày, dọn đồ rồi bán nhà. Cô không tin những lời kiêng kỵ cũ, nên ngay chiều đầu tiên đã giặt một mẻ quần áo và phơi lên giàn.
+
+Đêm ấy, mưa không rơi nhưng sương xuống rất dày. Gần nửa đêm, Thư nghe tiếng vải phất phơ ngoài sân. Cô nhìn qua cửa sổ, thấy tất cả quần áo đều xoay về cùng một hướng, dù không có gió. Một chiếc áo sơ mi trắng đang phồng lên như có người mặc bên trong.
+
+Thư mở cửa bước ra. Chiếc áo rơi xuống nền đất. Trên ngực áo có một vệt bùn đen, in rõ năm ngón tay.
+
+Cô nhớ lời bà ngoại, nhưng vẫn cúi xuống nhặt áo. Bùn lạnh và ướt, có mùi tanh như nước sông lâu ngày. Thư mang áo vào nhà, định giặt sạch vào sáng hôm sau.
+
+Khi đi ngang tấm gương ở phòng khách, cô thoáng thấy phía sau mình có một người đàn bà đứng ngoài hiên. Tóc người ấy dài, nước nhỏ từng giọt xuống nền. Thư quay lại. Sân trống không.
+
+Sáng hôm sau, bà Sáu hàng xóm sang hỏi thăm. Thấy chiếc áo trắng đang vắt trên ghế, bà lập tức tái mặt.
+
+“Cháu lấy nó ở đâu?”
+
+“Áo của cháu. Tối qua phơi ngoài sân.”
+
+Bà Sáu nhìn vệt bùn rồi kéo Thư ra xa.
+
+“Đừng để nó trong nhà. Đốt đi.”
+
+Thư bật cười gượng. Bà Sáu không cười. Bà kể rằng ngày trước, xóm Cồn có một cô gái tên Liên làm nghề giặt thuê. Một mùa nước lớn, chồng cô đi đánh cá không trở về. Liên ngày nào cũng giặt chiếc áo sơ mi của chồng rồi phơi ở giàn tre, tin rằng nếu áo còn thơm sạch thì anh sẽ tìm được đường về nhà.
+
+Một đêm, người ta nghe tiếng Liên gọi chồng ngoài bờ sông. Sáng ra, chỉ thấy giàn phơi trống trơn và đôi dép nằm sát mép nước. Thi thể cô không bao giờ được tìm thấy.
+
+“Sau đó, cứ nhà nào phơi áo qua đêm thì sẽ có một chiếc áo lạ xuất hiện,” bà Sáu nói. “Ai mang nó vào nhà sẽ nghe người chết gọi tên mình.”
+
+Thư không tin, nhưng cũng đem chiếc áo ra sân. Cô định đốt nó, song vừa chạm que diêm thì điện thoại reo. Một số lạ gọi đến. Khi cô nghe máy, đầu dây bên kia có tiếng nước chảy và một giọng đàn ông:
+
+“Thư à, em có thấy áo anh không?”
+
+Cô chết lặng. Đó là giọng của cha cô, người đã mất trong một vụ tai nạn đường thủy khi cô lên tám. Gia đình chưa bao giờ tìm được thi thể ông.
+
+“Ba?”
+
+Đầu dây im lặng vài giây rồi giọng nói lại vang lên:
+
+“Áo anh ướt quá. Em đem ra phơi giúp anh.”
+
+Cuộc gọi ngắt. Chiếc áo trên tay Thư bỗng nặng trĩu, nước đen rỉ xuống từ cổ tay áo. Cô đánh rơi nó, chạy vào nhà khóa cửa.
+
+Chiều hôm đó, Thư tìm trong rương gỗ của bà ngoại. Dưới lớp chăn cũ có một cuốn sổ bìa nâu. Bà ghi chép những chuyện xảy ra trong xóm suốt nhiều năm. Có một trang nhắc đến cha Thư. Ngày ông mất, bà ngoại đã tìm thấy chiếc áo sơ mi của ông mắc trên giàn phơi, dù hôm ấy trời không mưa. Trên áo có dấu bàn tay bùn.
+
+Bà đã đốt chiếc áo, nhưng đêm sau nó lại xuất hiện, lần này treo ở cửa phòng ngủ của Thư. Bà đem chôn nó dưới gốc cây bàng, rồi dặn cả nhà không bao giờ phơi đồ ngoài sân sau khi mặt trời lặn.
+
+Thư đọc đến đó thì nghe tiếng chân kéo lê ngoài hiên.
+
+“Con gái…”
+
+Giọng cha cô vang lên qua cánh cửa.
+
+“Ba về rồi. Mở cửa cho ba.”
+
+Thư bịt miệng. Cô muốn tin đó là cha, muốn nghe ông hỏi thăm, muốn được ôm ông như những đứa trẻ khác. Nhưng trong cuốn sổ, bà ngoại đã viết thêm một dòng bằng mực đỏ: “Nó không nhớ được điều gì ngoài những lời người sống muốn nghe.”
+
+Tiếng gõ cửa vang lên ba lần.
+
+Cộc. Cộc. Cộc.
+
+“Thư, con còn nhớ chiếc thuyền giấy ba gấp cho con không?”
+
+Thư bật khóc. Đó là ký ức riêng của hai cha con. Năm cô sáu tuổi, cha từng gấp một chiếc thuyền giấy từ tờ lịch cũ, thả xuống mương sau nhà. Không ai khác biết chuyện ấy.
+
+“Ba nhớ con,” giọng nói ngoài cửa thì thầm. “Ba lạnh lắm.”
+
+Thư bước đến gần cửa. Tay cô đặt lên then cài. Đúng lúc ấy, chiếc gương ở phòng khách rung lên. Trong gương, cô nhìn thấy cha mình đứng ngoài hiên. Ông mặc chiếc áo sơ mi trắng, tóc ướt, khuôn mặt hiền lành như trong tấm ảnh cũ.
+
+Nhưng trong gương, phía sau ông còn có hàng chục người khác. Họ đứng thành một hàng dọc bờ sông, quần áo ướt sũng, đầu cúi gằm. Mỗi người đều cầm một chiếc áo có dấu bàn tay bùn.
+
+Cha cô trong gương từ từ ngẩng lên. Miệng ông vẫn cười, nhưng mắt không có tròng.
+
+“Con mở cửa đi,” ông nói.
+
+Thư lùi lại. Bên ngoài, tiếng gõ chuyển thành tiếng móng tay cào trên gỗ. Rồi một giọng phụ nữ vang lên, khàn đặc:
+
+“Đừng để nó mặc áo.”
+
+Bà Sáu xuất hiện ở cửa sau, tay cầm một bó nhang và chiếc đèn dầu. Bà kéo Thư vào bếp, bảo cô tuyệt đối không nhìn ra sân. Bà nói người chết không thể tự tìm đường về; thứ ngoài kia chỉ là những tiếng gọi mắc lại trong sương, bám vào kỷ niệm của người sống để mượn hình hài.
+
+“Bà ngoại cháu đã giữ nó dưới gốc bàng,” bà Sáu nói. “Nhưng sau khi bà mất, không còn ai canh nữa.”
+
+Hai người ra sân khi trời vừa hửng sáng. Dưới gốc bàng già, đất có một khoảng mới bị xới lên. Một chiếc áo sơ mi trắng nhô khỏi mặt đất, sạch sẽ đến kỳ lạ. Thư nhận ra đó là áo của cha, chiếc áo ông mặc trong bức ảnh cuối cùng của gia đình.
+
+Bà Sáu đưa cho cô một hộp diêm.
+
+“Đốt đi. Đừng đọc tên người trên áo.”
+
+Thư cúi xuống. Trên cổ áo có thêu hai chữ nhỏ: “Minh Quân”, tên cha cô. Cô châm diêm. Ngọn lửa chạm vào vải nhưng không bén. Một giọng nói phát ra từ dưới đất:
+
+“Con gái, ba không muốn ở một mình.”
+
+Thư run rẩy. Bà Sáu giữ chặt vai cô.
+
+“Người cha cháu thương sẽ không bắt cháu mở cửa cho thứ đã kéo ông xuống sông.”
+
+Thư nhắm mắt, quẹt que diêm lần nữa. Lần này ngọn lửa bùng lên, xanh lét. Chiếc áo co rúm, bốc mùi bùn tanh. Từ dưới đất vang lên tiếng nhiều người cùng thở dài. Rồi có tiếng nước sông dâng lên, vỗ vào bờ dù con sông cách đó mấy chục bước.
+
+Khi chiếc áo cháy thành tro, sương trên sân tan dần. Thư nghe một tiếng gọi cuối cùng, rất nhỏ, như vọng từ xa:
+
+“Con nhớ mặc áo ấm…”
+
+Cô bật khóc. Lần này giọng nói không gọi cô mở cửa, không đòi cô đưa áo vào nhà. Nó chỉ giống lời dặn dò của người cha trong ký ức.
+
+Bà Sáu bảo có lẽ đó là phần ký ức thật cuối cùng còn sót lại, đã được giải thoát cùng chiếc áo.
+
+Thư ở lại thêm ba ngày để dọn nhà. Cô đem giàn phơi tre ra chẻ làm củi, thay bằng một dây phơi mới ở phía trước, nơi có nắng chiếu cả ngày. Trước khi rời xóm, cô đặt cuốn sổ của bà ngoại lên bàn thờ và cảm ơn bà vì đã giữ căn nhà bình yên suốt bao năm.
+
+Cô tưởng mọi chuyện đã kết thúc.
+
+Nhưng khi xe khách chạy qua cây cầu đầu làng, Thư nhìn xuống túi hành lý và thấy một chiếc khăn tay ẩm nước nằm trên cùng. Đó là chiếc khăn cha cô thường dùng. Cô nhặt lên, định ném ra cửa sổ.
+
+Trên khăn có một dấu bàn tay bùn nhỏ.
+
+Điện thoại rung. Một tin nhắn từ số không lưu hiện lên:
+
+“Áo đã cháy rồi. Nhưng con có thể phơi giúp ba chiếc khăn này không?”
+
+Thư nhìn qua cửa kính. Dưới chân cầu, giữa dòng nước đục, có một người đàn ông đang đứng ngập đến ngực. Ông ngẩng mặt nhìn theo chiếc xe. Trên vai ông không có áo, chỉ có hàng chục chiếc khăn trắng quấn quanh cổ.
+
+Ông giơ tay vẫy.
+
+Và trên cửa kính xe, từ phía bên ngoài, một dấu bàn tay ướt chậm rãi in xuống.',
+'Kinh dị',
+'text',
+'short',
+'published'
+);
