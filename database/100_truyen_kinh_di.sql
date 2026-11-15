@@ -343,3 +343,202 @@ Bảng điện tử sáng lên con số 13.',
 'short',
 'published'
 );
+
+INSERT IGNORE INTO stories
+(title, slug, author, description, short_content, category, story_type, story_kind, status)
+VALUES
+(
+'Tấm Ảnh Cuối Cùng Ở Tiệm Thọ',
+'tam-anh-cuoi-cung-o-tiem-tho',
+'Truyện Đêm',
+'Một cô gái trở về làng và bước vào tiệm ảnh đã đóng cửa hàng chục năm. Những bức chân dung ở đó không chỉ lưu giữ gương mặt người chết.',
+'Ở cuối con đường dẫn vào làng Đông có một tiệm chụp ảnh cũ. Tấm biển gỗ treo trước cửa đã bạc màu, chỉ còn đọc được hai chữ “Ảnh Thọ”. Người trong làng bảo tiệm đã đóng cửa từ lâu, nhưng cứ vào những đêm mưa, ánh đèn vàng bên trong lại sáng lên.
+
+Hạnh chuyển về làng sau khi mẹ mất. Cô định bán căn nhà cũ rồi trở lại thành phố, nhưng giấy tờ đất đai cần vài tuần mới hoàn tất. Những ngày đầu, cô thường nghe tiếng máy ảnh lách cách từ phía cuối đường. Tiếng ấy vang lên từng hồi, giống như có người đang chụp liên tục trong một căn phòng kín.
+
+Một tối, Hạnh hỏi bà Năm bán tạp hóa về tiệm ảnh.
+
+Bà Năm đang cân gạo thì dừng tay. Bà nhìn ra con đường tối, hạ giọng:
+
+“Cháu đừng đi ngang đó sau mười giờ. Chủ tiệm mất lâu rồi.”
+
+“Mất thế nào hả bà?”
+
+“Người ta tìm thấy ông ấy trong phòng rửa ảnh. Mắt mở trừng trừng, hai tay ôm một cuộn phim. Từ hôm đó, ai chụp ảnh ở tiệm đều gặp chuyện.”
+
+Hạnh bật cười. Cô nghĩ những lời đồn ở làng thường được thêu dệt qua nhiều năm. Nhưng đêm hôm sau, khi trở về nhà lúc gần mười một giờ, cô nhìn thấy ánh đèn vàng hắt ra từ cửa tiệm.
+
+Cánh cửa gỗ hé mở.
+
+Bên trong có tiếng một người đàn ông:
+
+“Cô gái, chụp một tấm không?”
+
+Hạnh dừng chân. Một ông già gầy gò đứng sau quầy, mặc chiếc áo sơ mi trắng cài kín cổ. Mái tóc bạc chải ngược, khuôn mặt nhợt nhạt như người lâu ngày không ra nắng.
+
+“Tiệm còn hoạt động sao bác?”
+
+“Chỉ chụp cho người quen thôi.” Ông ta mỉm cười. “Cô giống mẹ mình.”
+
+Hạnh hơi giật mình. Mẹ cô từng sống ở làng này, nhưng đã rời đi từ khi còn trẻ. Cô chưa từng cho ông già xem ảnh gia đình.
+
+“Bác biết mẹ cháu à?”
+
+Ông già không trả lời. Ông lấy một chiếc máy ảnh cũ đặt lên chân máy, kéo tấm rèm phía sau. Trên tường treo hàng chục bức chân dung. Người trong ảnh đều nhìn thẳng vào ống kính, gương mặt nghiêm nghị, hai bàn tay đặt trên đùi. Điều lạ là ở góc mỗi tấm ảnh đều có một vệt đen nhỏ, giống dấu ngón tay dính mực.
+
+“Chụp một tấm đi,” ông nói. “Không lấy tiền.”
+
+Hạnh định từ chối, nhưng ông già đã kéo ghế. Cô ngồi xuống, nhìn vào ống kính. Đèn flash lóe lên.
+
+“Xong rồi,” ông nói. “Ba ngày nữa quay lại lấy ảnh.”
+
+Hạnh bước ra khỏi tiệm. Khi ngoái nhìn, cánh cửa đã đóng kín. Ánh đèn vàng bên trong cũng tắt.
+
+Sáng hôm sau, cô kể chuyện cho bà Năm nghe. Bà cụ đánh rơi chiếc muỗng đang cầm.
+
+“Cháu nói ông ta mặc áo trắng, tóc bạc?”
+
+Hạnh gật đầu.
+
+Bà Năm kéo cô ngồi xuống, kể rằng chủ tiệm ảnh tên Thọ đã chết hơn ba mươi năm trước. Ông ta từng nổi tiếng vì chụp ảnh rất đẹp, nhưng có thói quen yêu cầu khách ngồi yên và không được chớp mắt. Sau một vụ cháy, tiệm bị bỏ hoang. Không ai biết vì sao trong đám tro tàn lại có hàng chục tấm ảnh nguyên vẹn, tất cả đều là chân dung những người đã chết.
+
+“Bà đừng dọa cháu.”
+
+“Bà chỉ mong cháu đừng quay lại.”
+
+Nhưng Hạnh không thể quên câu nói của ông già. “Cô giống mẹ mình.” Cô muốn biết ông ta đã gặp mẹ cô ở đâu.
+
+Ba ngày sau, một phong bì màu nâu xuất hiện trước cửa nhà. Bên trong là tấm ảnh Hạnh chụp ở tiệm. Cô đang ngồi trên ghế, hai tay đặt trên đùi, mắt nhìn thẳng vào máy ảnh. Phía sau vai cô có một người phụ nữ đứng sát tấm rèm.
+
+Hạnh nhận ra người ấy ngay lập tức.
+
+Đó là mẹ cô.
+
+Mẹ trong ảnh trẻ hơn rất nhiều, mái tóc dài buộc sau gáy, mặc chiếc áo hoa xanh mà Hạnh vẫn thấy trong những tấm hình cũ. Nhưng mẹ cô đã mất cách đây chưa đầy một tháng. Trên mặt bà không có nụ cười. Đôi mắt mở lớn, nhìn thẳng vào Hạnh với vẻ kinh hoàng.
+
+Mặt sau tấm ảnh có dòng chữ viết bằng mực đỏ:
+
+“Lần này đừng để mẹ cô đứng phía sau.”
+
+Hạnh gọi cho dì ruột, hỏi về tiệm ảnh. Dì im lặng rất lâu rồi mới kể. Năm mười tám tuổi, mẹ Hạnh từng đến tiệm Thọ chụp ảnh làm hồ sơ xin việc. Khi nhận ảnh, bà phát hiện phía sau mình có một bóng người đàn ông. Đêm đó, bà nghe tiếng máy ảnh chụp liên tục trong phòng ngủ. Ba ngày sau, người đàn ông trong ảnh xuất hiện ở cửa nhà, xin được vào chụp lại.
+
+Mẹ Hạnh bỏ làng đi ngay trong đêm. Bà không bao giờ quay lại.
+
+“Vậy tại sao mẹ không kể cho con?” Hạnh hỏi.
+
+Dì cô chỉ đáp:
+
+“Vì mẹ con sợ con sẽ nhìn thấy người đứng sau mình.”
+
+Tối ấy, Hạnh khóa tất cả cửa, kéo rèm và đặt tấm ảnh vào ngăn kéo. Cô cố thức đến sáng. Khoảng hai giờ, tiếng máy ảnh vang lên trong phòng khách.
+
+Tách.
+
+Tách.
+
+Tách.
+
+Hạnh cầm đèn pin bước ra. Không có ai. Nhưng trên chiếc bàn gỗ đặt một máy ảnh đen cũ, dây đeo còn ướt nước. Cô chưa từng nhìn thấy nó trước đây.
+
+Một tờ giấy nhỏ nằm dưới máy:
+
+“Cô chưa nhận đủ ảnh.”
+
+Hạnh quay lại phòng ngủ. Cánh cửa tủ quần áo đang mở. Bên trong, giữa những chiếc áo của mẹ để lại, có một phong bì ảnh khác. Cô run rẩy mở ra.
+
+Tấm đầu tiên chụp mẹ cô lúc còn trẻ. Tấm thứ hai chụp mẹ đứng trước cổng nhà. Tấm thứ ba chụp mẹ đang ngủ trên giường. Tấm thứ tư chụp mẹ ngồi khóc trong phòng khách.
+
+Tất cả đều có cùng một bóng người đứng phía sau.
+
+Ở tấm cuối cùng, người trong ảnh không còn là mẹ cô.
+
+Đó là Hạnh, đang đứng trước cửa phòng ngủ, tay cầm chiếc đèn pin. Phía sau cô là ông chủ tiệm ảnh, khuôn mặt áp sát vào tóc cô. Trên môi ông ta là một nụ cười rộng đến bất thường.
+
+Hạnh đánh rơi xấp ảnh.
+
+Từ ngoài cửa, giọng ông già vang lên:
+
+“Cô đã xem hết chưa?”
+
+Cô lùi vào góc phòng. Tay nắm cửa xoay chậm rãi, nhưng cánh cửa không mở. Một tiếng gõ nhẹ vang lên.
+
+“Chỉ cần thêm một tấm nữa.”
+
+Hạnh hét lên rằng cô không muốn chụp. Bên ngoài im bặt. Sau đó, giọng mẹ cô vang lên, yếu ớt và đứt quãng:
+
+“Hạnh, đừng nhìn vào ảnh. Nhìn vào gương.”
+
+Cô quay sang chiếc gương treo cạnh tủ. Trong gương, căn phòng vẫn giống hệt, nhưng cô không thấy mình. Trên giường có một người phụ nữ đang nằm, tóc xõa trên gối. Đó là mẹ cô, gương mặt tái nhợt, hai mắt nhắm nghiền.
+
+Còn Hạnh trong gương đang đứng sau lưng mẹ, đặt tay lên vai bà.
+
+Một bàn tay lạnh buốt chạm vào vai Hạnh ngoài đời.
+
+Cô quay phắt lại.
+
+Ông Thọ đứng ngay sau lưng, chiếc máy ảnh áp sát mặt. Qua ống kính, Hạnh thấy khuôn mặt mình già nua, da nhăn nheo, tóc bạc trắng. Cô cố chạy nhưng chân như dính chặt xuống sàn.
+
+“Người trong ảnh không già đi,” ông thì thầm. “Họ chỉ ở lại đúng khoảnh khắc được chụp.”
+
+Đèn flash lóe lên.
+
+Hạnh tỉnh dậy khi trời đã sáng. Cô nằm trên nền nhà, cửa phòng mở toang. Máy ảnh biến mất. Tất cả những tấm hình cũng không còn. Cô chạy sang nhà bà Năm, kể lại mọi chuyện.
+
+Bà cụ nghe xong, chỉ lặng lẽ lấy từ tủ ra một hộp thiếc. Trong hộp có tấm ảnh cũ chụp mẹ Hạnh năm mười tám tuổi. Phía sau bà là một người đàn ông mặc áo trắng.
+
+“Bà giữ tấm này từ ngày mẹ cháu bỏ đi,” bà Năm nói. “Bà định đốt nhiều lần mà không cháy.”
+
+Hạnh cầm tấm ảnh. Ở góc dưới có dòng chữ: “Khách đã nhận ảnh.”
+
+Cô nhìn kỹ khuôn mặt người đàn ông. Đó chính là ông Thọ.
+
+“Bà ơi, ông ấy muốn gì ở cháu?”
+
+Bà Năm nhìn ra cửa sổ.
+
+“Ông ta không chụp để lưu giữ gương mặt. Ông ta chụp để có người thay mình đứng sau máy ảnh.”
+
+Hạnh không hiểu. Bà cụ kể rằng sau khi tiệm cháy, người ta tìm thấy một cuộn phim chưa tráng. Trong cuộn phim ấy có bức ảnh cuối cùng của ông Thọ: ông đứng trước máy ảnh, phía sau là hàng chục người đã từng đến tiệm. Tất cả đều nhìn ông bằng ánh mắt căm hận. Riêng người đứng cuối hàng không có mặt.
+
+“Ông ta cần một người sống để hoàn thành bức ảnh,” bà Năm nói. “Người đó phải tự quay lại tiệm và nhận tấm hình.”
+
+Hạnh lập tức quyết định rời làng. Cô thu dọn đồ, gọi xe đến đón. Trước khi đi, cô mang hộp thiếc ra sân, châm lửa đốt tấm ảnh của mẹ.
+
+Ngọn lửa bùng lên rồi tắt phụt. Tấm ảnh không cháy, chỉ xuất hiện một vết đen ở giữa. Từ vết đen ấy, tiếng máy ảnh vang lên.
+
+Tách.
+
+Hạnh nhìn xuống. Trong tấm ảnh, mẹ cô đã quay mặt về phía ống kính. Bà không còn vẻ sợ hãi. Bà đang mỉm cười.
+
+Phía sau mẹ, ông Thọ đã biến mất.
+
+Thay vào đó là một cô gái trẻ mặc áo khoác giống hệt Hạnh.
+
+Chiếc xe đến đón bấm còi ngoài cổng. Hạnh vội nhét tấm ảnh vào túi, chạy ra đường. Cô không quay đầu nhìn lại.
+
+Khi xe rời khỏi làng, tài xế hỏi cô có muốn chụp một tấm kỷ niệm trước khi đi không. Hạnh giật mình nhìn sang. Người tài xế đang cầm một chiếc máy ảnh đen cũ trên tay.
+
+“Cô ngồi yên nhé,” anh ta nói. “Tôi chụp nhanh thôi.”
+
+Hạnh yêu cầu dừng xe. Nhưng tài xế không đáp. Trong gương chiếu hậu, cô thấy ông Thọ ngồi ở hàng ghế sau, hai tay đặt ngay ngắn trên đầu gối.
+
+Ông ta mỉm cười:
+
+“Lần này, cô sẽ là người đứng sau máy ảnh.”
+
+Một tia sáng trắng lấp đầy khoang xe.
+
+Ba ngày sau, bà Năm nhận được một phong bì gửi đến tiệm tạp hóa. Bên trong là tấm ảnh chụp con đường rời làng. Chiếc xe của Hạnh đang chạy giữa màn sương. Trên ghế lái là một người đàn ông tóc bạc. Còn ở hàng ghế sau, Hạnh ngồi thẳng lưng, hai tay đặt trên đùi, mắt nhìn vào ống kính.
+
+Bà Năm lật mặt sau tấm ảnh.
+
+Dòng chữ mực đỏ hiện ra:
+
+“Khách tiếp theo đã được chọn.”
+
+Từ cuối con đường, tiếng máy ảnh lại vang lên.',
+'Kinh dị',
+'text',
+'short',
+'published'
+);
