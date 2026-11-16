@@ -19,7 +19,30 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     $category=trim((string)($_POST['category']??''))?:'Truyện mới';$description=trim((string)($_POST['description']??''));
     $cover=trim((string)($_POST['cover_url']??''));$short=trim((string)($_POST['short_content']??''));
     $chapterTitle=trim((string)($_POST['chapter_title']??''));$chapterBody=trim((string)($_POST['chapter_content']??''));
-    if($title===''||mb_strlen($title)>220)$error='Tên truyện không được để trống và tối đa 220 ký tự.';
+    $uploadError='';
+    if(isset($_FILES['cover_file']) && (int)($_FILES['cover_file']['error']??UPLOAD_ERR_NO_FILE)!==UPLOAD_ERR_NO_FILE){
+     $file=$_FILES['cover_file'];
+     if((int)$file['error']!==UPLOAD_ERR_OK){$uploadError='Ảnh tải lên bị lỗi. Vui lòng chọn lại ảnh.';}
+     elseif((int)$file['size']>5*1024*1024){$uploadError='Ảnh bìa không được vượt quá 5 MB.';}
+     elseif(!is_uploaded_file((string)$file['tmp_name'])){$uploadError='Tệp tải lên không hợp lệ.';}
+     else{
+      $finfo=new finfo(FILEINFO_MIME_TYPE);$mime=$finfo->file((string)$file['tmp_name']);
+      $allowed=['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp','image/gif'=>'gif'];
+      $imageInfo=@getimagesize((string)$file['tmp_name']);
+      if(!isset($allowed[$mime])||$imageInfo===false||($imageInfo['mime']??'')!==$mime){$uploadError='Chỉ chấp nhận ảnh JPG, PNG, WEBP hoặc GIF hợp lệ.';}
+      else{
+       $uploadDir=__DIR__.'/uploads/stories';
+       if(!is_dir($uploadDir)&&!mkdir($uploadDir,0755,true)&&!is_dir($uploadDir)){$uploadError='Không tạo được thư mục lưu ảnh. Vui lòng liên hệ quản trị viên.';}
+       else{
+        $fileName=bin2hex(random_bytes(16)).'.'.$allowed[$mime];
+        if(move_uploaded_file((string)$file['tmp_name'],$uploadDir.'/'.$fileName)){$cover='/uploads/stories/'.$fileName;}
+        else{$uploadError='Không lưu được ảnh. Vui lòng thử lại.';}
+       }
+      }
+     }
+    }
+    if($uploadError!=='')$error=$uploadError;
+    elseif($title===''||mb_strlen($title)>220)$error='Tên truyện không được để trống và tối đa 220 ký tự.';
     elseif($cover!==''&&!filter_var($cover,FILTER_VALIDATE_URL)&&!preg_match('~^/uploads/stories/[a-zA-Z0-9._-]+$~',$cover))$error='Link ảnh bìa không hợp lệ.';
     elseif($kind==='short'&&$short==='')$error='Bạn cần nhập nội dung truyện ngắn.';
     elseif($kind==='serial'&&($chapterTitle===''||$chapterBody===''))$error='Truyện nhiều chương cần có tên và nội dung chương đầu tiên.';
@@ -57,11 +80,11 @@ function ss_h($v):string{return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT
 </head><body class="story-site">
 <header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">☾</span><span class="brand-copy"><strong>Truyện Đêm</strong><small>Mỗi đêm, một thế giới khác</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="library.php">Tủ sách</a><a href="community.php">Cộng đồng</a><a href="account.php">Tài khoản</a></nav></div></header>
 <main class="submit-wrap"><section class="submit-panel"><h1>✦ Đăng truyện của bạn</h1><p>Chia sẻ câu chuyện của bạn với cộng đồng Truyện Đêm. Truyện và chương mới sẽ được quản trị viên duyệt trước khi hiển thị công khai.</p><?php if($notice):?><p class="submit-flash"><?=ss_h($notice)?></p><?php endif;?><?php if($error):?><p class="submit-error"><?=ss_h($error)?></p><?php endif;?>
-<form class="submit-form" method="post"><input type="hidden" name="csrf" value="<?=ss_h($csrf)?>"><input type="hidden" name="action" value="create_story">
-<div class="submit-grid"><label>Tên truyện *<input name="title" maxlength="220" required></label><label>Thể loại<input name="category" maxlength="100" placeholder="Kinh dị, tình cảm, fantasy..."></label><label>Hình thức<select name="story_kind" id="submit-kind"><option value="short">Truyện ngắn</option><option value="serial">Truyện nhiều chương</option></select></label><label>Ảnh bìa (không bắt buộc)<input name="cover_url" type="url" placeholder="https://..."></label></div>
+<form class="submit-form" method="post" enctype="multipart/form-data"><input type="hidden" name="csrf" value="<?=ss_h($csrf)?>"><input type="hidden" name="action" value="create_story">
+<div class="submit-grid"><label>Tên truyện *<input name="title" maxlength="220" required></label><label>Thể loại<input name="category" maxlength="100" placeholder="Kinh dị, tình cảm, fantasy..."></label><label>Hình thức<select name="story_kind" id="submit-kind"><option value="short">Truyện ngắn</option><option value="serial">Truyện nhiều chương</option></select></label><label>Ảnh bìa (không bắt buộc)<input name="cover_file" id="cover-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif"><small class="submit-muted">Chọn ảnh từ điện thoại · JPG, PNG, WEBP hoặc GIF · tối đa 5 MB.</small><input name="cover_url" type="url" placeholder="Hoặc dán link ảnh https://..."><img id="cover-preview" alt="Xem trước ảnh bìa" hidden style="display:none;max-width:180px;max-height:240px;object-fit:cover;border-radius:10px;margin-top:10px"></label></div>
 <label>Mô tả truyện<textarea name="description" rows="3" maxlength="3000" placeholder="Giới thiệu ngắn về câu chuyện..."></textarea></label>
 <div id="submit-short"><label>Nội dung truyện ngắn *<textarea name="short_content" placeholder="Viết toàn bộ truyện ngắn tại đây..."></textarea></label></div>
 <div id="submit-serial" hidden><div class="submit-grid"><label>Tên chương đầu tiên *<input name="chapter_title" maxlength="220" placeholder="Chương 1"></label></div><label>Nội dung chương đầu tiên *<textarea name="chapter_content" placeholder="Viết nội dung chương đầu tiên..."></textarea></label></div>
 <button class="submit-btn" type="submit">Gửi truyện để duyệt</button></form></section>
 <section class="submit-panel"><h2>📚 Truyện của tôi</h2><?php if(!$mine):?><p class="submit-muted">Bạn chưa đăng truyện nào.</p><?php else:?><?php foreach($mine as $s):?><article class="submit-story-item"><strong><?=ss_h($s['title'])?></strong><p class="submit-muted"><?=($s['story_kind']==='short'?'Truyện ngắn':'Truyện nhiều chương · '.(int)$s['chapter_count'].' chương')?> · <?=$s['status']==='published'?'Đã xuất bản':'Đang chờ duyệt / bản nháp'?></p><?php if($s['status']==='published'):?><a href="<?=($s['story_kind']==='short'?'truyen-ngan/':'truyen/').rawurlencode($s['slug'])?>.html">Xem truyện</a><?php endif;?><?php if($s['story_kind']==='serial'):?><details><summary>＋ Gửi thêm chương</summary><form class="submit-form" method="post"><input type="hidden" name="csrf" value="<?=ss_h($csrf)?>"><input type="hidden" name="action" value="add_chapter"><input type="hidden" name="story_id" value="<?=(int)$s['id']?>"><label>Tên chương mới<input name="chapter_title" maxlength="220" required></label><label>Nội dung chương<textarea name="chapter_content" required></textarea></label><button class="submit-btn" type="submit">Gửi chương</button></form></details><?php endif;?></article><?php endforeach;?><?php endif;?></section></main>
-<script>const kind=document.getElementById('submit-kind'),shortBox=document.getElementById('submit-short'),serialBox=document.getElementById('submit-serial');function syncKind(){const serial=kind.value==='serial';shortBox.hidden=serial;serialBox.hidden=!serial;}kind.addEventListener('change',syncKind);syncKind();</script></body></html>
+<script>const kind=document.getElementById('submit-kind'),shortBox=document.getElementById('submit-short'),serialBox=document.getElementById('submit-serial');function syncKind(){const serial=kind.value==='serial';shortBox.hidden=serial;serialBox.hidden=!serial;}kind.addEventListener('change',syncKind);syncKind();const coverInput=document.getElementById('cover-file'),coverPreview=document.getElementById('cover-preview');let coverPreviewUrl='';coverInput.addEventListener('change',function(){if(coverPreviewUrl)URL.revokeObjectURL(coverPreviewUrl);const file=this.files&&this.files[0];if(!file){coverPreview.hidden=true;coverPreview.style.display='none';return;}if(!['image/jpeg','image/png','image/webp','image/gif'].includes(file.type)||file.size>5*1024*1024){alert('Chọn ảnh JPG, PNG, WEBP hoặc GIF không quá 5 MB.');this.value='';coverPreview.hidden=true;coverPreview.style.display='none';return;}coverPreviewUrl=URL.createObjectURL(file);coverPreview.src=coverPreviewUrl;coverPreview.hidden=false;coverPreview.style.display='block';});</script></body></html>
