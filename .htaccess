@@ -2,6 +2,9 @@ Options -Indexes
 RewriteEngine On
 RewriteBase /
 
+# Clean chapter reading URLs
+RewriteRule ^truyen/([a-zA-Z0-9-]+)/chuong-([0-9]+)\.html$ read.php?slug=$1&chapter=$2 [L,QSA]
+
 # Clean story detail URLs
 RewriteRule ^truyen-ngan/([a-zA-Z0-9-]+)\.html$ story.php?slug=$1 [L,QSA]
 RewriteRule ^truyen/([a-zA-Z0-9-]+)\.html$ story.php?slug=$1 [L,QSA]
