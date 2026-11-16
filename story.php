@@ -4,9 +4,48 @@ require __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/notifications.php';
 require_once __DIR__ . '/includes/experience.php';
 require_once __DIR__ . '/includes/story_rewards.php';
+function st_slugify(string $value): string {
+    $map = [
+        'à'=>'a','á'=>'a','ạ'=>'a','ả'=>'a','ã'=>'a','â'=>'a','ầ'=>'a','ấ'=>'a','ậ'=>'a','ẩ'=>'a','ẫ'=>'a','ă'=>'a','ằ'=>'a','ắ'=>'a','ặ'=>'a','ẳ'=>'a','ẵ'=>'a',
+        'è'=>'e','é'=>'e','ẹ'=>'e','ẻ'=>'e','ẽ'=>'e','ê'=>'e','ề'=>'e','ế'=>'e','ệ'=>'e','ể'=>'e','ễ'=>'e',
+        'ì'=>'i','í'=>'i','ị'=>'i','ỉ'=>'i','ĩ'=>'i',
+        'ò'=>'o','ó'=>'o','ọ'=>'o','ỏ'=>'o','õ'=>'o','ô'=>'o','ồ'=>'o','ố'=>'o','ộ'=>'o','ổ'=>'o','ỗ'=>'o','ơ'=>'o','ờ'=>'o','ớ'=>'o','ợ'=>'o','ở'=>'o','ỡ'=>'o',
+        'ù'=>'u','ú'=>'u','ụ'=>'u','ủ'=>'u','ũ'=>'u','ư'=>'u','ừ'=>'u','ứ'=>'u','ự'=>'u','ử'=>'u','ữ'=>'u',
+        'ỳ'=>'y','ý'=>'y','ỵ'=>'y','ỷ'=>'y','ỹ'=>'y','đ'=>'d',
+        'À'=>'a','Á'=>'a','Ạ'=>'a','Ả'=>'a','Ã'=>'a','Â'=>'a','Ầ'=>'a','Ấ'=>'a','Ậ'=>'a','Ẩ'=>'a','Ẫ'=>'a','Ă'=>'a','Ằ'=>'a','Ắ'=>'a','Ặ'=>'a','Ẳ'=>'a','Ẵ'=>'a',
+        'È'=>'e','É'=>'e','Ẹ'=>'e','Ẻ'=>'e','Ẽ'=>'e','Ê'=>'e','Ề'=>'e','Ế'=>'e','Ệ'=>'e','Ể'=>'e','Ễ'=>'e',
+        'Ì'=>'i','Í'=>'i','Ị'=>'i','Ỉ'=>'i','Ĩ'=>'i',
+        'Ò'=>'o','Ó'=>'o','Ọ'=>'o','Ỏ'=>'o','Õ'=>'o','Ô'=>'o','Ồ'=>'o','Ố'=>'o','Ộ'=>'o','Ổ'=>'o','Ỗ'=>'o','Ơ'=>'o','Ờ'=>'o','Ớ'=>'o','Ợ'=>'o','Ở'=>'o','Ỡ'=>'o',
+        'Ù'=>'u','Ú'=>'u','Ụ'=>'u','Ủ'=>'u','Ũ'=>'u','Ư'=>'u','Ừ'=>'u','Ứ'=>'u','Ự'=>'u','Ử'=>'u','Ữ'=>'u',
+        'Ỳ'=>'y','Ý'=>'y','Ỵ'=>'y','Ỷ'=>'y','Ỹ'=>'y','Đ'=>'d'
+    ];
+    $value = strtr(trim($value), $map);
+    if (function_exists('iconv')) {
+        $converted = @iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $value);
+        if ($converted !== false) $value = $converted;
+    }
+    $slug = strtolower(trim((string)preg_replace('/[^a-zA-Z0-9]+/', '-', $value), '-'));
+    return $slug !== '' ? $slug : 'truyen';
+}
 $slug=trim((string)($_GET['slug']??''));
 $q=$pdo->prepare("SELECT s.*, (SELECT COUNT(*) FROM chapters c WHERE c.story_id=s.id AND c.status='published') chapter_count FROM stories s WHERE s.slug=? AND s.status='published' LIMIT 1");
 $q->execute([$slug]);$story=$q->fetch();
+if ($story) {
+    // Tự sửa slug lỗi dấu cho truyện thành viên cũ có hậu tố ngẫu nhiên 6 ký tự.
+    $storedSlug = (string)$story['slug'];
+    if (preg_match('/-([a-f0-9]{6})$/i', $storedSlug, $suffixMatch)) {
+        $canonicalSlug = st_slugify((string)$story['title']) . '-' . strtolower($suffixMatch[1]);
+        if ($canonicalSlug !== $storedSlug) {
+            $collision = $pdo->prepare('SELECT id FROM stories WHERE slug=? AND id<>? LIMIT 1');
+            $collision->execute([$canonicalSlug, (int)$story['id']]);
+            if ($collision->fetchColumn()) $canonicalSlug .= '-' . (int)$story['id'];
+            $pdo->prepare('UPDATE stories SET slug=? WHERE id=?')->execute([$canonicalSlug, (int)$story['id']]);
+            $prefix = (($story['story_kind'] ?? 'serial') === 'short' ? '/truyen-ngan/' : '/truyen/');
+            header('Location: ' . $prefix . rawurlencode($canonicalSlug) . '.html', true, 301);
+            exit;
+        }
+    }
+}
 if(!$story){http_response_code(404);}
 $chapters=[];
 if($story){$q=$pdo->prepare("SELECT id,chapter_number,title,created_at FROM chapters WHERE story_id=? AND status='published' ORDER BY chapter_number");$q->execute([$story['id']]);$chapters=$q->fetchAll();}
@@ -147,16 +186,16 @@ function st_render_content($value): string {
  return implode("\n",$out);
 }
 ?><!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?= $story?st_h($story['title']).' | Truyện Đêm':'Không tìm thấy truyện' ?></title><link rel="stylesheet" href="/css/style.css?v=20261111-routes1"><link rel="stylesheet" href="/css/stories.css?v=20261112-author-gift"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1">
-</head><body class="story-site">
+</head><body class="story-site <?= $story && ($story['story_kind'] ?? 'serial') === 'short' ? 'short-story-page' : '' ?>">
 <header class="site-header"><div class="header-inner"><a class="brand" href="/index.php"><span class="brand-mark">☾</span><span class="brand-copy"><strong>Truyện Đêm</strong><small>Thế giới truyện dành cho bạn</small></span></a><nav class="header-links"><a href="/index.php">Trang chủ</a><a href="/index.php#library">Thư viện</a><?php if($memberId):?><a href="/library.php">Tủ sách</a><a href="/submit_story.php">Đăng truyện</a><a href="/notifications.php">Thông báo</a><?php endif;?><a href="/community.php">Cộng đồng</a><a href="/friends.php">Bạn bè</a><a href="/shop.php">Cửa hàng</a><?php if($memberId):?><a href="/account.php">Tài khoản</a><?php else:?><a href="/login.php">Đăng nhập</a><?php endif;?></nav></div></header>
 <main class="story-main"><?php if(!$story):?><section class="story-panel"><h1>Không tìm thấy truyện</h1><a class="story-btn" href="/index.php">Về thư viện truyện</a></section><?php else:?>
 <a class="story-back" href="/index.php">← Thư viện truyện</a><section class="story-detail">
 <?php if($story['cover_url']):?><img class="story-cover-large" src="<?=st_h($story['cover_url'])?>" alt="<?=st_h($story['title'])?>"><?php else:?><div class="story-cover-large cover-placeholder">☾</div><?php endif;?>
-<div class="story-detail-copy"><span class="story-tag"><?=st_h($story['category'])?></span><h1><?=st_h($story['title'])?></h1><p class="story-author">Tác giả: <?=st_h($story['author'])?></p><p class="story-stats">◉ <?=number_format($viewCount)?> lượt xem <span>♥ <?=number_format($likeCount)?> lượt thích</span></p></div><section class="story-description-box" aria-label="Giới thiệu truyện"><h2 class="story-description-title">GIỚI THIỆU TRUYỆN</h2><p class="story-description"><?=nl2br(st_h($story['description']))?></p></section><div class="story-detail-actions"><p class="story-meta"><?=($story['story_kind']??'serial')==='short'?'Truyện ngắn':count($chapters).' chương'?> · <?= $story['story_type']==='audio'?'Truyện audio':($story['story_type']==='both'?'Đọc & nghe':'Truyện chữ') ?></p>
+<div class="story-detail-copy"><span class="story-tag"><?=st_h($story['category'])?></span><h1><?=st_h($story['title'])?></h1><p class="story-author">Tác giả: <?=st_h($story['author'])?></p><p class="story-stats">◉ <?=number_format($viewCount)?> lượt xem <span>♥ <?=number_format($likeCount)?> lượt thích</span></p></div><?php if(($story['story_kind']??'serial')!=='short'):?><section class="story-description-box" aria-label="Giới thiệu truyện"><h2 class="story-description-title">GIỚI THIỆU TRUYỆN</h2><p class="story-description"><?=nl2br(st_h($story['description']))?></p></section><?php endif;?><div class="story-detail-actions"><p class="story-meta"><?=($story['story_kind']??'serial')==='short'?'Truyện ngắn':count($chapters).' chương'?> · <?= $story['story_type']==='audio'?'Truyện audio':($story['story_type']==='both'?'Đọc & nghe':'Truyện chữ') ?></p>
 <?php if(($story['story_kind']??'serial')==='short'):?><a class="story-btn" href="#short-story-content">Đọc truyện</a><?php elseif($chapters):?><a class="story-btn" href="/truyen/<?=rawurlencode($slug)?>/chuong-<?= (int)$chapters[0]['chapter_number']?>.html">Đọc từ đầu</a><?php endif;?>
 <?php if($memberId):?><form method="post" class="favorite-form"><input type="hidden" name="csrf" value="<?=st_h($_SESSION['member_csrf'])?>"><input type="hidden" name="action" value="like"><button class="story-btn <?=$liked?'':'story-btn-quiet'?>"><?=$liked?'♥ Đã thích':'♡ Thích truyện'?></button></form><form method="post" class="favorite-form"><input type="hidden" name="csrf" value="<?=st_h($_SESSION['member_csrf'])?>"><input type="hidden" name="action" value="favorite"><button class="story-btn story-btn-quiet"><?=$favorite?'♥ Bỏ khỏi yêu thích':'♡ Thêm vào yêu thích'?></button></form><?php else:?><a class="story-btn story-btn-quiet" href="/login.php">Đăng nhập để thích truyện</a><a class="story-btn story-btn-quiet" href="/login.php">Đăng nhập để lưu truyện</a><?php endif;?></div></section>
 <?php if($memberId && (int)($story['member_id']??0)>0 && (int)$story['member_id']!==$memberId):?><section class="story-panel story-gift-panel" id="story-gift"><h2>✦ Ủng hộ tác giả</h2><p>Tặng một chút Xu để động viên người viết tiếp tục sáng tác.</p><?php if(!empty($_SESSION['story_gift_notice'])):?><p class="story-gift-notice"><?=st_h($_SESSION['story_gift_notice'])?></p><?php unset($_SESSION['story_gift_notice']);endif;?><?php if(!empty($_SESSION['story_gift_error'])):?><p class="story-gift-error"><?=st_h($_SESSION['story_gift_error'])?></p><?php unset($_SESSION['story_gift_error']);endif;?><form method="post"><input type="hidden" name="csrf" value="<?=st_h($_SESSION['member_csrf'])?>"><input type="hidden" name="action" value="gift_author"><label for="story-gift-amount">Số Xu muốn tặng</label><select id="story-gift-amount" name="amount"><option value="5">5 Xu</option><option value="10">10 Xu</option><option value="20">20 Xu</option><option value="50">50 Xu</option><option value="100">100 Xu</option></select><button class="story-btn" type="submit">Tặng Xu</button></form></section><?php endif;?>
-<?php if(($story['story_kind']??'serial')==='short'):?><article class="story-panel short-story-content" id="short-story-content"><h2>Nội dung truyện</h2><div class="short-story-text"><?=st_render_content($story['short_content']??'')?></div></article><?php else:?><section class="story-panel"><h2>Danh sách chương</h2><?php if(!$chapters):?><p>Truyện chưa có chương được xuất bản.</p><?php else:?><div class="chapter-list"><?php foreach($chapters as $c):?><a href="/truyen/<?=rawurlencode($slug)?>/chuong-<?= (int)$c['chapter_number']?>.html"><span>Chương <?= (int)$c['chapter_number'] ?> · <?=st_h($c['title'])?></span><small><?=st_h(date('d/m/Y',strtotime($c['created_at'])))?></small></a><?php endforeach;?></div><?php endif;?></section><?php endif;?><?php endif;?>
+<?php if(($story['story_kind']??'serial')==='short'):?><article class="story-panel short-story-content" id="short-story-content"><h2>Nội dung truyện</h2><div class="short-story-text"><?=st_render_content($story['short_content']??'')?></div></article><?php if(trim((string)($story['description']??''))!==''):?><section class="story-panel story-description-box short-story-description" aria-label="Giới thiệu truyện"><h2 class="story-description-title">GIỚI THIỆU TRUYỆN</h2><p class="story-description"><?=nl2br(st_h($story['description']))?></p></section><?php endif;?><?php else:?><section class="story-panel"><h2>Danh sách chương</h2><?php if(!$chapters):?><p>Truyện chưa có chương được xuất bản.</p><?php else:?><div class="chapter-list"><?php foreach($chapters as $c):?><a href="/truyen/<?=rawurlencode($slug)?>/chuong-<?= (int)$c['chapter_number']?>.html"><span>Chương <?= (int)$c['chapter_number'] ?> · <?=st_h($c['title'])?></span><small><?=st_h(date('d/m/Y',strtotime($c['created_at'])))?></small></a><?php endforeach;?></div><?php endif;?></section><?php endif;?><?php endif;?>
 <section class="story-comments" id="story-comments">
  <div class="story-comments-head"><div><span class="story-tag">GÓC TRÒ CHUYỆN</span><h2>Bình luận <small><?=count($topComments) + array_sum(array_map('count',$commentReplies))?></small></h2></div><p>Cùng chia sẻ cảm nhận của bạn về câu chuyện này.</p></div>
  <?php if(!empty($_SESSION['comment_error'])): ?><p class="comment-error"><?=st_h($_SESSION['comment_error'])?></p><?php unset($_SESSION['comment_error']); endif; ?>
