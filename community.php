@@ -140,6 +140,6 @@ function community_h(?string $value): string { return htmlspecialchars($value ??
  <?php if ($comments): ?><div class="community-comments"><?php foreach (array_reverse($comments) as $comment): ?><p><strong><?= community_h($comment['display_name']) ?></strong> <?= community_h($comment['content']) ?></p><?php endforeach; ?></div><?php endif; ?>
  <?php if (!$commentsEnabled): ?><p class="community-login-hint">Bình luận đang tạm thời được tắt.</p><?php elseif ($currentId): ?><form method="post" class="community-comment-form"><input type="hidden" name="csrf" value="<?= community_h($_SESSION['member_csrf']) ?>"><input type="hidden" name="action" value="add_comment"><input type="hidden" name="post_id" value="<?= (int)$post['id'] ?>"><input type="text" name="content" maxlength="1000" placeholder="Viết bình luận..." required><button type="submit">Gửi</button></form><?php else: ?><p class="community-login-hint"><a href="login.php">Đăng nhập</a> để bình luận.</p><?php endif; ?>
  </article><?php endforeach; ?></section>
-</main><footer class="site-footer"><div class="footer-bottom">© 2026 Truyện Đêm · Cùng nhau kết nối</div></footer>
+</main><?php require __DIR__ . '/includes/footer.php'; ?>
 <script src="js/presence.js"></script>
 </body></html>
