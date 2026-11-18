@@ -156,3 +156,28 @@ body.td-drawer-open .td-bottom-nav{display:none}
  .td-quick-cover{width:32px;height:43px;flex-basis:32px}
  .td-quick-info{max-width:calc(100% - 41px)}
 }
+
+
+/* Quick search ultra-compact: ưu tiên vừa màn hình điện thoại */
+.td-header-search,
+.td-header-search *{box-sizing:border-box}
+.td-header-search{position:relative;z-index:2200}
+.td-search-input-wrap{position:relative;flex:1 1 0;width:0;max-width:100%;min-width:0}
+.td-quick-results{position:absolute;top:calc(100% + 5px);left:0;right:0;width:100%;max-width:100%;max-height:32vh;max-height:32dvh;overflow-y:auto;padding:4px;border:1px solid #302b3b;border-radius:9px;background:#17151f;box-shadow:0 8px 20px #0008}
+.td-quick-heading{display:none}
+.td-quick-result{display:flex;align-items:center;min-width:0;gap:7px;padding:6px 7px;border-radius:6px}
+.td-quick-result+.td-quick-result{margin-top:1px}
+.td-quick-cover{display:none!important}
+.td-quick-info{display:block;flex:1 1 auto;min-width:0;max-width:100%;overflow:hidden}
+.td-quick-info strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;line-height:17px;font-weight:650}
+.td-quick-info small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;line-height:14px}
+.td-quick-info em{display:none}
+.td-quick-empty{padding:9px 7px;font-size:11px}
+.td-quick-all{margin-top:3px;padding:7px;border-radius:6px;font-size:11px;line-height:15px}
+@media(max-width:520px){
+ .td-header-search{display:flex;width:auto;max-width:none;margin:0 6px;padding:7px;gap:5px}
+ .td-header-search input{height:36px;padding:0 8px;font-size:12px}
+ .td-header-search>button{flex:0 0 auto;padding:0 8px;font-size:11px}
+ .td-quick-results{max-height:30vh;max-height:30dvh}
+ .td-quick-result{padding:5px 6px}
+}
