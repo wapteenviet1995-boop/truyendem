@@ -109,3 +109,85 @@ html[data-theme="light"] body.story-site .list-group li {
   color:#292333!important;
   border-color:#e5dfeb!important;
 }
+
+
+/* Light mode: dedicated chapter reader page */
+html[data-theme="light"] body.reader-site,
+html[data-theme="light"] body.reader-site .reader-main,
+html[data-theme="light"] body.reader-site .reader-backbar {
+  background:#f5f3f8!important;
+  color:#292333!important;
+}
+html[data-theme="light"] body.reader-site .reader-kicker {
+  background:#eee8f5!important;
+  color:#7045a0!important;
+  border-color:#ded3eb!important;
+}
+html[data-theme="light"] body.reader-site .reader-main h1 {
+  color:#292333!important;
+}
+html[data-theme="light"] body.reader-site article.reader-content,
+html[data-theme="light"] body.reader-site .reader-content {
+  background:#fff!important;
+  background-image:none!important;
+  color:#302a38!important;
+  border:1px solid #e5dfeb!important;
+  box-shadow:0 8px 28px rgba(35,25,50,.07)!important;
+}
+html[data-theme="light"] body.reader-site .reader-content p,
+html[data-theme="light"] body.reader-site .reader-content span,
+html[data-theme="light"] body.reader-site .reader-content div {
+  color:#302a38!important;
+}
+html[data-theme="light"] body.reader-site .reader-pagination {
+  border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.reader-site .reader-pagination a {
+  background:#fff!important;
+  color:#67428d!important;
+  border-color:#ded3eb!important;
+}
+html[data-theme="light"] body.reader-site .story-audio {
+  background:#fff!important;
+  border-color:#ded3eb!important;
+}
+
+/* Light mode: homepage leaderboard */
+html[data-theme="light"] body.story-site .leaderboard-section,
+html[data-theme="light"] body.story-site .leaderboard-panel,
+html[data-theme="light"] body.story-site .leaderboard-list,
+html[data-theme="light"] body.story-site .leaderboard-row,
+html[data-theme="light"] body.story-site .leaderboard-empty {
+  background:#fff!important;
+  background-image:none!important;
+  color:#292333!important;
+  border-color:#e5dfeb!important;
+  box-shadow:0 5px 20px rgba(35,25,50,.06)!important;
+}
+html[data-theme="light"] body.story-site .leaderboard-heading h2,
+html[data-theme="light"] body.story-site .leaderboard-member,
+html[data-theme="light"] body.story-site .leaderboard-member small,
+html[data-theme="light"] body.story-site .leaderboard-rank,
+html[data-theme="light"] body.story-site .leaderboard-xu,
+html[data-theme="light"] body.story-site .leaderboard-xp {
+  color:#292333!important;
+}
+html[data-theme="light"] body.story-site .leaderboard-name {
+  color:#67428d!important;
+}
+html[data-theme="light"] body.story-site .leaderboard-tab {
+  background:#f2edf7!important;
+  color:#655575!important;
+  border-color:#e2d9eb!important;
+}
+html[data-theme="light"] body.story-site .leaderboard-tab.is-active {
+  background:#7045a0!important;
+  color:#fff!important;
+  border-color:#7045a0!important;
+}
+html[data-theme="light"] body.story-site .leaderboard-row {
+  border-bottom:1px solid #eee8f3!important;
+}
+html[data-theme="light"] body.story-site .leaderboard-row small {
+  color:#756d80!important;
+}
