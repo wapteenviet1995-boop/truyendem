@@ -17,10 +17,44 @@ try{
 function home_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
 ?>
 <!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090a10"><title>Truyện Đêm - Thư viện truyện chữ và audio</title><meta name="description" content="Khám phá truyện kinh dị, tình cảm, huyền huyễn và nhiều câu chuyện hấp dẫn tại Truyện Đêm."><link rel="stylesheet" href="/css/style.css?v=20261111-routes1"><link rel="stylesheet" href="/css/stories.css?v=20261111-routes1"><link rel="stylesheet" href="/css/member-hub.css?v=20261112-leaderboard2"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1">
-</head><body class="story-site" id="top">
+<link rel="stylesheet" href="/css/home-slider.css?v=20261118-1"></head><body class="story-site" id="top">
 <?php require __DIR__ . '/includes/header.php'; ?>
-<main class="story-main"><section class="story-hero"><span class="story-kicker">✦ CHÀO MỪNG ĐẾN VỚI TRUYỆN ĐÊM ✦</span><h1>Khám phá<br>thế giới truyện mới</h1><p>Hàng ngàn câu chuyện hấp dẫn đang chờ bạn. Chọn một câu chuyện và bắt đầu hành trình ngay hôm nay!</p></section>
-<section class="home-shortcuts" aria-label="Khám phá"><a href="#library"><span>🔥</span><b>Truyện hot</b></a><a href="#categories"><span>✦</span><b>Thể loại</b></a><a href="#leaderboard-title"><span>🏆</span><b>BXH</b></a><a href="#library"><span>📖</span><b>Miễn phí</b></a><a href="/library.php"><span>♥</span><b>Theo dõi</b></a><a href="/community.php"><span>🧭</span><b>Khám phá</b></a><a href="/shop.php"><span>🎁</span><b>Ưu đãi</b></a><a href="/account.php"><span>•••</span><b>Khác</b></a></section>
+<main class="story-main">
+<section class="td-home-slider" id="tdHomeSlider" aria-label="Truyện nổi bật">
+ <div class="td-slider-topline"><span>☾ GÓC TRUYỆN ĐÊM</span><small>NHỮNG CÂU CHUYỆN DÀNH CHO BẠN</small></div>
+ <div class="td-slider-track">
+ <?php foreach(array_slice($stories,0,6) as $slideIndex=>$slide): $slideUrl=(($slide['story_kind']??'serial')==='short'?'/truyen-ngan/':'/truyen/').rawurlencode((string)$slide['slug']).'.html'; ?>
+ <article class="td-slider-slide<?= $slideIndex===0?' is-active':'' ?>"<?= $slideIndex===0?'':' aria-hidden="true"' ?>>
+  <?php if(!empty($slide['cover_url'])):?><img class="td-slider-image" src="<?=home_h($slide['cover_url'])?>" alt="" loading="<?= $slideIndex===0?'eager':'lazy' ?>"><?php else:?><div class="td-slider-image td-slider-no-cover">☾</div><?php endif;?>
+  <div class="td-slider-shade"></div>
+  <div class="td-slider-copy">
+   <span class="td-slider-label"><?=home_h($slide['category']?:'TRUYỆN NỔI BẬT')?></span>
+   <h2><?=home_h($slide['title'])?></h2>
+   <p><?=home_h(mb_strimwidth((string)$slide['description'],0,150,'…','UTF-8'))?></p>
+   <div class="td-slider-meta"><?=home_h($slide['author']?:'Truyện Đêm')?> <i>•</i> <?=($slide['story_kind']??'serial')==='short'?'Truyện ngắn':(int)$slide['chapter_count'].' chương'?></div>
+   <a class="td-slider-cta" href="<?=$slideUrl?>">Đọc truyện <span>→</span></a>
+  </div>
+ </article>
+ <?php endforeach;?>
+ <?php if(!$stories):?><div class="td-slider-empty"><span>☾</span><h2>Mỗi đêm, một thế giới khác</h2><p>Những câu chuyện mới đang chờ bạn.</p></div><?php endif;?>
+ </div>
+ <?php if(count($stories)>1):?><div class="td-slider-controls"><button type="button" class="td-slider-arrow td-slider-prev" aria-label="Truyện trước">‹</button><div class="td-slider-dots"><?php foreach(array_slice($stories,0,6) as $dotIndex=>$unused):?><button type="button" class="td-slider-dot<?= $dotIndex===0?' is-active':''?>" data-slide="<?=$dotIndex?>" aria-label="Đến truyện <?=$dotIndex+1?>"></button><?php endforeach;?></div><button type="button" class="td-slider-arrow td-slider-next" aria-label="Truyện tiếp">›</button></div><?php endif;?>
+</section>
+<script>
+(function(){
+ const root=document.getElementById('tdHomeSlider');if(!root)return;
+ const slides=[...root.querySelectorAll('.td-slider-slide')],dots=[...root.querySelectorAll('.td-slider-dot')];
+ if(slides.length<2)return;let current=0,timer;
+ function show(index){current=(index+slides.length)%slides.length;slides.forEach((s,i)=>{s.classList.toggle('is-active',i===current);s.setAttribute('aria-hidden',i===current?'false':'true');});dots.forEach((d,i)=>d.classList.toggle('is-active',i===current));}
+ function start(){clearInterval(timer);timer=setInterval(()=>show(current+1),5500);}
+ root.querySelector('.td-slider-prev')?.addEventListener('click',()=>{show(current-1);start();});
+ root.querySelector('.td-slider-next')?.addEventListener('click',()=>{show(current+1);start();});
+ dots.forEach((dot,i)=>dot.addEventListener('click',()=>{show(i);start();}));
+ root.addEventListener('mouseenter',()=>clearInterval(timer));root.addEventListener('mouseleave',start);
+ root.addEventListener('focusin',()=>clearInterval(timer));root.addEventListener('focusout',start);
+ start();
+})();
+</script>
 <?php if(!empty($setupError)):?><section class="story-empty"><h2>Thư viện đang chờ khởi tạo</h2><p>Hãy chạy file <strong>database/stories.sql</strong> trong phpMyAdmin để tạo dữ liệu truyện và chương.</p></section><?php else:?>
 <?php if($history):?><section class="story-section"><div class="story-section-head"><h2>☾ Đọc tiếp</h2></div><div class="chapter-list"><?php foreach($history as $h):?><a href="/truyen/<?=rawurlencode($h['slug'])?>/chuong-<?= (int)$h['chapter_number']?>.html"><span><?=home_h($h['title'])?> · Chương <?= (int)$h['chapter_number']?> — <?=home_h($h['chapter_title'])?></span><small>Đọc tiếp →</small></a><?php endforeach;?></div></section><?php endif;?>
 <section class="story-section" id="library"><div class="story-section-head"><h2>✧ Thư viện truyện</h2><span><?=count($stories)?> truyện</span></div>
