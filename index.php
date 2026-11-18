@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/includes/db.php';
-$q=trim((string)($_GET['q']??''));$category=trim((string)($_GET['category']??''));
+$category=trim((string)($_GET['category']??''));
 function home_slug(string $value): string { $value=trim($value); if(function_exists('iconv')){$v=iconv('UTF-8','ASCII//TRANSLIT//IGNORE',$value);if($v!==false)$value=$v;} return strtolower(trim((string)preg_replace('/[^a-zA-Z0-9]+/','-',$value),'-')); }
 $stories=[];$categories=[];$history=[];
 try{
@@ -9,7 +9,6 @@ try{
  $categorySlug=trim((string)($_GET['category_slug']??'')); if($categorySlug!==''){ $category=''; foreach($categories as $categoryName){if(home_slug((string)$categoryName)===$categorySlug){$category=(string)$categoryName;break;}} if($category===''){http_response_code(404);} }
  $sql="SELECT s.id,s.title,s.slug,s.author,s.description,s.cover_url,s.category,s.story_type,s.story_kind,s.views_count,s.likes_count,(SELECT COUNT(*) FROM chapters c WHERE c.story_id=s.id AND c.status='published') chapter_count,(SELECT MAX(c.updated_at) FROM chapters c WHERE c.story_id=s.id AND c.status='published') latest_chapter FROM stories s WHERE s.status='published'";
  $params=[];
- if($q!==''){$sql.=" AND (s.title LIKE ? OR s.author LIKE ? OR s.description LIKE ?)";$like='%'.$q.'%';$params=[$like,$like,$like];}
  if($category!==''){$sql.=" AND s.category=?";$params[]=$category;}
  $sql.=" ORDER BY COALESCE((SELECT MAX(c.updated_at) FROM chapters c WHERE c.story_id=s.id AND c.status='published'),s.updated_at) DESC LIMIT 60";
  $stmt=$pdo->prepare($sql);$stmt->execute($params);$stories=$stmt->fetchAll();
@@ -24,7 +23,7 @@ function home_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBS
 <section class="home-shortcuts" aria-label="Khám phá"><a href="#library"><span>🔥</span><b>Truyện hot</b></a><a href="#categories"><span>✦</span><b>Thể loại</b></a><a href="#leaderboard-title"><span>🏆</span><b>BXH</b></a><a href="#library"><span>📖</span><b>Miễn phí</b></a><a href="/library.php"><span>♥</span><b>Theo dõi</b></a><a href="/community.php"><span>🧭</span><b>Khám phá</b></a><a href="/shop.php"><span>🎁</span><b>Ưu đãi</b></a><a href="/account.php"><span>•••</span><b>Khác</b></a></section>
 <?php if(!empty($setupError)):?><section class="story-empty"><h2>Thư viện đang chờ khởi tạo</h2><p>Hãy chạy file <strong>database/stories.sql</strong> trong phpMyAdmin để tạo dữ liệu truyện và chương.</p></section><?php else:?>
 <?php if($history):?><section class="story-section"><div class="story-section-head"><h2>☾ Đọc tiếp</h2></div><div class="chapter-list"><?php foreach($history as $h):?><a href="/truyen/<?=rawurlencode($h['slug'])?>/chuong-<?= (int)$h['chapter_number']?>.html"><span><?=home_h($h['title'])?> · Chương <?= (int)$h['chapter_number']?> — <?=home_h($h['chapter_title'])?></span><small>Đọc tiếp →</small></a><?php endforeach;?></div></section><?php endif;?>
-<section class="story-section" id="library"><div class="story-section-head"><h2><?= $q!==''?'Kết quả tìm kiếm':'✧ Thư viện truyện' ?></h2><span><?=count($stories)?> truyện</span></div>
+<section class="story-section" id="library"><div class="story-section-head"><h2>✧ Thư viện truyện</h2><span><?=count($stories)?> truyện</span></div>
 <?php if($categories):?><div class="story-categories" id="categories"><a class="<?= $category===''?'active':''?>" href="/index.php#library">Tất cả</a><?php foreach($categories as $cat):?><a class="<?= $category===$cat?'active':''?>" href="/chuyen-muc/<?=home_slug((string)$cat)?>.html"><?=home_h($cat)?></a><?php endforeach;?></div><?php endif;?>
 <?php if(!$stories):?><div class="story-empty"><h3>Chưa tìm thấy truyện phù hợp</h3><p>Thư viện sẽ sớm có thêm những câu chuyện mới.</p></div><?php else:?><div class="story-grid"><?php foreach($stories as $s):?><article class="story-card"><a class="story-card-cover" href="<?=($s['story_kind']??'serial')==='short'?'/truyen-ngan/':'/truyen/'?><?=rawurlencode($s['slug'])?>.html"><?php if($s['cover_url']):?><img src="<?=home_h($s['cover_url'])?>" alt="<?=home_h($s['title'])?>" loading="lazy"><?php else:?>☾<?php endif;?></a><div class="story-card-body"><span class="story-tag"><?=home_h($s['category'])?></span><h3><a href="<?=($s['story_kind']??'serial')==='short'?'/truyen-ngan/':'/truyen/'?><?=rawurlencode($s['slug'])?>.html"><?=home_h($s['title'])?></a></h3><p><?=home_h(mb_strimwidth((string)$s['description'],0,115,'…','UTF-8'))?></p><div class="story-card-meta"><?=home_h($s['author'])?> · <?=($s['story_kind']??'serial')==='short'?'Truyện ngắn':(int)$s['chapter_count'].' chương'?><br>◉ <?=number_format((int)$s['views_count'])?> · ♥ <?=number_format((int)$s['likes_count'])?></div></div></article><?php endforeach;?></div><?php endif;?></section><?php endif;?>
 <?php
