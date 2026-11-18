@@ -10,14 +10,16 @@ try {
     }
 } catch (Throwable $e) { $tdGenres = []; }
 ?>
-<link rel="stylesheet" href="/css/site-header.css?v=20261118-compact2">\n<link rel="stylesheet" href="/css/theme-mode.css?v=20261118-2">
+<link rel="stylesheet" href="/css/site-header.css?v=20261118-compact2">
+<link rel="stylesheet" href="/css/theme-mode.css?v=20261118-2">
 <header class="site-header td-global-header">
   <div class="header-inner td-header-inner">
     <a class="brand" href="/index.php" aria-label="Truyện Đêm - Trang chủ">
       <span class="brand-mark">☾</span>
       <span class="brand-copy"><strong>Truyện Đêm</strong><small>Mỗi đêm, một thế giới khác</small></span>
     </a>
-    <div class="td-header-actions">\n    <button class="td-theme-toggle" type="button" aria-label="Chuyển sang giao diện sáng" title="Chuyển giao diện">☀</button>
+    <div class="td-header-actions">
+    <button class="td-theme-toggle" type="button" aria-label="Chuyển sang giao diện sáng" title="Chuyển giao diện">☀</button>
     <button class="td-search-toggle" type="button" aria-label="Mở tìm kiếm" aria-expanded="false" aria-controls="tdHeaderSearch">⌕</button>
     <button class="mobile-menu-toggle" type="button" aria-label="Mở menu" aria-expanded="false" aria-controls="tdGlobalMenu"><span></span><span></span><span></span></button>
     </div>
