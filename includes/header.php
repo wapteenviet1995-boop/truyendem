@@ -56,9 +56,9 @@ try {
       <h3>KHÁM PHÁ</h3>
       <a class="td-drawer-link" href="/index.php"><span>⌂</span> Trang chủ</a>
       <a class="td-drawer-link" href="/index.php#library"><span>✧</span> Mới cập nhật</a>
-      <a class="td-drawer-link" href="/index.php#hot"><span>♨</span> Truyện HOT</a>
-      <a class="td-drawer-link" href="/index.php#ranking"><span>♜</span> Bảng xếp hạng</a>
-      <a class="td-drawer-link" href="/index.php#completed"><span>✓</span> Truyện hoàn thành</a>
+      <a class="td-drawer-link" href="/index.php#categories"><span>♨</span> Thể loại truyện</a>
+      <a class="td-drawer-link" href="/index.php#leaderboard"><span>♜</span> Bảng xếp hạng</a>
+      <a class="td-drawer-link" href="/index.php#library"><span>✧</span> Truyện mới cập nhật</a>
       <a class="td-drawer-link" href="/community.php"><span>♧</span> Cộng đồng</a>
     </section>
     <section class="td-drawer-section td-drawer-genres">
