@@ -93,6 +93,6 @@ function h(string $s): string { return htmlspecialchars($s, ENT_QUOTES | ENT_SUB
  <?php endif; ?>
  <p class="compat-disclaimer">Lưu ý: Điểm số được xây dựng theo nguyên tố hoàng đạo để tham khảo và giải trí, không phải đánh giá khoa học hay dự đoán chắc chắn về một mối quan hệ.</p>
 </main>
-<footer class="site-footer"><div class="footer-bottom">© 2026 Truyện Đêm · Cùng bạn ngắm nhìn bầu trời</div></footer>
+<?php require __DIR__ . '/includes/footer.php'; ?>
 <script src="js/presence.js"></script>
 </body></html>
