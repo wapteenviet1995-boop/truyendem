@@ -23,8 +23,11 @@ try {
     </div>
   </div>
 </header>
-<form class="td-header-search" id="tdHeaderSearch" action="/search.php" method="get" hidden>
-  <input type="search" name="q" placeholder="Tìm tên truyện, tác giả..." aria-label="Tìm truyện" autocomplete="off">
+<form class="td-header-search" id="tdHeaderSearch" action="/search.php" method="get" hidden autocomplete="off">
+  <div class="td-search-input-wrap">
+    <input type="search" id="tdQuickSearchInput" name="q" placeholder="Tìm tên truyện, tác giả..." aria-label="Tìm truyện" autocomplete="off">
+    <div class="td-quick-results" id="tdQuickResults" hidden></div>
+  </div>
   <button type="submit">Tìm kiếm</button>
 </form>
 
@@ -93,12 +96,61 @@ try {
   var searchToggle = header.querySelector('.td-search-toggle');
   var searchPanel = document.getElementById('tdHeaderSearch');
   if (searchToggle && searchPanel) {
+    var searchInput = document.getElementById('tdQuickSearchInput');
+    var resultsBox = document.getElementById('tdQuickResults');
+    var searchTimer = null;
+    var lastQuery = '';
     searchToggle.addEventListener('click', function () {
       var opening = searchPanel.hidden;
       searchPanel.hidden = !opening;
       searchToggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
-      if (opening) searchPanel.querySelector('input').focus();
+      if (opening && searchInput) searchInput.focus();
     });
+    if (searchInput && resultsBox) {
+      searchInput.addEventListener('input', function () {
+        var query = searchInput.value.trim();
+        window.clearTimeout(searchTimer);
+        if (query.length < 2) { resultsBox.hidden = true; resultsBox.innerHTML = ''; return; }
+        searchTimer = window.setTimeout(function () {
+          if (query === lastQuery) return;
+          lastQuery = query;
+          resultsBox.hidden = false;
+          resultsBox.innerHTML = '<div class="td-quick-empty">Đang tìm...</div>';
+          fetch('/search_suggest.php?q=' + encodeURIComponent(query), {headers:{'Accept':'application/json'}})
+            .then(function (response) { if (!response.ok) throw new Error('search'); return response.json(); })
+            .then(function (items) {
+              if (searchInput.value.trim() !== query) return;
+              resultsBox.innerHTML = '';
+              if (!Array.isArray(items) || !items.length) {
+                resultsBox.innerHTML = '<div class="td-quick-empty">Không tìm thấy truyện phù hợp</div>';
+              } else {
+                items.forEach(function (item) {
+                  var link = document.createElement('a');
+                  link.className = 'td-quick-result';
+                  link.href = item.url;
+                  var title = document.createElement('strong');
+                  title.textContent = item.title || 'Truyện';
+                  var meta = document.createElement('small');
+                  meta.textContent = [item.category, item.author].filter(Boolean).join(' · ');
+                  link.appendChild(title); link.appendChild(meta); resultsBox.appendChild(link);
+                });
+                var all = document.createElement('button');
+                all.type = 'submit'; all.className = 'td-quick-all';
+                all.textContent = 'Xem tất cả kết quả cho “' + query + '”';
+                resultsBox.appendChild(all);
+              }
+              resultsBox.hidden = false;
+            })
+            .catch(function () { resultsBox.innerHTML = '<div class="td-quick-empty">Không thể tải kết quả lúc này</div>'; resultsBox.hidden = false; });
+        }, 250);
+      });
+      document.addEventListener('click', function (event) {
+        if (!searchPanel.contains(event.target) && event.target !== searchToggle) resultsBox.hidden = true;
+      });
+      searchInput.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') { resultsBox.hidden = true; searchInput.blur(); }
+      });
+    }
   }
   var close = drawer.querySelector('.td-drawer-close');
   function openDrawer() {
