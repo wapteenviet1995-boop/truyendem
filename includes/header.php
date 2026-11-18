@@ -23,7 +23,7 @@ try {
     </div>
   </div>
 </header>
-<form class="td-header-search" id="tdHeaderSearch" action="/index.php" method="get" hidden>
+<form class="td-header-search" id="tdHeaderSearch" action="/search.php" method="get" hidden>
   <input type="search" name="q" placeholder="Tìm tên truyện, tác giả..." aria-label="Tìm truyện" autocomplete="off">
   <button type="submit">Tìm kiếm</button>
 </form>
