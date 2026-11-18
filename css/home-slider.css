@@ -82,7 +82,8 @@ body.story-site .td-slider-empty{width:100%;min-width:0}
 body.story-site .td-slider-track .td-slider-controls{
   position:absolute!important;
   left:50%!important;
-  bottom:13px!important;
+  top:13px!important;
+  bottom:auto!important;
   transform:translateX(-50%)!important;
   z-index:8!important;
   display:flex!important;
@@ -115,7 +116,8 @@ body.story-site .td-slider-track .td-slider-dot{background:rgba(255,255,255,.55)
 body.story-site .td-slider-track .td-slider-dot.is-active{background:#f0c18e!important}
 @media(max-width:600px){
   body.story-site .td-slider-track .td-slider-controls{
-    bottom:9px!important;
+    top:9px!important;
+    bottom:auto!important;
     gap:9px!important;
     padding:4px 8px!important;
   }
