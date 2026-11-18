@@ -58,5 +58,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <label>Nhập lại mật khẩu<input type="password" name="confirm_password" minlength="8" autocomplete="new-password" required></label>
 <button class="member-submit" type="submit">Đăng ký</button>
 </form><p class="member-switch">Đã có tài khoản? <a href="login.php">Đăng nhập</a></p>
-</section></main><footer class="member-footer">© 2026 Truyện Đêm</footer>
+</section></main><?php require __DIR__ . '/includes/footer.php'; ?>
 </body></html>
