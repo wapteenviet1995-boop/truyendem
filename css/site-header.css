@@ -79,3 +79,16 @@ body.td-drawer-open{overflow:hidden}
  .td-drawer-scroll{padding-left:14px;padding-right:14px}
  .td-drawer-auth{margin-left:14px;margin-right:14px}
 }
+
+
+/* Thanh điều hướng cố định dưới màn hình trên toàn website */
+.td-bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:1500;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:center;min-height:64px;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));background:rgba(16,15,25,.97);border-top:1px solid #343044;box-shadow:0 -8px 24px rgba(0,0,0,.25);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.td-bottom-nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;min-height:48px;color:#bdb8cc;text-decoration:none}
+.td-bottom-nav a>span{font-size:1.3rem;line-height:1.15}
+.td-bottom-nav a>small{font-size:.68rem;line-height:1.2;white-space:nowrap}
+.td-bottom-nav a:hover,.td-bottom-nav a:focus-visible{color:#c1baff}
+.td-bottom-nav .td-bottom-nav-primary>span{display:grid;place-items:center;width:34px;height:30px;border-radius:11px;background:linear-gradient(135deg,#b7afff,#756cf0);color:#fff;font-size:1.45rem}
+body{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+body.td-drawer-open .td-bottom-nav{display:none}
+@media(min-width:901px){.td-bottom-nav{left:50%;right:auto;bottom:14px;width:min(560px,calc(100% - 40px));transform:translateX(-50%);border:1px solid #343044;border-radius:18px;padding-bottom:6px}.td-bottom-nav a>small{font-size:.72rem}}
+@media(max-width:360px){.td-bottom-nav a>small{font-size:.61rem}}
