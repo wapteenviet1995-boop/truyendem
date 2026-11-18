@@ -44,5 +44,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <label>Mật khẩu<input type="password" name="password" autocomplete="current-password" required></label>
 <button class="member-submit" type="submit">Đăng nhập</button>
 </form><p class="member-switch">Chưa có tài khoản? <a href="register.php">Đăng ký ngay</a></p>
-</section></main><footer class="member-footer">© 2026 Truyện Đêm</footer>
+</section></main><?php require __DIR__ . '/includes/footer.php'; ?>
 </body></html>
