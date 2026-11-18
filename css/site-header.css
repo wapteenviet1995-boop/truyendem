@@ -135,3 +135,24 @@ body.td-drawer-open .td-bottom-nav{display:none}
  .td-quick-cover{width:44px;height:59px;flex-basis:44px}
  .td-quick-info strong{font-size:.84rem}
 }
+
+/* Fix tìm kiếm nhanh: thu gọn, không tràn khung trên mobile */
+.td-header-search{box-sizing:border-box;width:100%;max-width:760px;min-width:0}
+.td-search-input-wrap{width:100%;min-width:0}
+.td-quick-results{box-sizing:border-box;width:100%;max-width:100%;left:0;right:0;padding:5px;border-radius:12px}
+.td-quick-heading{padding:7px 8px 8px;font-size:.62rem}
+.td-quick-result{box-sizing:border-box;min-width:0;gap:9px;padding:7px;border-radius:9px}
+.td-quick-cover{width:34px;height:46px;flex:0 0 34px;border-radius:6px;font-size:1.15rem}
+.td-quick-info{min-width:0;max-width:calc(100% - 43px);gap:3px}
+.td-quick-info strong{font-size:.78rem;line-height:1.25;-webkit-line-clamp:1}
+.td-quick-info small{font-size:.66rem}
+.td-quick-info em{padding:2px 6px;font-size:.59rem}
+.td-quick-all{box-sizing:border-box;padding:9px;font-size:.74rem}
+@media(max-width:520px){
+ .td-header-search{width:auto;max-width:none;margin:0 8px;padding:9px;gap:6px}
+ .td-header-search input{height:40px;padding:0 9px;font-size:.82rem}
+ .td-header-search>button{flex:0 0 auto;padding:0 9px;font-size:.72rem}
+ .td-quick-results{max-height:45vh;max-height:45dvh}
+ .td-quick-cover{width:32px;height:43px;flex-basis:32px}
+ .td-quick-info{max-width:calc(100% - 41px)}
+}
