@@ -191,3 +191,75 @@ html[data-theme="light"] body.story-site .leaderboard-row {
 html[data-theme="light"] body.story-site .leaderboard-row small {
   color:#756d80!important;
 }
+
+
+/* Light theme: member profile and account settings pages */
+html[data-theme="light"] body.social-page,
+html[data-theme="light"] body.account-page {
+  background:#f5f3f8!important;
+  color:#292333!important;
+}
+html[data-theme="light"] body.social-page .social-main,
+html[data-theme="light"] body.account-page .account-main {
+  color:#292333!important;
+}
+html[data-theme="light"] body.social-page .social-card,
+html[data-theme="light"] body.social-page .member-public-card,
+html[data-theme="light"] body.account-page .account-hero,
+html[data-theme="light"] body.account-page .account-card,
+html[data-theme="light"] body.account-page .account-stats>div,
+html[data-theme="light"] body.account-page .account-notices a {
+  background:#fff!important;
+  background-image:none!important;
+  color:#292333!important;
+  border-color:#e5dfeb!important;
+  box-shadow:0 7px 24px rgba(35,25,50,.06)!important;
+}
+html[data-theme="light"] body.account-page .account-hero h1,
+html[data-theme="light"] body.account-page .account-card h2,
+html[data-theme="light"] body.account-page .account-stats strong,
+html[data-theme="light"] body.social-page .member-public-card h1 {
+  color:#292333!important;
+}
+html[data-theme="light"] body.account-page .account-hero p,
+html[data-theme="light"] body.account-page .account-hero small,
+html[data-theme="light"] body.account-page .account-muted,
+html[data-theme="light"] body.account-page .account-stats span,
+html[data-theme="light"] body.account-page .account-card label,
+html[data-theme="light"] body.social-page .member-public-sign,
+html[data-theme="light"] body.social-page .member-public-bio,
+html[data-theme="light"] body.social-page .member-presence,
+html[data-theme="light"] body.social-page .social-muted {
+  color:#625a6d!important;
+}
+html[data-theme="light"] body.account-page .account-card input:not([type=checkbox]):not([type=file]),
+html[data-theme="light"] body.account-page .account-card select,
+html[data-theme="light"] body.account-page .account-card textarea {
+  background:#fff!important;
+  color:#292333!important;
+  border-color:#dcd4e5!important;
+}
+html[data-theme="light"] body.account-page .account-card input::placeholder,
+html[data-theme="light"] body.account-page .account-card textarea::placeholder {
+  color:#8a8293!important;
+}
+html[data-theme="light"] body.account-page .account-sign-grid label {
+  background:#faf9fc!important;
+  color:#292333!important;
+  border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.account-page .account-notices a,
+html[data-theme="light"] body.social-page .social-quiet-link {
+  color:#67428d!important;
+}
+html[data-theme="light"] body.social-page .social-status,
+html[data-theme="light"] body.social-page .social-notice,
+html[data-theme="light"] body.account-page .account-flash {
+  color:#315d3b!important;
+}
+html[data-theme="light"] body.account-page .account-logout button,
+html[data-theme="light"] body.social-page .social-quiet {
+  background:#f3eff7!important;
+  color:#57456c!important;
+  border-color:#ded5e8!important;
+}
