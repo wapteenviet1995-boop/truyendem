@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <title>Đăng ký thành viên | Truyện Đêm</title><link rel="stylesheet" href="css/style.css?v=member1"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1">
 </head>
 <body class="member-page">
-<header class="site-header"><div class="header-inner"><a class="brand" href="index.php"><span class="brand-mark">✦</span><span class="brand-copy"><strong>Truyện Đêm</strong><small>Mỗi đêm, một thế giới khác</small></span></a><nav class="header-links"><a href="index.php">Trang chủ</a><a href="login.php">Đăng nhập</a></nav></div></header>
+<?php require __DIR__ . '/includes/header.php'; ?>
 <main class="member-wrap"><section class="member-panel"><div class="member-symbol">✧</div><h1>Tạo tài khoản</h1><p class="member-lead">Tham gia Truyện Đêm và lưu lại hành trình khám phá của bạn.</p>
 <?php if ($error): ?><p class="member-error" role="alert"><?= e($error) ?></p><?php endif; ?>
 <form method="post" class="member-form">
