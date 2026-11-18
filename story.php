@@ -240,7 +240,7 @@ function st_render_content($value): string {
  </div>
 </section>
 
-</main><footer class="site-footer"><div class="footer-bottom">© 2026 Truyện Đêm</div></footer>
+</main><?php require __DIR__ . '/includes/footer.php'; ?>
 <script>
 document.querySelectorAll('[data-reply-toggle]').forEach(function(toggle){
  toggle.addEventListener('click',function(){
