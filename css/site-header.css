@@ -39,3 +39,43 @@
 .td-footer-bottom{padding:14px 18px;text-align:center;border-top:1px solid #292832;color:#88818f;font-size:.76rem}
 @media(max-width:700px){.td-footer-inner{grid-template-columns:1fr 1fr;gap:22px;padding:28px 18px}.td-footer-brand{grid-column:1/-1}}
 @media(max-width:380px){.td-footer-inner{grid-template-columns:1fr}}
+
+/* Menu trượt toàn màn hình - phong cách app đọc truyện */
+.td-global-header .td-header-inner{min-height:70px}
+.td-global-header .mobile-menu-toggle{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;margin-left:auto;border:1px solid #393441;border-radius:12px;background:#17141e;width:46px;height:44px;padding:10px;cursor:pointer}
+.td-global-header .mobile-menu-toggle span{display:block;width:21px;height:2px;border-radius:3px;background:#eee7f4}
+.td-drawer-backdrop{position:fixed;inset:0;z-index:2000;background:rgba(5,4,12,.58);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);opacity:0;transition:opacity .25s}
+.td-drawer-backdrop[hidden]{display:none}
+.td-drawer-backdrop.is-visible{opacity:1}
+.td-drawer{position:fixed;z-index:2001;top:0;right:0;width:min(86vw,430px);height:100vh;height:100dvh;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);display:flex;flex-direction:column;background:#151422;color:#eeeaf5;border-left:1px solid #292638;box-shadow:-18px 0 50px #0008;transform:translateX(105%);transition:transform .28s cubic-bezier(.2,.75,.25,1);overflow:hidden}
+.td-drawer.is-open{transform:translateX(0)}
+.td-drawer-head{min-height:76px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #302d40}
+.td-drawer-brand{display:flex;align-items:center;gap:11px;color:#f5f1fb;text-decoration:none;font-size:1.08rem}
+.td-drawer-logo{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#b9b2ff,#7468ee);color:#fff;font-size:1.55rem}
+.td-drawer-close{width:42px;height:42px;border:0;border-radius:50%;background:#252337;color:#aaa5bd;font-size:29px;line-height:1;cursor:pointer}
+.td-drawer-auth{display:flex;align-items:center;justify-content:center;min-height:58px;margin:18px 18px 10px;padding:10px 14px;border-radius:17px;background:linear-gradient(105deg,#b4adff,#7770f5);color:#fff;text-decoration:none;font-size:1.02rem;font-weight:750;box-shadow:0 7px 22px #756cf044}
+.td-drawer-scroll{overflow-y:auto;overscroll-behavior:contain;padding:8px 18px 30px;scrollbar-width:thin;scrollbar-color:#454157 transparent}
+.td-drawer-section{padding:14px 0 19px;border-bottom:1px solid #393548}
+.td-drawer-section h3{margin:0 0 12px;color:#9c98b4;font-size:.78rem;letter-spacing:.12em;font-weight:800}
+.td-drawer-link{display:flex;align-items:center;gap:14px;min-height:53px;padding:7px 10px;border-radius:11px;color:#e2deeb;text-decoration:none;font-size:1rem;font-weight:600}
+.td-drawer-link:hover{background:#242236;color:#fff}
+.td-drawer-link span{width:24px;text-align:center;color:#a9a2ff;font-size:1.35rem}
+.td-drawer-link:nth-of-type(2n) span{color:#36d5a6}
+.td-drawer-section-title{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.td-drawer-section-title>a{color:#aaa3ff;text-decoration:none;font-size:.85rem;font-weight:700}
+.td-genre-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.td-genre-grid a{display:flex;align-items:center;justify-content:center;min-height:48px;padding:8px 10px;border:1px solid #343145;border-radius:13px;background:#211f30;color:#d4d0df;text-align:center;text-decoration:none;font-size:.88rem}
+.td-genre-grid a:hover{border-color:#7770df;background:#29263d;color:#fff}
+.td-drawer-logout{margin:6px 0 0}
+.td-drawer-logout button{width:100%;min-height:48px;padding:9px 10px;border:0;border-radius:10px;background:transparent;color:#e3b3a8;text-align:left;font:inherit;font-weight:650;cursor:pointer}
+body.td-drawer-open{overflow:hidden}
+@media(min-width:901px){
+ .td-global-header .td-header-inner{min-height:74px}
+ .td-drawer{width:min(420px,40vw)}
+}
+@media(max-width:420px){
+ .td-drawer{width:min(90vw,430px)}
+ .td-drawer-head{min-height:68px;padding:11px 14px}
+ .td-drawer-scroll{padding-left:14px;padding-right:14px}
+ .td-drawer-auth{margin-left:14px;margin-right:14px}
+}
