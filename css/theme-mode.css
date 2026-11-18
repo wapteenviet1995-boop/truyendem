@@ -500,3 +500,75 @@ html[data-theme="light"] body.story-site .submit-form select {
   color:#292333!important;
   border-color:#dcd4e5!important;
 }
+
+
+/* Light theme: dark, bold link text for clear reading */
+html[data-theme="light"] body.story-site a:not(.td-slider-cta):not(.td-bottom-nav a),
+html[data-theme="light"] body.blog-page a,
+html[data-theme="light"] body.member-page a {
+  color:#211b2a!important;
+  font-weight:700;
+}
+html[data-theme="light"] body.story-site a:hover,
+html[data-theme="light"] body.blog-page a:hover,
+html[data-theme="light"] body.member-page a:hover {
+  color:#7045a0!important;
+}
+/* Keep navigation and action links using their dedicated palette */
+html[data-theme="light"] .td-drawer-link,
+html[data-theme="light"] .td-drawer-auth,
+html[data-theme="light"] .td-bottom-nav a,
+html[data-theme="light"] .td-slider-cta {
+  color:inherit!important;
+}
+html[data-theme="light"] .td-slider-cta {
+  color:#211713!important;
+  font-weight:850!important;
+}
+
+/* Homepage slideshow follows the selected theme */
+html[data-theme="light"] body.story-site .td-home-slider {color:#292333!important}
+html[data-theme="light"] body.story-site .td-slider-topline {color:#7045a0!important}
+html[data-theme="light"] body.story-site .td-slider-topline small {color:#756d80!important}
+html[data-theme="light"] body.story-site .td-slider-track {
+  background:#fff!important;
+  border-color:#e5dfeb!important;
+  box-shadow:0 12px 32px rgba(35,25,50,.10)!important;
+}
+html[data-theme="light"] body.story-site .td-slider-shade {
+  background:linear-gradient(90deg,rgba(250,248,253,.98) 0%,rgba(250,248,253,.92) 43%,rgba(250,248,253,.62) 76%,rgba(250,248,253,.28) 100%),linear-gradient(0deg,rgba(250,248,253,.58),transparent 65%)!important;
+}
+html[data-theme="light"] body.story-site .td-slider-copy h2 {
+  color:#211b2a!important;
+  text-shadow:none!important;
+}
+html[data-theme="light"] body.story-site .td-slider-copy p {color:#554d60!important}
+html[data-theme="light"] body.story-site .td-slider-meta {color:#625a6d!important}
+html[data-theme="light"] body.story-site .td-slider-label {
+  background:#f1eaf8!important;
+  border-color:#ded1eb!important;
+  color:#67428d!important;
+}
+html[data-theme="light"] body.story-site .td-slider-cta {
+  background:linear-gradient(110deg,#d9c5f0,#b99bdc)!important;
+  border-color:#a989ce!important;
+  color:#211713!important;
+}
+html[data-theme="light"] body.story-site .td-slider-arrow {
+  background:#fff!important;
+  border-color:#ded5e8!important;
+  color:#67428d!important;
+}
+html[data-theme="light"] body.story-site .td-slider-dot {background:#c9bdd5!important}
+html[data-theme="light"] body.story-site .td-slider-dot.is-active {background:#7045a0!important}
+html[data-theme="light"] body.story-site .td-slider-empty {
+  background:radial-gradient(circle at 70% 30%,#eee5f7,#fff 70%)!important;
+  color:#292333!important;
+}
+html[data-theme="light"] body.story-site .td-slider-empty h2 {color:#292333!important}
+html[data-theme="light"] body.story-site .td-slider-empty p {color:#625a6d!important}
+
+/* Dark theme keeps the original cinematic slideshow palette */
+html[data-theme="dark"] body.story-site .td-slider-copy h2 {color:#fff!important}
+html[data-theme="dark"] body.story-site .td-slider-copy p {color:#d4cbd9!important}
+html[data-theme="dark"] body.story-site .td-slider-meta {color:#c1b4c7!important}
