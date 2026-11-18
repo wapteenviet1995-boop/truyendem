@@ -14,6 +14,6 @@ $posts = $stmt->fetchAll();
 <?php else: ?><div class="blog-grid"><?php foreach ($posts as $post): ?><article class="blog-card">
 <?php if (!empty($post['image_url'])): ?><a href="post.php?slug=<?= rawurlencode($post['slug']) ?>"><img src="<?= e($post['image_url']) ?>" alt="<?= e($post['title']) ?>" loading="lazy"></a><?php endif; ?>
 <div class="blog-card-body"><p class="blog-category"><?= e($post['category']) ?></p><h2><a href="post.php?slug=<?= rawurlencode($post['slug']) ?>"><?= e($post['title']) ?></a></h2><p><?= e($post['excerpt']) ?></p><a class="blog-read" href="post.php?slug=<?= rawurlencode($post['slug']) ?>">Đọc bài viết →</a></div></article><?php endforeach; ?></div><?php endif; ?>
-</main><footer class="site-footer"><div class="footer-bottom">© 2026 Góc Hoàng Đạo</div></footer>
+</main><?php require __DIR__ . '/includes/footer.php'; ?>
 <script src="js/presence.js"></script>
 </body></html>
