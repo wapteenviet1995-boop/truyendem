@@ -124,15 +124,43 @@ try {
               if (!Array.isArray(items) || !items.length) {
                 resultsBox.innerHTML = '<div class="td-quick-empty">Không tìm thấy truyện phù hợp</div>';
               } else {
+                var heading = document.createElement('div');
+                heading.className = 'td-quick-heading';
+                heading.textContent = 'TRUYỆN PHÙ HỢP';
+                resultsBox.appendChild(heading);
                 items.forEach(function (item) {
                   var link = document.createElement('a');
                   link.className = 'td-quick-result';
                   link.href = item.url;
+                  var cover = document.createElement('span');
+                  cover.className = 'td-quick-cover';
+                  if (item.cover_url) {
+                    var img = document.createElement('img');
+                    img.src = item.cover_url;
+                    img.alt = '';
+                    img.loading = 'lazy';
+                    img.onerror = function () { cover.classList.add('is-empty'); img.remove(); };
+                    cover.appendChild(img);
+                  } else {
+                    cover.classList.add('is-empty');
+                    cover.textContent = '☾';
+                  }
+                  var info = document.createElement('span');
+                  info.className = 'td-quick-info';
                   var title = document.createElement('strong');
                   title.textContent = item.title || 'Truyện';
                   var meta = document.createElement('small');
-                  meta.textContent = [item.category, item.author].filter(Boolean).join(' · ');
-                  link.appendChild(title); link.appendChild(meta); resultsBox.appendChild(link);
+                  meta.textContent = item.author ? 'Tác giả: ' + item.author : 'Truyện Đêm';
+                  info.appendChild(title);
+                  info.appendChild(meta);
+                  if (item.category) {
+                    var tag = document.createElement('em');
+                    tag.textContent = item.category;
+                    info.appendChild(tag);
+                  }
+                  link.appendChild(cover);
+                  link.appendChild(info);
+                  resultsBox.appendChild(link);
                 });
                 var all = document.createElement('button');
                 all.type = 'submit'; all.className = 'td-quick-all';
