@@ -17,7 +17,7 @@ try{
 function home_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
 ?>
 <!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090a10"><title>Truyện Đêm - Thư viện truyện chữ và audio</title><meta name="description" content="Khám phá truyện kinh dị, tình cảm, huyền huyễn và nhiều câu chuyện hấp dẫn tại Truyện Đêm."><link rel="stylesheet" href="/css/style.css?v=20261111-routes1"><link rel="stylesheet" href="/css/stories.css?v=20261111-routes1"><link rel="stylesheet" href="/css/member-hub.css?v=20261112-leaderboard2"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1">
-<link rel="stylesheet" href="/css/home-slider.css?v=20261118-3"></head><body class="story-site" id="top">
+<link rel="stylesheet" href="/css/home-slider.css?v=20261118-4"></head><body class="story-site" id="top">
 <?php require __DIR__ . '/includes/header.php'; ?>
 <main class="story-main">
 <section class="td-home-slider" id="tdHomeSlider" aria-label="Truyện nổi bật">
@@ -37,8 +37,8 @@ function home_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBS
  </article>
  <?php endforeach;?>
  <?php if(!$stories):?><div class="td-slider-empty"><span>☾</span><h2>Mỗi đêm, một thế giới khác</h2><p>Những câu chuyện mới đang chờ bạn.</p></div><?php endif;?>
- </div>
  <?php if(count($stories)>1):?><div class="td-slider-controls"><button type="button" class="td-slider-arrow td-slider-prev" aria-label="Truyện trước">‹</button><div class="td-slider-dots"><?php foreach(array_slice($stories,0,6) as $dotIndex=>$unused):?><button type="button" class="td-slider-dot<?= $dotIndex===0?' is-active':''?>" data-slide="<?=$dotIndex?>" aria-label="Đến truyện <?=$dotIndex+1?>"></button><?php endforeach;?></div><button type="button" class="td-slider-arrow td-slider-next" aria-label="Truyện tiếp">›</button></div><?php endif;?>
+ </div>
 </section>
 <script>
 (function(){
