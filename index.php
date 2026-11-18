@@ -64,7 +64,7 @@ document.querySelectorAll('.leaderboard-tab').forEach(function(tab){
   <div class="td-launch-top">
    <span class="td-launch-beta">BETA</span>
    <div class="td-launch-clock">
-    <div class="td-launch-orbit"><span class="td-launch-orbit-small">TRUYỆN ĐÊM · CHÍNH THỨC</span><strong id="tdLaunchDays">01</strong><b>NGÀY</b></div>
+    <div class="td-launch-orbit"><strong id="tdLaunchDays">01</strong></div>
     <div class="td-launch-counts"><div class="td-launch-time"><strong id="tdLaunchHours">00</strong><small>GIỜ</small></div><i>:</i><div class="td-launch-time"><strong id="tdLaunchMinutes">00</strong><small>PHÚT</small></div><i>:</i><div class="td-launch-time"><strong id="tdLaunchSeconds">00</strong><small>GIÂY</small></div><p>Ra mắt chính thức<br><b>20/11/2026</b></p></div>
    </div>
   </div>
