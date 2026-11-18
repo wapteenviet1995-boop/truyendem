@@ -38,3 +38,74 @@ html[data-theme="light"] .td-bottom-nav a{color:#655b70!important}
 .td-theme-toggle:hover{filter:brightness(1.15)}
 html[data-theme="light"] .td-theme-toggle{background:#f3eff7;border-color:#e2d9eb;color:#554765}
 @media(max-width:520px){.td-theme-toggle{width:40px;height:40px;flex-basis:40px;font-size:18px}}
+
+
+/* Light mode: ensure remaining content lists and their rows are readable */
+html[data-theme="light"] body.story-site .story-list,
+html[data-theme="light"] body.story-site .stories-list,
+html[data-theme="light"] body.story-site .book-list,
+html[data-theme="light"] body.story-site .library-list,
+html[data-theme="light"] body.story-site .post-list,
+html[data-theme="light"] body.story-site .chapter-list,
+html[data-theme="light"] body.story-site .comment-list,
+html[data-theme="light"] body.story-site .notification-list,
+html[data-theme="light"] body.story-site .member-list,
+html[data-theme="light"] body.story-site .ranking-list,
+html[data-theme="light"] body.story-site .category-list,
+html[data-theme="light"] body.story-site .list-group,
+html[data-theme="light"] body.blog-page .story-list,
+html[data-theme="light"] body.blog-page .post-list,
+html[data-theme="light"] body.member-page .story-list,
+html[data-theme="light"] body.member-page .list-group {
+  background:#fff!important;
+  color:#292333!important;
+  border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.story-site .story-list *,
+html[data-theme="light"] body.story-site .stories-list *,
+html[data-theme="light"] body.story-site .book-list *,
+html[data-theme="light"] body.story-site .library-list *,
+html[data-theme="light"] body.story-site .post-list *,
+html[data-theme="light"] body.story-site .chapter-list *,
+html[data-theme="light"] body.story-site .comment-list *,
+html[data-theme="light"] body.story-site .notification-list *,
+html[data-theme="light"] body.story-site .member-list *,
+html[data-theme="light"] body.story-site .ranking-list *,
+html[data-theme="light"] body.story-site .category-list *,
+html[data-theme="light"] body.story-site .list-group *,
+html[data-theme="light"] body.blog-page .story-list *,
+html[data-theme="light"] body.blog-page .post-list *,
+html[data-theme="light"] body.member-page .story-list *,
+html[data-theme="light"] body.member-page .list-group {
+  border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.story-site .story-list a,
+html[data-theme="light"] body.story-site .stories-list a,
+html[data-theme="light"] body.story-site .book-list a,
+html[data-theme="light"] body.story-site .library-list a,
+html[data-theme="light"] body.story-site .post-list a,
+html[data-theme="light"] body.story-site .chapter-list a,
+html[data-theme="light"] body.story-site .comment-list a,
+html[data-theme="light"] body.story-site .notification-list a,
+html[data-theme="light"] body.story-site .member-list a,
+html[data-theme="light"] body.story-site .ranking-list a,
+html[data-theme="light"] body.story-site .category-list a,
+html[data-theme="light"] body.story-site .list-group a {
+  color:#67428d!important;
+}
+html[data-theme="light"] body.story-site .story-list li,
+html[data-theme="light"] body.story-site .stories-list li,
+html[data-theme="light"] body.story-site .book-list li,
+html[data-theme="light"] body.story-site .library-list li,
+html[data-theme="light"] body.story-site .post-list li,
+html[data-theme="light"] body.story-site .chapter-list li,
+html[data-theme="light"] body.story-site .comment-list li,
+html[data-theme="light"] body.story-site .notification-list li,
+html[data-theme="light"] body.story-site .member-list li,
+html[data-theme="light"] body.story-site .ranking-list li,
+html[data-theme="light"] body.story-site .category-list li,
+html[data-theme="light"] body.story-site .list-group li {
+  background:#fff!important;
+  color:#292333!important;
+  border-color:#e5dfeb!important;
+}
