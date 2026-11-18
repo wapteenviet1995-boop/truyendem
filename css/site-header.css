@@ -181,3 +181,43 @@ body.td-drawer-open .td-bottom-nav{display:none}
  .td-quick-results{max-height:30vh;max-height:30dvh}
  .td-quick-result{padding:5px 6px}
 }
+
+
+/* Tách rõ tên truyện, tác giả và thể loại trong gợi ý */
+.td-quick-info{
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:flex-start!important;
+ justify-content:center!important;
+ gap:3px!important;
+ min-width:0!important;
+ max-width:100%!important;
+ overflow:hidden;
+}
+.td-quick-info strong{
+ display:block!important;
+ width:100%;
+ margin:0 0 2px!important;
+ font-size:12px!important;
+ line-height:17px!important;
+}
+.td-quick-info small{
+ display:block!important;
+ width:100%;
+ margin:0 0 2px!important;
+ color:#aaa2b5!important;
+ font-size:10px!important;
+ line-height:14px!important;
+}
+.td-quick-info em{
+ display:inline-block!important;
+ max-width:100%;
+ margin:1px 0 0!important;
+ padding:2px 6px!important;
+ border-radius:5px!important;
+ background:#292333!important;
+ color:#e4b98e!important;
+ font-size:9px!important;
+ line-height:12px!important;
+}
+.td-quick-result{align-items:center!important;min-height:48px}
