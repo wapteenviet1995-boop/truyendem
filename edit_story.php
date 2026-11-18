@@ -32,7 +32,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
   try{
    $action=(string)($_POST['action']??'');
    if($action==='update_story'){
-    $title=trim((string)($_POST['title']??''));$category=trim((string)($_POST['category']??''))?:'Truyện mới';$description=trim((string)($_POST['description']??''));$cover=trim((string)($_POST['cover_url']??''));$short=trim((string)($_POST['short_content']??''));
+    $title=trim((string)($_POST['title']??''));$category=trim((string)($_POST['category']??''))?:'Truyện mới';$description=trim((string)($_POST['description']??''));$cover=trim((string)($_POST['cover_url']??''))?: (string)$story['cover_url'];$short=trim((string)($_POST['short_content']??''));
     [$cover,$uploadError]=es_upload_cover($cover);
     if($uploadError!=='')$error=$uploadError;
     elseif($title===''||mb_strlen($title)>220)$error='Tên truyện không được để trống và tối đa 220 ký tự.';
