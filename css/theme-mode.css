@@ -263,3 +263,240 @@ html[data-theme="light"] body.social-page .social-quiet {
   color:#57456c!important;
   border-color:#ded5e8!important;
 }
+
+
+
+/* Light mode coverage: community, social, chat, shop, library and story details */
+html[data-theme="light"] body.community-page,
+html[data-theme="light"] body.social-page,
+html[data-theme="light"] body.shop-page,
+html[data-theme="light"] body.diary-page {
+  background:#f5f3f8!important;
+  color:#292333!important;
+}
+html[data-theme="light"] body.community-page .community-hero h1,
+html[data-theme="light"] body.community-page .community-feed-head h2,
+html[data-theme="light"] body.community-page .community-post,
+html[data-theme="light"] body.social-page .social-hero h1,
+html[data-theme="light"] body.social-page .social-card h2,
+html[data-theme="light"] body.social-page .social-person strong,
+html[data-theme="light"] body.social-page .member-public-card h1 {
+  color:#292333!important;
+}
+html[data-theme="light"] body.community-page .community-compose,
+html[data-theme="light"] body.community-page .community-join,
+html[data-theme="light"] body.community-page .community-post,
+html[data-theme="light"] body.community-page .community-empty,
+html[data-theme="light"] body.community-page .community-stats span,
+html[data-theme="light"] body.community-page .community-comments p,
+html[data-theme="light"] body.social-page .social-card,
+html[data-theme="light"] body.social-page .chat-card,
+html[data-theme="light"] body.social-page .member-public-symbol,
+html[data-theme="light"] body.diary-page .diary-editor,
+html[data-theme="light"] body.diary-page .diary-entry {
+  background:#fff!important;
+  background-image:none!important;
+  color:#292333!important;
+  border-color:#e5dfeb!important;
+  box-shadow:0 6px 22px rgba(35,25,50,.05)!important;
+}
+html[data-theme="light"] body.community-page .community-hero>p,
+html[data-theme="light"] body.community-page .community-join p,
+html[data-theme="light"] body.community-page .community-post-content,
+html[data-theme="light"] body.community-page .community-author small,
+html[data-theme="light"] body.community-page .community-feed-head>span,
+html[data-theme="light"] body.community-page .community-empty p,
+html[data-theme="light"] body.social-page .social-muted,
+html[data-theme="light"] body.social-page .social-person small,
+html[data-theme="light"] body.social-page .member-presence,
+html[data-theme="light"] body.social-page .member-public-bio,
+html[data-theme="light"] body.diary-page .diary-entry>p {
+  color:#625a6d!important;
+}
+html[data-theme="light"] body.community-page .community-compose textarea,
+html[data-theme="light"] body.community-page .community-comment-form input,
+html[data-theme="light"] body.social-page .social-profile-form select,
+html[data-theme="light"] body.social-page .social-profile-form textarea,
+html[data-theme="light"] body.social-page .social-search input,
+html[data-theme="light"] body.social-page .social-search select,
+html[data-theme="light"] body.diary-page .diary-form input,
+html[data-theme="light"] body.diary-page .diary-form select,
+html[data-theme="light"] body.diary-page .diary-form textarea,
+html[data-theme="light"] body.social-page .chat-compose textarea {
+  background:#fff!important;
+  color:#292333!important;
+  border-color:#dcd4e5!important;
+}
+html[data-theme="light"] body.community-page .community-comments strong,
+html[data-theme="light"] body.social-page .social-name-link,
+html[data-theme="light"] body.social-page .social-quiet-link,
+html[data-theme="light"] body.diary-page .diary-entry-top a,
+html[data-theme="light"] body.diary-page .diary-entry-top button {
+  color:#7045a0!important;
+}
+html[data-theme="light"] body.social-page .social-person,
+html[data-theme="light"] body.social-page .chat-heading,
+html[data-theme="light"] body.social-page .chat-compose,
+html[data-theme="light"] body.social-page .chat-friend {
+  background:#fff!important;
+  color:#292333!important;
+  border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.social-page .chat-heading small,
+html[data-theme="light"] body.social-page .chat-friend-info small {
+  color:#756d80!important;
+}
+html[data-theme="light"] body.social-page .chat-messages {
+  background:#f5f3f8!important;
+}
+html[data-theme="light"] body.social-page .chat-bubble p {
+  color:#292333!important;
+}
+html[data-theme="light"] body.social-page .chat-bubble.mine {
+  background:#eee8f5!important;
+  border-color:#ded3eb!important;
+}
+html[data-theme="light"] body.social-page .chat-bubble.theirs {
+  background:#fff!important;
+  border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.social-page .chat-bubble small {
+  color:#756d80!important;
+}
+html[data-theme="light"] body.social-page .chat-avatar {
+  background:#f2edf7!important;
+  color:#7045a0!important;
+  border-color:#ded3eb!important;
+}
+html[data-theme="light"] body.social-page .social-quiet {
+  background:#f3eff7!important;
+  color:#67428d!important;
+  border-color:#ded5e8!important;
+}
+html[data-theme="light"] body.shop-page .shop-hero h1,
+html[data-theme="light"] body.shop-page .shop-section h2,
+html[data-theme="light"] body.shop-page .shop-item h3 {
+  color:#292333!important;
+}
+html[data-theme="light"] body.shop-page .shop-balance,
+html[data-theme="light"] body.shop-page .shop-daily,
+html[data-theme="light"] body.shop-page .shop-section,
+html[data-theme="light"] body.shop-page .shop-item,
+html[data-theme="light"] body.shop-page .shop-history>div {
+  background:#fff!important;
+  background-image:none!important;
+  color:#292333!important;
+  border-color:#e5dfeb!important;
+  box-shadow:0 5px 20px rgba(35,25,50,.05)!important;
+}
+html[data-theme="light"] body.shop-page .shop-hero>p,
+html[data-theme="light"] body.shop-page .shop-daily p,
+html[data-theme="light"] body.shop-page .shop-item p,
+html[data-theme="light"] body.shop-page .shop-empty,
+html[data-theme="light"] body.shop-page .shop-inventory-item small,
+html[data-theme="light"] body.shop-page .shop-balance span {
+  color:#625a6d!important;
+}
+html[data-theme="light"] body.shop-page .shop-gift input,
+html[data-theme="light"] body.shop-page .shop-gift select {
+  background:#fff!important;
+  color:#292333!important;
+  border-color:#dcd4e5!important;
+}
+html[data-theme="light"] body.story-site .member-hub-hero,
+html[data-theme="light"] body.story-site .member-hub-card,
+html[data-theme="light"] body.story-site .member-notice,
+html[data-theme="light"] body.story-site .member-notice.unread,
+html[data-theme="light"] body.story-site .member-hub-empty {
+  background:#fff!important;
+  background-image:none!important;
+  color:#292333!important;
+  border-color:#e5dfeb!important;
+  box-shadow:0 5px 18px rgba(35,25,50,.05)!important;
+}
+html[data-theme="light"] body.story-site .member-hub-hero h1,
+html[data-theme="light"] body.story-site .member-hub-section h2,
+html[data-theme="light"] body.story-site .member-hub-card-copy strong,
+html[data-theme="light"] body.story-site .member-notice-copy strong {
+  color:#292333!important;
+}
+html[data-theme="light"] body.story-site .member-hub-hero p,
+html[data-theme="light"] body.story-site .member-hub-card-copy small,
+html[data-theme="light"] body.story-site .member-notice-copy p,
+html[data-theme="light"] body.story-site .member-notice-copy small {
+  color:#625a6d!important;
+}
+html[data-theme="light"] body.story-site .member-hub-tabs a,
+html[data-theme="light"] body.story-site .member-hub-action {
+  background:#f3eff7!important;
+  color:#67428d!important;
+  border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.story-site .member-hub-card-copy a,
+html[data-theme="light"] body.story-site .member-notice-copy a {
+  color:#7045a0!important;
+}
+html[data-theme="light"] body.story-site .story-detail,
+html[data-theme="light"] body.story-site .story-description-box,
+html[data-theme="light"] body.story-site .story-panel,
+html[data-theme="light"] body.story-site .story-comments,
+html[data-theme="light"] body.story-site .comment-compose,
+html[data-theme="light"] body.story-site .comment-reply-form,
+html[data-theme="light"] body.story-site .story-gift-panel,
+html[data-theme="light"] body.story-site .short-story-content,
+html[data-theme="light"] body.story-site .short-story-description {
+  background:#fff!important;
+  background-image:none!important;
+  color:#302a38!important;
+  border-color:#e5dfeb!important;
+  box-shadow:0 6px 22px rgba(35,25,50,.05)!important;
+}
+html[data-theme="light"] body.story-site .story-detail h1,
+html[data-theme="light"] body.story-site .story-detail h2,
+html[data-theme="light"] body.story-site .story-comments h2,
+html[data-theme="light"] body.story-site .short-story-content h2,
+html[data-theme="light"] body.story-site .comment-meta strong,
+html[data-theme="light"] body.story-site .short-story-text {
+  color:#302a38!important;
+}
+html[data-theme="light"] body.story-site .story-comments p,
+html[data-theme="light"] body.story-site .comment-content,
+html[data-theme="light"] body.story-site .story-description,
+html[data-theme="light"] body.story-site .story-gift-panel p {
+  color:#625a6d!important;
+}
+html[data-theme="light"] body.story-site .comment-compose textarea,
+html[data-theme="light"] body.story-site .comment-reply-form textarea,
+html[data-theme="light"] body.story-site .story-gift-panel select {
+  background:#fff!important;
+  color:#292333!important;
+  border-color:#dcd4e5!important;
+}
+html[data-theme="light"] body.story-site .story-pagination a,
+html[data-theme="light"] body.story-site .reader-pagination a {
+  background:#fff!important;
+  color:#67428d!important;
+  border-color:#ded3eb!important;
+}
+html[data-theme="light"] body.story-site .submit-panel,
+html[data-theme="light"] body.story-site .submit-story-item {
+  background:#fff!important;
+  color:#292333!important;
+  border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.story-site .submit-panel h1,
+html[data-theme="light"] body.story-site .submit-panel h2,
+html[data-theme="light"] body.story-site .submit-panel p,
+html[data-theme="light"] body.story-site .submit-muted {
+  color:#625a6d!important;
+}
+html[data-theme="light"] body.story-site .submit-form label {
+  color:#554765!important;
+}
+html[data-theme="light"] body.story-site .submit-form input,
+html[data-theme="light"] body.story-site .submit-form textarea,
+html[data-theme="light"] body.story-site .submit-form select {
+  background:#fff!important;
+  color:#292333!important;
+  border-color:#dcd4e5!important;
+}
