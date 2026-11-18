@@ -133,4 +133,4 @@ document.querySelectorAll('.leaderboard-tab').forEach(function(tab){
  setTimeout(()=>{popup.classList.add('is-visible');popup.setAttribute('aria-hidden','false');},700);
 })();
 </script>
-</main><footer class="site-footer"><div class="footer-bottom">© 2026 Truyện Đêm · Mỗi đêm, một thế giới khác</div></footer><nav class="bottom-nav story-bottom-nav"><a class="is-current" href="#top"><span>⌂</span>Trang chủ</a><a href="#library"><span>▤</span>Thư viện</a><a href="/community.php"><span>♡</span>Cộng đồng</a><a href="/shop.php"><span>✦</span>Cửa hàng</a><a href="/account.php"><span>♙</span>Tài khoản</a></nav><script src="/js/presence.js"></script></body></html>
+</main><?php require __DIR__ . '/includes/footer.php'; ?><nav class="bottom-nav story-bottom-nav"><a class="is-current" href="#top"><span>⌂</span>Trang chủ</a><a href="#library"><span>▤</span>Thư viện</a><a href="/community.php"><span>♡</span>Cộng đồng</a><a href="/shop.php"><span>✦</span>Cửa hàng</a><a href="/account.php"><span>♙</span>Tài khoản</a></nav><script src="/js/presence.js"></script></body></html>
