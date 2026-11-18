@@ -661,3 +661,56 @@ html[data-theme="dark"] body.account-page .account-links a {
   background:var(--surf,#14131b)!important;
   color:var(--ink,#eeeaf4)!important;
 }
+
+
+/* Fix account: wallet/shop row and everything below it in light mode */
+html[data-theme="light"] body.account-page .account-links,
+html[data-theme="light"] body.account-page .account-logout,
+html[data-theme="light"] body.account-page~footer,
+html[data-theme="light"] body.account-page footer,
+html[data-theme="light"] body.account-page .site-footer,
+html[data-theme="light"] body.account-page .td-site-footer {
+  background:#fff!important;
+  background-image:none!important;
+  color:#292333!important;
+}
+html[data-theme="light"] body.account-page .account-links a {
+  display:inline-flex!important;
+  align-items:center!important;
+  background:#fff!important;
+  background-color:#fff!important;
+  background-image:none!important;
+  color:#292333!important;
+  border:1px solid #ded5e8!important;
+  box-shadow:0 4px 14px rgba(35,25,50,.07)!important;
+}
+html[data-theme="light"] body.account-page .account-links a:visited,
+html[data-theme="light"] body.account-page .account-links a:hover {
+  color:#67428d!important;
+}
+html[data-theme="light"] body.account-page .account-logout button {
+  background:#fff!important;
+  color:#625a6d!important;
+  border:1px solid #ded5e8!important;
+}
+html[data-theme="light"] body.account-page~footer *,
+html[data-theme="light"] body.account-page footer *,
+html[data-theme="light"] body.account-page .site-footer *,
+html[data-theme="light"] body.account-page .td-site-footer * {
+  color:#292333!important;
+}
+
+/* Homepage category filters: black chips with clear white labels */
+body.story-site .story-categories a {
+  background:#17141e!important;
+  background-color:#17141e!important;
+  color:#f5f1fa!important;
+  border:1px solid #393044!important;
+}
+body.story-site .story-categories a.active,
+body.story-site .story-categories a[aria-current="page"] {
+  background:#7045a0!important;
+  background-color:#7045a0!important;
+  color:#fff!important;
+  border-color:#7045a0!important;
+}
