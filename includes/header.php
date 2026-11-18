@@ -10,16 +10,23 @@ try {
     }
 } catch (Throwable $e) { $tdGenres = []; }
 ?>
-<link rel="stylesheet" href="/css/site-header.css?v=20261118-drawer2">
+<link rel="stylesheet" href="/css/site-header.css?v=20261118-search1">
 <header class="site-header td-global-header">
   <div class="header-inner td-header-inner">
     <a class="brand" href="/index.php" aria-label="Truyện Đêm - Trang chủ">
       <span class="brand-mark">☾</span>
       <span class="brand-copy"><strong>Truyện Đêm</strong><small>Mỗi đêm, một thế giới khác</small></span>
     </a>
+    <div class="td-header-actions">
+    <button class="td-search-toggle" type="button" aria-label="Mở tìm kiếm" aria-expanded="false" aria-controls="tdHeaderSearch">⌕</button>
     <button class="mobile-menu-toggle" type="button" aria-label="Mở menu" aria-expanded="false" aria-controls="tdGlobalMenu"><span></span><span></span><span></span></button>
+    </div>
   </div>
 </header>
+<form class="td-header-search" id="tdHeaderSearch" action="/index.php" method="get" hidden>
+  <input type="search" name="q" placeholder="Tìm tên truyện, tác giả..." aria-label="Tìm truyện" autocomplete="off">
+  <button type="submit">Tìm kiếm</button>
+</form>
 
 <nav class="td-bottom-nav" aria-label="Điều hướng nhanh">
   <a href="/index.php"><span>⌂</span><small>Trang chủ</small></a>
@@ -83,6 +90,16 @@ try {
   if (!header || !drawer || !backdrop || header.dataset.drawerReady === '1') return;
   header.dataset.drawerReady = '1';
   var toggle = header.querySelector('.mobile-menu-toggle');
+  var searchToggle = header.querySelector('.td-search-toggle');
+  var searchPanel = document.getElementById('tdHeaderSearch');
+  if (searchToggle && searchPanel) {
+    searchToggle.addEventListener('click', function () {
+      var opening = searchPanel.hidden;
+      searchPanel.hidden = !opening;
+      searchToggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
+      if (opening) searchPanel.querySelector('input').focus();
+    });
+  }
   var close = drawer.querySelector('.td-drawer-close');
   function openDrawer() {
     backdrop.hidden = false;
@@ -102,7 +119,7 @@ try {
   toggle.addEventListener('click', openDrawer);
   close.addEventListener('click', closeDrawer);
   backdrop.addEventListener('click', closeDrawer);
-  document.addEventListener('keydown', function (event) { if (event.key === 'Escape') closeDrawer(); });
+  document.addEventListener('keydown', function (event) { if (event.key === 'Escape') { closeDrawer(); if (searchPanel) { searchPanel.hidden = true; if (searchToggle) searchToggle.setAttribute('aria-expanded', 'false'); } } });
   drawer.querySelectorAll('a').forEach(function (link) { link.addEventListener('click', closeDrawer); });
 })();
 </script>
