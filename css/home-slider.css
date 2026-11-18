@@ -39,3 +39,40 @@
  .td-slider-cta{margin-top:12px;padding:9px 13px;font-size:11px}
 }
 @media(prefers-reduced-motion:reduce){.td-slider-slide{transition:none}.td-slider-dot{transition:none}}
+
+
+/* Fix xung dot voi CSS tong the cua trang chu */
+body.story-site main.story-main{
+ max-width:1180px!important;
+ width:100%!important;
+ margin-left:auto!important;
+ margin-right:auto!important;
+ padding:22px 18px 56px!important;
+}
+body.story-site .td-home-slider{display:block!important;width:100%!important;max-width:1180px!important;min-width:0!important}
+body.story-site .td-slider-track{display:block!important;width:100%!important;min-width:0!important;isolation:isolate}
+body.story-site .td-slider-slide{
+ display:block!important;
+ position:absolute!important;
+ inset:0!important;
+ width:100%!important;
+ max-width:none!important;
+ min-width:0!important;
+ margin:0!important;
+ padding:0!important;
+ border:0!important;
+ border-radius:0!important;
+ background:transparent!important;
+ box-shadow:none!important;
+}
+body.story-site .td-slider-slide.is-active{z-index:1}
+body.story-site .td-slider-slide:not(.is-active){z-index:0}
+body.story-site .td-slider-image{display:block!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important}
+body.story-site .td-slider-copy{background:transparent!important;box-shadow:none!important}
+body.story-site .td-slider-cta,
+body.story-site .td-slider-cta:visited{color:#1b1517!important}
+body.story-site .td-slider-empty{width:100%;min-width:0}
+@media(max-width:600px){
+ body.story-site main.story-main{padding:14px 0 48px!important}
+ body.story-site .td-home-slider{padding:0 11px!important}
+}
