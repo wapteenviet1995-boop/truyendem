@@ -73,7 +73,7 @@ function home_level_name(int $xp): string {
  return 'Tân Binh';
 }
 ?>
-<section class="leaderboard-section leaderboard-compact" aria-labelledby="leaderboard-title">
+<section class="leaderboard-section leaderboard-compact" id="leaderboard" aria-labelledby="leaderboard-title">
  <div class="leaderboard-heading"><h2 id="leaderboard-title">✦ BẢNG XẾP HẠNG</h2><div class="leaderboard-tabs" role="tablist" aria-label="Chọn bảng xếp hạng"><button type="button" class="leaderboard-tab is-active" id="tab-xu" role="tab" aria-selected="true" aria-controls="panel-xu" data-board="xu">TOP XU</button><button type="button" class="leaderboard-tab" id="tab-lv" role="tab" aria-selected="false" aria-controls="panel-lv" data-board="lv">TOP LV</button></div></div>
  <div class="leaderboard-panel" id="panel-xu" role="tabpanel" aria-labelledby="tab-xu">
  <?php if($topXu):?><ol class="leaderboard-list"><?php foreach($topXu as $i=>$person):?><li class="leaderboard-row rank-<?=($i+1)?>"><span class="leaderboard-rank"><?=($i+1)?></span><a class="leaderboard-avatar" href="/member.php?id=<?=(int)$person['id']?>"><?php if(!empty($person['avatar_url'])):?><img src="<?=home_h($person['avatar_url'])?>" alt=""><?php else:?><?=home_h(mb_substr((string)$person['display_name'],0,1,'UTF-8'))?><?php endif;?></a><div class="leaderboard-member"><a class="leaderboard-name name-rank-<?=($i+1)?>" href="/member.php?id=<?=(int)$person['id']?>"><?=home_h($person['display_name'])?></a></div><strong class="leaderboard-xu"><?=number_format((int)$person['balance'])?> <small>Xu</small></strong></li><?php endforeach;?></ol><?php else:?><div class="leaderboard-empty">Chưa có dữ liệu Xu.</div><?php endif;?>
