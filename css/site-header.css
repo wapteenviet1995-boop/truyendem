@@ -92,3 +92,17 @@ body{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
 body.td-drawer-open .td-bottom-nav{display:none}
 @media(min-width:901px){.td-bottom-nav{left:50%;right:auto;bottom:14px;width:min(560px,calc(100% - 40px));transform:translateX(-50%);border:1px solid #343044;border-radius:18px;padding-bottom:6px}.td-bottom-nav a>small{font-size:.72rem}}
 @media(max-width:360px){.td-bottom-nav a>small{font-size:.61rem}}
+
+
+/* Nút tìm kiếm cạnh menu và ô tìm kiếm mở rộng từ header */
+.td-global-header .td-header-inner{justify-content:space-between}
+.td-header-actions{display:flex;align-items:center;gap:9px;margin-left:auto}
+.td-global-header .td-search-toggle{display:grid;place-items:center;width:44px;height:44px;border:1px solid #393441;border-radius:12px;background:#17141e;color:#eee7f4;font-size:29px;line-height:1;cursor:pointer}
+.td-global-header .td-search-toggle:hover{background:#282338;color:#c1baff}
+.td-global-header .mobile-menu-toggle{margin-left:0}
+.td-header-search{position:sticky;top:70px;z-index:999;display:flex;gap:8px;max-width:760px;margin:0 auto;padding:12px 16px;background:#151422;border:1px solid #343044;border-top:0;border-radius:0 0 16px 16px;box-shadow:0 12px 24px #0005}
+.td-header-search[hidden]{display:none}
+.td-header-search input{flex:1;min-width:0;height:44px;padding:0 13px;border:1px solid #454157;border-radius:11px;outline:none;background:#211f30;color:#f3effa;font:inherit}
+.td-header-search input:focus{border-color:#9188ff}
+.td-header-search button{padding:0 17px;border:0;border-radius:11px;background:linear-gradient(105deg,#b4adff,#7770f5);color:#fff;font-weight:750;cursor:pointer}
+@media(max-width:900px){.td-header-actions{gap:8px}.td-global-header .td-search-toggle{width:42px;height:42px}.td-header-search{top:66px;margin:0 10px}}
