@@ -20,6 +20,14 @@ try {
     <button class="mobile-menu-toggle" type="button" aria-label="Mở menu" aria-expanded="false" aria-controls="tdGlobalMenu"><span></span><span></span><span></span></button>
   </div>
 </header>
+
+<nav class="td-bottom-nav" aria-label="Điều hướng nhanh">
+  <a href="/index.php"><span>⌂</span><small>Trang chủ</small></a>
+  <a href="/library.php"><span>▤</span><small>Thư viện</small></a>
+  <a class="td-bottom-nav-primary" href="<?= $tdMemberLoggedIn ? '/submit_story.php' : '/login.php' ?>"><span>＋</span><small>Đăng truyện</small></a>
+  <a href="/library.php"><span>♡</span><small>Tủ sách</small></a>
+  <a href="<?= $tdMemberLoggedIn ? '/account.php' : '/login.php' ?>"><span>♙</span><small>Tài khoản</small></a>
+</nav>
 <div class="td-drawer-backdrop" id="tdDrawerBackdrop" hidden></div>
 <aside class="td-drawer" id="tdGlobalMenu" aria-hidden="true" aria-label="Menu Truyện Đêm">
   <div class="td-drawer-head">
