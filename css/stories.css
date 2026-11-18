@@ -511,3 +511,17 @@ body.reader-site article.reader-content p{
  .short-story-page .short-story-text p{text-indent:1.15em;margin-bottom:1.05em}
  .short-story-page .short-story-description{padding:17px 15px}
 }
+
+
+/* Trang đọc truyện ngắn: ẩn menu điều hướng lớn để không chiếm màn hình */
+@media(max-width:650px){
+ body.short-story-page .site-header .header-inner{
+  display:flex!important;flex-direction:row!important;align-items:center!important;
+  justify-content:flex-start!important;gap:12px!important;padding:10px 15px!important;
+ }
+ body.short-story-page .site-header .header-links{display:none!important}
+ body.short-story-page .site-header .brand{gap:10px}
+ body.short-story-page .site-header .brand-mark{width:42px;height:42px}
+ body.short-story-page .site-header .brand-copy small{display:none}
+ body.short-story-page .site-header{position:relative!important}
+}
