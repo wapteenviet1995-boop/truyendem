@@ -1,5 +1,5 @@
 /* Header dùng chung Truyện Đêm */
-.td-global-header{position:relative;z-index:1000;background:#0c0c12!important;color:#f4f1f7;box-shadow:0 5px 22px rgba(0,0,0,.28);border-bottom:1px solid #292832}
+.td-global-header{position:sticky;top:0;z-index:1000;background:#0c0c12!important;color:#f4f1f7;box-shadow:0 5px 22px rgba(0,0,0,.28);border-bottom:1px solid #292832}
 .td-global-header .td-header-inner{max-width:1180px;min-height:76px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:18px}
 .td-global-header .brand{display:inline-flex;align-items:center;gap:11px;flex:none;color:#fff;text-decoration:none}
 .td-global-header .brand-mark{width:43px;height:43px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#f2c27a,#b66c45);color:#211713;font-size:1.7rem}
@@ -24,3 +24,18 @@
  .td-global-header .member-nav-logout button{width:100%;text-align:left;padding:11px 13px}
 }
 @media(min-width:901px){.td-global-header .td-global-menu{display:flex!important}}
+
+/* Footer dùng chung toàn website */
+.td-global-footer{margin-top:48px;background:#0c0c12!important;color:#ddd8e5;border-top:1px solid #292832}
+.td-footer-inner{max-width:1180px;margin:0 auto;padding:34px 20px 28px;display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:28px}
+.td-footer-brand>a{display:inline-flex;align-items:center;gap:10px;color:#f1c18b;text-decoration:none}
+.td-footer-brand>a span{font-size:1.8rem}
+.td-footer-brand>a strong{font:700 1.15rem Georgia,serif}
+.td-footer-brand p{max-width:32ch;color:#a9a3b1;font-size:.85rem;margin:10px 0 0}
+.td-footer-column{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.td-footer-column strong{color:#f0bd8d;font-size:.88rem;margin-bottom:4px}
+.td-footer-column a{color:#c7c1ce;text-decoration:none;font-size:.84rem}
+.td-footer-column a:hover{color:#f4c18c}
+.td-footer-bottom{padding:14px 18px;text-align:center;border-top:1px solid #292832;color:#88818f;font-size:.76rem}
+@media(max-width:700px){.td-footer-inner{grid-template-columns:1fr 1fr;gap:22px;padding:28px 18px}.td-footer-brand{grid-column:1/-1}}
+@media(max-width:380px){.td-footer-inner{grid-template-columns:1fr}}
