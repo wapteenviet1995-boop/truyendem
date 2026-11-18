@@ -572,3 +572,92 @@ html[data-theme="light"] body.story-site .td-slider-empty p {color:#625a6d!impor
 html[data-theme="dark"] body.story-site .td-slider-copy h2 {color:#fff!important}
 html[data-theme="dark"] body.story-site .td-slider-copy p {color:#d4cbd9!important}
 html[data-theme="dark"] body.story-site .td-slider-meta {color:#c1b4c7!important}
+
+
+/* Index: category chips must follow light/dark theme */
+html[data-theme="light"] body.story-site .story-categories,
+html[data-theme="light"] body.story-site .story-categories a {
+  color:#292333!important;
+}
+html[data-theme="light"] body.story-site .story-categories a {
+  background:#fff!important;
+  border:1px solid #ded5e8!important;
+  box-shadow:none!important;
+}
+html[data-theme="light"] body.story-site .story-categories a.active,
+html[data-theme="light"] body.story-site .story-categories a[aria-current="page"] {
+  background:#7045a0!important;
+  border-color:#7045a0!important;
+  color:#fff!important;
+}
+html[data-theme="dark"] body.story-site .story-categories a {
+  background:#17141e!important;
+  color:#e9e2f0!important;
+  border-color:#393044!important;
+}
+html[data-theme="dark"] body.story-site .story-categories a.active {
+  background:#7045a0!important;
+  color:#fff!important;
+}
+
+/* Account page: all lower sections, cards and controls */
+html[data-theme="light"] body.account-page .account-main,
+html[data-theme="light"] body.account-page .account-grid,
+html[data-theme="light"] body.account-page .account-links,
+html[data-theme="light"] body.account-page .account-logout {
+  background:transparent!important;
+  color:#292333!important;
+}
+html[data-theme="light"] body.account-page .account-hero,
+html[data-theme="light"] body.account-page .account-stats>div,
+html[data-theme="light"] body.account-page .account-card,
+html[data-theme="light"] body.account-page .account-notices a,
+html[data-theme="light"] body.account-page .account-links a {
+  background:#fff!important;
+  background-image:none!important;
+  color:#292333!important;
+  border:1px solid #e5dfeb!important;
+  box-shadow:0 5px 18px rgba(35,25,50,.05)!important;
+}
+html[data-theme="light"] body.account-page .account-hero h1,
+html[data-theme="light"] body.account-page .account-card h2,
+html[data-theme="light"] body.account-page .account-stats strong {
+  color:#292333!important;
+}
+html[data-theme="light"] body.account-page .account-hero p,
+html[data-theme="light"] body.account-page .account-hero small,
+html[data-theme="light"] body.account-page .account-muted,
+html[data-theme="light"] body.account-page .account-stats span,
+html[data-theme="light"] body.account-page .account-card label,
+html[data-theme="light"] body.account-page .account-card small {
+  color:#625a6d!important;
+}
+html[data-theme="light"] body.account-page .account-card input:not([type=checkbox]):not([type=file]),
+html[data-theme="light"] body.account-page .account-card select,
+html[data-theme="light"] body.account-page .account-card textarea {
+  background:#fff!important;
+  color:#292333!important;
+  border:1px solid #dcd4e5!important;
+}
+html[data-theme="light"] body.account-page .account-sign-grid label {
+  background:#faf9fc!important;
+  color:#292333!important;
+  border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.account-page .account-notices a,
+html[data-theme="light"] body.account-page .account-links a {
+  color:#67428d!important;
+}
+html[data-theme="light"] body.account-page .account-logout button {
+  background:#fff!important;
+  color:#625a6d!important;
+  border-color:#ded5e8!important;
+}
+html[data-theme="dark"] body.account-page .account-hero,
+html[data-theme="dark"] body.account-page .account-stats>div,
+html[data-theme="dark"] body.account-page .account-card,
+html[data-theme="dark"] body.account-page .account-notices a,
+html[data-theme="dark"] body.account-page .account-links a {
+  background:var(--surf,#14131b)!important;
+  color:var(--ink,#eeeaf4)!important;
+}
