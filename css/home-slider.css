@@ -1,0 +1,41 @@
+/* Truyện Đêm - slideshow truyện nổi bật */
+.td-home-slider{position:relative;max-width:1180px;margin:22px auto 30px;padding:0 18px;color:#fff}
+.td-slider-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 2px 12px;color:#e9c08e;font-size:12px;font-weight:800;letter-spacing:.13em}
+.td-slider-topline small{color:#898397;font-size:9px;letter-spacing:.1em}
+.td-slider-track{position:relative;height:clamp(270px,38vw,420px);overflow:hidden;border:1px solid #393044;border-radius:22px;background:#171321;box-shadow:0 16px 40px #0006}
+.td-slider-slide{position:absolute;inset:0;overflow:hidden;opacity:0;visibility:hidden;transform:scale(1.025);transition:opacity .65s ease,transform 5.5s ease,visibility .65s}
+.td-slider-slide.is-active{opacity:1;visibility:visible;transform:scale(1)}
+.td-slider-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%;filter:saturate(.8)}
+.td-slider-no-cover{display:grid;place-items:center;background:radial-gradient(circle at 72% 28%,#51405d,#211a31 48%,#100f18);font-size:100px;color:#c49b76}
+.td-slider-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,8,16,.96) 0%,rgba(10,8,16,.82) 38%,rgba(10,8,16,.22) 76%,rgba(10,8,16,.08) 100%),linear-gradient(0deg,rgba(8,7,13,.55),transparent 55%)}
+.td-slider-copy{position:absolute;left:clamp(22px,5vw,58px);bottom:clamp(22px,5vw,48px);width:min(55%,560px);z-index:2}
+.td-slider-label{display:inline-flex;align-items:center;max-width:100%;padding:6px 11px;border:1px solid #d4a87877;border-radius:30px;background:#2b202b99;color:#f0c18e;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.td-slider-copy h2{margin:13px 0 9px;color:#fff;font:700 clamp(23px,3.5vw,39px)/1.16 Georgia,serif;text-shadow:0 3px 16px #0009;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.td-slider-copy p{max-width:48ch;margin:0;color:#d4cbd9;font-size:clamp(12px,1.3vw,14px);line-height:1.65;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.td-slider-meta{margin-top:12px;color:#c1b4c7;font-size:11px}
+.td-slider-meta i{padding:0 7px;color:#d6a876;font-style:normal}
+.td-slider-cta{display:inline-flex;align-items:center;gap:18px;margin-top:17px;padding:11px 17px;border:1px solid #e8bd8b;border-radius:9px;background:linear-gradient(110deg,#e4b77f,#b77b55);color:#1b1517;text-decoration:none;font-size:12px;font-weight:850;box-shadow:0 5px 18px #0004}
+.td-slider-cta span{font-size:17px;line-height:10px}
+.td-slider-controls{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:12px}
+.td-slider-arrow{display:grid;place-items:center;width:30px;height:30px;border:1px solid #3a3446;border-radius:50%;background:#191621;color:#e9d1b1;font-size:22px;line-height:1;cursor:pointer}
+.td-slider-dots{display:flex;align-items:center;gap:7px}
+.td-slider-dot{width:7px;height:7px;padding:0;border:0;border-radius:9px;background:#62596d;cursor:pointer;transition:width .2s,background .2s}
+.td-slider-dot.is-active{width:23px;background:#e5b47f}
+.td-slider-empty{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 70% 30%,#44314e,#171321 65%)}
+.td-slider-empty>span{font-size:60px;color:#d8b18a}
+.td-slider-empty h2{margin:12px 0 5px;font:700 30px Georgia,serif}
+.td-slider-empty p{color:#bbb1c4}
+@media(max-width:600px){
+ .td-home-slider{margin:14px auto 23px;padding:0 11px}
+ .td-slider-topline{margin:0 3px 9px;font-size:10px}
+ .td-slider-topline small{font-size:8px}
+ .td-slider-track{height:310px;border-radius:15px}
+ .td-slider-shade{background:linear-gradient(90deg,rgba(10,8,16,.88),rgba(10,8,16,.48) 75%,rgba(10,8,16,.25)),linear-gradient(0deg,rgba(8,7,13,.82),transparent 90%)}
+ .td-slider-copy{left:17px;right:17px;bottom:18px;width:auto}
+ .td-slider-label{padding:5px 9px;font-size:9px}
+ .td-slider-copy h2{margin:9px 0 6px;font-size:24px}
+ .td-slider-copy p{font-size:11px;line-height:1.5;-webkit-line-clamp:2}
+ .td-slider-meta{margin-top:8px;font-size:10px}
+ .td-slider-cta{margin-top:12px;padding:9px 13px;font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){.td-slider-slide{transition:none}.td-slider-dot{transition:none}}
