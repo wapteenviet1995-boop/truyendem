@@ -12,5 +12,5 @@ if (!$post) { http_response_code(404); }
 <?php require __DIR__ . '/includes/header.php'; ?>
 <main class="blog-main"><?php if (!$post): ?><h1>Không tìm thấy bài viết</h1><p><a href="blog.php">Quay lại blog</a></p><?php else: ?><article class="blog-article"><a class="blog-back" href="blog.php">← Tất cả bài viết</a><p class="blog-category"><?= e($post['category']) ?></p><h1><?= e($post['title']) ?></h1><p class="meta">Đăng ngày <?= e(date('d/m/Y', strtotime($post['published_at'] ?: $post['created_at']))) ?></p>
 <?php if ($post['image_url']): ?><img class="blog-hero" src="<?= e($post['image_url']) ?>" alt="<?= e($post['title']) ?>"><?php endif; ?>
-<div class="blog-content"><?= nl2br(e($post['content'])) ?></div></article><?php endif; ?></main><footer class="site-footer"><div class="footer-bottom">© 2026 Góc Hoàng Đạo</div></footer><script src="js/presence.js"></script>
+<div class="blog-content"><?= nl2br(e($post['content'])) ?></div></article><?php endif; ?></main><?php require __DIR__ . '/includes/footer.php'; ?><script src="js/presence.js"></script>
 </body></html>
