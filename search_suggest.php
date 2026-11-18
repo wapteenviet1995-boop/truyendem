@@ -7,7 +7,7 @@ $q = trim((string)($_GET['q'] ?? ''));
 if (mb_strlen($q, 'UTF-8') < 2) { echo json_encode([]); exit; }
 try {
     $like = '%' . $q . '%';
-    $stmt = $pdo->prepare("SELECT title,slug,author,category,story_kind FROM stories WHERE status='published' AND (title LIKE ? OR author LIKE ?) ORDER BY CASE WHEN title LIKE ? THEN 0 ELSE 1 END, updated_at DESC LIMIT 8");
+    $stmt = $pdo->prepare("SELECT title,slug,author,category,story_kind,cover_url FROM stories WHERE status='published' AND (title LIKE ? OR author LIKE ?) ORDER BY CASE WHEN title LIKE ? THEN 0 ELSE 1 END, updated_at DESC LIMIT 8");
     $stmt->execute([$like,$like,$q . '%']);
     $items = [];
     foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
@@ -16,6 +16,7 @@ try {
             'title' => (string)$row['title'],
             'author' => (string)($row['author'] ?? ''),
             'category' => (string)($row['category'] ?? ''),
+            'cover_url' => (string)($row['cover_url'] ?? ''),
             'url' => $prefix . rawurlencode((string)$row['slug']) . '.html'
         ];
     }
