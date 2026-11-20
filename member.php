@@ -12,7 +12,7 @@ $q=$pdo->prepare('SELECT m.id,m.display_name,m.created_at,m.last_seen_at,m.avata
 if(!$person){http_response_code(404);exit('Không tìm thấy thành viên.');}
 $relation='none';$requestId=0;$isFollowing=false;$followerCount=0;
 if(($person['account_type']??'')==='contributor'){
- try{$q=$pdo->prepare('SELECT COUNT(*) FROM author_follows WHERE author_member_id=?');$q->execute([$target]);$followerCount=(int)$q->fetchColumn();if($target!==$currentId){$q=$pdo->prepare('SELECT 1 FROM author_follows WHERE follower_member_id=? AND author_member_id=? LIMIT 1');$q->execute([$currentId,$target]);$isFollowing=(bool)$q->fetchColumn();}}catch(Throwable $e){}
+ try{$q=$pdo->prepare('SELECT COUNT(*) FROM member_follows WHERE following_id=?');$q->execute([$target]);$followerCount=(int)$q->fetchColumn();if($target!==$currentId){$q=$pdo->prepare('SELECT 1 FROM member_follows WHERE follower_id=? AND following_id=? LIMIT 1');$q->execute([$currentId,$target]);$isFollowing=(bool)$q->fetchColumn();}}catch(Throwable $e){}
 }
 if($target!==$currentId){
  $q=$pdo->prepare("SELECT id,requester_id,status FROM friend_requests WHERE (requester_id=? AND addressee_id=?) OR (requester_id=? AND addressee_id=?) ORDER BY id DESC LIMIT 1");$q->execute([$currentId,$target,$target,$currentId]);$r=$q->fetch();
@@ -28,8 +28,8 @@ if($_SERVER['REQUEST_METHOD']==='POST'&&$target!==$currentId){
  else{
   $action=(string)($_POST['action']??'');
   if($action==='follow' && ($person['account_type']??'')==='contributor' && !$isFollowing){
-   try{$q=$pdo->prepare('INSERT IGNORE INTO author_follows(follower_member_id,author_member_id) VALUES(?,?)');$q->execute([$currentId,$target]);td_notify($pdo,$target,$currentId,'new_follower','Bạn có người theo dõi mới','Một thành viên vừa bắt đầu theo dõi bạn.','/member.php?id='.$currentId);header('Location: member.php?id='.$target.'&followed=1');exit;}catch(Throwable $e){$error='Chưa cài đặt chức năng theo dõi tác giả. Hãy chạy database/author_follows.sql.';}
-  }elseif($action==='unfollow' && $isFollowing){$q=$pdo->prepare('DELETE FROM author_follows WHERE follower_member_id=? AND author_member_id=?');$q->execute([$currentId,$target]);header('Location: member.php?id='.$target.'&unfollowed=1');exit;
+   try{$q=$pdo->prepare('INSERT IGNORE INTO member_follows(follower_id,following_id) VALUES(?,?)');$q->execute([$currentId,$target]);td_notify($pdo,$target,$currentId,'new_follower','Bạn có người theo dõi mới','Một thành viên vừa bắt đầu theo dõi bạn.','/member.php?id='.$currentId);header('Location: member.php?id='.$target.'&followed=1');exit;}catch(Throwable $e){$error='Chưa cài đặt chức năng theo dõi tác giả. Hãy chạy database/cleanup_redundant_tables.sql.';}
+  }elseif($action==='unfollow' && $isFollowing){$q=$pdo->prepare('DELETE FROM member_follows WHERE follower_id=? AND following_id=?');$q->execute([$currentId,$target]);header('Location: member.php?id='.$target.'&unfollowed=1');exit;
   }elseif($action==='send'&&$relation==='none'){
    $q=$pdo->prepare("INSERT INTO friend_requests(requester_id,addressee_id,status) VALUES(?,?,'pending')");$q->execute([$currentId,$target]);header('Location: member.php?id='.$target.'&sent=1');exit;
   }elseif($action==='accept'&&$relation==='incoming'){
