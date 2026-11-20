@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../includes/db.php';
 if (empty($_SESSION['blog_admin_id'])) { header('Location: login.php'); exit; }
-$posts = $pdo->query('SELECT id,title,slug,status,created_at,published_at FROM posts ORDER BY id DESC')->fetchAll();
+$posts = $pdo->query('SELECT id,title,slug,status,created_at,story_type,story_kind FROM stories ORDER BY id DESC')->fetchAll();
 if (empty($_SESSION['csrf'])) { $_SESSION['csrf'] = bin2hex(random_bytes(32)); }
 $totalPosts = count($posts);
 $publishedPosts = count(array_filter($posts, static fn($p) => $p['status'] === 'published'));
@@ -45,10 +45,10 @@ $draftPosts = $totalPosts - $publishedPosts;
       <div class="admin-account"><span class="admin-avatar"><?= e(mb_strtoupper(mb_substr($_SESSION['blog_admin_name'] ?? 'A',0,1,'UTF-8'),'UTF-8')) ?></span><span><strong><?= e($_SESSION['blog_admin_name'] ?? 'Quản trị viên') ?></strong><small>Quản trị viên</small></span></div>
     </header>
     <div class="admin-content">
-      <div class="admin-page-heading"><div><div class="admin-eyebrow">DASHBOARD</div><h1>Tổng quan</h1><p>Chào mừng trở lại! Đây là tình hình nội dung trên Truyện Đêm.</p></div><a class="admin-primary-action" href="edit.php">＋ <span>Viết bài mới</span></a></div>
+      <div class="admin-page-heading"><div><div class="admin-eyebrow">DASHBOARD</div><h1>Tổng quan</h1><p>Chào mừng trở lại! Đây là tình hình nội dung trên Truyện Đêm.</p></div><a class="admin-primary-action" href="stories.php">＋ <span>Viết truyện mới</span></a></div>
       <?php if(isset($_GET['saved'])): ?><div class="admin-alert-success">✓ Bài viết đã được lưu thành công.</div><?php endif; ?>
       <section class="admin-stat-grid">
-        <article class="admin-stat-card"><div class="admin-stat-top"><span>Tổng bài viết</span><span class="admin-stat-icon purple">▤</span></div><strong><?= $totalPosts ?></strong><small>Tất cả bài viết trong hệ thống</small></article>
+        <article class="admin-stat-card"><div class="admin-stat-top"><span>Tổng bài viết</span><span class="admin-stat-icon purple">▤</span></div><strong><?= $totalPosts ?></strong><small>Tất cả truyện trong thư viện</small></article>
         <article class="admin-stat-card"><div class="admin-stat-top"><span>Đã xuất bản</span><span class="admin-stat-icon green">✓</span></div><strong><?= $publishedPosts ?></strong><small>Đang hiển thị công khai</small></article>
         <article class="admin-stat-card"><div class="admin-stat-top"><span>Bản nháp</span><span class="admin-stat-icon amber">◷</span></div><strong><?= $draftPosts ?></strong><small>Chưa xuất bản</small></article>
       </section>
@@ -62,12 +62,12 @@ $draftPosts = $totalPosts - $publishedPosts;
         </div>
       </section>
       <section class="admin-recent-section">
-        <div class="admin-section-heading"><div><h2>Bài viết gần đây</h2><p>Theo dõi và chỉnh sửa nội dung mới nhất</p></div><a href="stories.php?list=all">Quản lý tất cả truyện <span>→</span></a></div>
+        <div class="admin-section-heading"><div><h2>Truyện gần đây</h2><p>Theo dõi và chỉnh sửa truyện mới nhất</p></div><a href="stories.php?list=all">Quản lý tất cả truyện <span>→</span></a></div>
         <div class="admin-table-wrap">
-        <?php if(!$posts): ?><div class="admin-empty-state"><span>▤</span><strong>Chưa có bài viết nào</strong><p>Bắt đầu xây dựng thư viện bằng cách đăng bài viết đầu tiên.</p><a href="edit.php">＋ Đăng bài mới</a></div>
+        <?php if(!$posts): ?><div class="admin-empty-state"><span>▤</span><strong>Chưa có truyện nào</strong><p>Bắt đầu xây dựng thư viện bằng cách đăng bài viết đầu tiên.</p><a href="stories.php">＋ Thêm truyện mới</a></div>
         <?php else: ?>
-          <table class="admin-dashboard-table"><thead><tr><th>TÊN BÀI VIẾT</th><th>TRẠNG THÁI</th><th>NGÀY TẠO</th><th>THAO TÁC</th></tr></thead><tbody>
-          <?php foreach(array_slice($posts,0,8) as $p): ?><tr><td><strong><?= e($p['title']) ?></strong><small class="admin-row-slug"><?= e($p['slug']) ?></small></td><td><span class="admin-status <?= $p['status']==='published'?'is-published':'is-draft' ?>"><?= $p['status']==='published'?'Đã xuất bản':'Bản nháp' ?></span></td><td><?= e(date('d/m/Y',strtotime($p['created_at']))) ?></td><td class="admin-row-actions"><a href="edit.php?id=<?= (int)$p['id'] ?>">Sửa</a><?php if($p['status']==='published'): ?><a href="../post.php?slug=<?= rawurlencode($p['slug']) ?>" target="_blank" rel="noopener">Xem</a><?php endif; ?><form method="post" action="delete.php" onsubmit="return confirm('Xóa bài viết này?')"><input type="hidden" name="csrf" value="<?= e($_SESSION['csrf']) ?>"><input type="hidden" name="id" value="<?= (int)$p['id'] ?>"><button type="submit">Xóa</button></form></td></tr><?php endforeach; ?>
+          <table class="admin-dashboard-table"><thead><tr><th>TÊN TRUYỆN</th><th>TRẠNG THÁI</th><th>NGÀY TẠO</th><th>THAO TÁC</th></tr></thead><tbody>
+          <?php foreach(array_slice($posts,0,8) as $p): ?><tr><td><strong><?= e($p['title']) ?></strong><small class="admin-row-slug"><?= e($p['slug']) ?></small></td><td><span class="admin-status <?= $p['status']==='published'?'is-published':'is-draft' ?>"><?= $p['status']==='published'?'Đã xuất bản':'Bản nháp' ?></span></td><td><?= e(date('d/m/Y',strtotime($p['created_at']))) ?></td><td class="admin-row-actions"><a href="stories.php?edit=<?= (int)$p['id'] ?>">Sửa</a><?php if($p['status']==='published'): ?><?php $publicPath = ($p['story_type'] ?? 'text') === 'audio' ? 'audio/' : (($p['story_kind'] ?? 'serial') === 'short' ? 'truyen-ngan/' : 'truyen/'); ?><a href="../<?= $publicPath . rawurlencode($p['slug']) ?>.html" target="_blank" rel="noopener">Xem</a><?php endif; ?><form method="post" action="delete.php" onsubmit="return confirm('Xóa bài viết này?')"><input type="hidden" name="csrf" value="<?= e($_SESSION['csrf']) ?>"><input type="hidden" name="id" value="<?= (int)$p['id'] ?>"><button type="submit">Xóa</button></form></td></tr><?php endforeach; ?>
           </tbody></table>
         <?php endif; ?>
         </div>
