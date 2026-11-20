@@ -1,0 +1,58 @@
+/* Trang chủ Truyện Đêm - các khu nội dung 3 đến 8 */
+.td-home-section{max-width:1100px;margin:38px auto;padding:0 18px;color:#eeeaf5}
+.td-home-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:17px}
+.td-home-section-head>div{min-width:0}
+.td-home-eyebrow{display:block;margin-bottom:6px;color:#c7a5ef;font-size:10px;font-weight:850;letter-spacing:.16em}
+.td-home-section-head h2{margin:0;color:#f4eefb;font-size:clamp(20px,3vw,27px);line-height:1.2}
+.td-home-section-head p{margin:7px 0 0;color:#9691a5;font-size:13px;line-height:1.5}
+.td-home-section-head>a{flex:none;color:#d1b4f2;text-decoration:none;font-size:12px;font-weight:750}
+.td-home-section-head>a span{padding-left:5px}
+.td-home-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.td-home-card{display:flex;min-width:0;overflow:hidden;border:1px solid #2b2938;border-radius:15px;background:linear-gradient(145deg,#171722,#101119);transition:transform .18s,border-color .18s}
+.td-home-card:hover{transform:translateY(-2px);border-color:#695183}
+.td-home-card-cover{display:grid;place-items:center;flex:0 0 104px;width:104px;min-height:142px;overflow:hidden;background:linear-gradient(145deg,#302341,#151621);color:#c6a5ed;text-decoration:none;font-size:30px}
+.td-home-card-cover img{display:block;width:100%;height:100%;min-height:142px;object-fit:cover}
+.td-home-card-body{display:flex;flex:1;flex-direction:column;min-width:0;padding:12px}
+.td-home-card-tag{color:#c4a3e9;font-size:10px;font-weight:800;letter-spacing:.04em}
+.td-home-card h3{margin:6px 0;color:#f2edf8;font-size:14px;line-height:1.4;overflow-wrap:anywhere}
+.td-home-card h3 a{color:inherit;text-decoration:none}
+.td-home-card-body>p{display:-webkit-box;overflow:hidden;margin:0 0 9px;color:#9e9aaa;font-size:11px;line-height:1.5;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.td-home-card-meta{display:flex;flex-wrap:wrap;gap:4px 9px;margin-top:auto;color:#898598;font-size:10px}
+.td-home-empty{padding:20px;border:1px dashed #393347;border-radius:13px;color:#9c96a9;text-align:center;font-size:13px;background:#11121a}
+.td-author-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.td-author-card{display:flex;min-width:0;flex-direction:column;align-items:center;gap:6px;padding:17px 10px;border:1px solid #302b3b;border-radius:15px;background:linear-gradient(145deg,#191722,#11121a);color:#eee9f6;text-align:center;text-decoration:none}
+.td-author-card:hover{border-color:#80619e;transform:translateY(-2px)}
+.td-author-avatar,.td-community-avatar{display:grid;place-items:center;flex:none;overflow:hidden;border-radius:50%;background:linear-gradient(135deg,#765a96,#332a49);color:#fff;font-weight:800}
+.td-author-avatar{width:56px;height:56px;font-size:22px}
+.td-author-avatar img,.td-community-avatar img{width:100%;height:100%;object-fit:cover}
+.td-author-card strong{max-width:100%;overflow-wrap:anywhere;font-size:12px}
+.td-author-card small{color:#9992a7;font-size:10px}
+.td-community-list{display:grid;gap:10px}
+.td-community-item{display:flex;gap:12px;min-width:0;padding:14px;border:1px solid #2e2b3a;border-radius:14px;background:#14151e}
+.td-community-avatar{width:39px;height:39px;font-size:16px}
+.td-community-copy{flex:1;min-width:0}
+.td-community-meta{display:flex;flex-wrap:wrap;align-items:center;gap:5px 10px}
+.td-community-meta strong{color:#eee8f5;font-size:12px}
+.td-community-meta time{color:#858093;font-size:10px}
+.td-community-copy p{margin:7px 0;color:#c5bfce;font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+.td-community-copy>small{color:#a991c6;font-size:10px}
+@media(max-width:760px){
+ .td-home-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .td-home-card{display:block}
+ .td-home-card-cover{width:100%;height:150px;min-height:0}
+ .td-home-card-cover img{height:150px;min-height:0}
+ .td-home-card-body{padding:10px}
+ .td-author-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+}
+@media(max-width:420px){
+ .td-home-section{margin:29px auto;padding:0 13px}
+ .td-home-section-head{align-items:flex-start;gap:8px}
+ .td-home-section-head p{font-size:11px}
+ .td-home-section-head>a{padding-top:5px;font-size:11px}
+ .td-home-card-cover,.td-home-card-cover img{height:132px}
+ .td-home-card h3{font-size:12px}
+ .td-home-card-body>p{font-size:10px}
+ .td-author-card{padding:13px 6px}
+ .td-author-avatar{width:48px;height:48px}
+ .td-community-item{padding:11px}
+}
