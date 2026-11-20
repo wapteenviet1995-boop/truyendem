@@ -220,8 +220,9 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 </style>
 <link rel="stylesheet" href="../css/story-editor.css?v=20261114-1">
 <link rel="stylesheet" href="../css/admin-white.css?v=20261114-white1">
+<link rel="stylesheet" href="../css/admin-cms.css?v=20261121-cms1">
 </head>
-<body class="story-site admin-theme">
+<body class="story-site admin-theme"><?php include __DIR__ . '/_nav.php'; ?>
 <main class="admin-story-wrap">
 <section class="admin-story-panel">
 <h1>Quản lý nội dung</h1><p class="muted">Chọn đăng truyện dài nhiều chương hoặc truyện ngắn đọc liền một mạch.</p>
