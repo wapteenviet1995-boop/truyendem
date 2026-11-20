@@ -160,6 +160,8 @@ document.querySelectorAll('.leaderboard-tab').forEach(function(tab){
  popup.addEventListener('click',e=>{if(e.target===popup)close();});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&popup.classList.contains('is-visible'))close();});
  const target=new Date(2026,10,20,0,0,0).getTime();
+ // Khong hien popup dem nguoc sau thoi diem ra mat.
+ if(Date.now()>=target)return;
  const pad=n=>String(n).padStart(2,'0');
  function tick(){let left=Math.max(0,target-Date.now());const days=Math.floor(left/86400000);left%=86400000;const hours=Math.floor(left/3600000);left%=3600000;const mins=Math.floor(left/60000);const secs=Math.floor((left%60000)/1000);document.getElementById('tdLaunchDays').textContent=pad(days);document.getElementById('tdLaunchHours').textContent=pad(hours);document.getElementById('tdLaunchMinutes').textContent=pad(mins);document.getElementById('tdLaunchSeconds').textContent=pad(secs);if(target<=Date.now())document.querySelector('.td-launch-counts p').innerHTML='Truyện Đêm đã chính thức ra mắt!';}
  tick();setInterval(tick,1000);
