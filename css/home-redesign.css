@@ -111,3 +111,34 @@ body.story-site .td-home-list .td-community-list{gap:10px}
 @media(max-width:420px){
  body.story-site .td-home-list{padding:7px}
 }
+
+
+/* Can bang bo cuc cac muc trang chu: tieu de thong thoang, danh sach cung mot lop khung */
+body.story-site .td-quick-read{
+ margin:30px auto 36px;
+ padding:0 2px;
+ border:0;
+ border-radius:0;
+ background:transparent;
+ box-shadow:none;
+}
+body.story-site .td-quick-read:before{display:none}
+body.story-site .td-quick-read .td-home-section-head{margin-bottom:17px}
+body.story-site .td-quick-read-list{
+ padding:14px;
+ border:1px solid #342a40;
+ border-radius:16px;
+ background:linear-gradient(145deg,rgba(20,17,28,.96),rgba(12,12,19,.96));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 10px 28px rgba(0,0,0,.18);
+}
+body.story-site .td-quick-read .td-home-cards{gap:13px}
+@media(max-width:760px){
+ body.story-site .td-quick-read{padding:0 1px}
+ body.story-site .td-quick-read-list{padding:9px;border-radius:13px}
+ body.story-site .td-quick-read .td-home-cards{gap:9px}
+}
+@media(max-width:420px){
+ body.story-site .td-quick-read{margin:29px auto}
+ body.story-site .td-quick-read-list{padding:7px}
+ body.story-site .td-quick-read .td-home-section-head{align-items:flex-start}
+}
