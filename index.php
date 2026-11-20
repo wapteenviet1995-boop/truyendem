@@ -41,7 +41,7 @@ try {
 } catch(PDOException $e) { $communityActivity=[]; }
 ?>
 <!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090a10"><title>Truyện Đêm - Thư viện truyện chữ và audio</title><meta name="description" content="Khám phá truyện kinh dị, tình cảm, huyền huyễn và nhiều câu chuyện hấp dẫn tại Truyện Đêm."><link rel="stylesheet" href="/css/style.css?v=20261111-routes1"><link rel="stylesheet" href="/css/stories.css?v=20261111-routes1"><link rel="stylesheet" href="/css/member-hub.css?v=20261112-leaderboard2"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1">
-<link rel="stylesheet" href="/css/home-slider.css?v=20261118-5"><link rel="stylesheet" href="/css/home-sections.css?v=20261120-1"></head><body class="story-site" id="top">
+<link rel="stylesheet" href="/css/home-slider.css?v=20261118-5"><link rel="stylesheet" href="/css/home-sections.css?v=20261120-1"><link rel="stylesheet" href="/css/home-redesign.css?v=20261120-1"></head><body class="story-site" id="top">
 <?php require __DIR__ . '/includes/header.php'; ?>
 <main class="story-main">
 <section class="td-home-slider" id="tdHomeSlider" aria-label="Truyện nổi bật">
