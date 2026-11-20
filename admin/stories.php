@@ -76,7 +76,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $cover = trim((string)($_POST['cover_url'] ?? ''));
                 $type = in_array($_POST['story_type'] ?? 'text', ['text', 'audio', 'both'], true) ? (string)$_POST['story_type'] : 'text';
                 $status = ($_POST['status'] ?? 'draft') === 'published' ? 'published' : 'draft';
-                $kind = ($_POST['story_kind'] ?? 'serial') === 'short' ? 'short' : 'serial';
+                $kindInput = (string)($_POST['story_kind'] ?? 'serial');
+                $kind = $kindInput === 'short' ? 'short' : 'serial';
+                if ($kindInput === 'audio' || $type === 'audio') {
+                    $type = 'audio';
+                    $kind = 'short'; // Audio không dùng nội dung chữ/chương; giữ giá trị tương thích CSDL hiện tại.
+                }
                 $shortContent = trim((string)($_POST['short_content'] ?? ''));
 
                 if ($title === '' || $slug === '') {
@@ -152,8 +157,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $stories = $pdo->query("SELECT s.*, (SELECT COUNT(*) FROM chapters c WHERE c.story_id=s.id) AS chapter_count FROM stories s ORDER BY s.updated_at DESC, s.id DESC")->fetchAll();
-$shortStories = array_values(array_filter($stories, fn($s) => ($s['story_kind'] ?? 'serial') === 'short'));
-$serialStories = array_values(array_filter($stories, fn($s) => ($s['story_kind'] ?? 'serial') !== 'short'));
+$shortStories = array_values(array_filter($stories, fn($s) => ($s['story_type'] ?? 'text') !== 'audio' && ($s['story_kind'] ?? 'serial') === 'short'));
+$serialStories = array_values(array_filter($stories, fn($s) => ($s['story_type'] ?? 'text') !== 'audio' && ($s['story_kind'] ?? 'serial') !== 'short'));
 $listType = in_array($_GET['list'] ?? 'all', ['all','short','serial'], true) ? (string)($_GET['list'] ?? 'all') : 'all';
 $selectedId = (int)($_GET['edit'] ?? $_POST['story_id'] ?? 0);
 $selectedStory = null;
@@ -242,8 +247,8 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <label>Slug (để trống tự tạo)<input name="slug" value="<?=e((string)$storyForm['slug'])?>"></label>
 <label>Tác giả<input name="author" value="<?=e((string)$storyForm['author'])?>"></label>
 <label>Thể loại *<input name="category" required placeholder="Ví dụ: Kinh dị, Tình cảm, Bí ẩn" value="<?=e((string)$storyForm['category'])?>"></label>
-<label>Hình thức nội dung<select name="story_kind" id="story-kind"><option value="serial" <?=($storyForm['story_kind']??'serial')==='serial'?'selected':''?>>Truyện dài nhiều chương</option><option value="short" <?=($storyForm['story_kind']??'serial')==='short'?'selected':''?>>Truyện ngắn (một bài)</option></select></label>
-<label>Loại truyện<select name="story_type"><option value="text" <?=$storyForm['story_type']==='text'?'selected':''?>>Truyện chữ</option><option value="audio" <?=$storyForm['story_type']==='audio'?'selected':''?>>Truyện audio</option><option value="both" <?=$storyForm['story_type']==='both'?'selected':''?>>Chữ + audio</option></select></label>
+<label>Hình thức nội dung<select name="story_kind" id="story-kind"><option value="serial" <?=($storyForm['story_kind']??'serial')==='serial'?'selected':''?>>Truyện dài nhiều chương</option><option value="short" <?=($storyForm['story_kind']??'serial')==='short' && ($storyForm['story_type']??'text')!=='audio'?'selected':''?>>Truyện ngắn (một bài)</option><option value="audio" <?=($storyForm['story_type']??'text')==='audio'?'selected':''?>>Audio</option></select></label>
+<label>Loại truyện<select name="story_type" id="story-type"><option value="text" <?=$storyForm['story_type']==='text'?'selected':''?>>Truyện chữ</option><option value="audio" <?=$storyForm['story_type']==='audio'?'selected':''?>>Truyện audio</option><option value="both" <?=$storyForm['story_type']==='both'?'selected':''?>>Chữ + audio</option></select></label>
 <label>Trạng thái<select name="status"><option value="draft" <?=$storyForm['status']==='draft'?'selected':''?>>Bản nháp</option><option value="published" <?=$storyForm['status']==='published'?'selected':''?>>Xuất bản</option></select></label>
 </div>
 <label>Ảnh bìa truyện<input type="text" id="cover-url" name="cover_url" value="<?=e((string)$storyForm['cover_url'])?>" placeholder="Link ảnh hoặc tải ảnh từ điện thoại"><input type="file" id="cover-image-file" accept="image/jpeg,image/png,image/webp"><small class="muted">JPG, PNG, WEBP · tối đa 5 MB</small><img id="cover-preview" src="<?=e((string)$storyForm['cover_url'])?>" alt="" style="display:<?=!empty($storyForm['cover_url'])?'block':'none'?>;max-width:150px;max-height:180px;object-fit:cover;border-radius:10px;margin-top:10px"></label>
@@ -328,7 +333,10 @@ $renderStoryList = function(array $items, string $heading, string $empty, bool $
 <span class="image-upload-status" id="image-upload-status" aria-live="polite"></span>
 <script>(()=> {
 const kind=document.getElementById('story-kind'),shortBox=document.getElementById('short-content-box'),chapter=document.getElementById('chapter-panel');
-if(kind){function sync(){const isShort=kind.value==='short';shortBox.style.display=isShort?'block':'none';if(chapter)chapter.style.display=isShort?'none':'block';}kind.addEventListener('change',sync);sync();}
+const type=document.getElementById('story-type');
+if(kind){function sync(){const audio=kind.value==='audio'||(type&&type.value==='audio');if(audio){kind.value='audio';if(type)type.value='audio';}const isShort=kind.value==='short';shortBox.style.display=isShort?'block':'none';if(chapter)chapter.style.display=(isShort||audio)?'none':'block';}
+kind.addEventListener('change',()=>{if(kind.value==='audio'&&type)type.value='audio';sync();});
+type?.addEventListener('change',()=>{if(type.value==='audio')kind.value='audio';else if(kind.value==='audio')kind.value='short';sync();});sync();}
 const csrf=document.querySelector('input[name="csrf"]')?.value||'';
 const status=document.getElementById('image-upload-status');
 const contentFile=document.getElementById('content-image-file');
