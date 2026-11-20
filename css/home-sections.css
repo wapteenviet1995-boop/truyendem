@@ -56,3 +56,5 @@
  .td-author-avatar{width:48px;height:48px}
  .td-community-item{padding:11px}
 }
+
+.td-home-more{display:flex;justify-content:center;margin-top:17px}.td-home-more a{display:inline-flex;padding:10px 17px;border:1px solid #554467;border-radius:10px;background:#1a1723;color:#d8bdf5;text-decoration:none;font-size:12px;font-weight:750}
