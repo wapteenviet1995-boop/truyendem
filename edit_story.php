@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/notifications.php';
 if (empty($_SESSION['member_id'])) { header('Location: login.php?next=submit_story.php'); exit; }
 $memberId=(int)$_SESSION['member_id'];
 $storyId=(int)($_GET['id']??$_POST['story_id']??0);
@@ -40,7 +41,11 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     elseif($cover!==''&&!filter_var($cover,FILTER_VALIDATE_URL)&&!preg_match('~^/uploads/stories/[a-zA-Z0-9._-]+$~',$cover))$error='Link ảnh bìa không hợp lệ.';
     elseif($story['story_kind']==='short'&&$short==='')$error='Bạn cần nhập nội dung truyện ngắn.';
     else{
-     $pdo->prepare("UPDATE stories SET title=?,category=?,description=?,cover_url=?,short_content=?,status=CASE WHEN status='published' THEN 'draft' ELSE status END WHERE id=? AND member_id=?")->execute([$title,$category,$description,$cover,$story['story_kind']==='short'?$short:null,$storyId,$memberId]);
+     $pdo->beginTransaction();
+     $pdo->prepare("UPDATE stories SET title=?,category=?,description=?,cover_url=?,short_content=?,status='draft',updated_at=NOW() WHERE id=? AND member_id=?")->execute([$title,$category,$description,$cover,$story['story_kind']==='short'?$short:null,$storyId,$memberId]);
+     $pdo->prepare("DELETE FROM story_moderation_reviews WHERE target_type='story' AND target_id=?")->execute([$storyId]);
+     td_notify_admins($pdo,'story_resubmission','Truyện đã được chỉnh sửa và gửi duyệt lại',$title,'review_stories.php');
+     $pdo->commit();
      header('Location: edit_story.php?id='.$storyId.'&saved=1');exit;
     }
    }elseif($action==='update_chapter'&&$story['story_kind']==='serial'){
@@ -51,7 +56,9 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     else{
      $pdo->beginTransaction();
      $pdo->prepare("UPDATE chapters SET title=?,content=?,status=CASE WHEN status='published' THEN 'draft' ELSE status END WHERE id=? AND story_id=?")->execute([$chapterTitle,$body,$chapterId,$storyId]);
-     $pdo->prepare("UPDATE stories SET status=CASE WHEN status='published' THEN 'draft' ELSE status END WHERE id=? AND member_id=?")->execute([$storyId,$memberId]);
+     $pdo->prepare("UPDATE stories SET status='draft',updated_at=NOW() WHERE id=? AND member_id=?")->execute([$storyId,$memberId]);
+     $pdo->prepare("DELETE FROM story_moderation_reviews WHERE target_type='chapter' AND target_id=?")->execute([$chapterId]);
+     td_notify_admins($pdo,'chapter_resubmission','Chương đã được chỉnh sửa và gửi duyệt lại',$chapterTitle,'review_stories.php');
      $pdo->commit();header('Location: edit_story.php?id='.$storyId.'&chapter_saved=1#chapter-'.$chapterId);exit;
     }
    }
