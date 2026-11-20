@@ -98,6 +98,7 @@ try {
         <a class="td-drawer-link" href="/submit_story.php"><span>✎</span> Đăng truyện</a>
         <?php if($tdIsContributor): ?><a class="td-drawer-link" href="/contributor-dashboard.php"><span>▦</span> Tổng quan CTV</a><?php endif; ?>
         <a class="td-drawer-link" href="/library.php"><span>♡</span> Tủ sách</a>
+        <a class="td-drawer-link" href="/following-authors.php"><span>♧</span> Tác giả đang theo dõi</a>
         <a class="td-drawer-link td-notification-link" href="/notifications.php"><span>♧</span> Thông báo <?php if($tdUnreadNotifications>0):?><b class="td-notification-count"><?=$tdUnreadNotifications>99?'99+':$tdUnreadNotifications?></b><?php endif;?></a>
         <a class="td-drawer-link" href="/moderation-history.php"><span>✓</span> Lịch sử kiểm duyệt</a>
         <a class="td-drawer-link" href="/messages.php"><span>✉</span> Tin nhắn</a>
