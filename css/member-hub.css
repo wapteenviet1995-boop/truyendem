@@ -110,3 +110,10 @@ body.story-site .leaderboard-section.leaderboard-compact .leaderboard-name.name-
   text-shadow:0 0 5px #e99b6d,0 0 13px #c8784caa;
 }
 @keyframes leaderGoldStrong{to{background-position:250% 0}}
+
+/* Member workflow navigation and unread badge */
+.member-hub-tabs a{white-space:nowrap}
+.member-notice-copy>div{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:8px}
+.member-notice-copy form{display:inline-flex}
+.member-notice-copy .member-hub-remove{padding:2px 4px}
+@media(max-width:600px){.member-hub-tabs{gap:7px}.member-hub-tabs a{padding:8px 10px;font-size:.78rem}}
