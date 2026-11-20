@@ -7,13 +7,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!hash_equals((string)$_SESSION['admin_login_csrf'], (string)($_POST['csrf'] ?? ''))) {
         $error = 'Phiên đăng nhập đã hết hạn. Hãy tải lại trang.';
     } else {
-        $q = $pdo->prepare('SELECT id,username,password_hash FROM blog_admins WHERE username=? LIMIT 1');
+        $q = $pdo->prepare('SELECT id,username,password_hash,display_name,role,is_active FROM blog_admins WHERE username=? LIMIT 1');
         $q->execute([trim((string)($_POST['username'] ?? ''))]);
         $admin = $q->fetch();
-        if ($admin && password_verify((string)($_POST['password'] ?? ''), $admin['password_hash'])) {
+        if ($admin && (int)$admin['is_active'] === 1 && password_verify((string)($_POST['password'] ?? ''), $admin['password_hash'])) {
             session_regenerate_id(true);
             $_SESSION['blog_admin_id'] = (int)$admin['id'];
-            $_SESSION['blog_admin_name'] = $admin['username'];
+            $_SESSION['blog_admin_name'] = $admin['display_name'] ?: $admin['username'];
+            $_SESSION['blog_admin_role'] = $admin['role'] ?? 'admin';
             $_SESSION['csrf'] = bin2hex(random_bytes(32));
             unset($_SESSION['admin_login_csrf']);
             header('Location: index.php'); exit;
