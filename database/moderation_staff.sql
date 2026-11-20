@@ -24,5 +24,6 @@ CREATE TABLE IF NOT EXISTS content_reports (
   KEY idx_content_reports_status_date (status, created_at),
   KEY idx_content_reports_story (story_id),
   KEY idx_content_reports_chapter (chapter_id),
-  KEY idx_content_reports_reporter (reporter_member_id)
+  KEY idx_content_reports_reporter (reporter_member_id),
+  KEY idx_content_reports_ip_date (ip_hash, created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
