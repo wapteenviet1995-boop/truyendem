@@ -1,0 +1,36 @@
+<?php
+declare(strict_types=1);
+require __DIR__ . '/../includes/db.php';
+if(empty($_SESSION['blog_admin_id'])){header('Location: login.php');exit;}
+if(empty($_SESSION['csrf']))$_SESSION['csrf']=bin2hex(random_bytes(32));
+$csrf=$_SESSION['csrf'];$error='';$notice='';
+function ar_h($v):string{return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
+$statuses=['pending'=>'Chờ xử lý','reviewing'=>'Đang xem xét','resolved'=>'Đã xử lý','dismissed'=>'Không vi phạm'];
+$reasons=['spam'=>'Spam / quảng cáo','copyright'=>'Bản quyền','harassment'=>'Quấy rối / xúc phạm','illegal'=>'Nội dung trái pháp luật','other'=>'Khác'];
+if($_SERVER['REQUEST_METHOD']==='POST'){
+ if(!hash_equals($csrf,(string)($_POST['csrf']??''))){$error='Phiên quản trị hết hạn. Hãy tải lại trang.';}
+ else{$id=(int)($_POST['report_id']??0);$status=(string)($_POST['status']??'');$note=trim((string)($_POST['admin_note']??''));$action=(string)($_POST['action']??'update');
+  try{if($id<1)throw new RuntimeException('Báo cáo không hợp lệ.');
+   if($action==='delete'){$q=$pdo->prepare('DELETE FROM content_reports WHERE id=?');$q->execute([$id]);$notice='Đã xóa báo cáo.';}
+   elseif(isset($statuses[$status])){$q=$pdo->prepare('UPDATE content_reports SET status=?,admin_note=?,assigned_admin_id=? WHERE id=?');$q->execute([$status,$note,(int)$_SESSION['blog_admin_id'],$id]);$notice='Đã cập nhật báo cáo.';}
+   else throw new RuntimeException('Trạng thái không hợp lệ.');
+  }catch(Throwable $e){$error=$e instanceof RuntimeException?$e->getMessage():'Không thể cập nhật. Hãy kiểm tra đã chạy file database/moderation_staff.sql chưa.';}
+ }
+}
+$filter=(string)($_GET['status']??'pending');if(!isset($statuses[$filter])&&$filter!=='all')$filter='pending';
+$search=trim((string)($_GET['q']??''));$where=[];$params=[];
+if($filter!=='all'){$where[]='r.status=?';$params[]=$filter;}
+if($search!==''){$where[]='(s.title LIKE ? OR r.details LIKE ? OR r.reporter_name LIKE ? OR r.reporter_email LIKE ?)';array_push($params,'%'.$search.'%','%'.$search.'%','%'.$search.'%','%'.$search.'%');}
+$sqlWhere=$where?' WHERE '.implode(' AND ',$where):'';
+$count=$pdo->prepare('SELECT COUNT(*) FROM content_reports r JOIN stories s ON s.id=r.story_id'.$sqlWhere);$count->execute($params);$total=(int)$count->fetchColumn();
+$pageSize=20;$pages=max(1,(int)ceil($total/$pageSize));$page=max(1,min($pages,(int)($_GET['page']??1)));$offset=($page-1)*$pageSize;
+$q=$pdo->prepare("SELECT r.*,s.title AS story_title,s.slug AS story_slug,c.title AS chapter_title,c.chapter_number,m.display_name AS member_name FROM content_reports r JOIN stories s ON s.id=r.story_id LEFT JOIN chapters c ON c.id=r.chapter_id LEFT JOIN members m ON m.id=r.reporter_member_id".$sqlWhere." ORDER BY FIELD(r.status,'pending','reviewing','resolved','dismissed'),r.created_at DESC LIMIT ".$pageSize." OFFSET ".$offset);$q->execute($params);$items=$q->fetchAll();
+$counts=$pdo->query("SELECT status,COUNT(*) total FROM content_reports GROUP BY status")->fetchAll(PDO::FETCH_KEY_PAIR);
+?><!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Báo cáo vi phạm | Truyện Đêm CMS</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/admin-white.css?v=20261114-white1"><link rel="stylesheet" href="../css/admin-cms.css?v=20261121-cms1"></head><body class="admin-theme"><?php include __DIR__.'/_nav.php';?><main class="admin-wrap"><section class="admin-panel admin-wide"><div class="admin-top"><div><h1>Báo cáo vi phạm</h1><p>Theo dõi nội dung độc giả gửi báo cáo và ghi nhận kết quả kiểm duyệt.</p></div></div>
+<?php if($notice):?><p class="admin-success"><?=ar_h($notice)?></p><?php endif;?><?php if($error):?><p class="admin-error"><?=ar_h($error)?></p><?php endif;?>
+<div class="report-stats"><a href="reports.php?status=pending"><strong><?= (int)($counts['pending']??0)?></strong><span>Chờ xử lý</span></a><a href="reports.php?status=reviewing"><strong><?= (int)($counts['reviewing']??0)?></strong><span>Đang xem xét</span></a><a href="reports.php?status=resolved"><strong><?= (int)($counts['resolved']??0)?></strong><span>Đã xử lý</span></a><a href="reports.php?status=dismissed"><strong><?= (int)($counts['dismissed']??0)?></strong><span>Không vi phạm</span></a></div>
+<form class="report-filter" method="get"><input type="search" name="q" value="<?=ar_h($search)?>" placeholder="Tìm truyện, nội dung, người báo cáo"><select name="status"><option value="pending" <?=$filter==='pending'?'selected':''?>>Chờ xử lý</option><option value="reviewing" <?=$filter==='reviewing'?'selected':''?>>Đang xem xét</option><option value="resolved" <?=$filter==='resolved'?'selected':''?>>Đã xử lý</option><option value="dismissed" <?=$filter==='dismissed'?'selected':''?>>Không vi phạm</option><option value="all" <?=$filter==='all'?'selected':''?>>Tất cả</option></select><button type="submit">Lọc báo cáo</button></form>
+<?php if(!$items):?><div class="report-empty">Không có báo cáo phù hợp.</div><?php endif;?>
+<?php foreach($items as $r):?><article class="report-card"><div class="report-card-head"><div><span class="report-id">#<?= (int)$r['id']?> · <?=ar_h($reasons[$r['reason']]??$r['reason'])?></span><h2><?=ar_h($r['story_title'])?></h2><p><?=!empty($r['chapter_id'])?'Chương '.(int)$r['chapter_number'].' · '.ar_h($r['chapter_title']):'Toàn bộ truyện'?> · <?=ar_h(date('d/m/Y H:i',strtotime($r['created_at'])))?></p></div><span class="report-status status-<?=ar_h($r['status'])?>"><?=ar_h($statuses[$r['status']]??$r['status'])?></span></div><div class="report-details"><?=nl2br(ar_h($r['details']))?></div><p class="report-reporter">Người gửi: <?=ar_h($r['member_name']?:($r['reporter_name']?:'Ẩn danh'))?><?=!empty($r['reporter_email'])?' · '.ar_h($r['reporter_email']):''?></p><p><a href="../<?= 'truyen/'.rawurlencode($r['story_slug'])?>.html" target="_blank" rel="noopener">Mở nội dung được báo cáo ↗</a></p><form method="post" class="report-manage"><input type="hidden" name="csrf" value="<?=ar_h($csrf)?>"><input type="hidden" name="report_id" value="<?=(int)$r['id']?>"><select name="status"><?php foreach($statuses as $key=>$label):?><option value="<?=ar_h($key)?>" <?=$r['status']===$key?'selected':''?>><?=ar_h($label)?></option><?php endforeach;?></select><input name="admin_note" maxlength="2000" value="<?=ar_h($r['admin_note'])?>" placeholder="Ghi chú xử lý nội bộ"><button name="action" value="update">Lưu xử lý</button><button class="report-delete" name="action" value="delete" onclick="return confirm('Xóa báo cáo này?')">Xóa</button></form></article><?php endforeach;?>
+<?php if($pages>1):?><nav class="story-pagination"><?php if($page>1):?><a href="?<?=http_build_query(['status'=>$filter,'q'=>$search,'page'=>$page-1])?>">← Trước</a><?php endif;?><strong><?=$page?> / <?=$pages?></strong><?php if($page<$pages):?><a href="?<?=http_build_query(['status'=>$filter,'q'=>$search,'page'=>$page+1])?>">Sau →</a><?php endif;?></nav><?php endif;?>
+</section></main></body></html>
