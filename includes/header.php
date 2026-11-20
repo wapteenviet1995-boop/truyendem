@@ -1,6 +1,14 @@
 <?php
 // Header dùng chung cho toàn bộ giao diện Truyện Đêm.
 $tdMemberLoggedIn = !empty($_SESSION['member_id']);
+$tdIsContributor = false;
+if ($tdMemberLoggedIn && isset($pdo) && $pdo instanceof PDO) {
+    try {
+        $tdRoleQuery = $pdo->prepare('SELECT account_type FROM members WHERE id=? LIMIT 1');
+        $tdRoleQuery->execute([(int)$_SESSION['member_id']]);
+        $tdIsContributor = $tdRoleQuery->fetchColumn() === 'contributor';
+    } catch (Throwable $e) { $tdIsContributor = false; }
+}
 if ($tdMemberLoggedIn && empty($_SESSION['member_csrf'])) {
     $_SESSION['member_csrf'] = bin2hex(random_bytes(32));
 }
@@ -87,6 +95,7 @@ try {
       <h3>GÓC THÀNH VIÊN</h3>
       <?php if ($tdMemberLoggedIn): ?>
         <a class="td-drawer-link" href="/submit_story.php"><span>✎</span> Đăng truyện</a>
+        <?php if($tdIsContributor): ?><a class="td-drawer-link" href="/contributor-dashboard.php"><span>▦</span> Tổng quan CTV</a><?php endif; ?>
         <a class="td-drawer-link" href="/library.php"><span>♡</span> Tủ sách</a>
         <a class="td-drawer-link td-notification-link" href="/notifications.php"><span>♧</span> Thông báo <?php if($tdUnreadNotifications>0):?><b class="td-notification-count"><?=$tdUnreadNotifications>99?'99+':$tdUnreadNotifications?></b><?php endif;?></a>
         <a class="td-drawer-link" href="/moderation-history.php"><span>✓</span> Lịch sử kiểm duyệt</a>
