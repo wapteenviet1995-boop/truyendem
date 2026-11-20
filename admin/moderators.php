@@ -2,6 +2,7 @@
 declare(strict_types=1);
 require __DIR__ . '/../includes/db.php';
 if(empty($_SESSION['blog_admin_id'])){header('Location: login.php');exit;}
+if(($_SESSION['blog_admin_role']??'admin')!=='admin'){http_response_code(403);exit('Bạn không có quyền quản lý tài khoản kiểm duyệt viên.');}
 if(empty($_SESSION['csrf']))$_SESSION['csrf']=bin2hex(random_bytes(32));
 $csrf=$_SESSION['csrf'];$error='';$notice='';
 function am_h($v):string{return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
@@ -16,7 +17,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
    $q=$pdo->prepare("INSERT INTO blog_admins(username,password_hash,display_name,email,role,is_active) VALUES(?,?,?,?, 'editor',1)");$q->execute([$username,password_hash($password,PASSWORD_DEFAULT),$name!==''?$name:null,$email!==''?$email:null]);$notice='Đã tạo tài khoản kiểm duyệt viên.';
   }elseif($action==='toggle'&&$id>0){
    if($id===(int)$_SESSION['blog_admin_id'])throw new RuntimeException('Bạn không thể tự khóa tài khoản đang đăng nhập.');
-   $q=$pdo->prepare('UPDATE blog_admins SET is_active=IF(is_active=1,0,1) WHERE id=? AND role=\\'editor\\'');$q->execute([$id]);$notice='Đã cập nhật trạng thái tài khoản KDV.';
+   $q=$pdo->prepare('UPDATE blog_admins SET is_active=IF(is_active=1,0,1) WHERE id=? AND role=?');$q->execute([$id,'editor']);$notice='Đã cập nhật trạng thái tài khoản KDV.';
   }else throw new RuntimeException('Thao tác không hợp lệ.');
   }catch(Throwable $e){$error=$e instanceof RuntimeException?$e->getMessage():'Không tạo được tài khoản. Tên đăng nhập hoặc email có thể đã được sử dụng.';}
  }
