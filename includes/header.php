@@ -1,6 +1,9 @@
 <?php
 // Header dùng chung cho toàn bộ giao diện Truyện Đêm.
 $tdMemberLoggedIn = !empty($_SESSION['member_id']);
+if ($tdMemberLoggedIn && empty($_SESSION['member_csrf'])) {
+    $_SESSION['member_csrf'] = bin2hex(random_bytes(32));
+}
 $tdHeaderCsrf = htmlspecialchars((string)($_SESSION['member_csrf'] ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 $tdGenres = [];
 try {
