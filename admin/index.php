@@ -33,7 +33,7 @@ $draftPosts = $totalPosts - $publishedPosts;
       <a href="review_stories.php"><span class="nav-icon">✓</span><span>Duyệt truyện thành viên</span></a>
       <a href="members.php"><span class="nav-icon">♙</span><span>Thành viên</span></a>
       <a href="reports.php"><span class="nav-icon">⚑</span><span>Báo cáo vi phạm</span></a>
-      <a href="contributors.php"><span class="nav-icon">✦</span><span>Cộng tác viên</span></a>
+      <?php if(($_SESSION["blog_admin_role"] ?? "admin") === "admin"): ?><a href="contributors.php"><span class="nav-icon">✦</span><span>Cộng tác viên</span></a><?php endif; ?>
       <?php if(($_SESSION["blog_admin_role"] ?? "admin") === "admin"): ?><a href="moderators.php"><span class="nav-icon">✓</span><span>Kiểm duyệt viên</span></a><?php endif; ?>
     </nav>
     <div class="admin-sidebar-bottom">
@@ -62,7 +62,7 @@ $draftPosts = $totalPosts - $publishedPosts;
           <a href="stories.php?list=serial" class="admin-quick-card"><span class="quick-icon blue">▥</span><span><strong>Truyện nhiều chương</strong><small>Quản lý tập và chương</small></span><b>→</b></a>
           <a href="audio.php" class="admin-quick-card"><span class="quick-icon rose">♫</span><span><strong>Truyện audio</strong><small>Quản lý MP3 và danh sách nghe</small></span><b>→</b></a>
           <a href="reports.php" class="admin-quick-card"><span class="quick-icon rose">⚑</span><span><strong>Báo cáo vi phạm</strong><small>Tiếp nhận và xử lý báo cáo</small></span><b>→</b></a>
-          <a href="contributors.php" class="admin-quick-card"><span class="quick-icon violet">✦</span><span><strong>Cộng tác viên</strong><small>Quản lý quyền CTV</small></span><b>→</b></a>
+          <?php if(($_SESSION["blog_admin_role"] ?? "admin") === "admin"): ?><a href="contributors.php" class="admin-quick-card"><span class="quick-icon violet">✦</span><span><strong>Cộng tác viên</strong><small>Quản lý quyền CTV</small></span><b>→</b></a><?php endif; ?>
           <a href="review_stories.php" class="admin-quick-card"><span class="quick-icon green">✓</span><span><strong>Duyệt truyện</strong><small>Kiểm tra bài thành viên gửi</small></span><b>→</b></a>
         </div>
       </section>
