@@ -203,3 +203,86 @@ body.story-site .leaderboard-section.story-section{
   border-radius:16px;
  }
 }
+
+
+/* SLIDESHOW EDITORIAL: bo cuc tap chi, anh ben phai - noi dung ben trai */
+body.story-site .td-home-slider{margin:10px auto 38px!important}
+body.story-site .td-slider-topline{margin:0 4px 13px!important;letter-spacing:.16em}
+body.story-site .td-slider-topline span{display:inline-flex;align-items:center;gap:9px}
+body.story-site .td-slider-topline span:after{content:"";display:inline-block;width:34px;height:1px;background:#9873b7}
+body.story-site .td-slider-track{
+ height:clamp(310px,34vw,390px)!important;
+ border:1px solid #3c304b!important;
+ border-radius:24px!important;
+ background:radial-gradient(ellipse at 18% 50%,#2b2038 0%,#17131f 56%,#100e16 100%)!important;
+ box-shadow:0 22px 58px #0009!important;
+}
+body.story-site .td-slider-image{
+ left:43%!important;right:0!important;width:57%!important;height:100%!important;
+ object-position:center!important;
+ border-radius:46% 0 0 46%!important;
+ filter:saturate(.82) contrast(1.04)!important;
+}
+body.story-site .td-slider-shade{
+ background:linear-gradient(90deg,#15111e 0%,#15111e 34%,rgba(21,17,30,.96) 42%,rgba(21,17,30,.48) 57%,rgba(21,17,30,.04) 78%),linear-gradient(0deg,rgba(8,7,13,.46),transparent 40%)!important;
+}
+body.story-site .td-slider-copy{
+ left:clamp(24px,4.5vw,54px)!important;
+ top:50%!important;bottom:auto!important;
+ width:min(43%,490px)!important;
+ transform:translateY(-50%)!important;
+}
+body.story-site .td-slider-label{
+ padding:6px 12px!important;border-radius:7px!important;
+ background:#2a2036!important;border-color:#73578c!important;
+ color:#d9b9f2!important;letter-spacing:.14em!important;
+}
+body.story-site .td-slider-copy h2{
+ margin:15px 0 11px!important;
+ font:700 clamp(25px,3.2vw,38px)/1.14 Georgia,serif!important;
+ letter-spacing:-.025em;
+}
+body.story-site .td-slider-copy p{color:#c4bacd!important;line-height:1.75!important}
+body.story-site .td-slider-meta{color:#a99ab5!important;margin-top:14px!important}
+body.story-site .td-slider-cta{
+ margin-top:19px!important;padding:11px 18px!important;
+ border-radius:7px!important;background:#c7a0e9!important;
+ border:1px solid #d8b9f2!important;color:#1b1223!important;
+ box-shadow:0 8px 24px #0005!important;
+}
+body.story-site .td-slider-track .td-slider-controls{
+ left:auto!important;right:18px!important;top:auto!important;bottom:16px!important;
+ transform:none!important;background:rgba(13,10,18,.76)!important;
+ border-color:#ffffff30!important;
+}
+@media(max-width:600px){
+ body.story-site .td-home-slider{margin:8px auto 27px!important}
+ body.story-site .td-slider-topline{margin-bottom:10px!important}
+ body.story-site .td-slider-track{
+  height:390px!important;border-radius:17px!important;
+ }
+ body.story-site .td-slider-image{
+  left:0!important;top:0!important;right:0!important;width:100%!important;height:57%!important;
+  border-radius:0 0 42% 0!important;object-position:center 36%!important;
+ }
+ body.story-site .td-slider-shade{
+  background:linear-gradient(0deg,#15111e 0%,#15111e 34%,rgba(21,17,30,.88) 49%,rgba(21,17,30,.12) 78%,rgba(21,17,30,.02) 100%)!important;
+ }
+ body.story-site .td-slider-copy{
+  left:18px!important;right:18px!important;top:auto!important;bottom:52px!important;
+  width:auto!important;transform:none!important;
+ }
+ body.story-site .td-slider-label{padding:5px 9px!important;font-size:9px!important}
+ body.story-site .td-slider-copy h2{font-size:23px!important;margin:9px 0 6px!important}
+ body.story-site .td-slider-copy p{font-size:11px!important;line-height:1.5!important;-webkit-line-clamp:2}
+ body.story-site .td-slider-meta{margin-top:7px!important;font-size:10px!important}
+ body.story-site .td-slider-cta{margin-top:10px!important;padding:8px 13px!important;font-size:11px!important}
+ body.story-site .td-slider-track .td-slider-controls{
+  right:10px!important;bottom:10px!important;gap:8px!important;padding:3px 7px!important;
+ }
+}
+@media(max-width:380px){
+ body.story-site .td-slider-track{height:370px!important}
+ body.story-site .td-slider-copy{bottom:49px!important}
+ body.story-site .td-slider-copy h2{font-size:21px!important}
+}
