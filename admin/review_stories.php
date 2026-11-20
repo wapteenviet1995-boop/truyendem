@@ -33,7 +33,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     td_notify_member($pdo,(int)$target['member_id'],'moderation_'.$decision,$notifyTitle,$notifyMessage,'/submit_story.php#my-stories');
     if($type==='story' && $decision==='approved'){
      try{
-      $followers=$pdo->prepare('SELECT follower_member_id FROM author_follows WHERE author_member_id=?');$followers->execute([(int)$target['member_id']]);
+      $followers=$pdo->prepare('SELECT follower_id FROM member_follows WHERE following_id=?');$followers->execute([(int)$target['member_id']]);
       foreach($followers->fetchAll(PDO::FETCH_COLUMN) as $followerId){td_notify_member($pdo,(int)$followerId,'author_new_story','Tác giả bạn theo dõi vừa đăng truyện',$target['title'].' đã được xuất bản.','/member.php?id='.(int)$target['member_id']);}
      }catch(Throwable $e){/* Bảng theo dõi chưa cài đặt: không chặn việc xuất bản. */}
     }
