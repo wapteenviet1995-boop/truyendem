@@ -108,3 +108,10 @@ body.admin-theme .admin-panel.admin-wide .am-actions .am-button{min-height:32px;
  body.admin-theme .admin-panel.admin-wide .admin-table td:nth-child(5){width:100%;min-width:0}
  body.admin-theme .admin-panel.admin-wide .am-actions{width:100%;max-width:100%;overflow:hidden}
 }
+
+/* Member directory pagination */
+body.admin-theme .am-pagination{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 3px;color:#858a99;font-size:.8rem}
+body.admin-theme .am-pagination>div{display:flex;align-items:center;gap:9px}
+body.admin-theme .am-pagination a{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 11px;border:1px solid #e2e5ed;border-radius:8px;background:#fff;color:#6843a6;font-weight:750;text-decoration:none}
+body.admin-theme .am-pagination strong{color:#454b5d;font-size:.78rem}
+@media(max-width:520px){body.admin-theme .am-pagination{align-items:flex-start;flex-direction:column}body.admin-theme .am-pagination>div{width:100%;justify-content:space-between}}
