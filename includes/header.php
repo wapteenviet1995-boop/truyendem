@@ -80,6 +80,7 @@ try {
       <a class="td-drawer-link" href="/index.php#leaderboard"><span>♜</span> Bảng xếp hạng</a>
       <a class="td-drawer-link" href="/index.php#library"><span>✧</span> Truyện mới cập nhật</a>
       <a class="td-drawer-link" href="/community.php"><span>♧</span> Cộng đồng</a>
+      <a class="td-drawer-link" href="/contributor-leaderboard.php"><span>♜</span> Bảng xếp hạng CTV</a>
     </section>
     <section class="td-drawer-section td-drawer-genres">
       <div class="td-drawer-section-title"><h3>THỂ LOẠI PHỔ BIẾN</h3><a href="/index.php#library">Tất cả ›</a></div>
