@@ -24,14 +24,16 @@ $draftPosts = $totalPosts - $publishedPosts;
     <div class="admin-nav-caption">KHÔNG GIAN LÀM VIỆC</div>
     <nav class="admin-nav">
       <a class="active" href="index.php"><span class="nav-icon">⌂</span><span>Tổng quan</span></a>
+      <?php if(($_SESSION["blog_admin_role"] ?? "admin") === "admin"): ?>
       <div class="admin-nav-caption">QUẢN LÝ NỘI DUNG</div>
       <a href="stories.php?list=short"><span class="nav-icon">▤</span><span>Truyện ngắn</span></a>
       <a href="stories.php?list=serial"><span class="nav-icon">▥</span><span>Truyện nhiều chương</span></a>
       <a href="stories.php?list=all"><span class="nav-icon">▦</span><span>Tất cả truyện</span></a>
       <a href="audio.php"><span class="nav-icon">♫</span><span>Truyện audio</span><span class="nav-tag">MP3</span></a>
+      <?php endif; ?>
       <div class="admin-nav-caption">CỘNG ĐỒNG</div>
       <a href="review_stories.php"><span class="nav-icon">✓</span><span>Duyệt truyện thành viên</span></a>
-      <a href="members.php"><span class="nav-icon">♙</span><span>Thành viên</span></a>
+      <?php if(($_SESSION["blog_admin_role"] ?? "admin") === "admin"): ?><a href="members.php"><span class="nav-icon">♙</span><span>Thành viên</span></a><?php endif; ?>
       <a href="reports.php"><span class="nav-icon">⚑</span><span>Báo cáo vi phạm</span></a>
       <?php if(($_SESSION["blog_admin_role"] ?? "admin") === "admin"): ?><a href="contributors.php"><span class="nav-icon">✦</span><span>Cộng tác viên</span></a><?php endif; ?>
       <?php if(($_SESSION["blog_admin_role"] ?? "admin") === "admin"): ?><a href="moderators.php"><span class="nav-icon">✓</span><span>Kiểm duyệt viên</span></a><?php endif; ?>
@@ -58,10 +60,10 @@ $draftPosts = $totalPosts - $publishedPosts;
       <section class="admin-quick-section">
         <div class="admin-section-heading"><div><h2>Truy cập nhanh</h2><p>Các khu vực quản lý thường dùng</p></div></div>
         <div class="admin-quick-grid">
-          <a href="stories.php?list=short" class="admin-quick-card"><span class="quick-icon violet">▤</span><span><strong>Truyện ngắn</strong><small>Quản lý truyện ngắn</small></span><b>→</b></a>
+          <?php if(($_SESSION["blog_admin_role"] ?? "admin") === "admin"): ?><a href="stories.php?list=short" class="admin-quick-card"><span class="quick-icon violet">▤</span><span><strong>Truyện ngắn</strong><small>Quản lý truyện ngắn</small></span><b>→</b></a>
           <a href="stories.php?list=serial" class="admin-quick-card"><span class="quick-icon blue">▥</span><span><strong>Truyện nhiều chương</strong><small>Quản lý tập và chương</small></span><b>→</b></a>
           <a href="audio.php" class="admin-quick-card"><span class="quick-icon rose">♫</span><span><strong>Truyện audio</strong><small>Quản lý MP3 và danh sách nghe</small></span><b>→</b></a>
-          <a href="reports.php" class="admin-quick-card"><span class="quick-icon rose">⚑</span><span><strong>Báo cáo vi phạm</strong><small>Tiếp nhận và xử lý báo cáo</small></span><b>→</b></a>
+          <?php endif; ?><a href="reports.php" class="admin-quick-card"><span class="quick-icon rose">⚑</span><span><strong>Báo cáo vi phạm</strong><small>Tiếp nhận và xử lý báo cáo</small></span><b>→</b></a>
           <?php if(($_SESSION["blog_admin_role"] ?? "admin") === "admin"): ?><a href="contributors.php" class="admin-quick-card"><span class="quick-icon violet">✦</span><span><strong>Cộng tác viên</strong><small>Quản lý quyền CTV</small></span><b>→</b></a><?php endif; ?>
           <a href="review_stories.php" class="admin-quick-card"><span class="quick-icon green">✓</span><span><strong>Duyệt truyện</strong><small>Kiểm tra bài thành viên gửi</small></span><b>→</b></a>
         </div>
