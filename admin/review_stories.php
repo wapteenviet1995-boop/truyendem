@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/notifications.php';
 if (empty($_SESSION['blog_admin_id'])) { header('Location: login.php'); exit; }
 if (empty($_SESSION['csrf'])) $_SESSION['csrf']=bin2hex(random_bytes(32));
 $csrf=$_SESSION['csrf'];$error='';$notice='';
@@ -14,18 +15,22 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
    try{
     $pdo->beginTransaction();
     if($type==='story'){
-     $q=$pdo->prepare('SELECT id,title FROM stories WHERE id=? AND member_id IS NOT NULL FOR UPDATE');$q->execute([$id]);$target=$q->fetch();
+     $q=$pdo->prepare('SELECT id,title,member_id FROM stories WHERE id=? AND member_id IS NOT NULL FOR UPDATE');$q->execute([$id]);$target=$q->fetch();
      if(!$target)throw new RuntimeException('Không tìm thấy truyện thành viên.');
      if($decision==='approved')$pdo->prepare("UPDATE stories SET status='published',updated_at=NOW() WHERE id=?")->execute([$id]);
      else $pdo->prepare("UPDATE stories SET status='draft',updated_at=NOW() WHERE id=?")->execute([$id]);
      $storyId=$id;
     }else{
-     $q=$pdo->prepare('SELECT c.id,c.story_id,s.title FROM chapters c JOIN stories s ON s.id=c.story_id WHERE c.id=? AND s.member_id IS NOT NULL FOR UPDATE');$q->execute([$id]);$target=$q->fetch();
+     $q=$pdo->prepare('SELECT c.id,c.story_id,s.title,s.member_id FROM chapters c JOIN stories s ON s.id=c.story_id WHERE c.id=? AND s.member_id IS NOT NULL FOR UPDATE');$q->execute([$id]);$target=$q->fetch();
      if(!$target)throw new RuntimeException('Không tìm thấy chương của thành viên.');
      $storyId=(int)$target['story_id'];
      $pdo->prepare("UPDATE chapters SET status=? WHERE id=?")->execute([$decision==='approved'?'published':'draft',$id]);
     }
-    $pdo->prepare("INSERT INTO story_moderation_reviews(target_type,target_id,story_id,decision,note,admin_id) VALUES(?,?,?,?,?,?) ON DUPLICATE KEY UPDATE decision=VALUES(decision),note=VALUES(note),admin_id=VALUES(admin_id),reviewed_at=CURRENT_TIMESTAMP")->execute([$type,$id,$storyId,$decision,trim((string)($_POST['note']??'')),(int)$_SESSION['blog_admin_id']]);
+    $reviewNote=trim((string)($_POST['note']??''));
+    $pdo->prepare("INSERT INTO story_moderation_reviews(target_type,target_id,story_id,decision,note,admin_id) VALUES(?,?,?,?,?,?) ON DUPLICATE KEY UPDATE decision=VALUES(decision),note=VALUES(note),admin_id=VALUES(admin_id),reviewed_at=CURRENT_TIMESTAMP")->execute([$type,$id,$storyId,$decision,$reviewNote,(int)$_SESSION['blog_admin_id']]);
+    $notifyTitle=$decision==='approved'?'Nội dung của bạn đã được duyệt':'Nội dung cần chỉnh sửa';
+    $notifyMessage=($type==='story'?'Truyện: ':'Chương trong truyện: ').$target['title'].($reviewNote!==''?' · Góp ý: '.$reviewNote:($decision==='approved'?' · Nội dung đã được xuất bản.':' · Vui lòng chỉnh sửa và gửi lại.'));
+    td_notify_member($pdo,(int)$target['member_id'],'moderation_'.$decision,$notifyTitle,$notifyMessage,'/submit_story.php#my-stories');
     $pdo->commit();header('Location: review_stories.php?result='.$decision);exit;
    }catch(Throwable $e){if($pdo->inTransaction())$pdo->rollBack();$error=$e instanceof RuntimeException?$e->getMessage():'Không thể cập nhật trạng thái. Hãy kiểm tra bảng story_moderation_reviews đã được tạo.';}
   }
