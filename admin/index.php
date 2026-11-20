@@ -3,5 +3,88 @@ require __DIR__ . '/../includes/db.php';
 if (empty($_SESSION['blog_admin_id'])) { header('Location: login.php'); exit; }
 $posts = $pdo->query('SELECT id,title,slug,status,created_at,published_at FROM posts ORDER BY id DESC')->fetchAll();
 if (empty($_SESSION['csrf'])) { $_SESSION['csrf'] = bin2hex(random_bytes(32)); }
-?><!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Quản lý bài viết</title><link rel="stylesheet" href="../css/style.css?v=20261110"><link rel="stylesheet" href="../css/admin-white.css?v=20261114-white1">
-</head><body class="admin-theme"><main class="admin-wrap"><section class="admin-panel admin-wide"><div class="admin-top"><h1>Quản trị Truyện Đêm</h1><a href="stories.php?list=short">Đăng truyện ngắn</a><a href="stories.php?list=serial">Truyện nhiều chương</a><a href="stories.php?list=all">Quản lý tất cả truyện</a><a href="audio.php">Quản lý truyện audio</a><a href="review_stories.php">Duyệt truyện thành viên</a><a href="members.php">Quản lý thành viên</a><form class="inline-form" method="post" action="logout.php"><input type="hidden" name="csrf" value="<?= e($_SESSION['csrf']) ?>"><button class="lnk" type="submit">Đăng xuất</button></form></div><p>Xin chào <?= e($_SESSION['blog_admin_name'] ?? 'quản trị viên') ?> · <a href="../blog.php" target="_blank">Xem website truyện</a></p><?php if(isset($_GET['saved'])): ?><p class="admin-success">✓ Bài viết đã được lưu.</p><?php endif; ?><p><a class="go admin-new" href="edit.php">＋ Đăng bài mới</a></p><div class="admin-table"><?php if(!$posts): ?><p>Chưa có bài viết nào. Hãy nhấn “Đăng bài mới” để bắt đầu.</p><?php else: ?><table><thead><tr><th>Bài viết</th><th>Trạng thái</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead><tbody><?php foreach($posts as $p): ?><tr><td><?= e($p['title']) ?></td><td><?= $p['status']==='published'?'Đã xuất bản':'Bản nháp' ?></td><td><?= e(date('d/m/Y',strtotime($p['created_at']))) ?></td><td><a href="edit.php?id=<?= (int)$p['id'] ?>">Sửa</a> · <form class="inline-form" method="post" action="delete.php" onsubmit="return confirm('Xóa bài viết này?')"><input type="hidden" name="csrf" value="<?= e($_SESSION['csrf']) ?>"><input type="hidden" name="id" value="<?= (int)$p['id'] ?>"><button class="lnk" type="submit">Xóa</button></form><?php if($p['status']==='published'): ?> · <a href="../post.php?slug=<?= rawurlencode($p['slug']) ?>" target="_blank">Xem</a><?php endif; ?></td></tr><?php endforeach; ?></tbody></table><?php endif; ?></div></section></main></body></html>
+$totalPosts = count($posts);
+$publishedPosts = count(array_filter($posts, static fn($p) => $p['status'] === 'published'));
+$draftPosts = $totalPosts - $publishedPosts;
+?>
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tổng quan quản trị · Truyện Đêm</title>
+<link rel="stylesheet" href="../css/style.css?v=20261110">
+<link rel="stylesheet" href="../css/admin-white.css?v=20261121-layout2">
+</head>
+<body class="admin-theme admin-dashboard">
+<div class="admin-shell">
+  <div class="admin-backdrop" id="adminBackdrop"></div>
+  <aside class="admin-sidebar" id="adminSidebar">
+    <a class="admin-brand" href="index.php"><span class="admin-brand-mark">Đ</span><span><strong>TRUYỆN ĐÊM</strong><small>TRUNG TÂM QUẢN TRỊ</small></span></a>
+    <div class="admin-nav-caption">KHÔNG GIAN LÀM VIỆC</div>
+    <nav class="admin-nav">
+      <a class="active" href="index.php"><span class="nav-icon">⌂</span><span>Tổng quan</span></a>
+      <div class="admin-nav-caption">QUẢN LÝ NỘI DUNG</div>
+      <a href="stories.php?list=short"><span class="nav-icon">▤</span><span>Truyện ngắn</span></a>
+      <a href="stories.php?list=serial"><span class="nav-icon">▥</span><span>Truyện nhiều chương</span></a>
+      <a href="stories.php?list=all"><span class="nav-icon">▦</span><span>Tất cả truyện</span></a>
+      <a href="audio.php"><span class="nav-icon">♫</span><span>Truyện audio</span><span class="nav-tag">MP3</span></a>
+      <div class="admin-nav-caption">CỘNG ĐỒNG</div>
+      <a href="review_stories.php"><span class="nav-icon">✓</span><span>Duyệt truyện thành viên</span></a>
+      <a href="members.php"><span class="nav-icon">♙</span><span>Thành viên</span></a>
+    </nav>
+    <div class="admin-sidebar-bottom">
+      <a href="../blog.php" target="_blank" rel="noopener"><span class="nav-icon">↗</span><span>Xem website</span></a>
+      <form method="post" action="logout.php"><input type="hidden" name="csrf" value="<?= e($_SESSION['csrf']) ?>"><button type="submit"><span class="nav-icon">⇥</span><span>Đăng xuất</span></button></form>
+    </div>
+  </aside>
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <button class="admin-menu-toggle" id="adminMenuToggle" type="button" aria-label="Mở menu" aria-expanded="false">☰</button>
+      <div class="admin-breadcrumb">Truyện Đêm <span>/</span> <strong>Tổng quan</strong></div>
+      <div class="admin-account"><span class="admin-avatar"><?= e(mb_strtoupper(mb_substr($_SESSION['blog_admin_name'] ?? 'A',0,1,'UTF-8'),'UTF-8')) ?></span><span><strong><?= e($_SESSION['blog_admin_name'] ?? 'Quản trị viên') ?></strong><small>Quản trị viên</small></span></div>
+    </header>
+    <div class="admin-content">
+      <div class="admin-page-heading"><div><div class="admin-eyebrow">DASHBOARD</div><h1>Tổng quan</h1><p>Chào mừng trở lại! Đây là tình hình nội dung trên Truyện Đêm.</p></div><a class="admin-primary-action" href="edit.php">＋ <span>Viết bài mới</span></a></div>
+      <?php if(isset($_GET['saved'])): ?><div class="admin-alert-success">✓ Bài viết đã được lưu thành công.</div><?php endif; ?>
+      <section class="admin-stat-grid">
+        <article class="admin-stat-card"><div class="admin-stat-top"><span>Tổng bài viết</span><span class="admin-stat-icon purple">▤</span></div><strong><?= $totalPosts ?></strong><small>Tất cả bài viết trong hệ thống</small></article>
+        <article class="admin-stat-card"><div class="admin-stat-top"><span>Đã xuất bản</span><span class="admin-stat-icon green">✓</span></div><strong><?= $publishedPosts ?></strong><small>Đang hiển thị công khai</small></article>
+        <article class="admin-stat-card"><div class="admin-stat-top"><span>Bản nháp</span><span class="admin-stat-icon amber">◷</span></div><strong><?= $draftPosts ?></strong><small>Chưa xuất bản</small></article>
+      </section>
+      <section class="admin-quick-section">
+        <div class="admin-section-heading"><div><h2>Truy cập nhanh</h2><p>Các khu vực quản lý thường dùng</p></div></div>
+        <div class="admin-quick-grid">
+          <a href="stories.php?list=short" class="admin-quick-card"><span class="quick-icon violet">▤</span><span><strong>Truyện ngắn</strong><small>Quản lý truyện ngắn</small></span><b>→</b></a>
+          <a href="stories.php?list=serial" class="admin-quick-card"><span class="quick-icon blue">▥</span><span><strong>Truyện nhiều chương</strong><small>Quản lý tập và chương</small></span><b>→</b></a>
+          <a href="audio.php" class="admin-quick-card"><span class="quick-icon rose">♫</span><span><strong>Truyện audio</strong><small>Quản lý MP3 và danh sách nghe</small></span><b>→</b></a>
+          <a href="review_stories.php" class="admin-quick-card"><span class="quick-icon green">✓</span><span><strong>Duyệt truyện</strong><small>Kiểm tra bài thành viên gửi</small></span><b>→</b></a>
+        </div>
+      </section>
+      <section class="admin-recent-section">
+        <div class="admin-section-heading"><div><h2>Bài viết gần đây</h2><p>Theo dõi và chỉnh sửa nội dung mới nhất</p></div><a href="stories.php?list=all">Quản lý tất cả truyện <span>→</span></a></div>
+        <div class="admin-table-wrap">
+        <?php if(!$posts): ?><div class="admin-empty-state"><span>▤</span><strong>Chưa có bài viết nào</strong><p>Bắt đầu xây dựng thư viện bằng cách đăng bài viết đầu tiên.</p><a href="edit.php">＋ Đăng bài mới</a></div>
+        <?php else: ?>
+          <table class="admin-dashboard-table"><thead><tr><th>TÊN BÀI VIẾT</th><th>TRẠNG THÁI</th><th>NGÀY TẠO</th><th>THAO TÁC</th></tr></thead><tbody>
+          <?php foreach(array_slice($posts,0,8) as $p): ?><tr><td><strong><?= e($p['title']) ?></strong><small class="admin-row-slug"><?= e($p['slug']) ?></small></td><td><span class="admin-status <?= $p['status']==='published'?'is-published':'is-draft' ?>"><?= $p['status']==='published'?'Đã xuất bản':'Bản nháp' ?></span></td><td><?= e(date('d/m/Y',strtotime($p['created_at']))) ?></td><td class="admin-row-actions"><a href="edit.php?id=<?= (int)$p['id'] ?>">Sửa</a><?php if($p['status']==='published'): ?><a href="../post.php?slug=<?= rawurlencode($p['slug']) ?>" target="_blank" rel="noopener">Xem</a><?php endif; ?><form method="post" action="delete.php" onsubmit="return confirm('Xóa bài viết này?')"><input type="hidden" name="csrf" value="<?= e($_SESSION['csrf']) ?>"><input type="hidden" name="id" value="<?= (int)$p['id'] ?>"><button type="submit">Xóa</button></form></td></tr><?php endforeach; ?>
+          </tbody></table>
+        <?php endif; ?>
+        </div>
+      </section>
+      <footer class="admin-footer">© <?= date('Y') ?> Truyện Đêm · Khu vực quản trị</footer>
+    </div>
+  </main>
+</div>
+<script>
+(() => {
+ const sidebar=document.getElementById('adminSidebar');
+ const toggle=document.getElementById('adminMenuToggle');
+ const backdrop=document.getElementById('adminBackdrop');
+ const close=()=>{sidebar.classList.remove('is-open');backdrop.classList.remove('is-visible');toggle.setAttribute('aria-expanded','false');};
+ toggle.addEventListener('click',()=>{const open=!sidebar.classList.contains('is-open');sidebar.classList.toggle('is-open',open);backdrop.classList.toggle('is-visible',open);toggle.setAttribute('aria-expanded',String(open));});
+ backdrop.addEventListener('click',close);
+ window.addEventListener('resize',()=>{if(window.innerWidth>820)close();});
+})();
+</script>
+</body></html>
