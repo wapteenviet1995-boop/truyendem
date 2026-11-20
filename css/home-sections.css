@@ -58,3 +58,15 @@
 }
 
 .td-home-more{display:flex;justify-content:center;margin-top:17px}.td-home-more a{display:inline-flex;padding:10px 17px;border:1px solid #554467;border-radius:10px;background:#1a1723;color:#d8bdf5;text-decoration:none;font-size:12px;font-weight:750}
+
+/* Khung danh sách Đọc nhanh mỗi đêm */
+.td-quick-read{position:relative;padding:22px 22px 20px;border:1px solid #332b42;border-radius:20px;background:linear-gradient(145deg,#171521 0%,#101119 72%);box-shadow:0 12px 32px rgba(0,0,0,.18)}
+.td-quick-read:before{content:"";position:absolute;top:0;left:22px;right:22px;height:2px;border-radius:0 0 4px 4px;background:linear-gradient(90deg,#a77bd0,rgba(167,123,208,0))}
+.td-quick-read .td-home-section-head{align-items:center;margin-bottom:16px}
+.td-quick-read .td-home-eyebrow{display:inline-flex;align-items:center;gap:7px}
+.td-quick-read .td-home-eyebrow:before{content:"☾";font-size:14px}
+.td-quick-read-list{padding:13px;border:1px solid #292536;border-radius:15px;background:rgba(7,8,14,.42)}
+.td-quick-read .td-home-card{background:linear-gradient(145deg,#201c2a,#15151e);border-color:#393246}
+.td-quick-read .td-home-card:hover{border-color:#8764a8}
+@media(max-width:760px){.td-quick-read{padding:18px 13px 14px;border-radius:16px}.td-quick-read:before{left:14px;right:14px}.td-quick-read-list{padding:9px;border-radius:12px}}
+@media(max-width:420px){.td-quick-read{padding:16px 10px 12px}.td-quick-read-list{padding:7px}.td-quick-read .td-home-section-head{align-items:flex-start}}
