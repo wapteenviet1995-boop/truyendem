@@ -15,12 +15,13 @@ $stats=['total'=>0,'published'=>0,'pending'=>0,'changes'=>0,'views'=>0,'likes'=>
 $q=$pdo->prepare("SELECT COUNT(*) total, SUM(status='published') published, COALESCE(SUM(views_count),0) views, COALESCE(SUM(likes_count),0) likes FROM stories WHERE member_id=?");
 $q->execute([$memberId]);$row=$q->fetch()?:[];
 foreach(['total','published','views','likes'] as $key)$stats[$key]=(int)($row[$key]??0);
-$stats['pending']=max(0,$stats['total']-$stats['published']);
+$q=$pdo->prepare("SELECT COUNT(*) FROM stories s LEFT JOIN story_moderation_reviews r ON r.target_type='story' AND r.target_id=s.id WHERE s.member_id=? AND s.status<>'published' AND (r.decision IS NULL OR r.decision<>'rejected')");
+$q->execute([$memberId]);$stats['pending']=(int)$q->fetchColumn();
 $q=$pdo->prepare("SELECT COUNT(*) FROM stories s JOIN story_moderation_reviews r ON r.target_type='story' AND r.target_id=s.id AND r.decision='rejected' WHERE s.member_id=? AND s.status<>'published'");
 $q->execute([$memberId]);$stats['changes']=(int)$q->fetchColumn();
 $q=$pdo->prepare("SELECT COUNT(*) FROM chapters c JOIN stories s ON s.id=c.story_id WHERE s.member_id=?");
 $q->execute([$memberId]);$stats['chapters']=(int)$q->fetchColumn();
-$q=$pdo->prepare("SELECT s.id,s.title,s.slug,s.story_kind,s.story_type,s.status,s.created_at,s.views_count,s.likes_count,r.decision review_decision,r.note review_note,(SELECT COUNT(*) FROM chapters c WHERE c.story_id=s.id) chapter_count FROM stories s LEFT JOIN story_moderation_reviews r ON r.target_type='story' AND r.target_id=s.id WHERE s.member_id=? ORDER BY s.updated_at DESC,s.id DESC LIMIT 8");
+$q=$pdo->prepare("SELECT s.id,s.title,s.slug,s.story_kind,s.story_type,s.status,s.created_at,s.views_count,s.likes_count,r.decision review_decision,r.note review_note,(SELECT COUNT(*) FROM chapters c WHERE c.story_id=s.id) chapter_count FROM stories s LEFT JOIN story_moderation_reviews r ON r.target_type='story' AND r.target_id=s.id WHERE s.member_id=? ORDER BY s.created_at DESC,s.id DESC LIMIT 8");
 $q->execute([$memberId]);$recent=$q->fetchAll();
 $q=$pdo->prepare("SELECT s.id,s.title,s.slug,s.views_count,s.likes_count FROM stories s WHERE s.member_id=? AND s.status='published' ORDER BY s.views_count DESC,s.likes_count DESC LIMIT 3");
 $q->execute([$memberId]);$topStories=$q->fetchAll();
