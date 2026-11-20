@@ -142,3 +142,29 @@ body.story-site .td-quick-read .td-home-cards{gap:13px}
  body.story-site .td-quick-read-list{padding:7px}
  body.story-site .td-quick-read .td-home-section-head{align-items:flex-start}
 }
+
+
+/* Dam bao moi danh sach trang chu deu co khung bao quanh */
+body.story-site .td-home-list-plain,
+body.story-site .td-home-list-library,
+body.story-site .td-home-list-board{
+ padding:14px;
+ border:1px solid #342a40;
+ border-radius:16px;
+ background:linear-gradient(145deg,rgba(20,17,28,.96),rgba(12,12,19,.96));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 10px 28px rgba(0,0,0,.16);
+}
+body.story-site .td-home-list-library .story-grid{margin:0}
+body.story-site .td-home-list-library .story-empty{margin:0}
+body.story-site .td-home-list-board .leaderboard-list{margin:0}
+body.story-site .td-home-list-plain .chapter-list{margin:0}
+@media(max-width:760px){
+ body.story-site .td-home-list-plain,
+ body.story-site .td-home-list-library,
+ body.story-site .td-home-list-board{padding:9px;border-radius:13px}
+}
+@media(max-width:420px){
+ body.story-site .td-home-list-plain,
+ body.story-site .td-home-list-library,
+ body.story-site .td-home-list-board{padding:7px}
+}
