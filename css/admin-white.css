@@ -34,3 +34,21 @@ body.admin-theme #chapter-panel,body.admin-theme #chapter-panel .admin-story-ite
 body.admin-theme #chapter-content,body.admin-theme #short-content{
  background:#fff!important;color:#292632!important;border-color:#d9d5e0!important
 }
+
+
+/* Professional admin workspace refresh */
+body.admin-theme{font-family:Inter,"Be Vietnam Pro",system-ui,sans-serif;background:#f5f6fa!important;color:#202432!important}
+body.admin-theme .admin-wrap{max-width:1240px;padding:30px 22px 90px}
+body.admin-theme .admin-panel{border:1px solid #e7e9f0!important;border-radius:18px!important;box-shadow:0 12px 35px rgba(25,32,56,.055)!important;padding:26px}
+body.admin-theme .admin-top{display:block!important;padding-bottom:20px;border-bottom:1px solid #eceef3}
+body.admin-theme .admin-top h1{margin:0;font-size:1.5rem}
+body.admin-theme .admin-top>a{display:inline-flex;align-items:center;min-height:40px;margin:18px 7px 0 0;padding:9px 13px;border:1px solid #e6e8ef;border-radius:10px;background:#fff;color:#41465a;text-decoration:none;font-size:.88rem;font-weight:650}
+body.admin-theme .admin-top>a:hover{border-color:#c8b5ec;background:#f7f3ff;color:#6941a5}
+body.admin-theme .admin-table{border:1px solid #e9eaf0;border-radius:13px;background:#fff}
+body.admin-theme .admin-table table{min-width:650px}
+body.admin-theme .admin-table th{padding:14px 15px;background:#f7f7fa;text-transform:uppercase;font-size:.72rem;letter-spacing:.06em}
+body.admin-theme .admin-table td{padding:15px;vertical-align:middle}
+body.admin-theme .admin-new{background:#6941a5!important;color:#fff!important;border-radius:10px!important;padding:11px 16px!important;text-decoration:none;font-weight:750}
+body.admin-theme .admin-success{background:#eaf8ef;color:#247344;padding:12px 14px;border-radius:10px}
+body.admin-theme .admin-error{background:#fff0f0;color:#a12d3a;padding:12px 14px;border-radius:10px}
+@media(max-width:640px){body.admin-theme .admin-wrap{padding:12px 10px 80px}body.admin-theme .admin-panel{padding:16px;border-radius:14px!important}body.admin-theme .admin-top>a{margin-top:8px}}
