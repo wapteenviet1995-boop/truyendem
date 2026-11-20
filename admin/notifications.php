@@ -1,0 +1,19 @@
+<?php
+declare(strict_types=1);
+require __DIR__ . '/../includes/db.php';
+if(empty($_SESSION['blog_admin_id'])){header('Location: login.php');exit;}
+if(empty($_SESSION['csrf']))$_SESSION['csrf']=bin2hex(random_bytes(32));
+$csrf=$_SESSION['csrf'];$adminId=(int)$_SESSION['blog_admin_id'];$error='';
+if($_SERVER['REQUEST_METHOD']==='POST'){
+ if(!hash_equals($csrf,(string)($_POST['csrf']??''))){$error='Phiên đã hết hạn. Hãy tải lại trang.';}
+ else{
+  $action=(string)($_POST['action']??'');$id=(int)($_POST['notification_id']??0);
+  if($action==='read_all')$pdo->prepare('UPDATE admin_notifications SET is_read=1 WHERE recipient_admin_id=?')->execute([$adminId]);
+  elseif($action==='read_one'&&$id>0)$pdo->prepare('UPDATE admin_notifications SET is_read=1 WHERE id=? AND recipient_admin_id=?')->execute([$id,$adminId]);
+  header('Location: notifications.php');exit;
+ }
+}
+$q=$pdo->prepare('SELECT * FROM admin_notifications WHERE recipient_admin_id=? ORDER BY created_at DESC,id DESC LIMIT 100');$q->execute([$adminId]);$items=$q->fetchAll();
+$q=$pdo->prepare('SELECT COUNT(*) FROM admin_notifications WHERE recipient_admin_id=? AND is_read=0');$q->execute([$adminId]);$unread=(int)$q->fetchColumn();
+function an_h($v):string{return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
+?><!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Thông báo CMS | Truyện Đêm</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/admin-white.css?v=20261121-layout2"><link rel="stylesheet" href="../css/admin-cms.css?v=20261121-cms1"><style>.cms-notice-list{display:grid;gap:12px;margin-top:18px}.cms-notice{padding:16px;border:1px solid #e5e7eb;border-radius:13px;background:#fff;display:flex;gap:12px;align-items:flex-start}.cms-notice.unread{border-color:#b9a4e8;background:#faf8ff}.cms-notice strong{display:block;color:#202334}.cms-notice p{margin:6px 0;color:#626779}.cms-notice small{color:#8b90a0}.cms-notice a{color:#6741a5;font-weight:700}.cms-notice button,.cms-notice-tools button{border:0;border-radius:8px;padding:8px 11px;background:#eee8f8;color:#55358c;font-weight:700}.cms-notice-tools{text-align:right;margin-top:14px}</style></head><body class="admin-theme"><?php include __DIR__.'/_nav.php';?><main class="admin-wrap"><section class="admin-panel admin-wide"><div class="admin-top"><div><h1>Thông báo quản trị</h1><p>Báo cáo mới và nội dung thành viên gửi chờ kiểm duyệt.</p></div><strong><?= $unread ?> chưa đọc</strong></div><?php if($error):?><p class="admin-error"><?=an_h($error)?></p><?php endif;?><?php if($unread):?><form class="cms-notice-tools" method="post"><input type="hidden" name="csrf" value="<?=an_h($csrf)?>"><input type="hidden" name="action" value="read_all"><button>Đánh dấu tất cả đã đọc</button></form><?php endif;?><div class="cms-notice-list"><?php if(!$items):?><p>Chưa có thông báo mới.</p><?php endif;?><?php foreach($items as $n):?><article class="cms-notice <?=!(int)$n['is_read']?'unread':''?>"><span><?=!(int)$n['is_read']?'●':'○'?></span><div style="flex:1;min-width:0"><strong><?=an_h($n['title'])?></strong><p><?=an_h($n['message'])?></p><small><?=an_h(date('d/m/Y H:i',strtotime($n['created_at'])))?></small><p><a href="<?=an_h($n['target_url'])?>">Mở nội dung liên quan →</a></p><?php if(!(int)$n['is_read']):?><form method="post"><input type="hidden" name="csrf" value="<?=an_h($csrf)?>"><input type="hidden" name="action" value="read_one"><input type="hidden" name="notification_id" value="<?=(int)$n['id']?>"><button>Đánh dấu đã đọc</button></form><?php endif;?></div></article><?php endforeach;?></div></section></main></body></html>
