@@ -4,7 +4,8 @@ $adminCurrent = basename($_SERVER['PHP_SELF'] ?? '');
 $adminLinks = [
  ['index.php','Tổng quan','⌂'],
  ['review_stories.php','Duyệt bài','✓'],
- ['reports.php','Báo cáo vi phạm','⚑']
+ ['reports.php','Báo cáo vi phạm','⚑'],
+ ['notifications.php','Thông báo','♧']
 ];
 if (($_SESSION['blog_admin_role'] ?? 'admin') === 'admin') {
  $adminLinks[] = ['stories.php?list=all','Kho truyện','▤'];
