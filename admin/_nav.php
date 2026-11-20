@@ -3,13 +3,13 @@ if (empty($_SESSION['csrf'])) { $_SESSION['csrf'] = bin2hex(random_bytes(32)); }
 $adminCurrent = basename($_SERVER['PHP_SELF'] ?? '');
 $adminLinks = [
  ['index.php','Tổng quan','⌂'],
- ['stories.php?list=all','Kho truyện','▤'],
- ['audio.php','Studio audio','♫'],
  ['review_stories.php','Duyệt bài','✓'],
- ['members.php','Thành viên','♙'],
  ['reports.php','Báo cáo vi phạm','⚑']
 ];
 if (($_SESSION['blog_admin_role'] ?? 'admin') === 'admin') {
+ $adminLinks[] = ['stories.php?list=all','Kho truyện','▤'];
+ $adminLinks[] = ['audio.php','Studio audio','♫'];
+ $adminLinks[] = ['members.php','Thành viên','♙'];
  $adminLinks[] = ['contributors.php','Cộng tác viên','✦'];
  $adminLinks[] = ['moderators.php','Kiểm duyệt viên','✓'];
 }
