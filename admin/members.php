@@ -2,6 +2,7 @@
 declare(strict_types=1);
 require __DIR__ . '/../includes/db.php';
 if (empty($_SESSION['blog_admin_id'])) { header('Location: login.php'); exit; }
+if (($_SESSION['blog_admin_role'] ?? 'admin') !== 'admin') { http_response_code(403); exit('Khu vực này chỉ dành cho quản trị viên.'); }
 if (empty($_SESSION['csrf'])) $_SESSION['csrf']=bin2hex(random_bytes(32));
 $csrf=$_SESSION['csrf'];$notice='';$error='';
 function admin_member_h(?string $v):string{return htmlspecialchars($v??'',ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
