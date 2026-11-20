@@ -5,6 +5,14 @@ if ($tdMemberLoggedIn && empty($_SESSION['member_csrf'])) {
     $_SESSION['member_csrf'] = bin2hex(random_bytes(32));
 }
 $tdHeaderCsrf = htmlspecialchars((string)($_SESSION['member_csrf'] ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$tdUnreadNotifications = 0;
+if ($tdMemberLoggedIn && isset($pdo) && $pdo instanceof PDO) {
+    try {
+        $tdNoticeCount = $pdo->prepare('SELECT COUNT(*) FROM member_notifications WHERE recipient_id=? AND is_read=0');
+        $tdNoticeCount->execute([(int)$_SESSION['member_id']]);
+        $tdUnreadNotifications = (int)$tdNoticeCount->fetchColumn();
+    } catch (Throwable $e) { $tdUnreadNotifications = 0; }
+}
 $tdGenres = [];
 try {
     if (isset($pdo) && $pdo instanceof PDO) {
@@ -15,6 +23,7 @@ try {
 ?>
 <link rel="stylesheet" href="/css/site-header.css?v=20261118-compact2">
 <link rel="stylesheet" href="/css/theme-mode.css?v=20261121-index-light1">
+<style>.td-notification-link{display:flex;align-items:center;gap:8px}.td-notification-count{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 5px;border-radius:20px;background:#a879d2;color:#fff;font-size:11px;line-height:1}.td-drawer-link .td-notification-count{margin-left:auto}</style>
 <header class="site-header td-global-header">
   <div class="header-inner td-header-inner">
     <a class="brand" href="/index.php" aria-label="Truyện Đêm - Trang chủ">
@@ -79,7 +88,8 @@ try {
       <?php if ($tdMemberLoggedIn): ?>
         <a class="td-drawer-link" href="/submit_story.php"><span>✎</span> Đăng truyện</a>
         <a class="td-drawer-link" href="/library.php"><span>♡</span> Tủ sách</a>
-        <a class="td-drawer-link" href="/notifications.php"><span>♧</span> Thông báo</a>
+        <a class="td-drawer-link td-notification-link" href="/notifications.php"><span>♧</span> Thông báo <?php if($tdUnreadNotifications>0):?><b class="td-notification-count"><?=$tdUnreadNotifications>99?'99+':$tdUnreadNotifications?></b><?php endif;?></a>
+        <a class="td-drawer-link" href="/moderation-history.php"><span>✓</span> Lịch sử kiểm duyệt</a>
         <a class="td-drawer-link" href="/messages.php"><span>✉</span> Tin nhắn</a>
         <a class="td-drawer-link" href="/friends.php"><span>♙</span> Bạn bè</a>
         <form class="td-drawer-logout" method="post" action="/logout.php"><input type="hidden" name="csrf" value="<?= $tdHeaderCsrf ?>"><button type="submit">↪ &nbsp; Đăng xuất</button></form>
