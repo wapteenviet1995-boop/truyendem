@@ -40,3 +40,66 @@ body.admin-theme:not(.admin-dashboard) .admin-story-wrap{color:#30364a}
 @media(max-width:1050px){.cms-topbar{gap:13px}.cms-nav a{padding:0 8px;font-size:11px}.cms-user-name{display:none}}
 @media(max-width:760px){.cms-topbar{min-height:62px;gap:10px;padding:0 12px}.cms-brand-mark{width:34px;height:34px}.cms-brand b{font-size:11px}.cms-brand small{font-size:8px}.cms-nav{display:none}.cms-user{gap:7px}.cms-user>a{display:none}.cms-mobile-links{display:flex;position:sticky;top:62px;z-index:90;gap:7px;overflow-x:auto;padding:8px 12px;background:#fff;border-bottom:1px solid #e8ebf2;scrollbar-width:none}.cms-mobile-links a{flex:0 0 auto;padding:8px 10px;border:1px solid #e8eaf0;border-radius:8px;color:#626a7d!important;text-decoration:none;font-size:11px;font-weight:700}.cms-mobile-links a:active{background:#f3eef9;color:#6941a5!important}body.admin-theme:not(.admin-dashboard) .admin-wrap,body.admin-theme:not(.admin-dashboard) .admin-story-wrap,body.admin-theme:not(.admin-dashboard) .rv-wrap,body.admin-theme:not(.admin-dashboard) .audio-admin{padding:16px 11px 45px;margin:0 auto}body.admin-theme:not(.admin-dashboard) .admin-panel,body.admin-theme:not(.admin-dashboard) .admin-story-panel,body.admin-theme:not(.admin-dashboard) .rv-panel,body.admin-theme:not(.admin-dashboard) .audio-panel{border-radius:12px!important;padding:15px!important}}
 @media(max-width:420px){.cms-user-name{display:none}.cms-user button{padding:6px 8px;font-size:10px}.cms-brand{gap:7px}}
+
+
+/* Community moderation, contributors and reviewer management */
+body.admin-theme .report-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:18px 0}
+body.admin-theme .report-stats a{display:flex;flex-direction:column;gap:5px;padding:14px 16px;background:#f8f7fb;border:1px solid #e9e6ef;border-radius:12px;text-decoration:none}
+body.admin-theme .report-stats strong{font-size:24px;line-height:1.1;color:#6941a5}
+body.admin-theme .report-stats span{font-size:11px;color:#7d8495;font-weight:700}
+body.admin-theme .report-filter,.staff-filter{display:grid;grid-template-columns:minmax(180px,1fr) minmax(150px,220px) auto;gap:9px;margin:15px 0 20px}
+body.admin-theme .report-filter input,.staff-filter input{min-width:0;padding:10px 12px}
+body.admin-theme .report-filter select,.staff-filter select{min-width:0;padding:10px}
+body.admin-theme .report-filter button,.staff-filter button,.staff-role-form button,.staff-create-form button,.report-manage button{border:0;padding:10px 14px;background:#6941a5;color:#fff;border-radius:8px;font-weight:750}
+body.admin-theme .report-card{margin:13px 0;padding:17px;border:1px solid #e8ebf2;border-radius:13px;background:#fff}
+body.admin-theme .report-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+body.admin-theme .report-card h2{font-size:17px;margin:5px 0}
+body.admin-theme .report-card p{margin:5px 0;font-size:12px}
+body.admin-theme .report-id{font-size:10px;font-weight:800;color:#8a70b1;text-transform:uppercase;letter-spacing:.06em}
+body.admin-theme .report-status{flex:0 0 auto;padding:6px 9px;border-radius:20px;background:#f4f1f8;color:#6941a5;font-size:10px;font-weight:800}
+body.admin-theme .report-status.status-pending{background:#fff5e5;color:#a66b13}
+body.admin-theme .report-status.status-reviewing{background:#eef4ff;color:#4268a8}
+body.admin-theme .report-status.status-resolved{background:#eaf7ef;color:#27804a}
+body.admin-theme .report-status.status-dismissed{background:#f1f2f5;color:#777e8c}
+body.admin-theme .report-details{margin:12px 0;padding:13px;background:#f7f8fb;border:1px solid #edf0f4;border-radius:9px;color:#41485b;font-size:13px;line-height:1.65;overflow-wrap:anywhere}
+body.admin-theme .report-reporter{color:#777e8c}
+body.admin-theme .report-manage{display:grid;grid-template-columns:150px minmax(120px,1fr) auto auto;gap:8px;margin-top:13px}
+body.admin-theme .report-manage input,body.admin-theme .report-manage select{min-width:0;padding:9px}
+body.admin-theme .report-manage .report-delete{background:#fff0f1;color:#a12d3a;border:1px solid #f0d6da}
+body.admin-theme .report-empty{padding:28px;text-align:center;color:#858b9a;background:#f8f9fb;border:1px dashed #dce1e9;border-radius:12px}
+body.admin-theme .staff-total{padding:10px 14px;border-radius:10px;background:#f3eef9;color:#6941a5}
+body.admin-theme .staff-table-wrap{width:100%;overflow-x:auto;border:1px solid #e8ebf2;border-radius:12px}
+body.admin-theme .staff-table-wrap table{width:100%;min-width:680px}
+body.admin-theme .staff-table-wrap td,body.admin-theme .staff-table-wrap th{padding:12px;text-align:left}
+body.admin-theme .staff-table-wrap td small{display:block;margin-top:4px;color:#858b9a;font-size:11px;overflow-wrap:anywhere}
+body.admin-theme .staff-role-form{display:flex;gap:6px;align-items:center}
+body.admin-theme .staff-role-form select{min-width:125px;padding:8px}
+body.admin-theme .staff-role-form button{padding:8px 10px;font-size:11px}
+body.admin-theme .staff-form-panel{margin:18px 0;padding:17px;background:#f8f7fb;border:1px solid #e8e4ef;border-radius:12px}
+body.admin-theme .staff-form-panel h2{margin-top:0;font-size:16px}
+body.admin-theme .staff-create-form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:end}
+body.admin-theme .staff-create-form label{display:block;color:#687084;font-size:11px;font-weight:700}
+body.admin-theme .staff-create-form input{display:block;width:100%;min-width:0;margin-top:6px;padding:10px}
+body.admin-theme .staff-create-form button{min-height:39px}
+.listen-report-link{max-width:1100px;margin:0 auto 16px;padding:0 16px;text-align:right}
+.listen-report-link a{color:#b8a1dc;text-decoration:none;font-size:12px}
+@media(max-width:760px){
+ body.admin-theme .report-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.admin-theme .report-filter,.staff-filter{grid-template-columns:1fr 1fr}
+ body.admin-theme .report-filter input,.staff-filter input{grid-column:1/-1}
+ body.admin-theme .report-filter button,.staff-filter button{grid-column:1/-1}
+ body.admin-theme .report-card{padding:13px}
+ body.admin-theme .report-card-head{display:block}
+ body.admin-theme .report-status{display:inline-flex;margin-top:8px}
+ body.admin-theme .report-manage{grid-template-columns:1fr 1fr}
+ body.admin-theme .report-manage input{grid-column:1/-1}
+ body.admin-theme .report-manage button{min-height:38px}
+ body.admin-theme .staff-create-form{grid-template-columns:1fr 1fr}
+ body.admin-theme .staff-role-form{align-items:stretch;flex-direction:column}
+ body.admin-theme .staff-role-form select,body.admin-theme .staff-role-form button{width:100%}
+}
+@media(max-width:420px){
+ body.admin-theme .staff-create-form{grid-template-columns:1fr}
+ body.admin-theme .report-manage{grid-template-columns:1fr}
+ body.admin-theme .report-manage input{grid-column:auto}
+}
