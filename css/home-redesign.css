@@ -168,3 +168,38 @@ body.story-site .td-home-list-plain .chapter-list{margin:0}
  body.story-site .td-home-list-library,
  body.story-site .td-home-list-board{padding:7px}
 }
+
+
+/* Dong bo cac muc trang chu voi bo cuc "Truyen moi cap nhat":
+   mot khung duy nhat bao gom ca tieu de va danh sach */
+body.story-site .story-section.td-home-section{
+ padding:22px;
+ border:1px solid #30283a;
+ border-radius:20px;
+ background:linear-gradient(145deg,#15121d,#0f0f16);
+ box-shadow:0 12px 34px rgba(0,0,0,.20);
+}
+body.story-site .story-section.td-home-section .story-section-head{
+ margin-bottom:17px;
+}
+body.story-site .story-section.td-home-section .td-home-cards,
+body.story-site .story-section.td-home-section .td-author-grid,
+body.story-site .story-section.td-home-section .td-community-list{
+ margin-top:0;
+}
+body.story-site .story-section.td-home-section .td-home-empty{
+ padding:18px;
+ border:1px dashed #493958;
+ border-radius:12px;
+ background:#111019;
+}
+body.story-site .leaderboard-section.story-section{
+ padding:22px;
+}
+@media(max-width:760px){
+ body.story-site .story-section.td-home-section,
+ body.story-site .leaderboard-section.story-section{
+  padding:16px 12px;
+  border-radius:16px;
+ }
+}
