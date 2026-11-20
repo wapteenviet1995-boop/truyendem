@@ -2,6 +2,9 @@ Options -Indexes
 RewriteEngine On
 RewriteBase /
 
+# Dedicated audio story pages
+RewriteRule ^audio/([a-zA-Z0-9-]+)\.html$ audio.php?slug=$1 [L,QSA]
+
 # Clean chapter reading URLs
 RewriteRule ^truyen/([a-zA-Z0-9-]+)/chuong-([0-9]+)\.html$ read.php?slug=$1&chapter=$2 [L,QSA]
 
