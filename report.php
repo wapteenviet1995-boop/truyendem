@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/notifications.php';
 $storyId=(int)($_GET['story_id']??$_POST['story_id']??0);
 $chapterId=(int)($_GET['chapter_id']??$_POST['chapter_id']??0);
 $q=$pdo->prepare("SELECT id,title,slug,story_type,story_kind FROM stories WHERE id=? AND status='published' LIMIT 1");
@@ -26,6 +27,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     $memberId=(int)($_SESSION['member_id']??0);$memberId=$memberId>0?$memberId:null;
     $ins=$pdo->prepare("INSERT INTO content_reports(story_id,chapter_id,reporter_member_id,reporter_name,reporter_email,reason,details,ip_hash,user_agent) VALUES(?,?,?,?,?,?,?,?,?)");
     $ins->execute([$storyId,$chapterId?:null,$memberId,$name!==''?$name:null,$email!==''?$email:null,$reason,$details,$ipHash,substr((string)($_SERVER['HTTP_USER_AGENT']??''),0,255)]);
+    td_notify_admins($pdo,'content_report','Có báo cáo vi phạm mới','Truyện: '.$story['title'].' · Lý do: '.$reasons[$reason], 'reports.php?status=pending');
     header('Location: report.php?story_id='.$storyId.'&sent=1');exit;
    }catch(Throwable $e){$error=$e instanceof RuntimeException?$e->getMessage():'Chưa gửi được báo cáo. Có thể hệ thống chưa được cài đặt cơ sở dữ liệu mới.';}
   }
