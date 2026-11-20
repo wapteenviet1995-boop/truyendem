@@ -525,3 +525,8 @@ body.reader-site article.reader-content p{
  body.short-story-page .site-header .brand-copy small{display:none}
  body.short-story-page .site-header{position:relative!important}
 }
+
+
+.reader-report-link{max-width:860px;margin:18px auto;padding:0 15px;text-align:right}
+.reader-report-link a{display:inline-flex;align-items:center;gap:6px;padding:8px 11px;border:1px solid rgba(180,150,220,.24);border-radius:9px;color:#bca4df;text-decoration:none;font-size:12px}
+.reader-report-link a:hover{background:rgba(160,125,210,.1)}
