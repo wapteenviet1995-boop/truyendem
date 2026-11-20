@@ -6,8 +6,11 @@ $adminLinks = [
  ['stories.php?list=all','Kho truyện','▤'],
  ['audio.php','Studio audio','♫'],
  ['review_stories.php','Duyệt bài','✓'],
- ['members.php','Thành viên','♙']
+ ['members.php','Thành viên','♙'],
+ ['reports.php','Báo cáo vi phạm','⚑'],
+ ['contributors.php','Cộng tác viên','✦']
 ];
+if (($_SESSION['blog_admin_role'] ?? 'admin') === 'admin') { $adminLinks[] = ['moderators.php','Kiểm duyệt viên','✓']; }
 ?>
 <header class="cms-topbar">
  <a class="cms-brand" href="index.php"><span class="cms-brand-mark">Đ</span><span><b>TRUYỆN ĐÊM</b><small>NEWSROOM CMS</small></span></a>
