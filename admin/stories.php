@@ -157,9 +157,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $stories = $pdo->query("SELECT s.*, (SELECT COUNT(*) FROM chapters c WHERE c.story_id=s.id) AS chapter_count FROM stories s ORDER BY s.updated_at DESC, s.id DESC")->fetchAll();
+$audioStories = array_values(array_filter($stories, fn($s) => ($s['story_type'] ?? 'text') === 'audio'));
 $shortStories = array_values(array_filter($stories, fn($s) => ($s['story_type'] ?? 'text') !== 'audio' && ($s['story_kind'] ?? 'serial') === 'short'));
 $serialStories = array_values(array_filter($stories, fn($s) => ($s['story_type'] ?? 'text') !== 'audio' && ($s['story_kind'] ?? 'serial') !== 'short'));
-$listType = in_array($_GET['list'] ?? 'all', ['all','short','serial'], true) ? (string)($_GET['list'] ?? 'all') : 'all';
+$listType = in_array($_GET['list'] ?? 'all', ['all','short','serial','audio'], true) ? (string)($_GET['list'] ?? 'all') : 'all';
+$searchTerm = trim((string)($_GET['q'] ?? ''));
+$statusFilter = in_array($_GET['status'] ?? 'all', ['all','published','draft'], true) ? (string)($_GET['status'] ?? 'all') : 'all';
+$visibleStories = $listType === 'short' ? $shortStories : ($listType === 'serial' ? $serialStories : ($listType === 'audio' ? $audioStories : $stories));
+$visibleStories = array_values(array_filter($visibleStories, static function($story) use ($searchTerm,$statusFilter) {
+    $matchesSearch = $searchTerm === '' || stripos((string)$story['title'],$searchTerm)!==false || stripos((string)$story['author'],$searchTerm)!==false || stripos((string)$story['category'],$searchTerm)!==false;
+    $matchesStatus = $statusFilter === 'all' || (string)$story['status'] === $statusFilter;
+    return $matchesSearch && $matchesStatus;
+}));
+$perPage = 15;
+$totalVisible = count($visibleStories);
+$totalPages = max(1,(int)ceil($totalVisible/$perPage));
+$currentPage = max(1,min($totalPages,(int)($_GET['page']??1)));
+$visibleStories = array_slice($visibleStories,($currentPage-1)*$perPage,$perPage);
 $selectedId = (int)($_GET['edit'] ?? $_POST['story_id'] ?? 0);
 $selectedStory = null;
 if ($selectedId > 0) {
@@ -221,6 +235,18 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <link rel="stylesheet" href="../css/story-editor.css?v=20261114-1">
 <link rel="stylesheet" href="../css/admin-white.css?v=20261114-white1">
 <link rel="stylesheet" href="../css/admin-cms.css?v=20261121-cms1">
+<style>
+body.admin-theme .story-list-filters{display:grid;grid-template-columns:minmax(180px,1fr) minmax(150px,220px) auto auto;gap:9px;align-items:center;margin:16px 0 8px;padding:13px;background:#f7f8fb;border:1px solid #e8ebf2;border-radius:12px}
+body.admin-theme .story-list-filters input,body.admin-theme .story-list-filters select{width:100%;min-width:0;min-height:40px;padding:9px 11px;border:1px solid #dfe3ec;border-radius:8px;background:#fff;color:#293044}
+body.admin-theme .story-list-filters button{min-height:40px;padding:8px 13px;border:0;border-radius:8px;background:#6941a5;color:#fff;font-weight:750}
+body.admin-theme .story-list-filters a{font-size:12px;font-weight:700;text-decoration:none}
+body.admin-theme .story-list-summary{margin:10px 2px;color:#7d8495;font-size:12px}
+body.admin-theme .story-list-summary strong{color:#6941a5;font-size:15px}
+body.admin-theme .story-pagination{display:flex;align-items:center;justify-content:center;gap:16px;padding:16px}
+body.admin-theme .story-pagination a{padding:9px 13px;border:1px solid #e1e4ec;border-radius:8px;background:#fff;text-decoration:none;font-size:12px;font-weight:700}
+body.admin-theme .story-pagination strong{color:#626a7d;font-size:12px}
+@media(max-width:650px){body.admin-theme .story-list-filters{grid-template-columns:1fr 1fr}body.admin-theme .story-list-filters input{grid-column:1/-1}body.admin-theme .story-list-filters button{width:100%}body.admin-theme .story-list-filters a{padding:10px}body.admin-theme .story-pagination{justify-content:space-between}}
+</style>
 </head>
 <body class="story-site admin-theme"><?php include __DIR__ . '/_nav.php'; ?>
 <main class="admin-story-wrap">
@@ -231,7 +257,16 @@ $chapterForm = $editChapter ?: ['id'=>0,'chapter_number'=>count($chapters)+1,'ti
 <a class="<?=$listType==='all'?'active':''?>" href="stories.php?list=all">Tất cả (<?=count($stories)?>)</a>
 <a class="<?=$listType==='short'?'active':''?>" href="stories.php?list=short">Truyện ngắn (<?=count($shortStories)?>)</a>
 <a class="<?=$listType==='serial'?'active':''?>" href="stories.php?list=serial">Truyện nhiều chương (<?=count($serialStories)?>)</a>
+<a class="<?=$listType==='audio'?'active':''?>" href="stories.php?list=audio">Audio (<?=count($audioStories)?>)</a>
 </nav>
+<form class="story-list-filters" method="get">
+<input type="hidden" name="list" value="<?=e($listType)?>">
+<input type="search" name="q" value="<?=e($searchTerm)?>" placeholder="Tìm tên truyện, tác giả hoặc thể loại">
+<select name="status"><option value="all" <?=$statusFilter==='all'?'selected':''?>>Tất cả trạng thái</option><option value="published" <?=$statusFilter==='published'?'selected':''?>>Đã xuất bản</option><option value="draft" <?=$statusFilter==='draft'?'selected':''?>>Bản nháp</option></select>
+<button type="submit">Lọc danh sách</button>
+<?php if($searchTerm!==''||$statusFilter!=='all'):?><a href="stories.php?list=<?=e($listType)?>">Đặt lại</a><?php endif;?>
+</form>
+<div class="story-list-summary"><strong><?=$totalVisible?></strong> nội dung phù hợp <span>·</span> Trang <?=$currentPage?> / <?=$totalPages?></div>
 <?php if ($error !== ''): ?><p class="admin-story-notice"><?=e($error)?></p><?php endif; ?>
 <?php if (($_GET['saved'] ?? '') === 'story'): ?><p class="admin-story-notice">✓ Đã lưu thông tin truyện.</p><?php elseif (($_GET['saved'] ?? '') === 'chapter'): ?><p class="admin-story-notice">✓ Đã lưu chương truyện.</p><?php endif; ?>
 <?php if (($_GET['deleted'] ?? '') === 'story'): ?><p class="admin-story-notice">✓ Đã xóa truyện.</p><?php elseif (($_GET['deleted'] ?? '') === 'chapter'): ?><p class="admin-story-notice">✓ Đã xóa chương.</p><?php endif; ?>
@@ -293,8 +328,8 @@ $renderStoryList = function(array $items, string $heading, string $empty, bool $
 <strong><?=e($s['title'])?></strong>
 <div class="muted"><?=e($s['category'])?> · <?=($s['story_kind']??'serial')==='short'?'Truyện ngắn':'Truyện nhiều chương · '.(int)$s['chapter_count'].' chương'?> · <?=$s['status']==='published'?'Đã xuất bản':'Bản nháp'?></div>
 <div class="admin-story-actions">
-<a class="admin-story-btn" href="stories.php?list=<?=($s['story_kind']??'serial')==='short'?'short':'serial'?>&edit=<?=(int)$s['id']?>">Sửa truyện<?=($s['story_kind']??'serial')==='short'?'':' / chương'?></a>
-<a href="../story.php?slug=<?=rawurlencode($s['slug'])?>" target="_blank">Xem trang truyện</a>
+<a class="admin-story-btn" href="stories.php?list=<?=($s['story_type']??'text')==='audio'?'audio':((($s['story_kind']??'serial')==='short')?'short':'serial')?>&edit=<?=(int)$s['id']?>">Sửa nội dung</a>
+<a href="<?=($s['story_type']??'text')==='audio'?'../audio/'.rawurlencode($s['slug']).'.html':'../story.php?slug='.rawurlencode($s['slug'])?>" target="_blank">Xem trang truyện</a>
 <form method="post" onsubmit="return confirm('Xóa truyện này và toàn bộ chương của truyện?')">
 <input type="hidden" name="csrf" value="<?=e($csrf)?>">
 <input type="hidden" name="action" value="delete_story">
@@ -327,8 +362,9 @@ $renderStoryList = function(array $items, string $heading, string $empty, bool $
 <?php endif; ?>
 </section>
 <?php }; ?>
-<?php if ($listType === 'all' || $listType === 'short') $renderStoryList($shortStories, 'Danh sách truyện ngắn', 'Chưa có truyện ngắn nào.', false); ?>
-<?php if ($listType === 'all' || $listType === 'serial') $renderStoryList($serialStories, 'Danh sách truyện nhiều chương', 'Chưa có truyện nhiều chương nào.', true); ?>
+<?php $heading = $listType==='audio'?'Danh sách truyện audio':($listType==='short'?'Danh sách truyện ngắn':($listType==='serial'?'Danh sách truyện nhiều chương':'Tất cả nội dung')); ?>
+<?php $renderStoryList($visibleStories,$heading,'Không tìm thấy nội dung phù hợp với bộ lọc.', $listType==='serial' || $listType==='all'); ?>
+<?php if($totalPages>1):?><nav class="story-pagination" aria-label="Phân trang"><?php if($currentPage>1):?><a href="?<?=http_build_query(['list'=>$listType,'q'=>$searchTerm,'status'=>$statusFilter,'page'=>$currentPage-1])?>">← Trước</a><?php endif;?><strong><?=$currentPage?> / <?=$totalPages?></strong><?php if($currentPage<$totalPages):?><a href="?<?=http_build_query(['list'=>$listType,'q'=>$searchTerm,'status'=>$statusFilter,'page'=>$currentPage+1])?>">Sau →</a><?php endif;?></nav><?php endif;?>
 </main>
 <input type="file" id="content-image-file" accept="image/jpeg,image/png,image/webp" hidden>
 <span class="image-upload-status" id="image-upload-status" aria-live="polite"></span>
