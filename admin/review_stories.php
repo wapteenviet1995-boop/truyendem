@@ -32,8 +32,10 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     $notifyMessage=($type==='story'?'Truyện: ':'Chương trong truyện: ').$target['title'].($reviewNote!==''?' · Góp ý: '.$reviewNote:($decision==='approved'?' · Nội dung đã được xuất bản.':' · Vui lòng chỉnh sửa và gửi lại.'));
     td_notify_member($pdo,(int)$target['member_id'],'moderation_'.$decision,$notifyTitle,$notifyMessage,'/submit_story.php#my-stories');
     if($type==='story' && $decision==='approved'){
-     $followers=$pdo->prepare('SELECT follower_member_id FROM author_follows WHERE author_member_id=?');$followers->execute([(int)$target['member_id']]);
-     foreach($followers->fetchAll(PDO::FETCH_COLUMN) as $followerId){td_notify_member($pdo,(int)$followerId,'author_new_story','Tác giả bạn theo dõi vừa đăng truyện',$target['title'].' đã được xuất bản.','/member.php?id='.(int)$target['member_id']);}
+     try{
+      $followers=$pdo->prepare('SELECT follower_member_id FROM author_follows WHERE author_member_id=?');$followers->execute([(int)$target['member_id']]);
+      foreach($followers->fetchAll(PDO::FETCH_COLUMN) as $followerId){td_notify_member($pdo,(int)$followerId,'author_new_story','Tác giả bạn theo dõi vừa đăng truyện',$target['title'].' đã được xuất bản.','/member.php?id='.(int)$target['member_id']);}
+     }catch(Throwable $e){/* Bảng theo dõi chưa cài đặt: không chặn việc xuất bản. */}
     }
     $pdo->commit();header('Location: review_stories.php?result='.$decision);exit;
    }catch(Throwable $e){if($pdo->inTransaction())$pdo->rollBack();$error=$e instanceof RuntimeException?$e->getMessage():'Không thể cập nhật trạng thái. Hãy kiểm tra bảng story_moderation_reviews đã được tạo.';}
