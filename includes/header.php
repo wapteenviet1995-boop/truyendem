@@ -14,7 +14,7 @@ try {
 } catch (Throwable $e) { $tdGenres = []; }
 ?>
 <link rel="stylesheet" href="/css/site-header.css?v=20261118-compact2">
-<link rel="stylesheet" href="/css/theme-mode.css?v=20261118-9">
+<link rel="stylesheet" href="/css/theme-mode.css?v=20261121-index-light1">
 <header class="site-header td-global-header">
   <div class="header-inner td-header-inner">
     <a class="brand" href="/index.php" aria-label="Truyện Đêm - Trang chủ">
