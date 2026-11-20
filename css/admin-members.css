@@ -1,67 +1,72 @@
-/* Admin thành viên — giao diện đen vũ trụ, ưu tiên điện thoại */
-:root{color-scheme:dark}
-body{background:#050608!important;color:#ededf4!important}
-.admin-wrap{width:min(1180px,100%);margin:0 auto;padding:28px 18px 48px}
-.admin-panel.admin-wide{width:100%;max-width:none;background:linear-gradient(145deg,#111218 0%,#090a0f 72%);border:1px solid #292a36;border-radius:22px;padding:clamp(16px,3vw,30px);box-shadow:0 24px 80px #000a,0 0 45px #6952b00b}
-.admin-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid #282936}
-.admin-top h1{margin:0;color:#fff;font-size:clamp(1.45rem,4vw,2rem);letter-spacing:-.04em}
-.admin-panel a{color:#c6b5ff;text-decoration:none}
-.admin-panel a:hover{color:#fff;text-decoration:underline}
-.admin-panel>p{color:#a5a5b5;line-height:1.6}
-.am-stats{display:flex;gap:20px;align-items:center;justify-content:space-between;padding:20px;margin:22px 0;border:1px solid #30313f;border-radius:18px;background:linear-gradient(120deg,#171821,#101116);box-shadow:inset 0 1px #ffffff08}
-.am-stats>strong{font-size:2rem;color:#fff;letter-spacing:-.04em}
-.am-stats>strong small{display:block;font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#89899b;margin-top:3px}
-.am-stats b{color:#f1efff}
-.am-stats p,.am-note{color:#9999aa;font-size:.86rem}
-.am-button{min-height:39px;border:1px solid #6251a0;border-radius:11px;padding:9px 13px;background:linear-gradient(135deg,#8b70e8,#6549c4);color:#fff;font-weight:700;font-size:.84rem;cursor:pointer;transition:transform .18s,filter .18s,box-shadow .18s;box-shadow:0 5px 18px #7257d51c}
-.am-button:hover{filter:brightness(1.13);transform:translateY(-1px);box-shadow:0 8px 22px #7257d533}
-.am-button:disabled{opacity:.45;cursor:not-allowed;transform:none}
-.am-muted{background:#22242d;color:#e4e4ec;border-color:#424451;box-shadow:none}
-.am-danger{background:#321b22;color:#ffb9c6;border-color:#713342;box-shadow:none}
-.am-search{display:flex;gap:10px;margin:22px 0;flex-wrap:wrap}
-.am-search input,.am-gift input{min-width:0;min-height:42px;padding:10px 13px;border:1px solid #353643;border-radius:11px;background:#090a0f;color:#f5f5fa;outline:none}
-.am-search input:focus,.am-gift input:focus{border-color:#8a70e4;box-shadow:0 0 0 3px #8064df22}
-.am-search input{flex:1}
-.am-sub{display:block;margin-top:5px;color:#9292a3;font-size:.76rem;overflow-wrap:anywhere}
-.am-actions{min-width:230px}
-.am-actions form{display:inline-flex;gap:6px;margin:3px 4px 3px 0;vertical-align:middle;align-items:center}
-.am-gift input{width:86px;min-height:39px;padding:8px}
-.am-note{margin-top:18px}
-.admin-table{overflow:hidden;border:1px solid #2b2c38;border-radius:15px;background:#0b0c11}
-.admin-table table{width:100%;border-collapse:collapse;color:#e8e8ef}
-.admin-table thead{background:#171821}
-.admin-table th{padding:14px 13px;color:#aeadc1;text-align:left;font-size:.73rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700}
-.admin-table td{padding:15px 13px;border-top:1px solid #242530;vertical-align:middle;font-size:.88rem}
-.admin-table tbody tr{transition:background .15s}
-.admin-table tbody tr:hover{background:#ffffff06}
-.admin-table td b{color:#fff;font-size:.94rem}
-.admin-success,.admin-error{padding:12px 14px;border-radius:12px;border:1px solid #343544;background:#151720}
-.admin-success{color:#a9edc4!important;border-color:#28543d;background:#102017}
-.admin-error{color:#ffb9c6!important;border-color:#62313d;background:#211116}
-@media(max-width:700px){
- .admin-wrap{padding:12px 10px 30px}
- .admin-panel.admin-wide{padding:16px 12px;border-radius:17px}
- .admin-top{align-items:flex-start}
- .admin-top h1{font-size:1.35rem}
- .am-stats{align-items:stretch;flex-direction:column;padding:16px;gap:14px}
- .am-search{gap:8px}
- .am-search input{width:100%;flex-basis:100%}
- .am-search .am-button{width:100%}
- .admin-table{overflow:visible;border:0;background:transparent}
- .admin-table table,.admin-table tbody{display:block;width:100%}
- .admin-table thead{display:none}
- .admin-table tbody tr{display:block;margin:0 0 12px;padding:8px 12px;border:1px solid #2c2d3a;border-radius:15px;background:linear-gradient(145deg,#14151c,#0b0c11);box-shadow:0 8px 24px #0005}
- .admin-table td{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:10px 2px;border-top:1px solid #242530;text-align:right;overflow-wrap:anywhere}
- .admin-table td:first-child{display:block;text-align:left;border-top:0;padding-top:7px;padding-bottom:12px}
- .admin-table td:nth-child(2)::before{content:"Trạng thái";color:#858597;font-size:.76rem;text-align:left}
- .admin-table td:nth-child(3)::before{content:"Số dư Xu";color:#858597;font-size:.76rem;text-align:left}
- .admin-table td:nth-child(4)::before{content:"Ngày tham gia";color:#858597;font-size:.76rem;text-align:left}
- .admin-table td:nth-child(5){display:block;text-align:left;padding-top:12px}
- .admin-table td:nth-child(5)::before{content:"THAO TÁC";display:block;margin-bottom:8px;color:#858597;font-size:.7rem;letter-spacing:.1em}
- .am-actions{min-width:0}
- .am-actions form{display:inline-flex;margin:3px 4px 3px 0}
- .am-actions .am-button{min-height:37px;padding:8px 10px;font-size:.78rem}
- .am-gift{display:inline-flex;align-items:center}
- .am-gift input{width:76px}
+/* TRUYEN DEM — member management, clean white admin UI */
+body.admin-theme{background:#f5f6fa!important;color:#25283a!important;color-scheme:light!important}
+body.admin-theme .admin-wrap{width:min(1240px,100%);margin:0 auto;padding:28px 22px 70px}
+body.admin-theme .admin-panel.admin-wide{width:100%;max-width:none;padding:26px;background:#fff!important;border:1px solid #e8eaf1!important;border-radius:18px!important;box-shadow:0 10px 32px rgba(25,32,56,.055)!important}
+body.admin-theme .admin-top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-bottom:19px;border-bottom:1px solid #eceef3}
+body.admin-theme .admin-top h1{margin:0;color:#25283a!important;font-size:clamp(1.35rem,3vw,1.75rem);font-weight:800;letter-spacing:-.035em}
+body.admin-theme .admin-panel>p{color:#7e8291!important;line-height:1.65;font-size:.9rem}
+body.admin-theme .admin-panel a{color:#6843a6;text-decoration:none}
+body.admin-theme .admin-panel a:hover{color:#4f3188;text-decoration:underline}
+body.admin-theme .am-stats{display:grid;grid-template-columns:minmax(150px,.7fr) minmax(260px,1.3fr);gap:20px;align-items:center;margin:22px 0;padding:20px 22px;border:1px solid #e9eaf1;border-radius:15px;background:linear-gradient(115deg,#faf9fd,#fff);box-shadow:none}
+body.admin-theme .am-stats>strong{color:#292d40;font-size:2rem;letter-spacing:-.045em}
+body.admin-theme .am-stats>strong small{display:block;margin-top:4px;color:#9699a7;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+body.admin-theme .am-stats>div{padding-left:20px;border-left:1px solid #e9eaf1}
+body.admin-theme .am-stats b{color:#34384a;font-size:.95rem}
+body.admin-theme .am-stats p,body.admin-theme .am-note{color:#858998!important;font-size:.83rem}
+body.admin-theme .am-button{min-height:38px;padding:9px 13px;border:1px solid #6843a6!important;border-radius:9px!important;background:#6843a6!important;color:#fff!important;font-size:.82rem;font-weight:750;box-shadow:none;cursor:pointer;transition:background .16s,border-color .16s,transform .16s}
+body.admin-theme .am-button:hover{background:#56358e!important;border-color:#56358e!important;transform:translateY(-1px)}
+body.admin-theme .am-button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+body.admin-theme .am-button.am-muted{background:#f4f5f8!important;color:#555b6d!important;border-color:#e3e5ec!important}
+body.admin-theme .am-button.am-muted:hover{background:#eceef4!important}
+body.admin-theme .am-button.am-danger{background:#fff1f2!important;color:#b43e50!important;border-color:#f3d3d8!important}
+body.admin-theme .am-button.am-danger:hover{background:#ffe5e8!important}
+body.admin-theme .am-search{display:flex;gap:9px;align-items:center;margin:20px 0}
+body.admin-theme .am-search input,body.admin-theme .am-gift input{min-width:0;min-height:40px;padding:9px 12px;background:#fff!important;color:#292d3c!important;border:1px solid #dfe2ea!important;border-radius:9px!important;box-shadow:none}
+body.admin-theme .am-search input{flex:1}
+body.admin-theme .am-search input:focus,body.admin-theme .am-gift input:focus{border-color:#8b6ac4!important;box-shadow:0 0 0 3px #8b6ac41c!important}
+body.admin-theme .am-search>a{padding:8px 4px;font-size:.84rem}
+body.admin-theme .admin-table{overflow-x:auto;border:1px solid #e8eaf0;border-radius:13px;background:#fff}
+body.admin-theme .admin-table table{width:100%;min-width:760px;border-collapse:collapse;background:#fff!important;color:#303447!important}
+body.admin-theme .admin-table thead{background:#f8f8fb}
+body.admin-theme .admin-table th{padding:13px 14px;background:#f7f7fa!important;color:#777c8d!important;border-bottom:1px solid #e9eaf0;font-size:.69rem;letter-spacing:.075em;text-align:left;white-space:nowrap}
+body.admin-theme .admin-table td{padding:14px;border-top:1px solid #eff0f4;color:#555b6c!important;font-size:.84rem;vertical-align:middle}
+body.admin-theme .admin-table tbody tr:hover{background:#fbfaff}
+body.admin-theme .admin-table td b{color:#303447!important;font-size:.9rem}
+body.admin-theme .am-sub{display:block;margin-top:5px;color:#969aa8!important;font-size:.76rem;overflow-wrap:anywhere}
+body.admin-theme .am-actions{min-width:270px}
+body.admin-theme .am-actions form{display:inline-flex;gap:6px;align-items:center;margin:3px 5px 3px 0;vertical-align:middle}
+body.admin-theme .am-gift input{width:82px;min-height:37px;padding:7px 9px}
+body.admin-theme .admin-success,body.admin-theme .admin-error{padding:12px 14px;border:1px solid;border-radius:10px;font-size:.86rem}
+body.admin-theme .admin-success{background:#effaf3!important;color:#28794b!important;border-color:#ccebd8!important}
+body.admin-theme .admin-error{background:#fff2f2!important;color:#a12d3a!important;border-color:#f0d0d3!important}
+body.admin-theme .am-note{margin-top:15px}
+@media(max-width:760px){
+ body.admin-theme .admin-wrap{padding:13px 10px 40px}
+ body.admin-theme .admin-panel.admin-wide{padding:17px 13px;border-radius:14px!important}
+ body.admin-theme .admin-top{align-items:flex-start}
+ body.admin-theme .am-stats{grid-template-columns:1fr;gap:13px;padding:16px}
+ body.admin-theme .am-stats>div{padding:13px 0 0;border-left:0;border-top:1px solid #e9eaf1}
+ body.admin-theme .am-search{flex-wrap:wrap}
+ body.admin-theme .am-search input{flex:1 1 100%;width:100%}
+ body.admin-theme .am-search .am-button{flex:1}
+ body.admin-theme .admin-table{overflow:visible;border:0;background:transparent}
+ body.admin-theme .admin-table table,body.admin-theme .admin-table tbody{display:block;width:100%;min-width:0}
+ body.admin-theme .admin-table thead{display:none}
+ body.admin-theme .admin-table tbody tr{display:block;margin:0 0 12px;padding:8px 12px;border:1px solid #e7e9f0;border-radius:13px;background:#fff;box-shadow:0 4px 14px rgba(25,32,56,.04)}
+ body.admin-theme .admin-table td{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 1px;border-top:1px solid #f0f1f5;text-align:right;overflow-wrap:anywhere}
+ body.admin-theme .admin-table td:first-child{display:block;padding:7px 1px 12px;border-top:0;text-align:left}
+ body.admin-theme .admin-table td:nth-child(2)::before{content:"Trạng thái";color:#9296a4;font-size:.76rem}
+ body.admin-theme .admin-table td:nth-child(3)::before{content:"Số dư Xu";color:#9296a4;font-size:.76rem}
+ body.admin-theme .admin-table td:nth-child(4)::before{content:"Ngày tham gia";color:#9296a4;font-size:.76rem}
+ body.admin-theme .admin-table td:nth-child(5){display:block;padding-top:12px;text-align:left}
+ body.admin-theme .admin-table td:nth-child(5)::before{content:"THAO TÁC";display:block;margin-bottom:8px;color:#9296a4;font-size:.68rem;font-weight:750;letter-spacing:.09em}
+ body.admin-theme .am-actions{min-width:0}
+ body.admin-theme .am-actions form{display:inline-flex;margin:3px 5px 3px 0}
+ body.admin-theme .am-actions .am-button{min-height:36px;padding:8px 10px;font-size:.76rem}
+ body.admin-theme .am-gift input{width:76px}
 }
-@media(max-width:390px){.am-actions form{margin-right:2px}.am-actions .am-button{padding:7px 8px;font-size:.74rem}.admin-panel>p{font-size:.88rem}}
+@media(max-width:390px){
+ body.admin-theme .admin-panel>p{font-size:.82rem}
+ body.admin-theme .am-actions form{margin-right:2px}
+ body.admin-theme .am-actions .am-button{padding:7px 8px;font-size:.72rem}
+}
