@@ -11,7 +11,7 @@ $chapter=$q->fetch();
 if(!$chapter){http_response_code(404);exit('Không tìm thấy chương truyện.');}
 $memberId=(int)($_SESSION['member_id']??0);
 if($memberId){td_reward_story_view($pdo,(int)$chapter['story_id'],$memberId,(int)($chapter['member_id']??0),'chapter',(int)$chapter['id']);td_add_xp($pdo,$memberId,'read_chapter:'.(int)$chapter['id'],10,'Đọc chương truyện');$q=$pdo->prepare('INSERT INTO story_reading_history(member_id,story_id,chapter_id) VALUES(?,?,?) ON DUPLICATE KEY UPDATE chapter_id=VALUES(chapter_id),updated_at=CURRENT_TIMESTAMP');$q->execute([$memberId,$chapter['story_id'],$chapter['id']]);}
-$q=$pdo->prepare("SELECT id,chapter_number,title FROM chapters WHERE story_id=? AND status='published' ORDER BY chapter_number");$q->execute([$chapter['story_id']]);$all=$q->fetchAll();$prev=$next=null;
+$q=$pdo->prepare("SELECT c.id,c.chapter_number,c.title,s.slug FROM chapters c JOIN stories s ON s.id=c.story_id WHERE c.story_id=? AND c.status='published' AND s.status='published' ORDER BY c.chapter_number");$q->execute([$chapter['story_id']]);$all=$q->fetchAll();$prev=$next=null;
 foreach($all as $i=>$c){if((int)$c['id']===(int)$chapter['id']){$prev=$all[$i-1]??null;$next=$all[$i+1]??null;break;}}
 function rd_url(array $chapter): string { return '/truyen/'.rawurlencode((string)$chapter['slug']).'/chuong-'.(int)$chapter['chapter_number'].'.html'; }
 function rd_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
