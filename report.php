@@ -3,7 +3,7 @@ declare(strict_types=1);
 require __DIR__ . '/includes/db.php';
 $storyId=(int)($_GET['story_id']??$_POST['story_id']??0);
 $chapterId=(int)($_GET['chapter_id']??$_POST['chapter_id']??0);
-$q=$pdo->prepare("SELECT id,title,slug FROM stories WHERE id=? AND status='published' LIMIT 1");
+$q=$pdo->prepare("SELECT id,title,slug,story_type,story_kind FROM stories WHERE id=? AND status='published' LIMIT 1");
 $q->execute([$storyId]);$story=$q->fetch();
 if(!$story){http_response_code(404);exit('Không tìm thấy truyện cần báo cáo.');}
 $chapter=null;
