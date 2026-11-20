@@ -36,7 +36,7 @@ $performance=[
  'like_rate'=>$stats['views']>0?round($stats['likes']/$stats['views']*100,1):0,
  'followers'=>0
 ];
-try{$q=$pdo->prepare('SELECT COUNT(*) FROM author_follows WHERE author_member_id=?');$q->execute([$memberId]);$performance['followers']=(int)$q->fetchColumn();}catch(Throwable $e){}
+try{$q=$pdo->prepare('SELECT COUNT(*) FROM member_follows WHERE following_id=?');$q->execute([$memberId]);$performance['followers']=(int)$q->fetchColumn();}catch(Throwable $e){}
 $recentActivity=[];
 try{
  $q=$pdo->prepare("SELECT r.target_type,r.decision,r.note,r.reviewed_at,s.title FROM story_moderation_reviews r JOIN stories s ON s.id=r.story_id WHERE s.member_id=? ORDER BY r.reviewed_at DESC,r.id DESC LIMIT 5");
