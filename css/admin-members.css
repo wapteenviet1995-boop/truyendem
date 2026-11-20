@@ -70,3 +70,24 @@ body.admin-theme .am-note{margin-top:15px}
  body.admin-theme .am-actions form{margin-right:2px}
  body.admin-theme .am-actions .am-button{padding:7px 8px;font-size:.72rem}
 }
+/* Compact member directory: reduce oversized rows and action wrapping */
+body.admin-theme .admin-panel.admin-wide .admin-table{max-height:720px;overflow:auto;overscroll-behavior:contain}
+body.admin-theme .admin-panel.admin-wide .admin-table table{min-width:720px}
+body.admin-theme .admin-panel.admin-wide .admin-table td{padding:9px 12px;line-height:1.35}
+body.admin-theme .admin-panel.admin-wide .admin-table th{padding:10px 12px}
+body.admin-theme .admin-panel.admin-wide .am-sub{margin-top:2px;line-height:1.3}
+body.admin-theme .admin-panel.admin-wide .am-actions{min-width:250px;white-space:nowrap}
+body.admin-theme .admin-panel.admin-wide .am-actions form{gap:5px;margin:1px 3px 1px 0}
+body.admin-theme .admin-panel.admin-wide .am-actions .am-button{min-height:32px;padding:6px 9px;font-size:.74rem}
+@media(max-width:760px){
+ body.admin-theme .admin-panel.admin-wide .admin-table{max-height:none;overflow:visible}
+ body.admin-theme .admin-panel.admin-wide .admin-table tbody tr{margin:0 0 8px;padding:6px 10px;border-radius:10px;box-shadow:none}
+ body.admin-theme .admin-panel.admin-wide .admin-table td{padding:7px 0;gap:8px;font-size:.79rem}
+ body.admin-theme .admin-panel.admin-wide .admin-table td:first-child{padding:5px 0 8px}
+ body.admin-theme .admin-panel.admin-wide .admin-table td:first-child b{font-size:.84rem}
+ body.admin-theme .admin-panel.admin-wide .admin-table td:nth-child(5){padding-top:8px}
+ body.admin-theme .admin-panel.admin-wide .am-actions{display:flex;flex-wrap:wrap;gap:5px;min-width:0;white-space:normal}
+ body.admin-theme .admin-panel.admin-wide .am-actions form{display:flex;flex:0 0 auto;gap:4px;margin:0}
+ body.admin-theme .admin-panel.admin-wide .am-actions .am-button{min-height:31px;padding:6px 8px;font-size:.7rem}
+ body.admin-theme .admin-panel.admin-wide .am-gift input{width:68px;min-height:31px;padding:5px 7px;font-size:.72rem}
+}
