@@ -127,6 +127,7 @@ function ss_h($v):string{return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT
 @media(max-width:600px){.submit-panel{padding:15px}.submit-wrap{padding-left:11px;padding-right:11px}.submit-status-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.submit-status-grid a{padding:10px}.submit-status-grid a strong{font-size:1.15rem}}
 </style><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1">
 <link rel="stylesheet" href="css/story-editor.css?v=20261114-1"><link rel="stylesheet" href="/css/member-posts.css?v=20261121-v1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1">
+<link rel="stylesheet" href="/css/member-pages-theme.css?v=20261121-fix1">
 </head><body class="story-site">
 <?php require __DIR__ . '/includes/header.php'; ?>
 <main class="submit-wrap member-posts-wrap">
