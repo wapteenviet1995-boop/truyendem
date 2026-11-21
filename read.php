@@ -31,4 +31,19 @@ function rd_paragraphs($value): string {
     return implode("\n", $html);
 }
 ?><!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?=rd_h($chapter['story_title'])?> - Chương <?= (int)$chapter['chapter_number']?> | Truyện Đêm</title><link rel="stylesheet" href="/css/style.css?v=20261111-reader2"><link rel="stylesheet" href="/css/stories.css?v=20261111-reader2"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1">
-</head><body class="story-site reader-site"><?php require __DIR__ . '/includes/header.php'; ?><div class="reader-backbar"><a href="<?=($chapter['story_kind']??'serial')==='short'?'/truyen-ngan/':'/truyen/'?><?=rawurlencode($chapter['slug'])?>.html">← <?=rd_h($chapter['story_title'])?></a></div><main class="reader-main"><p class="reader-kicker">TRUYỆN ĐÊM · CHƯƠNG <?= (int)$chapter['chapter_number']?></p><h1><?=rd_h($chapter['title'])?></h1><?php if($chapter['audio_url']):?><audio class="story-audio" controls preload="none" src="<?=rd_h($chapter['audio_url'])?>">Trình duyệt không hỗ trợ audio.</audio><?php endif;?><article class="reader-content"><?=rd_paragraphs($chapter['content'])?></article><p class="reader-report-link"><a href="/report.php?story_id=<?=(int)$chapter['story_id']?>&chapter_id=<?=(int)$chapter['id']?>">⚑ Báo cáo vi phạm chương này</a></p><nav class="reader-pagination"><?php if($prev):?><a href="<?=rd_url($prev)?>">← Chương trước</a><?php else:?><span></span><?php endif;?><?php if($next):?><a href="<?=rd_url($next)?>">Chương tiếp theo →</a><?php else:?><a href="/truyen/<?=rawurlencode($chapter['slug'])?>.html">Danh sách chương</a><?php endif;?></nav></main><?php require __DIR__ . '/includes/footer.php'; ?></body></html>
+</head><body class="story-site reader-site"><?php require __DIR__ . '/includes/header.php'; ?><div class="reader-backbar"><a href="<?=($chapter['story_kind']??'serial')==='short'?'/truyen-ngan/':'/truyen/'?><?=rawurlencode($chapter['slug'])?>.html">← <?=rd_h($chapter['story_title'])?></a></div><main class="reader-main"><p class="reader-kicker">TRUYỆN ĐÊM · CHƯƠNG <?= (int)$chapter['chapter_number']?></p><h1><?=rd_h($chapter['title'])?></h1><?php if($chapter['audio_url']):?><audio class="story-audio" controls preload="none" src="<?=rd_h($chapter['audio_url'])?>">Trình duyệt không hỗ trợ audio.</audio><?php endif;?><article class="reader-content"><?=rd_paragraphs($chapter['content'])?></article><p class="reader-report-link"><a href="/report.php?story_id=<?=(int)$chapter['story_id']?>&chapter_id=<?=(int)$chapter['id']?>">⚑ Báo cáo vi phạm chương này</a></p><nav class="reader-pagination"><?php if($prev):?><a href="<?=rd_url($prev)?>">← Chương trước</a><?php else:?><span></span><?php endif;?><?php if($next):?><a href="<?=rd_url($next)?>">Chương tiếp theo →</a><?php else:?><a href="/truyen/<?=rawurlencode($chapter['slug'])?>.html">Danh sách chương</a><?php endif;?></nav></main><?php require __DIR__ . '/includes/footer.php'; ?><script>
+(function(){
+ var storyId=<?= (int)$chapter['story_id'] ?>, targetType='chapter', targetId=<?= (int)$chapter['id'] ?>, audioOnly=false;
+ if(!storyId||!targetId)return;
+ var audio=document.getElementById('listen-audio');
+ var endpoint='/track_read.php';
+ function active(){return document.visibilityState==='visible' && (!audioOnly || (audio && !audio.paused && !audio.ended));}
+ function send(mode){
+  if(!active())return;
+  var body=new URLSearchParams({story_id:String(storyId),target_type:targetType,target_id:String(targetId),mode:mode});
+  fetch(endpoint,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8','X-Requested-With':'XMLHttpRequest'},body:body.toString(),keepalive:true}).catch(function(){});
+ }
+ send('start');
+ window.setInterval(function(){if(active())send('ping');},15000);
+})();
+</script></body></html>
