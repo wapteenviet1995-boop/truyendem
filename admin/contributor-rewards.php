@@ -16,10 +16,14 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
    $q=$pdo->prepare('INSERT INTO contributor_rewards(member_id,amount,reward_type,description,period_label,created_by_admin_id) VALUES(?,?,?,?,?,?)');$q->execute([$mid,$amount,$type,mb_substr($desc,0,255,'UTF-8'),$period?:null,(int)$_SESSION['blog_admin_id']]);
    require_once __DIR__.'/../includes/notifications.php';td_notify_member($pdo,$mid,'contributor_reward','Bạn có khoản nhuận bút mới','Truyện Đêm ghi nhận khoản '.number_format((float)$amount,0,',','.').'đ: '.$desc,'/contributor-dashboard.php#rewards');$notice='Đã ghi nhận khoản tiền cho CTV.';
   }elseif(($_POST['action']??'')==='paid'){
-   $id=(int)($_POST['reward_id']??0);$q=$pdo->prepare("UPDATE contributor_rewards SET payment_status='paid',paid_at=NOW() WHERE id=? AND payment_status='pending'");$q->execute([$id]);if(!$q->rowCount())throw new RuntimeException('Khoản này đã thanh toán hoặc không tồn tại.');
-   $q=$pdo->prepare('SELECT member_id,amount FROM contributor_rewards WHERE id=?');$q->execute([$id]);$r=$q->fetch();if($r){require_once __DIR__.'/../includes/notifications.php';td_notify_member($pdo,(int)$r['member_id'],'contributor_paid','Nhuận bút đã thanh toán','Khoản '.number_format((float)$r['amount'],0,',','.').'đ đã được xác nhận thanh toán.','/contributor-dashboard.php#rewards');}$notice='Đã xác nhận thanh toán.';
+   $id=(int)($_POST['reward_id']??0);$pdo->beginTransaction();
+   $q=$pdo->prepare("UPDATE contributor_rewards SET payment_status='paid',paid_at=NOW() WHERE id=? AND payment_status='pending'");$q->execute([$id]);if(!$q->rowCount())throw new RuntimeException('Khoản này đã thanh toán hoặc không tồn tại.');
+   $q=$pdo->prepare('SELECT member_id,amount FROM contributor_rewards WHERE id=?');$q->execute([$id]);$r=$q->fetch();
+   if($r){require_once __DIR__.'/../includes/notifications.php';td_notify_member($pdo,(int)$r['member_id'],'contributor_paid','Nhuận bút đã thanh toán','Khoản '.number_format((float)$r['amount'],0,',','.').'đ đã được xác nhận thanh toán.','/contributor-dashboard.php#rewards');}
+   $pdo->exec("UPDATE contributor_reward_periods p SET p.status='paid' WHERE p.status='generated' AND EXISTS (SELECT 1 FROM contributor_reward_period_items i WHERE i.period_id=p.id AND i.reward_id IS NOT NULL) AND NOT EXISTS (SELECT 1 FROM contributor_reward_period_items i LEFT JOIN contributor_rewards cr ON cr.id=i.reward_id WHERE i.period_id=p.id AND (cr.id IS NULL OR cr.payment_status<>'paid'))");
+   $pdo->commit();$notice='Đã xác nhận thanh toán.';
   }else throw new RuntimeException('Thao tác không hợp lệ.');
- }catch(Throwable $e){$error=$e instanceof RuntimeException?$e->getMessage():'Không thể lưu dữ liệu. Kiểm tra đã chạy database/contributor_rewards.sql chưa.';}}
+ }catch(Throwable $e){if($pdo->inTransaction())$pdo->rollBack();$error=$e instanceof RuntimeException?$e->getMessage():'Không thể lưu dữ liệu. Kiểm tra đã chạy database/contributor_rewards.sql chưa.';}}
 }
 $members=$pdo->query("SELECT id,display_name,email FROM members WHERE account_type='contributor' AND is_active=1 ORDER BY display_name")->fetchAll();
 $filter=(string)($_GET['status']??'all');if(!in_array($filter,['all','pending','paid'],true))$filter='all';
