@@ -12,6 +12,8 @@ if (($_SESSION['blog_admin_role'] ?? 'admin') === 'admin') {
  $adminLinks[] = ['audio.php','Studio audio','♫'];
  $adminLinks[] = ['members.php','Thành viên','♙'];
  $adminLinks[] = ['contributors.php','Cộng tác viên','✦'];
+ $adminLinks[] = ['contributor-rewards.php','Nhuận bút CTV','₫'];
+ $adminLinks[] = ['contributor-reward-settings.php','Cấu hình nhuận bút','⚙'];
  $adminLinks[] = ['moderators.php','Kiểm duyệt viên','✓'];
 }
 ?>
