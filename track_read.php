@@ -70,7 +70,8 @@ try {
     }
     $ip = (string)($_SERVER['REMOTE_ADDR'] ?? '');
     $ua = substr((string)($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 300);
-    $visitorKey = hash('sha256', session_id().'|'.$ip.'|'.$ua);
+    $visitorSeed = $memberId > 0 ? 'member:'.$memberId : 'guest:'.$ip.'|'.$ua.'|'.session_id();
+    $visitorKey = hash('sha256', $visitorSeed);
     $insert = $pdo->prepare("INSERT IGNORE INTO story_read_events
         (story_id,target_type,target_id,member_id,author_id,visitor_key,read_date)
         VALUES(?,?,?,?,?,?,CURDATE())");
