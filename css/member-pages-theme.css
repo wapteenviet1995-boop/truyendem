@@ -64,3 +64,78 @@ html[data-theme="light"] body.story-site .member-edit-note{
 html[data-theme="light"] body.story-site .submit-story-item summary,
 html[data-theme="light"] body.story-site .edit-story-chapter summary,
 html[data-theme="light"] body.story-site .member-audio-track-title{color:#67428d!important}
+
+
+/* Complete light palette for author center and editor */
+html[data-theme="light"] body.story-site .member-posts-hero,
+html[data-theme="light"] body.story-site .member-edit-hero{
+  background:linear-gradient(145deg,#fff,#f5effa)!important;
+  border-color:#e5dbea!important;color:#30263a!important;
+}
+html[data-theme="light"] body.story-site .member-posts-hero h1,
+html[data-theme="light"] body.story-site .member-edit-hero h1{color:#30263a!important}
+html[data-theme="light"] body.story-site .member-posts-hero p,
+html[data-theme="light"] body.story-site .member-edit-hero p{color:#756d80!important}
+html[data-theme="light"] body.story-site .member-posts-nav a,
+html[data-theme="light"] body.story-site .member-edit-nav a{
+  background:#f7f3fa!important;color:#665777!important;border-color:#e4dbea!important;
+}
+html[data-theme="light"] body.story-site .member-posts-nav a.is-active,
+html[data-theme="light"] body.story-site .member-edit-nav a.active{
+  background:#eee4f6!important;color:#67428d!important;border-color:#cdb6df!important;
+}
+html[data-theme="light"] body.story-site .member-posts-stats>div,
+html[data-theme="light"] body.story-site .member-posts-type-grid .member-post-type-card,
+html[data-theme="light"] body.story-site .member-posts-library,
+html[data-theme="light"] body.story-site .member-posts-create{
+  background:#fff!important;color:#302a3a!important;border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.story-site .member-posts-stats strong,
+html[data-theme="light"] body.story-site .member-posts-type-card>strong{color:#67428d!important}
+html[data-theme="light"] body.story-site .member-posts-stats span,
+html[data-theme="light"] body.story-site .member-posts-step,
+html[data-theme="light"] body.story-site .member-posts-section-head p{color:#756d80!important}
+html[data-theme="light"] body.story-site .submit-status-grid>a,
+html[data-theme="light"] body.story-site .member-posts-tools,
+html[data-theme="light"] body.story-site .member-posts-search,
+html[data-theme="light"] body.story-site .member-posts-tools select{
+  background:#fff!important;color:#51465f!important;border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.story-site .submit-status-grid>a.active{
+  background:#f1e9f8!important;color:#67428d!important;border-color:#cdb6df!important;
+}
+html[data-theme="light"] body.story-site .member-post-card,
+html[data-theme="light"] body.story-site .submit-story-item{
+  background:#fff!important;color:#51465f!important;border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.story-site .member-post-card strong,
+html[data-theme="light"] body.story-site .member-post-card-top strong{color:#30263a!important}
+html[data-theme="light"] body.story-site .member-post-card p,
+html[data-theme="light"] body.story-site .member-post-date{color:#756d80!important}
+html[data-theme="light"] body.story-site .member-edit-back{
+  background:#f1e9f8!important;color:#67428d!important;border-color:#dfd1eb!important;
+}
+html[data-theme="light"] body.story-site .edit-story-form input,
+html[data-theme="light"] body.story-site .edit-story-form textarea,
+html[data-theme="light"] body.story-site .edit-story-form select,
+html[data-theme="light"] body.story-site .member-audio-edit-form input,
+html[data-theme="light"] body.story-site .member-audio-edit-form textarea,
+html[data-theme="light"] body.story-site .member-audio-edit-form select,
+html[data-theme="light"] body.story-site .member-audio-add input,
+html[data-theme="light"] body.story-site .member-audio-add textarea,
+html[data-theme="light"] body.story-site .member-audio-add select{
+  background:#fff!important;color:#292333!important;border-color:#ded7e6!important;
+}
+html[data-theme="light"] body.story-site .edit-story-form input::placeholder,
+html[data-theme="light"] body.story-site .edit-story-form textarea::placeholder,
+html[data-theme="light"] body.story-site .submit-form input::placeholder,
+html[data-theme="light"] body.story-site .submit-form textarea::placeholder{color:#9b91a5!important}
+html[data-theme="light"] body.story-site .edit-story-btn{
+  background:#7953a3!important;color:#fff!important;border-color:#7953a3!important;
+}
+html[data-theme="light"] body.story-site .edit-story-btn.secondary{
+  background:#f2edf7!important;color:#67428d!important;border-color:#dfd1eb!important;
+}
+html[data-theme="light"] body.story-site .submit-btn{
+  background:#7953a3!important;color:#fff!important;border-color:#7953a3!important;
+}
