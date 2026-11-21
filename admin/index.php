@@ -6,6 +6,24 @@ if (empty($_SESSION['csrf'])) { $_SESSION['csrf'] = bin2hex(random_bytes(32)); }
 $totalPosts = count($posts);
 $publishedPosts = count(array_filter($posts, static fn($p) => $p['status'] === 'published'));
 $draftPosts = $totalPosts - $publishedPosts;
+
+$readStats = ['today'=>0,'week'=>0,'month'=>0];
+if (($_SESSION['blog_admin_role'] ?? 'admin') === 'admin') {
+    $readQuery = $pdo->query("SELECT
+        COALESCE(SUM(read_date = CURDATE()),0) AS today_reads,
+        COALESCE(SUM(read_date >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+            AND read_date <= CURDATE()),0) AS week_reads,
+        COALESCE(SUM(read_date >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+            AND read_date <= CURDATE()),0) AS month_reads
+        FROM story_read_events
+        WHERE qualified_at IS NOT NULL");
+    $readRow = $readQuery->fetch(PDO::FETCH_ASSOC) ?: [];
+    $readStats = [
+        'today' => (int)($readRow['today_reads'] ?? 0),
+        'week' => (int)($readRow['week_reads'] ?? 0),
+        'month' => (int)($readRow['month_reads'] ?? 0),
+    ];
+}
 ?>
 <!doctype html>
 <html lang="vi">
@@ -58,6 +76,13 @@ $draftPosts = $totalPosts - $publishedPosts;
         <article class="admin-stat-card"><div class="admin-stat-top"><span>Đã xuất bản</span><span class="admin-stat-icon green">✓</span></div><strong><?= $publishedPosts ?></strong><small>Đang hiển thị công khai</small></article>
         <article class="admin-stat-card"><div class="admin-stat-top"><span>Bản nháp</span><span class="admin-stat-icon amber">◷</span></div><strong><?= $draftPosts ?></strong><small>Chưa xuất bản</small></article>
       </section>
+      <?php if(($_SESSION['blog_admin_role'] ?? 'admin') === 'admin'): ?>
+      <section class="admin-stat-grid admin-read-stat-grid">
+        <article class="admin-stat-card"><div class="admin-stat-top"><span>Lượt đọc hôm nay</span><span class="admin-stat-icon blue">◷</span></div><strong><?= number_format($readStats['today']) ?></strong><small>Lượt đọc hợp lệ trong ngày</small></article>
+        <article class="admin-stat-card"><div class="admin-stat-top"><span>Lượt đọc tuần này</span><span class="admin-stat-icon violet">▦</span></div><strong><?= number_format($readStats['week']) ?></strong><small>Từ thứ Hai đến hôm nay</small></article>
+        <article class="admin-stat-card"><div class="admin-stat-top"><span>Lượt đọc tháng này</span><span class="admin-stat-icon green">▤</span></div><strong><?= number_format($readStats['month']) ?></strong><small>Từ đầu tháng đến hôm nay</small></article>
+      </section>
+      <?php endif; ?>
       <section class="admin-quick-section">
         <div class="admin-section-heading"><div><h2>Truy cập nhanh</h2><p>Các khu vực quản lý thường dùng</p></div></div>
         <div class="admin-quick-grid">
