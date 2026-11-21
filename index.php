@@ -97,15 +97,15 @@ $topStoriesDay=[];$topStoriesWeek=[];$topStoriesMonth=[];
 $topReadSql="SELECT s.id,s.title,s.slug,s.author,s.category,s.story_type,s.story_kind,COUNT(*) AS read_count
  FROM story_read_events re
  INNER JOIN stories s ON s.id=re.story_id
- WHERE s.status='published' AND re.qualified_at IS NOT NULL AND %s
+ WHERE s.status='published' AND re.qualified_at IS NOT NULL AND __DATE_FILTER__
  GROUP BY s.id,s.title,s.slug,s.author,s.category,s.story_type,s.story_kind
  ORDER BY read_count DESC,s.id DESC LIMIT 5";
 try {
- $q=$pdo->query(sprintf($topReadSql,"re.read_date=CURDATE()"));
+ $q=$pdo->query(str_replace("__DATE_FILTER__","re.read_date=CURDATE()",$topReadSql));
  $topStoriesDay=$q->fetchAll();
- $q=$pdo->query(sprintf($topReadSql,"re.read_date>=DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) AND re.read_date<=CURDATE()"));
+ $q=$pdo->query(str_replace("__DATE_FILTER__","re.read_date>=DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) AND re.read_date<=CURDATE()",$topReadSql));
  $topStoriesWeek=$q->fetchAll();
- $q=$pdo->query(sprintf($topReadSql,"re.read_date>=DATE_FORMAT(CURDATE(), '%Y-%m-01') AND re.read_date<=CURDATE()"));
+ $q=$pdo->query(str_replace("__DATE_FILTER__","re.read_date>=DATE_FORMAT(CURDATE(), '%Y-%m-01') AND re.read_date<=CURDATE()",$topReadSql));
  $topStoriesMonth=$q->fetchAll();
 } catch(PDOException $e) { $topStoriesDay=[];$topStoriesWeek=[];$topStoriesMonth=[]; }
 ?>
