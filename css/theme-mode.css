@@ -1363,3 +1363,40 @@ html[data-theme="light"] .td-footer-bottom{border-top-color:#e8e0ee;color:#81788
 html[data-theme="light"] .td-footer-bottom strong{color:#5e4279}
 html[data-theme="light"] .td-footer-tagline{color:#8a8094}
 html[data-theme="light"] .td-footer-bottom>a{color:#7045a0!important}
+
+
+/* FOOTER THEME FIX: contrast dong bo ca sang va toi */
+html[data-theme="dark"] body.story-site .td-global-footer,
+html[data-theme="dark"] body.blog-page .td-global-footer,
+html[data-theme="dark"] body.member-page .td-global-footer{
+ background:linear-gradient(145deg,#15121d,#0d0c13)!important;
+ color:#aaa2b5!important;border-top:1px solid #332a3e!important;
+}
+html[data-theme="dark"] .td-footer-brand,
+html[data-theme="dark"] .td-footer-brand-copy strong{color:#f6efff!important}
+html[data-theme="dark"] .td-footer-brand-copy small{color:#b6a2cb!important}
+html[data-theme="dark"] .td-footer-intro>p,
+html[data-theme="dark"] .td-footer-column a,
+html[data-theme="dark"] .td-footer-bottom{color:#aaa2b5!important}
+html[data-theme="dark"] .td-footer-column h2{color:#e8d9f8!important}
+html[data-theme="dark"] .td-footer-bottom strong{color:#cbb4e3!important}
+html[data-theme="dark"] .td-footer-tagline{color:#9e94aa!important}
+html[data-theme="dark"] .td-footer-explore{background:#211a2b!important;color:#dec5fa!important;border-color:#59466d!important}
+html[data-theme="dark"] .td-footer-bottom>a{color:#c7a8e8!important}
+html[data-theme="light"] body.story-site .td-global-footer,
+html[data-theme="light"] body.blog-page .td-global-footer,
+html[data-theme="light"] body.member-page .td-global-footer{
+ background:linear-gradient(145deg,#fff,#f7f4fa)!important;
+ color:#756d80!important;border-top:1px solid #e7deee!important;
+}
+html[data-theme="light"] .td-footer-brand,
+html[data-theme="light"] .td-footer-brand-copy strong{color:#30263a!important}
+html[data-theme="light"] .td-footer-brand-copy small{color:#856a9c!important}
+html[data-theme="light"] .td-footer-intro>p,
+html[data-theme="light"] .td-footer-column a,
+html[data-theme="light"] .td-footer-bottom{color:#756d80!important}
+html[data-theme="light"] .td-footer-column h2{color:#49345e!important}
+html[data-theme="light"] .td-footer-bottom strong{color:#5e4279!important}
+html[data-theme="light"] .td-footer-tagline{color:#8a8094!important}
+html[data-theme="light"] .td-footer-explore{background:#f3edf8!important;color:#67428d!important;border-color:#dfd1eb!important}
+html[data-theme="light"] .td-footer-bottom>a{color:#7045a0!important}
