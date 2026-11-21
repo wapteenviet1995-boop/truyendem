@@ -147,6 +147,32 @@ try {
 .td-top-story-count small{font-size:11px;font-weight:600}
 .td-top-story-empty{padding:18px;text-align:center;border:1px dashed rgba(160,145,120,.25);border-radius:12px;opacity:.7}
 @media(max-width:520px){.td-top-stories{padding:15px}.td-top-story-row{gap:9px;padding:10px}.td-top-story-count{font-size:12px}.td-top-story-count small{display:block}}
+/* Dong bo Top truyen voi che do sang/toi cua toan website */
+html[data-theme="dark"] body.story-site .td-top-stories{
+ color:var(--td-text,#eeeaf4);background:linear-gradient(145deg,#17131f,#101017);
+ border-color:#352b43;box-shadow:0 12px 34px rgba(0,0,0,.2)
+}
+html[data-theme="dark"] body.story-site .td-top-story-row{background:#1b1723;border-color:#332b3d}
+html[data-theme="dark"] body.story-site .td-top-story-title{color:#eee6f5}
+html[data-theme="dark"] body.story-site .td-top-story-copy>span{color:#aaa1b4;opacity:1}
+html[data-theme="dark"] body.story-site .td-top-story-tab{color:#c5b6d1;border-color:#40344e;background:#1b1723}
+html[data-theme="dark"] body.story-site .td-top-story-tab.is-active{color:#1b1223;background:#c7a0e9;border-color:#c7a0e9}
+html[data-theme="dark"] body.story-site .td-top-story-count{color:#d4b2ef}
+html[data-theme="light"] body.story-site .td-top-stories{
+ color:#252333!important;background:linear-gradient(145deg,#fff,#f7f5fb)!important;
+ border:1px solid #e4ddeb!important;box-shadow:0 10px 28px rgba(45,32,65,.07)!important
+}
+html[data-theme="light"] body.story-site .td-top-stories h2{color:#292337!important}
+html[data-theme="light"] body.story-site .td-top-stories p{color:#716a7c!important}
+html[data-theme="light"] body.story-site .td-top-story-row{background:#fff!important;border-color:#e9e4ee!important}
+html[data-theme="light"] body.story-site .td-top-story-rank{background:#f1e8fb!important;color:#70449a!important}
+html[data-theme="light"] body.story-site .td-top-story-title{color:#30243e!important}
+html[data-theme="light"] body.story-site .td-top-story-title:hover{color:#8051aa!important}
+html[data-theme="light"] body.story-site .td-top-story-copy>span{color:#777080!important;opacity:1}
+html[data-theme="light"] body.story-site .td-top-story-count{color:#75469e!important}
+html[data-theme="light"] body.story-site .td-top-story-tab{background:#fff!important;color:#655b70!important;border-color:#ded6e7!important}
+html[data-theme="light"] body.story-site .td-top-story-tab.is-active{background:#75469e!important;color:#fff!important;border-color:#75469e!important}
+html[data-theme="light"] body.story-site .td-top-story-empty{color:#777080!important;border-color:#dcd3e5!important;background:#fbfaff!important}
 </style>
 <script>
 document.querySelectorAll('.td-top-story-tab').forEach(function(tab){
