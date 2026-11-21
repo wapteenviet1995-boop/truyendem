@@ -23,6 +23,25 @@ if (($_SESSION['blog_admin_role'] ?? 'admin') === 'admin') {
         'week' => (int)($readRow['week_reads'] ?? 0),
         'month' => (int)($readRow['month_reads'] ?? 0),
     ];
+
+    $topReadStories = [];
+    $periodConditions = [
+        'today' => 're.read_date = CURDATE()',
+        'week' => 're.read_date >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) AND re.read_date <= CURDATE()',
+        'month' => "re.read_date >= DATE_FORMAT(CURDATE(), '%Y-%m-01') AND re.read_date <= CURDATE()",
+    ];
+    foreach ($periodConditions as $period => $condition) {
+        $sql = "SELECT s.id, s.title, s.slug, s.story_type, s.story_kind, COUNT(*) AS read_count
+            FROM story_read_events re
+            INNER JOIN stories s ON s.id = re.story_id
+            WHERE re.qualified_at IS NOT NULL
+              AND s.status = 'published'
+              AND {$condition}
+            GROUP BY s.id, s.title, s.slug, s.story_type, s.story_kind
+            ORDER BY read_count DESC, s.id DESC
+            LIMIT 5";
+        $topReadStories[$period] = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>
 <!doctype html>
@@ -33,6 +52,21 @@ if (($_SESSION['blog_admin_role'] ?? 'admin') === 'admin') {
 <title>Tổng quan quản trị · Truyện Đêm</title>
 <link rel="stylesheet" href="../css/style.css?v=20261110">
 <link rel="stylesheet" href="../css/admin-white.css?v=20261121-layout2">
+<style>
+.admin-top-read-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:22px 0 28px}
+.admin-top-read-card{background:#fff;border:1px solid #e7eaf0;border-radius:14px;padding:18px;min-width:0;box-shadow:0 3px 12px rgba(15,23,42,.035)}
+.admin-top-read-card h3{font-size:16px;margin:0 0 5px;color:#172033}
+.admin-top-read-card>p{font-size:12px;color:#7b8495;margin:0 0 15px}
+.admin-top-read-list{list-style:none;margin:0;padding:0}
+.admin-top-read-list li{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-top:1px solid #eef0f4;min-width:0}
+.admin-top-read-rank{width:25px;height:25px;flex:0 0 25px;border-radius:8px;background:#f0f3f9;color:#46536b;display:grid;place-items:center;font-size:12px;font-weight:800}
+.admin-top-read-info{min-width:0;flex:1}
+.admin-top-read-info a{display:block;color:#202b3e;font-size:13px;font-weight:700;text-decoration:none;line-height:1.45;overflow-wrap:anywhere}
+.admin-top-read-info small{display:block;color:#8791a2;font-size:11px;margin-top:3px}
+.admin-top-read-count{white-space:nowrap;color:#3449a5;font-size:12px;font-weight:800}
+.admin-top-read-empty{padding:18px 0;color:#929aaa;font-size:12px;border-top:1px solid #eef0f4}
+@media(max-width:900px){.admin-top-read-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body class="admin-theme admin-dashboard">
 <div class="admin-shell">
@@ -81,6 +115,34 @@ if (($_SESSION['blog_admin_role'] ?? 'admin') === 'admin') {
         <article class="admin-stat-card"><div class="admin-stat-top"><span>Lượt đọc hôm nay</span><span class="admin-stat-icon blue">◷</span></div><strong><?= number_format($readStats['today']) ?></strong><small>Lượt đọc hợp lệ trong ngày</small></article>
         <article class="admin-stat-card"><div class="admin-stat-top"><span>Lượt đọc tuần này</span><span class="admin-stat-icon violet">▦</span></div><strong><?= number_format($readStats['week']) ?></strong><small>Từ thứ Hai đến hôm nay</small></article>
         <article class="admin-stat-card"><div class="admin-stat-top"><span>Lượt đọc tháng này</span><span class="admin-stat-icon green">▤</span></div><strong><?= number_format($readStats['month']) ?></strong><small>Từ đầu tháng đến hôm nay</small></article>
+      </section>
+      <?php endif; ?>
+      <?php if(($_SESSION['blog_admin_role'] ?? 'admin') === 'admin'): ?>
+      <section class="admin-quick-section">
+        <div class="admin-section-heading"><div><h2>Top truyện theo lượt đọc</h2><p>Xếp hạng 5 truyện có lượt đọc hợp lệ cao nhất trong từng khoảng thời gian</p></div></div>
+        <div class="admin-top-read-grid">
+          <?php
+          $topReadLabels = ['today'=>['Top truyện hôm nay','Trong ngày hiện tại'],'week'=>['Top truyện tuần này','Từ thứ Hai đến hôm nay'],'month'=>['Top truyện tháng này','Từ đầu tháng đến hôm nay']];
+          foreach ($topReadLabels as $period => [$heading,$description]):
+          ?>
+          <article class="admin-top-read-card">
+            <h3><?= e($heading) ?></h3><p><?= e($description) ?></p>
+            <?php if (!empty($topReadStories[$period])): ?>
+            <ol class="admin-top-read-list">
+              <?php foreach ($topReadStories[$period] as $rank => $topStory):
+                $topPath = ($topStory['story_type'] ?? 'text') === 'audio' ? 'audio/' : (($topStory['story_kind'] ?? 'serial') === 'short' ? 'truyen-ngan/' : 'truyen/');
+              ?>
+              <li>
+                <span class="admin-top-read-rank"><?= $rank + 1 ?></span>
+                <span class="admin-top-read-info"><a href="../<?= $topPath . rawurlencode($topStory['slug']) ?>.html" target="_blank" rel="noopener"><?= e($topStory['title']) ?></a><small><?= $topPath === 'audio/' ? 'Truyện audio' : ($topPath === 'truyen-ngan/' ? 'Truyện ngắn' : 'Truyện nhiều chương') ?></small></span>
+                <span class="admin-top-read-count"><?= number_format((int)$topStory['read_count']) ?> lượt</span>
+              </li>
+              <?php endforeach; ?>
+            </ol>
+            <?php else: ?><div class="admin-top-read-empty">Chưa có lượt đọc hợp lệ trong khoảng thời gian này.</div><?php endif; ?>
+          </article>
+          <?php endforeach; ?>
+        </div>
       </section>
       <?php endif; ?>
       <section class="admin-quick-section">
