@@ -877,3 +877,361 @@ html[data-theme="light"] body.story-site .chapter-list a{
   background:#fff!important;color:#292333!important;border-color:#e6dfed!important;
 }
 html[data-theme="light"] body.story-site .td-community-copy>small{color:#7950a2!important}
+
+
+/* =========================================================
+   LIGHT MODE AUDIT — shared overrides for every public page
+   Keeps the dark theme unchanged when data-theme="dark".
+   ========================================================= */
+html[data-theme="light"] body.story-site,
+html[data-theme="light"] body.blog-page,
+html[data-theme="light"] body.member-page,
+html[data-theme="light"] body.reader-site,
+html[data-theme="light"] body.compat-page,
+html[data-theme="light"] body.social-page,
+html[data-theme="light"] body.diary-page {
+  color-scheme:light!important;
+  background:#f5f3f8!important;
+  color:#292333!important;
+}
+html[data-theme="light"] body.blog-page .blog-main>h1,
+html[data-theme="light"] body.blog-page .blog-article h1,
+html[data-theme="light"] body.blog-page .social-hero h1,
+html[data-theme="light"] body.blog-page .community-hero h1,
+html[data-theme="light"] body.blog-page .diary-entry h3,
+html[data-theme="light"] body.blog-page .member-public-card h1,
+html[data-theme="light"] body.blog-page .compat-hero h1,
+html[data-theme="light"] body.blog-page .compat-pair strong,
+html[data-theme="light"] body.blog-page .compat-insights h2,
+html[data-theme="light"] body.blog-page .compat-advice h2,
+html[data-theme="light"] body.blog-page .social-card h2,
+html[data-theme="light"] body.blog-page .diary-editor h2,
+html[data-theme="light"] body.blog-page .diary-entries h2 {
+  color:#292333!important;
+}
+html[data-theme="light"] body.blog-page .blog-card,
+html[data-theme="light"] body.blog-page .blog-article,
+html[data-theme="light"] body.blog-page .blog-empty,
+html[data-theme="light"] body.blog-page .community-compose,
+html[data-theme="light"] body.blog-page .community-join,
+html[data-theme="light"] body.blog-page .community-post,
+html[data-theme="light"] body.blog-page .community-empty,
+html[data-theme="light"] body.blog-page .social-card,
+html[data-theme="light"] body.blog-page .diary-editor,
+html[data-theme="light"] body.blog-page .diary-entry,
+html[data-theme="light"] body.blog-page .chat-card,
+html[data-theme="light"] body.blog-page .member-public-card,
+html[data-theme="light"] body.blog-page .member-favorites,
+html[data-theme="light"] body.blog-page .member-favorite-item,
+html[data-theme="light"] body.blog-page .compat-panel,
+html[data-theme="light"] body.blog-page .compat-result,
+html[data-theme="light"] body.blog-page .compat-insights article,
+html[data-theme="light"] body.blog-page .compat-advice,
+html[data-theme="light"] body.blog-page .shop-section,
+html[data-theme="light"] body.blog-page .shop-item,
+html[data-theme="light"] body.blog-page .shop-owned,
+html[data-theme="light"] body.blog-page .shop-daily {
+  background:#fff!important;
+  background-image:none!important;
+  color:#292333!important;
+  border-color:#e5dfeb!important;
+  box-shadow:0 5px 20px rgba(35,25,50,.06)!important;
+}
+html[data-theme="light"] body.blog-page .community-stats span,
+html[data-theme="light"] body.blog-page .community-comment,
+html[data-theme="light"] body.blog-page .social-person,
+html[data-theme="light"] body.blog-page .member-info,
+html[data-theme="light"] body.blog-page .member-info div {
+  background:#faf9fc!important;
+  color:#292333!important;
+  border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.blog-page .community-compose textarea,
+html[data-theme="light"] body.blog-page .community-comment-form input,
+html[data-theme="light"] body.blog-page .social-profile-form input,
+html[data-theme="light"] body.blog-page .social-profile-form select,
+html[data-theme="light"] body.blog-page .social-profile-form textarea,
+html[data-theme="light"] body.blog-page .diary-form input,
+html[data-theme="light"] body.blog-page .diary-form select,
+html[data-theme="light"] body.blog-page .diary-form textarea,
+html[data-theme="light"] body.blog-page .social-search input,
+html[data-theme="light"] body.blog-page .social-search select,
+html[data-theme="light"] body.blog-page .chat-compose textarea,
+html[data-theme="light"] body.blog-page .compat-form select,
+html[data-theme="light"] body.blog-page .shop-gift input,
+html[data-theme="light"] body.blog-page .shop-gift select {
+  background:#fff!important;
+  color:#292333!important;
+  border-color:#dcd4e5!important;
+}
+html[data-theme="light"] body.blog-page .blog-card h2 a,
+html[data-theme="light"] body.blog-page .blog-content,
+html[data-theme="light"] body.blog-page .community-post,
+html[data-theme="light"] body.blog-page .community-post p,
+html[data-theme="light"] body.blog-page .social-person strong,
+html[data-theme="light"] body.blog-page .diary-entry h3,
+html[data-theme="light"] body.blog-page .diary-entry>p,
+html[data-theme="light"] body.blog-page .chat-friend,
+html[data-theme="light"] body.blog-page .chat-bubble p,
+html[data-theme="light"] body.blog-page .member-info strong,
+html[data-theme="light"] body.blog-page .member-public-card h1,
+html[data-theme="light"] body.blog-page .member-public-bio,
+html[data-theme="light"] body.blog-page .member-favorite-item strong,
+html[data-theme="light"] body.blog-page .compat-pair strong,
+html[data-theme="light"] body.blog-page .compat-insights p,
+html[data-theme="light"] body.blog-page .compat-advice p {
+  color:#302a38!important;
+}
+html[data-theme="light"] body.blog-page .blog-card p,
+html[data-theme="light"] body.blog-page .blog-main>.lead,
+html[data-theme="light"] body.blog-page .blog-content p,
+html[data-theme="light"] body.blog-page .social-hero>p,
+html[data-theme="light"] body.blog-page .community-hero>p,
+html[data-theme="light"] body.blog-page .community-join p,
+html[data-theme="light"] body.blog-page .community-login-hint,
+html[data-theme="light"] body.blog-page .social-muted,
+html[data-theme="light"] body.blog-page .social-person small,
+html[data-theme="light"] body.blog-page .diary-entry-top,
+html[data-theme="light"] body.blog-page .diary-entry-top small,
+html[data-theme="light"] body.blog-page .member-public-sign,
+html[data-theme="light"] body.blog-page .member-public-bio,
+html[data-theme="light"] body.blog-page .compat-disclaimer,
+html[data-theme="light"] body.blog-page .compat-pair small,
+html[data-theme="light"] body.blog-page .compat-score>span,
+html[data-theme="light"] body.blog-page .chat-heading small,
+html[data-theme="light"] body.blog-page .chat-friend-info small {
+  color:#756d80!important;
+}
+html[data-theme="light"] body.blog-page .community-compose h2,
+html[data-theme="light"] body.blog-page .community-feed-head h2,
+html[data-theme="light"] body.blog-page .community-join h2,
+html[data-theme="light"] body.blog-page .social-card h2,
+html[data-theme="light"] body.blog-page .diary-editor h2,
+html[data-theme="light"] body.blog-page .diary-entries h2,
+html[data-theme="light"] body.blog-page .compat-kicker,
+html[data-theme="light"] body.blog-page .compat-heart,
+html[data-theme="light"] body.blog-page .compat-score>strong,
+html[data-theme="light"] body.blog-page .compat-dynamic,
+html[data-theme="light"] body.blog-page .member-public-symbol,
+html[data-theme="light"] body.blog-page .member-favorite-item>b {
+  color:#7045a0!important;
+}
+html[data-theme="light"] body.blog-page .chat-heading,
+html[data-theme="light"] body.blog-page .chat-messages {
+  background:#faf9fc!important;
+  border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.blog-page .chat-bubble.mine {
+  background:#eee5f8!important;border-color:#d9c8eb!important;
+}
+html[data-theme="light"] body.blog-page .chat-bubble.theirs {
+  background:#fff!important;border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.blog-page .chat-bubble p,
+html[data-theme="light"] body.blog-page .chat-bubble small {color:#302a38!important}
+html[data-theme="light"] body.blog-page .compat-track {background:#eee8f4!important}
+html[data-theme="light"] body.blog-page .member-page .member-panel,
+html[data-theme="light"] body.member-page .member-panel {
+  background:#fff!important;background-image:none!important;color:#292333!important;
+  border-color:#e5dfeb!important;box-shadow:0 12px 32px rgba(35,25,50,.08)!important;
+}
+html[data-theme="light"] body.member-page .member-panel h1,
+html[data-theme="light"] body.member-page .member-lead,
+html[data-theme="light"] body.member-page .member-form label,
+html[data-theme="light"] body.member-page .member-switch,
+html[data-theme="light"] body.member-page .member-info strong,
+html[data-theme="light"] body.member-page .member-info span {
+  color:#292333!important;
+}
+html[data-theme="light"] body.member-page .member-form input {
+  background:#fff!important;color:#292333!important;border-color:#dcd4e5!important;
+}
+html[data-theme="light"] body.member-page .member-symbol,
+html[data-theme="light"] body.member-page .member-secondary,
+html[data-theme="light"] body.member-page .member-logout {
+  background:#f4eff8!important;color:#67428d!important;border-color:#ded5e8!important;
+}
+html[data-theme="light"] body.member-page .member-footer {
+  background:#fff!important;color:#756d80!important;border-color:#e5dfeb!important;
+}
+
+/* Creator Studio, member hub, author pages and audio player */
+html[data-theme="light"] body.story-site .creator-section,
+html[data-theme="light"] body.story-site .creator-stat,
+html[data-theme="light"] body.story-site .creator-story,
+html[data-theme="light"] body.story-site .creator-reward-grid article,
+html[data-theme="light"] body.story-site .creator-reward-row,
+html[data-theme="light"] body.story-site .creator-achievements article,
+html[data-theme="light"] body.story-site .creator-performance article,
+html[data-theme="light"] body.story-site .creator-activity-item,
+html[data-theme="light"] body.story-site .creator-follower,
+html[data-theme="light"] body.story-site .creator-top-item,
+html[data-theme="light"] body.story-site .following-hero,
+html[data-theme="light"] body.story-site .following-card,
+html[data-theme="light"] body.story-site .following-row,
+html[data-theme="light"] body.story-site .member-hub-hero,
+html[data-theme="light"] body.story-site .member-hub-card,
+html[data-theme="light"] body.story-site .member-notice,
+html[data-theme="light"] body.story-site .member-hub-empty,
+html[data-theme="light"] body.story-site .listen-hero,
+html[data-theme="light"] body.story-site .listen-player,
+html[data-theme="light"] body.story-site .listen-queue,
+html[data-theme="light"] body.story-site .listen-track,
+html[data-theme="light"] body.story-site .listen-empty,
+html[data-theme="light"] body.story-site .listen-no-tracks {
+  background:#fff!important;background-image:none!important;color:#292333!important;
+  border-color:#e5dfeb!important;box-shadow:0 5px 20px rgba(35,25,50,.06)!important;
+}
+html[data-theme="light"] body.story-site .creator-main,
+html[data-theme="light"] body.story-site .following-main,
+html[data-theme="light"] body.story-site .member-hub-main,
+html[data-theme="light"] body.story-site .listen-main {
+  color:#292333!important;
+}
+html[data-theme="light"] body.story-site .creator-hero,
+html[data-theme="light"] body.story-site .creator-rank-card {
+  background:linear-gradient(135deg,#fff,#f2edf8)!important;color:#292333!important;
+  border-color:#e2d8ec!important;
+}
+html[data-theme="light"] body.story-site .creator-hero h1,
+html[data-theme="light"] body.story-site .creator-section h2,
+html[data-theme="light"] body.story-site .creator-stat strong,
+html[data-theme="light"] body.story-site .creator-story-copy strong,
+html[data-theme="light"] body.story-site .creator-top-item strong,
+html[data-theme="light"] body.story-site .creator-follower-info strong,
+html[data-theme="light"] body.story-site .following-hero h1,
+html[data-theme="light"] body.story-site .following-info strong,
+html[data-theme="light"] body.story-site .member-hub-hero h1,
+html[data-theme="light"] body.story-site .member-hub-card h2,
+html[data-theme="light"] body.story-site .listen-title {
+  color:#292333!important;
+}
+html[data-theme="light"] body.story-site .creator-hero p,
+html[data-theme="light"] body.story-site .creator-stat span,
+html[data-theme="light"] body.story-site .creator-stat small,
+html[data-theme="light"] body.story-site .creator-footnote,
+html[data-theme="light"] body.story-site .creator-story-copy small,
+html[data-theme="light"] body.story-site .creator-follower-info small,
+html[data-theme="light"] body.story-site .following-hero p,
+html[data-theme="light"] body.story-site .following-info small,
+html[data-theme="light"] body.story-site .member-hub-card p,
+html[data-theme="light"] body.story-site .listen-muted {
+  color:#756d80!important;
+}
+html[data-theme="light"] body.story-site .creator-empty,
+html[data-theme="light"] body.story-site .following-empty {
+  background:#faf9fc!important;color:#756d80!important;border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.story-site .creator-follower-avatar,
+html[data-theme="light"] body.story-site .following-avatar {
+  background:#eee7f5!important;color:#67428d!important;
+}
+html[data-theme="light"] body.story-site .creator-nav a,
+html[data-theme="light"] body.story-site .creator-btn.secondary,
+html[data-theme="light"] body.story-site .following-open,
+html[data-theme="light"] body.story-site .member-hub-tabs a,
+html[data-theme="light"] body.story-site .member-hub-action {
+  background:#f5f1f8!important;color:#67428d!important;border-color:#ded5e8!important;
+}
+html[data-theme="light"] body.story-site .creator-btn,
+html[data-theme="light"] body.story-site .listen-main-play {
+  background:#7045a0!important;color:#fff!important;border-color:#7045a0!important;
+}
+html[data-theme="light"] body.story-site .creator-rank-badge,
+html[data-theme="light"] body.story-site .creator-pill,
+html[data-theme="light"] body.story-site .creator-reward-amount span {
+  color:#67428d!important;
+}
+html[data-theme="light"] body.story-site .listen-track:hover,
+html[data-theme="light"] body.story-site .listen-track.is-active {
+  background:#f3edf8!important;color:#292333!important;
+}
+html[data-theme="light"] body.story-site .listen-track strong,
+html[data-theme="light"] body.story-site .listen-track small {
+  color:#292333!important;
+}
+
+/* Story detail, comments, submit/edit forms and reading tools */
+html[data-theme="light"] body.story-site .story-hero,
+html[data-theme="light"] body.story-site .story-detail,
+html[data-theme="light"] body.story-site .story-description,
+html[data-theme="light"] body.story-site .story-content,
+html[data-theme="light"] body.story-site .chapter-content,
+html[data-theme="light"] body.story-site .story-comments,
+html[data-theme="light"] body.story-site .story-comments-head,
+html[data-theme="light"] body.story-site .comment-item,
+html[data-theme="light"] body.story-site .comment-reply,
+html[data-theme="light"] body.story-site .story-gift-panel,
+html[data-theme="light"] body.story-site .submit-panel,
+html[data-theme="light"] body.story-site .submit-story-item,
+html[data-theme="light"] body.story-site .story-editor-panel,
+html[data-theme="light"] body.story-site .story-editor-card,
+html[data-theme="light"] body.story-site .short-story-description {
+  background:#fff!important;background-image:none!important;color:#302a38!important;
+  border-color:#e5dfeb!important;box-shadow:0 5px 20px rgba(35,25,50,.05)!important;
+}
+html[data-theme="light"] body.story-site .story-content *,
+html[data-theme="light"] body.story-site .chapter-content *,
+html[data-theme="light"] body.story-site .story-description *,
+html[data-theme="light"] body.story-site .short-story-description *,
+html[data-theme="light"] body.story-site .comment-item *,
+html[data-theme="light"] body.story-site .comment-reply * {
+  color:#302a38!important;
+}
+html[data-theme="light"] body.story-site .story-hero h1,
+html[data-theme="light"] body.story-site .story-comments h2,
+html[data-theme="light"] body.story-site .submit-panel h1,
+html[data-theme="light"] body.story-site .submit-panel h2,
+html[data-theme="light"] body.story-site .story-editor-panel h1,
+html[data-theme="light"] body.story-site .story-editor-card h2 {
+  color:#292333!important;
+}
+html[data-theme="light"] body.story-site .story-comments small,
+html[data-theme="light"] body.story-site .comment-meta,
+html[data-theme="light"] body.story-site .submit-muted,
+html[data-theme="light"] body.story-site .story-meta {
+  color:#756d80!important;
+}
+html[data-theme="light"] body.story-site .story-comments textarea,
+html[data-theme="light"] body.story-site .comment-compose textarea,
+html[data-theme="light"] body.story-site .comment-reply-form textarea,
+html[data-theme="light"] body.story-site .story-gift-panel input,
+html[data-theme="light"] body.story-site .story-gift-panel select,
+html[data-theme="light"] body.story-site .submit-form input,
+html[data-theme="light"] body.story-site .submit-form textarea,
+html[data-theme="light"] body.story-site .submit-form select {
+  background:#fff!important;color:#292333!important;border-color:#dcd4e5!important;
+}
+
+/* Compatibility tool, profile, notices and shared page shells */
+html[data-theme="light"] body.blog-page .compat-page,
+html[data-theme="light"] body.blog-page .compat-main,
+html[data-theme="light"] body.blog-page .community-main,
+html[data-theme="light"] body.blog-page .social-main,
+html[data-theme="light"] body.blog-page .diary-main {
+  background:transparent!important;color:#292333!important;
+}
+html[data-theme="light"] body.blog-page .compat-hero h1,
+html[data-theme="light"] body.blog-page .compat-pair strong,
+html[data-theme="light"] body.blog-page .compat-insights h2,
+html[data-theme="light"] body.blog-page .compat-advice h2 {
+  color:#292333!important;
+}
+html[data-theme="light"] body.blog-page .compat-form label,
+html[data-theme="light"] body.blog-page .member-public-card h1,
+html[data-theme="light"] body.blog-page .member-public-bio {
+  color:#554d60!important;
+}
+html[data-theme="light"] body.blog-page .site-footer,
+html[data-theme="light"] body.blog-page .td-global-footer,
+html[data-theme="light"] body.member-page .member-footer {
+  background:#fff!important;background-image:none!important;color:#756d80!important;border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.blog-page .community-error,
+html[data-theme="light"] body.blog-page .social-error {
+  background:#fff0f1!important;color:#a12d3a!important;border-color:#f0d6da!important;
+}
+html[data-theme="light"] body.blog-page .community-flash,
+html[data-theme="light"] body.blog-page .social-notice {
+  background:#eaf7ef!important;color:#28794b!important;border-color:#cce8d5!important;
+}
