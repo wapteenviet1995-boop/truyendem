@@ -20,6 +20,8 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
      $wasPublished=$target['status']==='published';
      if($decision==='approved')$pdo->prepare("UPDATE stories SET status='published',updated_at=NOW() WHERE id=?")->execute([$id]);
      else $pdo->prepare("UPDATE stories SET status='draft',updated_at=NOW() WHERE id=?")->execute([$id]);
+     // Audio tracks follow the parent story's moderation state.
+     try{$pdo->prepare("UPDATE audio_tracks SET status=? WHERE story_id=?")->execute([$decision==='approved'?'published':'draft',$id]);}catch(Throwable $audioError){/* Audio library may not be installed on older sites. */}
      $storyId=$id;
     }else{
      $q=$pdo->prepare('SELECT c.id,c.story_id,c.status,s.title,s.member_id FROM chapters c JOIN stories s ON s.id=c.story_id WHERE c.id=? AND s.member_id IS NOT NULL FOR UPDATE');$q->execute([$id]);$target=$q->fetch();
