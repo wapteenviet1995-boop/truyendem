@@ -95,7 +95,10 @@ try {
     <section class="td-drawer-section">
       <h3>GÓC THÀNH VIÊN</h3>
       <?php if ($tdMemberLoggedIn): ?>
-        <a class="td-drawer-link" href="/submit_story.php"><span>✎</span> Đăng truyện</a>
+        <a class="td-drawer-link" href="/submit_story.php"><span>▣</span> Trung tâm bài viết</a>
+        <a class="td-drawer-link" href="/post-short.php"><span>✎</span> Đăng truyện ngắn</a>
+        <a class="td-drawer-link" href="/post-audio.php"><span>♫</span> Đăng truyện audio</a>
+        <a class="td-drawer-link" href="/post-serial.php"><span>▤</span> Đăng truyện dài</a>
         <?php if($tdIsContributor): ?><a class="td-drawer-link" href="/contributor-dashboard.php"><span>▦</span> Tổng quan CTV</a><?php endif; ?>
         <a class="td-drawer-link" href="/library.php"><span>♡</span> Tủ sách</a>
         <a class="td-drawer-link" href="/following-authors.php"><span>♧</span> Tác giả đang theo dõi</a>
