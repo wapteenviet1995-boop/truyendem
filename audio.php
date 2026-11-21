@@ -23,7 +23,7 @@ if(!$story)http_response_code(404);
  if(!storyId||!targetId)return;
  var audio=document.getElementById('listen-audio');
  var endpoint='/track_read.php';
- function active(){return document.visibilityState==='visible' && (!audioOnly || (audio && !audio.paused && !audio.ended));}
+ function active(){return audioOnly ? !!(audio && !audio.paused && !audio.ended) : document.visibilityState==='visible';}
  function send(mode){
   if(!active())return;
   var body=new URLSearchParams({story_id:String(storyId),target_type:targetType,target_id:String(targetId),mode:mode});
