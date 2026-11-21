@@ -1,0 +1,66 @@
+/* Truyen Dem - theme repair for member post/edit pages */
+html[data-theme="light"] body.story-site footer.td-global-footer,
+html[data-theme="light"] body.story-site footer.td-global-footer .td-footer-shell,
+html[data-theme="light"] body.story-site footer.td-global-footer .td-footer-intro,
+html[data-theme="light"] body.story-site footer.td-global-footer .td-footer-bottom{
+  background:#fff!important;background-image:none!important;color:#756d80!important;
+}
+html[data-theme="light"] body.story-site footer.td-global-footer nav.td-footer-column{
+  display:flex!important;flex-direction:column!important;align-items:flex-start!important;
+  background:transparent!important;background-color:transparent!important;background-image:none!important;
+  border:0!important;border-radius:0!important;box-shadow:none!important;padding:0!important;
+}
+html[data-theme="light"] body.story-site footer.td-global-footer nav.td-footer-column h2{
+  background:transparent!important;color:#49345e!important;
+}
+html[data-theme="light"] body.story-site footer.td-global-footer nav.td-footer-column a{
+  background:transparent!important;color:#756d80!important;text-shadow:none!important;
+}
+html[data-theme="light"] body.story-site footer.td-global-footer .td-footer-brand,
+html[data-theme="light"] body.story-site footer.td-global-footer .td-footer-brand-copy strong{color:#30263a!important}
+html[data-theme="light"] body.story-site footer.td-global-footer .td-footer-brand-copy small{color:#856a9c!important}
+html[data-theme="light"] body.story-site footer.td-global-footer .td-footer-intro>p,
+html[data-theme="light"] body.story-site footer.td-global-footer .td-footer-bottom{color:#756d80!important}
+html[data-theme="light"] body.story-site footer.td-global-footer .td-footer-column h2{color:#49345e!important}
+html[data-theme="light"] body.story-site footer.td-global-footer .td-footer-bottom strong{color:#5e4279!important}
+html[data-theme="light"] body.story-site footer.td-global-footer .td-footer-tagline{color:#8a8094!important}
+html[data-theme="light"] body.story-site footer.td-global-footer .td-footer-explore{
+  background:#f3edf8!important;color:#67428d!important;border-color:#dfd1eb!important;
+}
+
+/* Form pages: readable panels and controls in light mode */
+html[data-theme="light"] body.story-site .submit-panel,
+html[data-theme="light"] body.story-site .edit-story-panel,
+html[data-theme="light"] body.story-site .member-audio-library,
+html[data-theme="light"] body.story-site .member-audio-track,
+html[data-theme="light"] body.story-site .member-audio-add{
+  background:#fff!important;background-image:none!important;color:#302a3a!important;
+  border-color:#e5dfeb!important;box-shadow:0 4px 18px rgba(36,20,58,.06)!important;
+}
+html[data-theme="light"] body.story-site .submit-panel h1,
+html[data-theme="light"] body.story-site .submit-panel h2,
+html[data-theme="light"] body.story-site .edit-story-panel h1,
+html[data-theme="light"] body.story-site .edit-story-panel h2,
+html[data-theme="light"] body.story-site .member-audio-library-head{color:#292333!important}
+html[data-theme="light"] body.story-site .submit-panel p,
+html[data-theme="light"] body.story-site .submit-panel label,
+html[data-theme="light"] body.story-site .edit-story-panel label,
+html[data-theme="light"] body.story-site .edit-story-muted,
+html[data-theme="light"] body.story-site .submit-muted{color:#756d80!important}
+html[data-theme="light"] body.story-site .submit-form input,
+html[data-theme="light"] body.story-site .submit-form textarea,
+html[data-theme="light"] body.story-site .submit-form select,
+html[data-theme="light"] body.story-site .edit-story-form input:not([type=file]),
+html[data-theme="light"] body.story-site .edit-story-form textarea,
+html[data-theme="light"] body.story-site .edit-story-form select{
+  background:#fff!important;color:#292333!important;border-color:#ded7e6!important;
+}
+html[data-theme="light"] body.story-site .submit-story-item,
+html[data-theme="light"] body.story-site .member-audio-track,
+html[data-theme="light"] body.story-site .edit-story-chapter,
+html[data-theme="light"] body.story-site .member-edit-note{
+  background:#faf8fc!important;color:#51465f!important;border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.story-site .submit-story-item summary,
+html[data-theme="light"] body.story-site .edit-story-chapter summary,
+html[data-theme="light"] body.story-site .member-audio-track-title{color:#67428d!important}
