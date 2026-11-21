@@ -15,6 +15,7 @@ if (($_SESSION['blog_admin_role'] ?? 'admin') === 'admin') {
  $adminLinks[] = ['contributor-rewards.php','Nhuận bút CTV','₫'];
  $adminLinks[] = ['contributor-reward-settings.php','Cấu hình nhuận bút','⚙'];
  $adminLinks[] = ['contributor-reward-periods.php','Lập kỳ nhuận bút','▣'];
+ $adminLinks[] = ['contributor-income-ranking.php','Xếp hạng thu nhập CTV','↗'];
  $adminLinks[] = ['moderators.php','Kiểm duyệt viên','✓'];
 }
 ?>
