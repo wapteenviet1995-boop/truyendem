@@ -6,7 +6,8 @@ if(empty($_SESSION['member_id'])){header('Location: login.php');exit;}
 $currentId=(int)$_SESSION['member_id'];$target=filter_input(INPUT_GET,'id',FILTER_VALIDATE_INT);
 if(!$target||$target<1){http_response_code(404);exit('Không tìm thấy thành viên.');}
 if(empty($_SESSION['member_csrf']))$_SESSION['member_csrf']=bin2hex(random_bytes(32));
-$signs=[1=>'Bạch Dương',2=>'Kim Ngưu',3=>'Song Tử',4=>'Cự Giải',5=>'Sư Tử',6=>'Xử Nữ',7=>'Thiên Bình',8=>'Bọ Cạp',9=>'Nhân Mã',10=>'Ma Kết',11=>'Bảo Bình',12=>'Song Ngư'];
+$signs=[1=>'Bạch Dương',2=>'Kim Ngưu',3=>'Song Tử',4=>'Cự Giải',5=>'Sư Tử',6=>'Xử Nữ',7=>'Thiên Bình',8=>'Cự Giải',9=>'Nhân Mã',10=>'Ma Kết',11=>'Bảo Bình',12=>'Song Ngư'];
+$signs[8]='Bọ Cạp';
 $symbols=[1=>'♈',2=>'♉',3=>'♊',4=>'♋',5=>'♌',6=>'♍',7=>'♎',8=>'♏',9=>'♐',10=>'♑',11=>'♒',12=>'♓'];
 $q=$pdo->prepare('SELECT m.id,m.display_name,m.created_at,m.last_seen_at,m.avatar_url,m.account_type,p.zodiac_sign,p.bio,s.profile_visibility,s.show_online FROM members m LEFT JOIN member_profiles p ON p.member_id=m.id LEFT JOIN member_account_settings s ON s.member_id=m.id WHERE m.id=? AND m.is_active=1 LIMIT 1');$q->execute([$target]);$person=$q->fetch();
 if(!$person){http_response_code(404);exit('Không tìm thấy thành viên.');}
@@ -21,15 +22,20 @@ if($target!==$currentId){
 $equippedItems=[];try{$q=$pdo->prepare('SELECT s.name,s.item_type,s.icon FROM member_inventory i JOIN shop_items s ON s.id=i.item_id WHERE i.member_id=? AND i.is_equipped=1 ORDER BY s.item_type');$q->execute([$target]);$equippedItems=$q->fetchAll();}catch(PDOException $e){}
 $visibility=$person['profile_visibility']?:'public';
 if($target!==$currentId && (($visibility==='private') || ($visibility==='friends' && $relation!=='friend'))){http_response_code(403);exit('Thành viên này chỉ cho phép bạn bè xem hồ sơ.');}
-
 $error='';
 if($_SERVER['REQUEST_METHOD']==='POST'&&$target!==$currentId){
  if(!hash_equals($_SESSION['member_csrf'],(string)($_POST['csrf']??'')))$error='Phiên đã hết hạn. Hãy tải lại trang.';
  else{
   $action=(string)($_POST['action']??'');
   if($action==='follow' && ($person['account_type']??'')==='contributor' && !$isFollowing){
-   try{$q=$pdo->prepare('INSERT IGNORE INTO member_follows(follower_id,following_id) VALUES(?,?)');$q->execute([$currentId,$target]);td_notify($pdo,$target,$currentId,'new_follower','Bạn có người theo dõi mới','Một thành viên vừa bắt đầu theo dõi bạn.','/member.php?id='.$currentId);header('Location: member.php?id='.$target.'&followed=1');exit;}catch(Throwable $e){$error='Chưa cài đặt chức năng theo dõi tác giả. Hãy chạy database/cleanup_redundant_tables.sql.';}
-  }elseif($action==='unfollow' && $isFollowing){$q=$pdo->prepare('DELETE FROM member_follows WHERE follower_id=? AND following_id=?');$q->execute([$currentId,$target]);header('Location: member.php?id='.$target.'&unfollowed=1');exit;
+   try{
+    $q=$pdo->prepare('INSERT IGNORE INTO member_follows(follower_id,following_id) VALUES(?,?)');$q->execute([$currentId,$target]);
+    if($q->rowCount()>0)td_notify($pdo,$target,$currentId,'new_follower','Bạn có người theo dõi mới','Một thành viên vừa bắt đầu theo dõi bạn.','/member.php?id='.$currentId);
+    header('Location: member.php?id='.$target.'&followed=1');exit;
+   }catch(Throwable $e){$error='Chưa cài đặt bảng theo dõi. Hãy chạy database/community.sql trong phpMyAdmin.';}
+  }elseif($action==='unfollow' && $isFollowing){
+   try{$q=$pdo->prepare('DELETE FROM member_follows WHERE follower_id=? AND following_id=?');$q->execute([$currentId,$target]);header('Location: member.php?id='.$target.'&unfollowed=1');exit;}
+   catch(Throwable $e){$error='Không thể hủy theo dõi lúc này. Vui lòng thử lại.';}
   }elseif($action==='send'&&$relation==='none'){
    $q=$pdo->prepare("INSERT INTO friend_requests(requester_id,addressee_id,status) VALUES(?,?,'pending')");$q->execute([$currentId,$target]);header('Location: member.php?id='.$target.'&sent=1');exit;
   }elseif($action==='accept'&&$relation==='incoming'){
@@ -50,10 +56,8 @@ if(isset($_GET['removed']))$error='Đã hủy kết bạn.';
 function member_h(?string $s):string{return htmlspecialchars($s??'',ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
 $creatorStats=null;$creatorStories=[];
 if(($person['account_type']??'member')==='contributor'){
- $q=$pdo->prepare("SELECT COUNT(*) total,COALESCE(SUM(views_count),0) views,COALESCE(SUM(likes_count),0) likes FROM stories WHERE member_id=? AND status='published'");
- $q->execute([$target]);$creatorStats=$q->fetch()?:['total'=>0,'views'=>0,'likes'=>0];
- $q=$pdo->prepare("SELECT id,title,slug,story_kind,story_type,views_count,likes_count,created_at FROM stories WHERE member_id=? AND status='published' ORDER BY created_at DESC,id DESC LIMIT 12");
- $q->execute([$target]);$creatorStories=$q->fetchAll();
+ $q=$pdo->prepare("SELECT COUNT(*) total,COALESCE(SUM(views_count),0) views,COALESCE(SUM(likes_count),0) likes FROM stories WHERE member_id=? AND status='published'");$q->execute([$target]);$creatorStats=$q->fetch()?:['total'=>0,'views'=>0,'likes'=>0];
+ $q=$pdo->prepare("SELECT id,title,slug,story_kind,story_type,views_count,likes_count,created_at FROM stories WHERE member_id=? AND status='published' ORDER BY created_at DESC,id DESC LIMIT 12");$q->execute([$target]);$creatorStories=$q->fetchAll();
 }
 function member_rank(int $published,int $views):array{
  if($published>=20||$views>=50000)return ['Tác giả tiêu biểu','featured','✦'];
