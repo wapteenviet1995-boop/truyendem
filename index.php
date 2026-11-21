@@ -93,6 +93,71 @@ try {
  <?php if($longStories):?><div class="td-home-cards"><?php foreach($longStories as $s)home_story_card($s);?></div><?php else:?><div class="td-home-empty">Chưa có truyện dài phù hợp.</div><?php endif;?>
 </section>
 <?php
+$topStoriesDay=[];$topStoriesWeek=[];$topStoriesMonth=[];
+$topReadSql="SELECT s.id,s.title,s.slug,s.author,s.category,s.story_type,s.story_kind,COUNT(*) AS read_count
+ FROM story_read_events re
+ INNER JOIN stories s ON s.id=re.story_id
+ WHERE s.status='published' AND re.qualified_at IS NOT NULL AND %s
+ GROUP BY s.id,s.title,s.slug,s.author,s.category,s.story_type,s.story_kind
+ ORDER BY read_count DESC,s.id DESC LIMIT 5";
+try {
+ $q=$pdo->query(sprintf($topReadSql,"re.read_date=CURDATE()"));
+ $topStoriesDay=$q->fetchAll();
+ $q=$pdo->query(sprintf($topReadSql,"re.read_date>=DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) AND re.read_date<=CURDATE()"));
+ $topStoriesWeek=$q->fetchAll();
+ $q=$pdo->query(sprintf($topReadSql,"re.read_date>=DATE_FORMAT(CURDATE(), '%Y-%m-01') AND re.read_date<=CURDATE()"));
+ $topStoriesMonth=$q->fetchAll();
+} catch(PDOException $e) { $topStoriesDay=[];$topStoriesWeek=[];$topStoriesMonth=[]; }
+?>
+<section class="story-section td-top-stories" id="top-stories" aria-labelledby="td-top-stories-title">
+ <div class="story-section-head td-top-stories-head"><div><span class="td-home-eyebrow">ĐƯỢC ĐỌC NHIỀU NHẤT</span><h2 id="td-top-stories-title">Top truyện</h2><p>Những câu chuyện đang được độc giả quan tâm.</p></div></div>
+ <div class="td-top-story-tabs" role="tablist" aria-label="Xếp hạng truyện theo thời gian">
+  <button type="button" class="td-top-story-tab is-active" role="tab" aria-selected="true" aria-controls="td-top-day" data-period="day">TOP NGÀY</button>
+  <button type="button" class="td-top-story-tab" role="tab" aria-selected="false" aria-controls="td-top-week" data-period="week">TOP TUẦN</button>
+  <button type="button" class="td-top-story-tab" role="tab" aria-selected="false" aria-controls="td-top-month" data-period="month">TOP THÁNG</button>
+ </div>
+ <?php foreach(['day'=>['label'=>'ngày hôm nay','items'=>$topStoriesDay],'week'=>['label'=>'tuần này','items'=>$topStoriesWeek],'month'=>['label'=>'tháng này','items'=>$topStoriesMonth]] as $period=>$data): ?>
+ <div class="td-top-story-panel" id="td-top-<?=home_h($period)?>" role="tabpanel" <?= $period!=='day'?'hidden':'' ?>>
+  <?php if($data['items']):?><ol class="td-top-story-list">
+   <?php foreach($data['items'] as $rank=>$topStory):$topUrl=home_story_url($topStory); ?>
+   <li class="td-top-story-row">
+    <span class="td-top-story-rank"><?=($rank+1)?></span>
+    <div class="td-top-story-copy"><a class="td-top-story-title" href="<?=home_h($topUrl)?>"><?=home_h($topStory['title'])?></a><span><?=home_h($topStory['category']?:'Truyện')?> · <?=in_array(($topStory['story_type']??'text'),['audio','both'],true)?'Audio':((($topStory['story_kind']??'serial')==='short')?'Truyện ngắn':'Truyện dài')?></span></div>
+    <strong class="td-top-story-count"><?=number_format((int)$topStory['read_count'])?><small> lượt đọc</small></strong>
+   </li>
+   <?php endforeach;?>
+  </ol><?php else:?><div class="td-top-story-empty">Chưa có truyện đủ lượt đọc hợp lệ trong <?=home_h($data['label'])?>.</div><?php endif;?>
+ </div>
+ <?php endforeach;?>
+</section>
+<style>
+.td-top-stories{margin-top:24px;padding:22px;border:1px solid rgba(160,145,120,.18);border-radius:18px;background:var(--card-bg,rgba(255,255,255,.025))}
+.td-top-stories-head{margin-bottom:14px}
+.td-top-story-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.td-top-story-tab{border:1px solid rgba(160,145,120,.28);background:transparent;color:inherit;border-radius:999px;padding:9px 15px;font-size:12px;font-weight:800;letter-spacing:.04em;cursor:pointer}
+.td-top-story-tab.is-active{background:#b58b53;border-color:#b58b53;color:#17120c}
+.td-top-story-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.td-top-story-row{display:flex;align-items:center;gap:12px;min-width:0;padding:12px;border:1px solid rgba(160,145,120,.14);border-radius:12px;background:rgba(128,128,128,.045)}
+.td-top-story-rank{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:9px;background:rgba(181,139,83,.14);color:#c69c63;font-weight:900}
+.td-top-story-copy{display:grid;gap:4px;flex:1;min-width:0}
+.td-top-story-title{color:inherit;text-decoration:none;font-weight:800;overflow-wrap:anywhere}
+.td-top-story-title:hover{color:#c69c63}
+.td-top-story-copy>span{font-size:12px;opacity:.68}
+.td-top-story-count{white-space:nowrap;font-size:14px;color:#c69c63;text-align:right}
+.td-top-story-count small{font-size:11px;font-weight:600}
+.td-top-story-empty{padding:18px;text-align:center;border:1px dashed rgba(160,145,120,.25);border-radius:12px;opacity:.7}
+@media(max-width:520px){.td-top-stories{padding:15px}.td-top-story-row{gap:9px;padding:10px}.td-top-story-count{font-size:12px}.td-top-story-count small{display:block}}
+</style>
+<script>
+document.querySelectorAll('.td-top-story-tab').forEach(function(tab){
+ tab.addEventListener('click',function(){
+  document.querySelectorAll('.td-top-story-tab').forEach(function(item){var active=item===tab;item.classList.toggle('is-active',active);item.setAttribute('aria-selected',active?'true':'false');});
+  document.querySelectorAll('.td-top-story-panel').forEach(function(panel){panel.hidden=panel.id!=='td-top-'+tab.dataset.period;});
+ });
+});
+</script>
+
+<?php
 $topXu=[];$topLv=[];
 try { $topXu=$pdo->query("SELECT m.id,m.display_name,m.avatar_url,COALESCE(w.balance,0) AS balance FROM members m LEFT JOIN member_wallets w ON w.member_id=m.id WHERE m.is_active=1 ORDER BY COALESCE(w.balance,0) DESC,m.id ASC LIMIT 5")->fetchAll(); } catch(PDOException $e) { $topXu=[]; }
 try { $topLv=$pdo->query("SELECT m.id,m.display_name,m.avatar_url,COALESCE(x.total_xp,0) AS total_xp FROM members m LEFT JOIN member_experience x ON x.member_id=m.id WHERE m.is_active=1 ORDER BY COALESCE(x.total_xp,0) DESC,m.id ASC LIMIT 5")->fetchAll(); } catch(PDOException $e) { $topLv=[]; }
