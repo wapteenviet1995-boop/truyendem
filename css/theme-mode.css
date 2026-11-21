@@ -1235,3 +1235,86 @@ html[data-theme="light"] body.blog-page .community-flash,
 html[data-theme="light"] body.blog-page .social-notice {
   background:#eaf7ef!important;color:#28794b!important;border-color:#cce8d5!important;
 }
+
+
+/* FIX RIENG: BANG XEP HANG CTV — LIGHT MODE */
+html[data-theme="light"] body.story-site .cl-main{
+  color:#292333!important;
+}
+html[data-theme="light"] body.story-site .cl-hero{
+  background:linear-gradient(135deg,#fff 0%,#f4eff9 100%)!important;
+  background-image:linear-gradient(135deg,#fff 0%,#f4eff9 100%)!important;
+  border-color:#e4dbea!important;
+  color:#292333!important;
+  box-shadow:0 8px 28px rgba(49,34,67,.07)!important;
+}
+html[data-theme="light"] body.story-site .cl-kicker{
+  color:#8053a6!important;
+}
+html[data-theme="light"] body.story-site .cl-hero h1,
+html[data-theme="light"] body.story-site .cl-head h2{
+  color:#292333!important;
+}
+html[data-theme="light"] body.story-site .cl-hero p,
+html[data-theme="light"] body.story-site .cl-head small,
+html[data-theme="light"] body.story-site .cl-rank small,
+html[data-theme="light"] body.story-site .cl-info small,
+html[data-theme="light"] body.story-site .cl-note{
+  color:#756d80!important;
+}
+html[data-theme="light"] body.story-site .cl-actions a{
+  background:#f2ebf8!important;
+  color:#68418e!important;
+  border-color:#dfd1eb!important;
+}
+html[data-theme="light"] body.story-site .cl-rank,
+html[data-theme="light"] body.story-site .cl-panel{
+  background:#fff!important;
+  background-image:none!important;
+  color:#292333!important;
+  border-color:#e5dfeb!important;
+  box-shadow:0 5px 20px rgba(35,25,50,.06)!important;
+}
+html[data-theme="light"] body.story-site .cl-rank b{
+  color:#49345e!important;
+}
+html[data-theme="light"] body.story-site .cl-item{
+  background:#faf8fc!important;
+  background-image:none!important;
+  color:#292333!important;
+  border-color:#e7e0ed!important;
+}
+html[data-theme="light"] body.story-site .cl-info strong,
+html[data-theme="light"] body.story-site .cl-info strong a{
+  color:#30263a!important;
+}
+html[data-theme="light"] body.story-site .cl-number{
+  background:#eee7f5!important;
+  color:#67428d!important;
+}
+html[data-theme="light"] body.story-site .cl-item:nth-child(1) .cl-number{
+  background:#fff0cc!important;color:#80520b!important;
+}
+html[data-theme="light"] body.story-site .cl-item:nth-child(2) .cl-number{
+  background:#edf0f5!important;color:#4e596b!important;
+}
+html[data-theme="light"] body.story-site .cl-item:nth-child(3) .cl-number{
+  background:#f8e9df!important;color:#8a4b2d!important;
+}
+html[data-theme="light"] body.story-site .cl-rank-tag.new{
+  background:#eee9f4!important;color:#675777!important;
+}
+html[data-theme="light"] body.story-site .cl-rank-tag.rising{
+  background:#e6f4ed!important;color:#28634a!important;
+}
+html[data-theme="light"] body.story-site .cl-rank-tag.official{
+  background:#eeeafd!important;color:#57418d!important;
+}
+html[data-theme="light"] body.story-site .cl-rank-tag.featured{
+  background:#fff1d8!important;color:#80520b!important;
+}
+html[data-theme="light"] body.story-site .cl-empty{
+  background:#faf8fc!important;
+  color:#756d80!important;
+  border-color:#dcd2e5!important;
+}
