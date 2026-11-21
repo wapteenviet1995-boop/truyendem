@@ -17,4 +17,19 @@ if(!$story)http_response_code(404);
 <?php endif;?></main><?php require __DIR__.'/includes/footer.php';?>
 <?php if($story&&$tracks):?><script>
 (()=>{const a=document.getElementById('listen-audio'),rows=[...document.querySelectorAll('.listen-track')],play=document.getElementById('listen-play'),prev=document.getElementById('listen-prev'),next=document.getElementById('listen-next'),bar=document.getElementById('listen-progress'),cur=document.getElementById('listen-current'),dur=document.getElementById('listen-duration'),title=document.getElementById('listen-now-title'),sub=document.getElementById('listen-now-sub'),hint=document.getElementById('listen-hint'),mark=document.getElementById('listen-playing-mark');let idx=0;const time=n=>Number.isFinite(n)?Math.floor(n/60)+':'+String(Math.floor(n%60)).padStart(2,'0'):'0:00';function select(i,auto){idx=(i+rows.length)%rows.length;const r=rows[idx];a.src=r.dataset.url;title.textContent=r.dataset.title;sub.textContent=r.dataset.sub;rows.forEach((x,k)=>{x.classList.toggle('is-active',k===idx);x.classList.remove('is-playing')});bar.value=0;cur.textContent='0:00';dur.textContent='0:00';if(auto)a.play().catch(()=>hint.textContent='Không thể tự phát. Hãy nhấn nút phát để nghe.')}function state(){const on=!a.paused;play.textContent=on?'Ⅱ':'▶';mark.classList.toggle('is-playing',on);rows[idx]?.classList.toggle('is-playing',on);hint.textContent=on?'Đang phát · Chúc bạn nghe truyện vui vẻ.':'Đã tạm dừng'}rows.forEach((r,i)=>r.addEventListener('click',()=>select(i,true)));play.addEventListener('click',()=>{if(!a.src)select(idx,false);if(a.paused)a.play().catch(()=>hint.textContent='Không thể phát file audio này.');else a.pause()});prev.addEventListener('click',()=>select(idx-1,true));next.addEventListener('click',()=>select(idx+1,true));a.addEventListener('play',state);a.addEventListener('pause',state);a.addEventListener('timeupdate',()=>{cur.textContent=time(a.currentTime);if(Number.isFinite(a.duration)){bar.value=Math.round(a.currentTime/a.duration*1000);dur.textContent=time(a.duration)}});a.addEventListener('loadedmetadata',()=>dur.textContent=time(a.duration));a.addEventListener('ended',()=>{if(idx<rows.length-1)select(idx+1,true);else hint.textContent='Bạn đã nghe hết danh sách phát.'});a.addEventListener('error',()=>hint.textContent='Không tải được file audio. Vui lòng kiểm tra đường dẫn MP3.');bar.addEventListener('input',()=>{if(Number.isFinite(a.duration))a.currentTime=bar.value/1000*a.duration});document.getElementById('listen-volume').addEventListener('input',e=>a.volume=Number(e.target.value));a.volume=.85})();
-</script><?php endif;?></body></html>
+</script><?php endif;?><?php if($story && $tracks): ?><script>
+(function(){
+ var storyId=<?= (int)$story['id'] ?>, targetType='audio', targetId=<?= (int)$story['id'] ?>, audioOnly=true;
+ if(!storyId||!targetId)return;
+ var audio=document.getElementById('listen-audio');
+ var endpoint='/track_read.php';
+ function active(){return document.visibilityState==='visible' && (!audioOnly || (audio && !audio.paused && !audio.ended));}
+ function send(mode){
+  if(!active())return;
+  var body=new URLSearchParams({story_id:String(storyId),target_type:targetType,target_id:String(targetId),mode:mode});
+  fetch(endpoint,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8','X-Requested-With':'XMLHttpRequest'},body:body.toString(),keepalive:true}).catch(function(){});
+ }
+ send('start');
+ window.setInterval(function(){if(active())send('ping');},15000);
+})();
+</script><?php endif; ?></body></html>
