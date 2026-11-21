@@ -264,4 +264,19 @@ document.querySelectorAll('[data-reply-cancel]').forEach(function(cancel){
   if(toggle){toggle.setAttribute('aria-expanded','false');toggle.textContent='↩ Trả lời';}
  });
 });
-</script></body></html>
+</script><?php if($story && ($story['story_kind']??'serial')==='short'): ?><script>
+(function(){
+ var storyId=<?= (int)$story['id'] ?>, targetType='short_story', targetId=<?= (int)$story['id'] ?>, audioOnly=false;
+ if(!storyId||!targetId)return;
+ var audio=document.getElementById('listen-audio');
+ var endpoint='/track_read.php';
+ function active(){return document.visibilityState==='visible' && (!audioOnly || (audio && !audio.paused && !audio.ended));}
+ function send(mode){
+  if(!active())return;
+  var body=new URLSearchParams({story_id:String(storyId),target_type:targetType,target_id:String(targetId),mode:mode});
+  fetch(endpoint,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8','X-Requested-With':'XMLHttpRequest'},body:body.toString(),keepalive:true}).catch(function(){});
+ }
+ send('start');
+ window.setInterval(function(){if(active())send('ping');},15000);
+})();
+</script><?php endif; ?></body></html>
