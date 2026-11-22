@@ -55,7 +55,7 @@ function rd_paragraphs($value): string {
  <?php if($chapter['audio_url']):?><audio class="story-audio reader-audio" controls preload="none" src="<?=rd_h($chapter['audio_url'])?>">Trình duyệt không hỗ trợ audio.</audio><?php endif;?>
  <article class="reader-content" id="readerContent"><?=rd_paragraphs($chapter['content'])?></article>
  <div class="reader-reading-note"><span>✦</span> Bạn đang ở chương <?= (int)$chapter['chapter_number']?>. Tiến độ đọc được lưu trên thiết bị này.</div>
- <div class="reader-report-link"><a href="/report.php?story_id=<?=(int)$chapter['story_id']?>&chapter_id=<?=(int)$chapter['id']?>">⚑ Báo cáo vi phạm chương này</a><button type="button" class="td-reader-share" data-share-page>↗ Chia sẻ</button><div class="td-share-quick" aria-label="Chia sẻ nhanh"><span class="td-share-label">Chia sẻ nhanh</span><a class="td-share-facebook" href="#" data-share-service="facebook" aria-label="Facebook" title="Facebook">f</a><a class="td-share-zalo" href="#" data-share-service="zalo" aria-label="Zalo" title="Zalo">Z</a><a class="td-share-messenger" href="#" data-share-service="messenger" aria-label="Messenger" title="Messenger">↗</a><button type="button" class="td-share-copy" data-share-service="copy" aria-label="Sao chép liên kết" title="Sao chép liên kết">⧉</button></div></div>
+ <div class="reader-report-link"><a href="/report.php?story_id=<?=(int)$chapter['story_id']?>&chapter_id=<?=(int)$chapter['id']?>">⚑ Báo cáo vi phạm chương này</a><button type="button" class="td-reader-share" data-share-page>↗ Chia sẻ</button></div>
  <nav class="reader-pagination reader-pagination-bottom">
   <?php if($prev):?><a class="reader-prev" href="<?=rd_url($prev)?>"><small>CHƯƠNG TRƯỚC</small><strong>← <?=rd_h($prev['title'])?></strong></a><?php else:?><span></span><?php endif;?>
   <?php if($next):?><a class="reader-next" href="<?=rd_url($next)?>"><small>CHƯƠNG TIẾP THEO</small><strong><?=rd_h($next['title'])?> →</strong></a><?php else:?><a class="reader-next" href="/truyen/<?=rawurlencode($chapter['slug'])?>.html"><small>ĐÃ ĐỌC HẾT</small><strong>Danh sách chương →</strong></a><?php endif;?>
@@ -107,20 +107,6 @@ function rd_paragraphs($value): string {
    var data={title:document.title,text:'Mời bạn đọc truyện này trên Truyện Đêm:',url:window.location.href};
    try{if(navigator.share){await navigator.share(data);return;}await copyLink();button.textContent='✓ Đã sao chép';window.setTimeout(function(){button.textContent='↗ Chia sẻ';},2200);}
    catch(error){if(error&&error.name==='AbortError')return;button.textContent='Thử lại';window.setTimeout(function(){button.textContent='↗ Chia sẻ';},2200);}
-  });
- });
- document.querySelectorAll('[data-share-service]').forEach(function(button){
-  button.addEventListener('click',async function(event){
-   event.preventDefault();var url=encodeURIComponent(window.location.href),title=encodeURIComponent(document.title),service=button.dataset.shareService,target='';
-   if(service==='facebook')target='https://www.facebook.com/sharer/sharer.php?u='+url;
-   if(service==='zalo')target='https://zalo.me/share?url='+url;
-   if(service==='messenger')target='fb-messenger://share/?link='+url;
-   if(service==='copy'){
-    try{await copyLink();button.textContent='Đã sao chép ✓';window.setTimeout(function(){button.textContent='Sao chép link';},2200);}
-    catch(error){button.textContent='Không sao chép được';window.setTimeout(function(){button.textContent='Sao chép link';},2200);}
-    return;
-   }
-   if(target)window.open(target,'_blank','noopener,noreferrer');
   });
  });
 })();
