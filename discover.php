@@ -86,7 +86,7 @@ if (!isset($pages)) $pages = 1;
 <link rel="stylesheet" href="/css/stories.css?v=20261122-discover1">
 <link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1">
 <link rel="stylesheet" href="/css/site-matte-black.css?v=20261122-discover1">
-<link rel="stylesheet" href="/css/discover.css?v=20261122-1">
+<link rel="stylesheet" href="/css/discover.css?v=20261122-light-category-fix1">
 </head>
 <body class="story-site discover-page">
 <?php require __DIR__ . '/includes/header.php'; ?>
