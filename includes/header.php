@@ -56,7 +56,7 @@ try {
 
 <nav class="td-bottom-nav" aria-label="Điều hướng nhanh">
   <a href="/index.php"><span>⌂</span><small>Trang chủ</small></a>
-  <a href="/library.php"><span>▤</span><small>Thư viện</small></a>
+  <a href="/discover.php"><span>▤</span><small>Thư viện</small></a>
   <a class="td-bottom-nav-primary" href="<?= $tdMemberLoggedIn ? '/submit_story.php' : '/login.php' ?>"><span>＋</span><small>Đăng truyện</small></a>
   <a href="/library.php"><span>♡</span><small>Tủ sách</small></a>
   <a href="<?= $tdMemberLoggedIn ? '/account.php' : '/login.php' ?>"><span>♙</span><small>Tài khoản</small></a>
@@ -76,21 +76,21 @@ try {
     <section class="td-drawer-section">
       <h3>KHÁM PHÁ</h3>
       <a class="td-drawer-link" href="/index.php"><span>⌂</span> Trang chủ</a>
-      <a class="td-drawer-link" href="/index.php#library"><span>✧</span> Mới cập nhật</a>
+      <a class="td-drawer-link" href="/discover.php"><span>✧</span> Khám phá thư viện</a>
       <a class="td-drawer-link" href="/index.php#categories"><span>♨</span> Thể loại truyện</a>
       <a class="td-drawer-link" href="/index.php#leaderboard"><span>♜</span> Bảng xếp hạng</a>
-      <a class="td-drawer-link" href="/index.php#library"><span>✧</span> Truyện mới cập nhật</a>
+      <a class="td-drawer-link" href="/discover.php"><span>✧</span> Truyện mới cập nhật</a>
       <a class="td-drawer-link" href="/community.php"><span>♧</span> Cộng đồng</a>
       <a class="td-drawer-link" href="/contributor-leaderboard.php"><span>♜</span> Bảng xếp hạng CTV</a>
     </section>
     <section class="td-drawer-section td-drawer-genres">
-      <div class="td-drawer-section-title"><h3>THỂ LOẠI PHỔ BIẾN</h3><a href="/index.php#library">Tất cả ›</a></div>
+      <div class="td-drawer-section-title"><h3>THỂ LOẠI PHỔ BIẾN</h3><a href="/discover.php">Tất cả ›</a></div>
       <?php if ($tdGenres): ?>
         <div class="td-genre-grid">
-          <?php foreach ($tdGenres as $tdGenre): ?><a href="/index.php?category=<?= rawurlencode((string)$tdGenre) ?>#library"><?= htmlspecialchars((string)$tdGenre, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></a><?php endforeach; ?>
+          <?php foreach ($tdGenres as $tdGenre): ?><a href="/discover.php?category=<?= rawurlencode((string)$tdGenre) ?>"><?= htmlspecialchars((string)$tdGenre, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></a><?php endforeach; ?>
         </div>
       <?php else: ?>
-        <div class="td-genre-grid"><a href="/index.php#library">Truyện ngắn</a><a href="/index.php#library">Truyện dài</a><a href="/index.php#library">Truyện mới</a><a href="/index.php#library">Tất cả truyện</a></div>
+        <div class="td-genre-grid"><a href="/discover.php?kind=short">Truyện ngắn</a><a href="/discover.php?kind=serial">Truyện dài</a><a href="/discover.php">Truyện mới</a><a href="/discover.php">Tất cả truyện</a></div>
       <?php endif; ?>
     </section>
     <section class="td-drawer-section">
