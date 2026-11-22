@@ -109,3 +109,11 @@ body.short-story-page .short-story-text img{display:block;max-width:100%;height:
 .td-reader-share{padding:8px 13px;border:1px solid var(--reader-line,#ded8e5);border-radius:9px;background:var(--reader-panel,#fff);color:var(--reader-text,#30263a);font:inherit;font-size:13px;font-weight:700}
 .reader-report-link{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
 @media(max-width:600px){.reader-report-link{gap:8px}.td-reader-share{min-height:38px}}
+
+/* Always-visible quick share destinations */
+.td-share-quick{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.td-share-quick a,.td-share-quick button{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:6px 10px;border:1px solid var(--reader-line,#ded8e5);border-radius:8px;background:var(--reader-panel,#fff);color:var(--reader-text,#30263a);font:inherit;font-size:12px;font-weight:750;text-decoration:none;cursor:pointer}
+.td-share-quick a:hover,.td-share-quick button:hover{border-color:#8b63ad;color:#8055a4}
+.story-detail-actions .td-share-quick{flex-basis:100%;margin-top:3px}
+.reader-report-link .td-share-quick{justify-content:center}
+@media(max-width:600px){.td-share-quick{gap:5px}.td-share-quick a,.td-share-quick button{min-height:36px;padding:7px 9px}}
