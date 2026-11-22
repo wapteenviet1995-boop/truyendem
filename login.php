@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Đăng nhập | Truyện Đêm</title><link rel="stylesheet" href="css/style.css?v=member1"><link rel="stylesheet" href="/css/member-auth.css?v=20261121-1"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1">
+<title>Đăng nhập | Truyện Đêm</title><link rel="stylesheet" href="css/style.css?v=member1"><link rel="stylesheet" href="/css/member-auth.css?v=20261122-light1"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1">
 </head>
 <body class="member-page">
 <?php require __DIR__ . '/includes/header.php'; ?>
