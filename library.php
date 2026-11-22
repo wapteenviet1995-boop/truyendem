@@ -13,7 +13,7 @@ $favorites=[];$history=[];
 try{
  $q=$pdo->prepare("SELECT s.id,s.title,s.slug,s.author,s.cover_url,s.story_kind,s.category,s.story_type,s.updated_at FROM story_favorites f JOIN stories s ON s.id=f.story_id WHERE f.member_id=? AND s.status='published' ORDER BY f.created_at DESC");
  $q->execute([$me]);$favorites=$q->fetchAll();
- $q=$pdo->prepare("SELECT s.id story_id,s.title,s.slug,s.author,s.cover_url,s.story_kind,c.id chapter_id,c.chapter_number,c.title chapter_title,r.progress_percent,r.updated_at FROM story_reading_history r JOIN stories s ON s.id=r.story_id JOIN chapters c ON c.id=r.chapter_id WHERE r.member_id=? AND s.status='published' AND c.status='published' ORDER BY r.updated_at DESC LIMIT 30");
+ $q=$pdo->prepare("SELECT s.id story_id,s.title,s.slug,s.author,s.cover_url,s.story_kind,c.id chapter_id,c.chapter_number,c.title chapter_title,r.progress_percent,r.updated_at FROM story_reading_history r JOIN stories s ON s.id=r.story_id JOIN chapters c ON c.id=r.chapter_id WHERE r.member_id=? AND s.status='published' AND c.status='published' AND r.progress_percent<99.5 ORDER BY r.updated_at DESC LIMIT 30");
  $q->execute([$me]);$history=$q->fetchAll();
 }catch(PDOException $e){http_response_code(500);exit('Chưa cài đặt dữ liệu truyện. Hãy kiểm tra database/stories.sql.');}
 function lib_h($v):string{return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
