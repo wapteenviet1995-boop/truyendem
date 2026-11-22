@@ -120,7 +120,7 @@ function community_h(?string $value): string { return htmlspecialchars($value ??
 ?>
 <!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cộng đồng | Truyện Đêm</title><link rel="stylesheet" href="css/style.css?v=socialdiary1"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1">
+<title>Cộng đồng | Truyện Đêm</title><link rel="stylesheet" href="css/style.css?v=socialdiary1"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261122-footer-community-fix1">
 </head>
 <body class="blog-page community-page">
 <?php require __DIR__ . '/includes/header.php'; ?>
