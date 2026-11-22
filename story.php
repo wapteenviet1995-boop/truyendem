@@ -194,7 +194,7 @@ function st_render_content($value): string {
  }
  return implode("\n",$out);
 }
-?><!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?= $story?st_h($story['title']).' | Truyện Đêm':'Không tìm thấy truyện' ?></title><link rel="stylesheet" href="/css/style.css?v=20261111-routes1"><link rel="stylesheet" href="/css/stories.css?v=20261118-reader-menu-fix"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1">
+?><!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?= $story?st_h($story['title']).' | Truyện Đêm':'Không tìm thấy truyện' ?></title><link rel="stylesheet" href="/css/style.css?v=20261111-routes1"><link rel="stylesheet" href="/css/stories.css?v=20261118-reader-menu-fix"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1"><link rel="stylesheet" href="/css/reader-redesign.css?v=20261122-1">
 </head><body class="story-site <?= $story && ($story['story_kind'] ?? 'serial') === 'short' ? 'short-story-page' : '' ?>">
 <?php require __DIR__ . '/includes/header.php'; ?>
 <main class="story-main"><?php if(!$story):?><section class="story-panel"><h1>Không tìm thấy truyện</h1><a class="story-btn" href="/index.php">Về thư viện truyện</a></section><?php else:?>
