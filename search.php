@@ -15,7 +15,7 @@ try {
 } catch (PDOException $e) { $error = true; }
 ?>
 <!doctype html>
-<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090a10"><title>Tìm kiếm truyện<?= $q !== '' ? ' - ' . search_h($q) : '' ?> | Truyện Đêm</title><meta name="description" content="Tìm truyện và tác giả yêu thích tại Truyện Đêm."><link rel="stylesheet" href="/css/style.css?v=20261111-routes1"><link rel="stylesheet" href="/css/stories.css?v=20261111-routes1"><link rel="stylesheet" href="/css/member-hub.css?v=20261112-leaderboard2"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1"></head>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090a10"><title>Tìm kiếm truyện<?= $q !== '' ? ' - ' . search_h($q) : '' ?> | Truyện Đêm</title><meta name="description" content="Tìm truyện và tác giả yêu thích tại Truyện Đêm."><link rel="stylesheet" href="/css/style.css?v=20261111-routes1"><link rel="stylesheet" href="/css/stories.css?v=20261111-routes1"><link rel="stylesheet" href="/css/member-hub.css?v=20261122-light1"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1"></head>
 <body class="story-site">
 <?php require __DIR__ . '/includes/header.php'; ?>
 <main class="story-main">
