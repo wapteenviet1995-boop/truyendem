@@ -35,7 +35,7 @@ try{
 function lib_h($v):string{return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
 function lib_url(array $s):string{return (($s['story_kind']??'serial')==='short'?'/truyen-ngan/':'/truyen/').rawurlencode((string)$s['slug']).'.html';}
 ?>
-<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tủ sách của tôi | Truyện Đêm</title><link rel="stylesheet" href="/css/style.css?v=memberhub1"><link rel="stylesheet" href="/css/stories.css?v=memberhub1"><link rel="stylesheet" href="/css/member-hub.css?v=1"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1">
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tủ sách của tôi | Truyện Đêm</title><link rel="stylesheet" href="/css/style.css?v=memberhub1"><link rel="stylesheet" href="/css/stories.css?v=memberhub1"><link rel="stylesheet" href="/css/member-hub.css?v=20261122-light1"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1">
 </head>
 <body class="story-site"><?php require __DIR__ . '/includes/header.php'; ?>
 <main class="member-hub-main"><section class="member-hub-hero"><span class="kicker">✦ KHÔNG GIAN RIÊNG CỦA BẠN ✦</span><h1>Tủ sách cá nhân</h1><p>Lưu lại những câu chuyện yêu thích và tiếp tục đọc từ nơi bạn đã dừng.</p></section>
