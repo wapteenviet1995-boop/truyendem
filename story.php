@@ -202,7 +202,7 @@ function st_render_content($value): string {
 <?php if($story['cover_url']):?><img class="story-cover-large" src="<?=st_h($story['cover_url'])?>" alt="<?=st_h($story['title'])?>"><?php else:?><div class="story-cover-large cover-placeholder">☾</div><?php endif;?>
 <div class="story-detail-copy"><span class="story-tag"><?=st_h($story['category'])?></span><h1><?=st_h($story['title'])?></h1><p class="story-author">Tác giả: <?=st_h($story['author'])?></p><p class="story-stats">◉ <?=number_format($viewCount)?> lượt xem <span>♥ <?=number_format($likeCount)?> lượt thích</span></p></div><?php if(($story['story_kind']??'serial')!=='short'):?><section class="story-description-box" aria-label="Giới thiệu truyện"><h2 class="story-description-title">GIỚI THIỆU TRUYỆN</h2><p class="story-description"><?=nl2br(st_h($story['description']))?></p></section><?php endif;?><div class="story-detail-actions"><p class="story-meta"><?=($story['story_kind']??'serial')==='short'?'Truyện ngắn':count($chapters).' chương'?> · <?= $story['story_type']==='audio'?'Truyện audio':($story['story_type']==='both'?'Đọc & nghe':'Truyện chữ') ?></p>
 <?php if(($story['story_kind']??'serial')!=='short' && $chapters):?><a class="story-btn" href="/truyen/<?=rawurlencode($slug)?>/chuong-<?= (int)$chapters[0]['chapter_number']?>.html">Đọc từ đầu</a><?php endif;?>
-<?php if($memberId):?><form method="post" class="favorite-form"><input type="hidden" name="csrf" value="<?=st_h($_SESSION['member_csrf'])?>"><input type="hidden" name="action" value="like"><button class="story-btn <?=$liked?'':'story-btn-quiet'?>"><?=$liked?'♥ Đã thả tim':'♡ Thả tim tác phẩm'?></button></form><form method="post" class="favorite-form"><input type="hidden" name="csrf" value="<?=st_h($_SESSION['member_csrf'])?>"><input type="hidden" name="action" value="favorite"><button class="story-btn story-btn-quiet"><?=$favorite?'♥ Đã lưu trong tủ sách':'♡ Lưu vào tủ sách'?></button></form><?php else:?><a class="story-btn story-btn-quiet" href="/login.php">Đăng nhập để thả tim tác phẩm</a><a class="story-btn story-btn-quiet" href="/login.php">Đăng nhập để lưu vào tủ sách</a><?php endif;?> <a class="story-btn story-btn-quiet" href="/report.php?story_id=<?=(int)$story['id']?>">⚑ Báo cáo vi phạm</a></div></section>
+<?php if($memberId):?><form method="post" class="favorite-form"><input type="hidden" name="csrf" value="<?=st_h($_SESSION['member_csrf'])?>"><input type="hidden" name="action" value="like"><button class="story-btn <?=$liked?'':'story-btn-quiet'?>"><?=$liked?'♥ Đã thả tim':'♡ Thả tim tác phẩm'?></button></form><form method="post" class="favorite-form"><input type="hidden" name="csrf" value="<?=st_h($_SESSION['member_csrf'])?>"><input type="hidden" name="action" value="favorite"><button class="story-btn story-btn-quiet"><?=$favorite?'♥ Đã lưu trong tủ sách':'♡ Lưu vào tủ sách'?></button></form><?php else:?><a class="story-btn story-btn-quiet" href="/login.php">Đăng nhập để thả tim tác phẩm</a><a class="story-btn story-btn-quiet" href="/login.php">Đăng nhập để lưu vào tủ sách</a><?php endif;?> <a class="story-btn story-btn-quiet" href="/report.php?story_id=<?=(int)$story['id']?>">⚑ Báo cáo vi phạm</a><button type="button" class="story-btn story-btn-quiet td-share-button" data-share-page>↗ Chia sẻ</button></div></section>
 <?php if($memberId && (int)($story['member_id']??0)>0 && (int)$story['member_id']!==$memberId):?><section class="story-panel story-gift-panel" id="story-gift"><h2>✦ Ủng hộ tác giả</h2><p>Tặng một chút Xu để động viên người viết tiếp tục sáng tác.</p><?php if(!empty($_SESSION['story_gift_notice'])):?><p class="story-gift-notice"><?=st_h($_SESSION['story_gift_notice'])?></p><?php unset($_SESSION['story_gift_notice']);endif;?><?php if(!empty($_SESSION['story_gift_error'])):?><p class="story-gift-error"><?=st_h($_SESSION['story_gift_error'])?></p><?php unset($_SESSION['story_gift_error']);endif;?><form method="post"><input type="hidden" name="csrf" value="<?=st_h($_SESSION['member_csrf'])?>"><input type="hidden" name="action" value="gift_author"><label for="story-gift-amount">Số Xu muốn tặng</label><select id="story-gift-amount" name="amount"><option value="5">5 Xu</option><option value="10">10 Xu</option><option value="20">20 Xu</option><option value="50">50 Xu</option><option value="100">100 Xu</option></select><button class="story-btn" type="submit">Tặng Xu</button></form></section><?php endif;?>
 <?php if(($story['story_kind']??'serial')==='short'):?>
 <section class="short-reader-tools" aria-label="Tùy chỉnh đọc truyện">
@@ -303,4 +303,22 @@ document.querySelectorAll('[data-reply-cancel]').forEach(function(cancel){
  send('start');
  window.setInterval(function(){if(active())send('ping');},15000);
 })();
-</script><?php endif; ?></body></html>
+</script><?php endif; ?><script>
+(function(){
+ var button=document.querySelector('[data-share-page]');
+ if(!button)return;
+ button.addEventListener('click',async function(){
+  var data={title:document.title,text:'Mời bạn đọc truyện này trên Truyện Đêm:',url:window.location.href};
+  try{
+   if(navigator.share){await navigator.share(data);return;}
+   if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(data.url);}
+   else{
+    var field=document.createElement('textarea');field.value=data.url;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();
+    var copied=document.execCommand('copy');field.remove();if(!copied)throw new Error('copy');
+   }
+   button.textContent='✓ Đã sao chép liên kết';
+   window.setTimeout(function(){button.textContent='↗ Chia sẻ';},2200);
+  }catch(error){if(error&&error.name==='AbortError')return;button.textContent='Không thể chia sẻ';window.setTimeout(function(){button.textContent='↗ Chia sẻ';},2200);}
+ });
+})();
+</script></body></html>
