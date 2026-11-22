@@ -19,3 +19,19 @@ body.member-page .member-switch a{color:#d4b6fa!important;font-weight:750;text-d
 body.member-page .member-switch a:hover{text-decoration:underline}
 body.member-page .member-error{padding:12px 14px;margin:0 0 17px;border:1px solid #693b49;border-radius:11px;background:#321d26!important;color:#ffc5d0!important;font-size:.88rem}
 @media(max-width:600px){body.member-page .member-wrap{min-height:calc(100vh - 150px);padding:28px 13px 52px}body.member-page .member-panel{border-radius:17px!important;padding:25px 19px}}
+
+
+/* Light mode for login, registration and password recovery */
+html[data-theme="light"] body.member-page{background:radial-gradient(ellipse at 50% 8%,#f2eafa 0%,#fbf9fd 52%,#f5f2f8 100%)!important;color:#302a3a!important}
+html[data-theme="light"] body.member-page .member-panel{background:linear-gradient(155deg,#fff,#faf7fc)!important;border-color:#e5dceb!important;box-shadow:0 18px 55px rgba(55,35,70,.1)!important}
+html[data-theme="light"] body.member-page .member-panel h1{color:#30263a!important}
+html[data-theme="light"] body.member-page .member-lead{color:#756d80!important}
+html[data-theme="light"] body.member-page .member-form label{color:#51465f!important}
+html[data-theme="light"] body.member-page .member-form input{background:#fff!important;border-color:#ded7e6!important;color:#292333!important}
+html[data-theme="light"] body.member-page .member-form input::placeholder{color:#9b91a5!important}
+html[data-theme="light"] body.member-page .member-form small{color:#82788c!important}
+html[data-theme="light"] body.member-page .member-switch{color:#756d80!important}
+html[data-theme="light"] body.member-page .member-switch a{color:#7953a3!important}
+html[data-theme="light"] body.member-page .member-error{background:#fff0f1!important;color:#a13f50!important;border-color:#efcbd1!important}
+html[data-theme="light"] body.member-page .member-symbol{background:linear-gradient(145deg,#f2eafa,#e9def2)!important;color:#7953a3!important;border-color:#dfd1eb!important}
+html[data-theme="light"] body.member-page .member-footer{background:#f7f3fa!important;color:#756d80!important}
