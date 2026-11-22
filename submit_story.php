@@ -129,6 +129,7 @@ function ss_h($v):string{return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT
 <link rel="stylesheet" href="css/story-editor.css?v=20261114-1"><link rel="stylesheet" href="/css/member-posts.css?v=20261121-v1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1">
 </head><body class="story-site">
 <?php require __DIR__ . '/includes/header.php'; ?>
+<?php require __DIR__ . '/includes/header.php'; ?>
 <main class="submit-wrap member-posts-wrap">
 <section class="member-posts-hero"><div><span class="member-posts-kicker">KHÔNG GIAN SÁNG TÁC</span><h1><?= $postMode==='hub'?'Trung tâm bài viết':($postMode==='short'?'Đăng truyện ngắn':($postMode==='audio'?'Đăng truyện audio':'Đăng truyện dài')) ?></h1><p><?= $postMode==='hub'?'Chọn đúng loại tác phẩm để bắt đầu sáng tác và quản lý bài viết.':'Biểu mẫu riêng được tối ưu cho từng loại nội dung.' ?></p></div><a href="<?= $postMode==='hub'?'#post-types':'/submit_story.php' ?>"><?= $postMode==='hub'?'＋ Chọn loại bài':'← Trung tâm bài viết' ?></a></section>
 <nav class="member-posts-nav"><a class="<?= $postMode==='short'?'is-active':'' ?>" href="/post-short.php">✎ Truyện ngắn</a><a class="<?= $postMode==='audio'?'is-active':'' ?>" href="/post-audio.php">♫ Audio</a><a class="<?= $postMode==='serial'?'is-active':'' ?>" href="/post-serial.php">▤ Truyện dài</a><a class="<?= $postMode==='hub'?'is-active':'' ?>" href="/submit_story.php">▣ Bài viết của tôi</a><a href="/moderation-history.php">✓ Lịch sử kiểm duyệt</a><a href="/contributor-dashboard.php">▦ Tổng quan tác giả</a></nav>
