@@ -66,7 +66,7 @@ function h(string $s): string { return htmlspecialchars($s, ENT_QUOTES | ENT_SUB
 ?>
 <!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Độ tương hợp tình yêu | Góc Hoàng Đạo</title><link rel="stylesheet" href="css/style.css?v=socialdiary1"></head>
+<title>Độ tương hợp tình yêu | Góc Hoàng Đạo</title><link rel="stylesheet" href="css/style.css?v=socialdiary1"><link rel="stylesheet" href="/css/theme-mode.css?v=20261122-global-light-audit4"></head>
 <body class="blog-page compatibility-page">
 <?php require __DIR__ . '/includes/header.php'; ?>
 <main class="compat-main">
