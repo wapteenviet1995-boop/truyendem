@@ -55,7 +55,7 @@ function rd_paragraphs($value): string {
  <?php if($chapter['audio_url']):?><audio class="story-audio reader-audio" controls preload="none" src="<?=rd_h($chapter['audio_url'])?>">Trình duyệt không hỗ trợ audio.</audio><?php endif;?>
  <article class="reader-content" id="readerContent"><?=rd_paragraphs($chapter['content'])?></article>
  <div class="reader-reading-note"><span>✦</span> Bạn đang ở chương <?= (int)$chapter['chapter_number']?>. Tiến độ đọc được lưu trên thiết bị này.</div>
- <div class="reader-report-link"><a href="/report.php?story_id=<?=(int)$chapter['story_id']?>&chapter_id=<?=(int)$chapter['id']?>">⚑ Báo cáo vi phạm chương này</a><button type="button" class="td-reader-share" data-share-page>↗ Chia sẻ</button></div>
+ <div class="reader-report-link"><a href="/report.php?story_id=<?=(int)$chapter['story_id']?>&chapter_id=<?=(int)$chapter['id']?>">⚑ Báo cáo vi phạm chương này</a><button type="button" class="td-reader-share" data-share-page>↗ Chia sẻ</button><div class="td-share-quick" aria-label="Chia sẻ nhanh"><a href="#" data-share-service="facebook">Facebook</a><a href="#" data-share-service="zalo">Zalo</a><a href="#" data-share-service="messenger">Messenger</a><button type="button" data-share-service="copy">Sao chép link</button></div></div>
  <nav class="reader-pagination reader-pagination-bottom">
   <?php if($prev):?><a class="reader-prev" href="<?=rd_url($prev)?>"><small>CHƯƠNG TRƯỚC</small><strong>← <?=rd_h($prev['title'])?></strong></a><?php else:?><span></span><?php endif;?>
   <?php if($next):?><a class="reader-next" href="<?=rd_url($next)?>"><small>CHƯƠNG TIẾP THEO</small><strong><?=rd_h($next['title'])?> →</strong></a><?php else:?><a class="reader-next" href="/truyen/<?=rawurlencode($chapter['slug'])?>.html"><small>ĐÃ ĐỌC HẾT</small><strong>Danh sách chương →</strong></a><?php endif;?>
@@ -94,20 +94,34 @@ function rd_paragraphs($value): string {
 })();
 </script><script>
 (function(){
- var button=document.querySelector('[data-share-page]');
- if(!button)return;
- button.addEventListener('click',async function(){
-  var data={title:document.title,text:'Mời bạn đọc truyện này trên Truyện Đêm:',url:window.location.href};
-  try{
-   if(navigator.share){await navigator.share(data);return;}
-   if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(data.url);}
-   else{
-    var field=document.createElement('textarea');field.value=data.url;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();
-    var copied=document.execCommand('copy');field.remove();if(!copied)throw new Error('copy');
+ function copyLink(){
+  var url=window.location.href;
+  if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(url);
+  return new Promise(function(resolve,reject){
+   var field=document.createElement('textarea');field.value=url;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();
+   var ok=document.execCommand('copy');field.remove();ok?resolve():reject(new Error('copy'));
+  });
+ }
+ document.querySelectorAll('[data-share-page]').forEach(function(button){
+  button.addEventListener('click',async function(){
+   var data={title:document.title,text:'Mời bạn đọc truyện này trên Truyện Đêm:',url:window.location.href};
+   try{if(navigator.share){await navigator.share(data);return;}await copyLink();button.textContent='✓ Đã sao chép';window.setTimeout(function(){button.textContent='↗ Chia sẻ';},2200);}
+   catch(error){if(error&&error.name==='AbortError')return;button.textContent='Thử lại';window.setTimeout(function(){button.textContent='↗ Chia sẻ';},2200);}
+  });
+ });
+ document.querySelectorAll('[data-share-service]').forEach(function(button){
+  button.addEventListener('click',async function(event){
+   event.preventDefault();var url=encodeURIComponent(window.location.href),title=encodeURIComponent(document.title),service=button.dataset.shareService,target='';
+   if(service==='facebook')target='https://www.facebook.com/sharer/sharer.php?u='+url;
+   if(service==='zalo')target='https://zalo.me/share?url='+url;
+   if(service==='messenger')target='fb-messenger://share/?link='+url;
+   if(service==='copy'){
+    try{await copyLink();button.textContent='Đã sao chép ✓';window.setTimeout(function(){button.textContent='Sao chép link';},2200);}
+    catch(error){button.textContent='Không sao chép được';window.setTimeout(function(){button.textContent='Sao chép link';},2200);}
+    return;
    }
-   button.textContent='✓ Đã sao chép liên kết';
-   window.setTimeout(function(){button.textContent='↗ Chia sẻ';},2200);
-  }catch(error){if(error&&error.name==='AbortError')return;button.textContent='Không thể chia sẻ';window.setTimeout(function(){button.textContent='↗ Chia sẻ';},2200);}
+   if(target)window.open(target,'_blank','noopener,noreferrer');
+  });
  });
 })();
 </script></body></html>
