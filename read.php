@@ -55,7 +55,7 @@ function rd_paragraphs($value): string {
  <?php if($chapter['audio_url']):?><audio class="story-audio reader-audio" controls preload="none" src="<?=rd_h($chapter['audio_url'])?>">Trình duyệt không hỗ trợ audio.</audio><?php endif;?>
  <article class="reader-content" id="readerContent"><?=rd_paragraphs($chapter['content'])?></article>
  <div class="reader-reading-note"><span>✦</span> Bạn đang ở chương <?= (int)$chapter['chapter_number']?>. Tiến độ đọc được lưu trên thiết bị này.</div>
- <p class="reader-report-link"><a href="/report.php?story_id=<?=(int)$chapter['story_id']?>&chapter_id=<?=(int)$chapter['id']?>">⚑ Báo cáo vi phạm chương này</a></p>
+ <div class="reader-report-link"><a href="/report.php?story_id=<?=(int)$chapter['story_id']?>&chapter_id=<?=(int)$chapter['id']?>">⚑ Báo cáo vi phạm chương này</a><button type="button" class="td-reader-share" data-share-page>↗ Chia sẻ</button></div>
  <nav class="reader-pagination reader-pagination-bottom">
   <?php if($prev):?><a class="reader-prev" href="<?=rd_url($prev)?>"><small>CHƯƠNG TRƯỚC</small><strong>← <?=rd_h($prev['title'])?></strong></a><?php else:?><span></span><?php endif;?>
   <?php if($next):?><a class="reader-next" href="<?=rd_url($next)?>"><small>CHƯƠNG TIẾP THEO</small><strong><?=rd_h($next['title'])?> →</strong></a><?php else:?><a class="reader-next" href="/truyen/<?=rawurlencode($chapter['slug'])?>.html"><small>ĐÃ ĐỌC HẾT</small><strong>Danh sách chương →</strong></a><?php endif;?>
@@ -91,5 +91,23 @@ function rd_paragraphs($value): string {
  }
  send('start');
  window.setInterval(function(){if(active())send('ping');},15000);
+})();
+</script><script>
+(function(){
+ var button=document.querySelector('[data-share-page]');
+ if(!button)return;
+ button.addEventListener('click',async function(){
+  var data={title:document.title,text:'Mời bạn đọc truyện này trên Truyện Đêm:',url:window.location.href};
+  try{
+   if(navigator.share){await navigator.share(data);return;}
+   if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(data.url);}
+   else{
+    var field=document.createElement('textarea');field.value=data.url;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();
+    var copied=document.execCommand('copy');field.remove();if(!copied)throw new Error('copy');
+   }
+   button.textContent='✓ Đã sao chép liên kết';
+   window.setTimeout(function(){button.textContent='↗ Chia sẻ';},2200);
+  }catch(error){if(error&&error.name==='AbortError')return;button.textContent='Không thể chia sẻ';window.setTimeout(function(){button.textContent='↗ Chia sẻ';},2200);}
+ });
 })();
 </script></body></html>
