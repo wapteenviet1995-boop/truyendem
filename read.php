@@ -10,7 +10,17 @@ else{$q=$pdo->prepare("SELECT c.*,s.id story_id,s.title story_title,s.slug,s.sto
 $chapter=$q->fetch();
 if(!$chapter){http_response_code(404);exit('Không tìm thấy chương truyện.');}
 $memberId=(int)($_SESSION['member_id']??0);
-if($memberId){td_reward_story_view($pdo,(int)$chapter['story_id'],$memberId,(int)($chapter['member_id']??0),'chapter',(int)$chapter['id']);td_add_xp($pdo,$memberId,'read_chapter:'.(int)$chapter['id'],10,'Đọc chương truyện');$q=$pdo->prepare('INSERT INTO story_reading_history(member_id,story_id,chapter_id) VALUES(?,?,?) ON DUPLICATE KEY UPDATE chapter_id=VALUES(chapter_id),updated_at=CURRENT_TIMESTAMP');$q->execute([$memberId,$chapter['story_id'],$chapter['id']]);}
+$savedProgress=0.0;$readerCsrf='';
+if($memberId){
+ if(empty($_SESSION['member_csrf']))$_SESSION['member_csrf']=bin2hex(random_bytes(32));
+ $readerCsrf=(string)$_SESSION['member_csrf'];
+ td_reward_story_view($pdo,(int)$chapter['story_id'],$memberId,(int)($chapter['member_id']??0),'chapter',(int)$chapter['id']);
+ td_add_xp($pdo,$memberId,'read_chapter:'.(int)$chapter['id'],10,'Đọc chương truyện');
+ $q=$pdo->prepare('INSERT INTO story_reading_history(member_id,story_id,chapter_id) VALUES(?,?,?) ON DUPLICATE KEY UPDATE progress_percent=IF(chapter_id<>VALUES(chapter_id),0,progress_percent),chapter_id=VALUES(chapter_id),updated_at=CURRENT_TIMESTAMP');
+ $q->execute([$memberId,$chapter['story_id'],$chapter['id']]);
+ $q=$pdo->prepare('SELECT progress_percent FROM story_reading_history WHERE member_id=? AND story_id=? LIMIT 1');
+ $q->execute([$memberId,$chapter['story_id']]);$savedProgress=(float)$q->fetchColumn();
+}
 $q=$pdo->prepare("SELECT c.id,c.chapter_number,c.title,s.slug FROM chapters c JOIN stories s ON s.id=c.story_id WHERE c.story_id=? AND c.status='published' AND s.status='published' ORDER BY c.chapter_number");$q->execute([$chapter['story_id']]);$all=$q->fetchAll();$prev=$next=null;
 foreach($all as $i=>$c){if((int)$c['id']===(int)$chapter['id']){$prev=$all[$i-1]??null;$next=$all[$i+1]??null;break;}}
 function rd_url(array $chapter): string { return '/truyen/'.rawurlencode((string)$chapter['slug']).'/chuong-'.(int)$chapter['chapter_number'].'.html'; }
@@ -73,9 +83,34 @@ function rd_paragraphs($value): string {
  document.querySelectorAll('[data-reader-theme]').forEach(function(b){b.addEventListener('click',function(){prefs.theme=b.dataset.readerTheme;apply()})});
  document.getElementById('readerReset').addEventListener('click',function(){prefs={font:18,theme:'light'};apply()});
  apply();
- var bar=document.getElementById('readerProgress'),raf=false;
- function updateProgress(){var doc=document.documentElement,max=doc.scrollHeight-window.innerHeight,ratio=max>0?Math.min(1,Math.max(0,window.scrollY/max)):0;bar.style.width=(ratio*100)+'%';try{localStorage.setItem(progressKey,String(Math.round(ratio*1000)))}catch(e){}raf=false}
- window.addEventListener('scroll',function(){if(!raf){raf=true;requestAnimationFrame(updateProgress)}},{passive:true});window.addEventListener('resize',updateProgress);updateProgress();
+ var bar=document.getElementById('readerProgress'),raf=false,saveTimer=null,lastSaved=-1;
+ var memberProgress=<?=json_encode($savedProgress)?>,memberCsrf=<?=json_encode($readerCsrf)?>,isMember=<?= $memberId? 'true':'false' ?>;
+ function currentRatio(){var doc=document.documentElement,max=doc.scrollHeight-window.innerHeight;return max>0?Math.min(1,Math.max(0,window.scrollY/max)):0}
+ function saveToAccount(ratio){
+  if(!isMember)return;
+  var percent=Math.round(ratio*10000)/100;
+  if(Math.abs(percent-lastSaved)<0.75)return;
+  lastSaved=percent;
+  var body=new URLSearchParams({chapter_id:String(<?= (int)$chapter['id'] ?>),progress_percent:String(percent),csrf:memberCsrf});
+  fetch('/save_reading_progress.php',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8','X-Requested-With':'XMLHttpRequest'},body:body.toString(),keepalive:true}).catch(function(){lastSaved=-1});
+ }
+ function updateProgress(){
+  var ratio=currentRatio();bar.style.width=(ratio*100)+'%';
+  try{localStorage.setItem(progressKey,String(Math.round(ratio*1000)))}catch(e){}
+  if(saveTimer)window.clearTimeout(saveTimer);
+  saveTimer=window.setTimeout(function(){saveToAccount(ratio)},700);
+  raf=false;
+ }
+ function restoreProgress(){
+  var ratio=isMember?Math.max(0,Math.min(1,memberProgress/100)):0;
+  if(!isMember){try{var local=localStorage.getItem(progressKey);if(local!==null)ratio=Math.max(0,Math.min(1,Number(local)/1000))}catch(e){}}
+  if(ratio>0.005&&ratio<0.995){var max=document.documentElement.scrollHeight-window.innerHeight;window.scrollTo(0,Math.max(0,max*ratio));}
+  updateProgress();
+ }
+ window.addEventListener('scroll',function(){if(!raf){raf=true;requestAnimationFrame(updateProgress)}},{passive:true});
+ window.addEventListener('resize',updateProgress);
+ window.addEventListener('load',function(){window.setTimeout(restoreProgress,250)},{once:true});
+ window.setTimeout(restoreProgress,350);
 })();
 </script><script>
 (function(){
