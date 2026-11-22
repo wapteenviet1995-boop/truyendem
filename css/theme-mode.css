@@ -1491,3 +1491,65 @@ html[data-theme="light"] body.story-site .mh-note{background:#f7f1fc!important;c
 html[data-theme="light"] body.story-site .mh-status.approved{background:#e7f5ea!important;color:#28633c!important}
 html[data-theme="light"] body.story-site .mh-status.rejected{background:#fdebed!important;color:#a43b50!important}
 html[data-theme="light"] body.story-site .mh-empty{border-color:#dfd4e8!important}
+
+
+/* GLOBAL LIGHT MODE — pages using the legacy blog-page layout */
+html[data-theme="light"] body.blog-page{
+ --bg:#f5f3f8!important;--surf:#fff!important;--ink:#292333!important;--mute:#756d80!important;
+ --acc:#7953a3!important;--line:#e5dfeb!important;--hov:#f3edf8!important;
+ --sel:#7953a3!important;--onsel:#fff!important;
+ background:#f5f3f8!important;color:#292333!important;color-scheme:light!important;
+}
+html[data-theme="light"] body.blog-page .site-header,
+html[data-theme="light"] body.blog-page .main-header{
+ background:linear-gradient(110deg,#fff,#f8f4fb)!important;color:#30263a!important;
+ border-color:#e5dfeb!important;box-shadow:0 4px 18px rgba(35,25,50,.07)!important;
+}
+html[data-theme="light"] body.blog-page .site-header a,
+html[data-theme="light"] body.blog-page .main-header a,
+html[data-theme="light"] body.blog-page .header-links a{color:#59436e!important}
+html[data-theme="light"] body.blog-page .brand-mark{background:linear-gradient(135deg,#f3e5ff,#e8d8f7)!important;color:#7953a3!important;border-color:#dfd1eb!important}
+html[data-theme="light"] body.blog-page .blog-card,
+html[data-theme="light"] body.blog-page .blog-empty,
+html[data-theme="light"] body.blog-page .blog-article,
+html[data-theme="light"] body.blog-page .account-hero,
+html[data-theme="light"] body.blog-page .account-card,
+html[data-theme="light"] body.blog-page .social-card,
+html[data-theme="light"] body.blog-page .diary-card,
+html[data-theme="light"] body.blog-page .message-card,
+html[data-theme="light"] body.blog-page .compatibility-card{
+ background:#fff!important;color:#292333!important;border-color:#e5dfeb!important;
+ box-shadow:0 5px 20px rgba(35,25,50,.06)!important;
+}
+html[data-theme="light"] body.blog-page .blog-card:hover{background:#faf7fc!important;border-color:#d8c9e5!important}
+html[data-theme="light"] body.blog-page .blog-card h2,
+html[data-theme="light"] body.blog-page .blog-card h3,
+html[data-theme="light"] body.blog-page .blog-article h1,
+html[data-theme="light"] body.blog-page .blog-article h2{color:#30263a!important}
+html[data-theme="light"] body.blog-page .blog-card p,
+html[data-theme="light"] body.blog-page .blog-card small,
+html[data-theme="light"] body.blog-page .blog-article p,
+html[data-theme="light"] body.blog-page .blog-meta{color:#756d80!important}
+html[data-theme="light"] body.blog-page input,
+html[data-theme="light"] body.blog-page textarea,
+html[data-theme="light"] body.blog-page select{
+ background:#fff!important;color:#292333!important;border-color:#ded7e6!important;color-scheme:light!important;
+}
+html[data-theme="light"] body.blog-page input::placeholder,
+html[data-theme="light"] body.blog-page textarea::placeholder{color:#9b91a5!important}
+html[data-theme="light"] body.blog-page .site-footer,
+html[data-theme="light"] body.blog-page footer{
+ background:#f1edf6!important;color:#756d80!important;border-color:#e5dfeb!important;
+}
+html[data-theme="light"] body.blog-page .site-footer a,
+html[data-theme="light"] body.blog-page footer a{color:#7953a3!important}
+html[data-theme="light"] body.blog-page .mobile-nav,
+html[data-theme="light"] body.blog-page .bottom-nav{
+ background:rgba(255,255,255,.97)!important;color:#51465f!important;border-color:#e5dfeb!important;
+ box-shadow:0 -5px 20px rgba(35,25,50,.07)!important;
+}
+html[data-theme="light"] body.blog-page .mobile-nav a,
+html[data-theme="light"] body.blog-page .bottom-nav a{color:#62576d!important}
+html[data-theme="light"] body.blog-page .empty-state,
+html[data-theme="light"] body.blog-page .notice,
+html[data-theme="light"] body.blog-page .alert{background:#faf8fc!important;color:#62576d!important;border-color:#e5dfeb!important}
