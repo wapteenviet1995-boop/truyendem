@@ -109,6 +109,9 @@ function rd_paragraphs($value): string {
  }
  window.addEventListener('scroll',function(){if(!raf){raf=true;requestAnimationFrame(updateProgress)}},{passive:true});
  window.addEventListener('resize',updateProgress);
+ function flushProgress(){if(isMember){if(saveTimer){window.clearTimeout(saveTimer);saveTimer=null;}saveToAccount(currentRatio());}}
+ window.addEventListener('pagehide',flushProgress);
+ document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')flushProgress();});
  window.addEventListener('load',function(){window.setTimeout(restoreProgress,250)},{once:true});
  window.setTimeout(restoreProgress,350);
 })();
