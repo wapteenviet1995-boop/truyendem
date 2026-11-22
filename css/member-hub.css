@@ -117,3 +117,11 @@ body.story-site .leaderboard-section.leaderboard-compact .leaderboard-name.name-
 .member-notice-copy form{display:inline-flex}
 .member-notice-copy .member-hub-remove{padding:2px 4px}
 @media(max-width:600px){.member-hub-tabs{gap:7px}.member-hub-tabs a{padding:8px 10px;font-size:.78rem}}
+
+/* Reading progress in personal bookshelf */
+.member-reading-progress{height:6px;width:100%;overflow:hidden;border-radius:99px;background:#302a3d;margin:3px 0 0}
+.member-reading-progress span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#8d65b6,#d1a7f0)}
+.member-hub-card-copy .member-reading-percent{color:#c6a5e5;font-size:.72rem}
+html[data-theme="light"] body.story-site .member-hub-main .member-reading-progress{background:#e9e1ef}
+html[data-theme="light"] body.story-site .member-hub-main .member-reading-progress span{background:linear-gradient(90deg,#8053a5,#b58bd4)}
+html[data-theme="light"] body.story-site .member-hub-main .member-reading-percent{color:#79509a}
