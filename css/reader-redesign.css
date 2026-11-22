@@ -103,3 +103,9 @@ body.short-story-page .short-story-text img{display:block;max-width:100%;height:
  body.short-story-page .short-reader-controls{width:100%;justify-content:space-between;gap:5px}
  body.short-story-page .short-story-text{font-size:var(--short-reader-size,18px)!important;line-height:1.95!important}
 }
+
+/* Share controls beside report links */
+.td-share-button,.td-reader-share{display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;text-decoration:none}
+.td-reader-share{padding:8px 13px;border:1px solid var(--reader-line,#ded8e5);border-radius:9px;background:var(--reader-panel,#fff);color:var(--reader-text,#30263a);font:inherit;font-size:13px;font-weight:700}
+.reader-report-link{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+@media(max-width:600px){.reader-report-link{gap:8px}.td-reader-share{min-height:38px}}
