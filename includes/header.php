@@ -30,7 +30,7 @@ try {
 } catch (Throwable $e) { $tdGenres = []; }
 ?>
 <link rel="stylesheet" href="/css/site-header.css?v=20261118-compact2">
-<link rel="stylesheet" href="/css/theme-mode.css?v=20261122-global-light-audit1">
+<link rel="stylesheet" href="/css/theme-mode.css?v=20261122-global-light-audit2">
 <link rel="stylesheet" href="/css/member-pages-theme.css?v=20261121-audit2">
 <style>.td-notification-link{display:flex;align-items:center;gap:8px}.td-notification-count{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 5px;border-radius:20px;background:#a879d2;color:#fff;font-size:11px;line-height:1}.td-drawer-link .td-notification-count{margin-left:auto}</style>
 <header class="site-header td-global-header">
