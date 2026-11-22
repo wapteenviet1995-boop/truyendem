@@ -35,3 +35,34 @@ body.story-site footer,body.blog-page footer,body.member-page footer{background:
 body.story-site hr,body.blog-page hr,body.member-page hr{border-color:#302b39}
 body.story-site .story-content,body.story-site .chapter-content,body.story-site .reader-content,
 body.story-site .reading-content{background:#111016!important;color:#e9e3ee!important}
+
+
+/* FOOTER FIX GLOBAL: site-matte-black khong duoc ep cac cot footer thanh nav nen den */
+footer.td-global-footer nav.td-footer-column{
+  display:flex!important;flex-direction:column!important;align-items:flex-start!important;
+  background:transparent!important;background-color:transparent!important;background-image:none!important;
+  border:0!important;border-radius:0!important;box-shadow:none!important;padding:0!important;
+}
+html[data-theme="light"] footer.td-global-footer{
+  background:#fbf9fd!important;background-image:linear-gradient(145deg,#fff 0%,#f7f4fa 100%)!important;
+  color:#756d80!important;border-top-color:#e7deee!important;
+}
+html[data-theme="light"] footer.td-global-footer .td-footer-brand,
+html[data-theme="light"] footer.td-global-footer .td-footer-brand-copy strong{color:#30263a!important}
+html[data-theme="light"] footer.td-global-footer .td-footer-brand-copy small{color:#856a9c!important}
+html[data-theme="light"] footer.td-global-footer .td-footer-intro>p,
+html[data-theme="light"] footer.td-global-footer .td-footer-column a,
+html[data-theme="light"] footer.td-global-footer .td-footer-bottom{color:#756d80!important}
+html[data-theme="light"] footer.td-global-footer .td-footer-column h2{color:#49345e!important;background:transparent!important}
+html[data-theme="light"] footer.td-global-footer .td-footer-bottom strong{color:#5e4279!important}
+html[data-theme="light"] footer.td-global-footer .td-footer-tagline{color:#8a8094!important}
+html[data-theme="light"] footer.td-global-footer .td-footer-explore{
+  background:#f3edf8!important;color:#67428d!important;border-color:#dfd1eb!important;
+}
+html[data-theme="light"] footer.td-global-footer .td-footer-bottom>a{color:#7045a0!important}
+html[data-theme="light"] footer.td-global-footer nav.td-footer-column a{
+  background:transparent!important;color:#756d80!important;text-shadow:none!important;
+}
+html[data-theme="dark"] footer.td-global-footer nav.td-footer-column{color:#aaa2b5!important}
+html[data-theme="dark"] footer.td-global-footer nav.td-footer-column h2{color:#e8d9f8!important}
+html[data-theme="dark"] footer.td-global-footer nav.td-footer-column a{color:#aaa2b5!important}
