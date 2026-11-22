@@ -125,3 +125,11 @@ body.story-site .leaderboard-section.leaderboard-compact .leaderboard-name.name-
 html[data-theme="light"] body.story-site .member-hub-main .member-reading-progress{background:#e9e1ef}
 html[data-theme="light"] body.story-site .member-hub-main .member-reading-progress span{background:linear-gradient(90deg,#8053a5,#b58bd4)}
 html[data-theme="light"] body.story-site .member-hub-main .member-reading-percent{color:#79509a}
+
+/* Reading history management */
+.member-history-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.member-history-heading h2{margin:0}
+.member-history-heading form{margin:0}
+.member-hub-card-copy form{margin-top:5px}
+.member-hub-card-copy .member-hub-remove{cursor:pointer}
+@media(max-width:600px){.member-history-heading{align-items:flex-start}.member-history-heading form{width:100%}.member-history-heading form .member-hub-remove{width:100%}}
