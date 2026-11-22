@@ -133,3 +133,35 @@ html[data-theme="light"] body.story-site .member-hub-main .member-reading-percen
 .member-hub-card-copy form{margin-top:5px}
 .member-hub-card-copy .member-hub-remove{cursor:pointer}
 @media(max-width:600px){.member-history-heading{align-items:flex-start}.member-history-heading form{width:100%}.member-history-heading form .member-hub-remove{width:100%}}
+
+/* Polished member action notifications and confirmation dialog */
+.member-action-toast{position:relative;display:flex;align-items:center;gap:12px;max-width:680px;margin:16px auto;padding:14px 16px;border:1px solid rgba(112,190,145,.35);border-radius:14px;background:linear-gradient(135deg,rgba(25,105,67,.18),rgba(24,35,31,.96));box-shadow:0 12px 32px rgba(0,0,0,.18);color:var(--text,#f5f2f7);animation:memberToastIn .28s ease-out;z-index:5}
+.member-action-toast.is-error{border-color:rgba(220,100,100,.4);background:linear-gradient(135deg,rgba(130,45,45,.2),rgba(35,27,30,.97))}
+.member-action-toast-icon{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;border-radius:50%;background:#287b50;color:#fff;font-weight:800;font-size:19px}
+.member-action-toast.is-error .member-action-toast-icon{background:#a84444}
+.member-action-toast>div{display:grid;gap:3px;min-width:0}
+.member-action-toast strong{font-size:.92rem}
+.member-action-toast small{color:var(--muted,#b8b0c1);font-size:.8rem;line-height:1.45}
+.member-action-toast>button{margin-left:auto;border:0;background:transparent;color:inherit;font-size:23px;line-height:1;cursor:pointer;opacity:.7}
+.member-action-toast.is-hiding{opacity:0;transform:translateY(-6px);transition:opacity .3s,transform .3s}
+.member-confirm-backdrop{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(5,4,9,.72);backdrop-filter:blur(7px);opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
+.member-confirm-backdrop.is-open{opacity:1;visibility:visible}
+.member-confirm-dialog{width:min(100%,410px);padding:26px 24px 22px;border:1px solid rgba(190,155,220,.2);border-radius:20px;background:#19151f;color:#f7f2fa;box-shadow:0 24px 80px rgba(0,0,0,.48);text-align:center;transform:translateY(12px) scale(.98);transition:transform .2s}
+.member-confirm-backdrop.is-open .member-confirm-dialog{transform:translateY(0) scale(1)}
+.member-confirm-symbol{display:grid;place-items:center;width:48px;height:48px;margin:0 auto 13px;border-radius:15px;background:rgba(172,116,207,.16);color:#d5a9f0;font-size:25px;font-weight:800}
+.member-confirm-dialog h2{margin:0 0 9px;font-size:1.15rem}
+.member-confirm-dialog p{margin:0;color:#bdb3c7;font-size:.9rem;line-height:1.6}
+.member-confirm-actions{display:flex;gap:10px;margin-top:23px}
+.member-confirm-actions button{flex:1;min-height:43px;padding:10px 14px;border-radius:11px;font:inherit;font-size:.88rem;font-weight:700;cursor:pointer}
+.member-confirm-cancel{border:1px solid #494052;background:#282230;color:#e9e1ef}
+.member-confirm-submit{border:1px solid #a64c59;background:linear-gradient(135deg,#b94d5c,#8e3549);color:#fff;box-shadow:0 5px 14px rgba(160,55,75,.2)}
+.member-confirm-actions button:focus-visible,.member-action-toast>button:focus-visible{outline:2px solid #c99be9;outline-offset:3px}
+html[data-theme="light"] body.story-site .member-action-toast{background:linear-gradient(135deg,#effaf2,#fff);color:#25352a;border-color:#b8dfc3}
+html[data-theme="light"] body.story-site .member-action-toast small{color:#617267}
+html[data-theme="light"] body.story-site .member-action-toast.is-error{background:linear-gradient(135deg,#fff1f1,#fff);color:#572b2b;border-color:#edc0c0}
+html[data-theme="light"] body.story-site .member-confirm-dialog{background:#fff;color:#28212e;border-color:#e7ddec;box-shadow:0 24px 80px rgba(35,20,45,.22)}
+html[data-theme="light"] body.story-site .member-confirm-dialog p{color:#6f6576}
+html[data-theme="light"] body.story-site .member-confirm-cancel{background:#f5f1f7;border-color:#e2d9e9;color:#51465a}
+@keyframes memberToastIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:480px){.member-confirm-dialog{padding:23px 18px 18px}.member-confirm-actions{gap:8px}.member-confirm-actions button{padding:10px 8px}}
+@media(prefers-reduced-motion:reduce){.member-action-toast,.member-confirm-backdrop,.member-confirm-dialog{animation:none;transition:none}}
