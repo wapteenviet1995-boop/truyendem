@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS story_reading_history (
  member_id INT UNSIGNED NOT NULL,
  story_id INT UNSIGNED NOT NULL,
  chapter_id INT UNSIGNED NOT NULL,
+ progress_percent DECIMAL(5,2) NOT NULL DEFAULT 0.00,
  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
  PRIMARY KEY(member_id,story_id),
  KEY idx_read_history_updated(member_id,updated_at),
