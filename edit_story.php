@@ -111,17 +111,20 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     $pdo->commit();header('Location: edit_story.php?id='.$storyId.'&audio_saved=1#audio-information');exit;
    }elseif($action==='update_chapter'&&$story['story_kind']==='serial'){
     $chapterId=(int)($_POST['chapter_id']??0);$chapterTitle=trim((string)($_POST['chapter_title']??''));$body=trim((string)($_POST['chapter_content']??''));$chapterLocked=!empty($_POST['chapter_locked'])?1:0;$chapterPrice=$chapterLocked?(int)($_POST['chapter_price']??0):0;
-    $check=$pdo->prepare('SELECT id FROM chapters WHERE id=? AND story_id=?');$check->execute([$chapterId,$storyId]);
-    if(!$check->fetchColumn())$error='Không tìm thấy chương thuộc truyện này.';
+    $check=$pdo->prepare('SELECT id,title,content,status FROM chapters WHERE id=? AND story_id=?');$check->execute([$chapterId,$storyId]);$existingChapter=$check->fetch(PDO::FETCH_ASSOC);
+    if(!$existingChapter)$error='Không tìm thấy chương thuộc truyện này.';
     elseif($chapterTitle===''||$body==='')$error='Tên chương và nội dung không được để trống.';
     elseif($chapterLocked&&($chapterPrice<1||$chapterPrice>100000))$error='Giá mở khóa phải từ 1 đến 100.000 Xu.';
     else{
      $pdo->beginTransaction();
-     $pdo->prepare("UPDATE chapters SET title=?,content=?,is_locked=?,unlock_price=?,status=CASE WHEN status='published' THEN 'draft' ELSE status END WHERE id=? AND story_id=?")->execute([$chapterTitle,$body,$chapterLocked,$chapterPrice,$chapterId,$storyId]);
-     $pdo->prepare("UPDATE stories SET status='draft',updated_at=NOW() WHERE id=? AND member_id=?")->execute([$storyId,$memberId]);
-     $pdo->prepare("DELETE FROM story_moderation_reviews WHERE target_type='chapter' AND target_id=?")->execute([$chapterId]);
-     td_notify_admins($pdo,'chapter_resubmission','Chương đã được chỉnh sửa và gửi duyệt lại',$chapterTitle,'review_stories.php');
-     $pdo->commit();header('Location: edit_story.php?id='.$storyId.'&chapter_saved=1#chapter-'.$chapterId);exit;
+     $contentChanged=((string)$existingChapter['title']!==$chapterTitle||(string)$existingChapter['content']!==$body);
+     $pdo->prepare("UPDATE chapters SET title=?,content=?,is_locked=?,unlock_price=?,status=IF(?=1 AND status='published','draft',status) WHERE id=? AND story_id=?")->execute([$chapterTitle,$body,$chapterLocked,$chapterPrice,$contentChanged?1:0,$chapterId,$storyId]);
+     if($contentChanged){
+      $pdo->prepare("UPDATE stories SET status='draft',updated_at=NOW() WHERE id=? AND member_id=?")->execute([$storyId,$memberId]);
+      $pdo->prepare("DELETE FROM story_moderation_reviews WHERE target_type='chapter' AND target_id=?")->execute([$chapterId]);
+      td_notify_admins($pdo,'chapter_resubmission','Chương đã được chỉnh sửa và gửi duyệt lại',$chapterTitle,'review_stories.php');
+     }
+     $pdo->commit();header('Location: edit_story.php?id='.$storyId.($contentChanged?'&chapter_saved=1':'&chapter_lock_saved=1').'#chapter-'.$chapterId);exit;
     }
    }
   }catch(Throwable $e){if($pdo->inTransaction())$pdo->rollBack();$error='Chưa lưu được nội dung. Vui lòng kiểm tra dữ liệu và thử lại.';}
@@ -129,7 +132,8 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
  $st->execute([$storyId,$memberId]);$story=$st->fetch(PDO::FETCH_ASSOC);
 }
 if(isset($_GET['saved']))$notice='Đã lưu thay đổi truyện. Nếu truyện đã xuất bản, nội dung được chuyển về bản nháp để quản trị viên duyệt lại.';
-if(isset($_GET['chapter_saved']))$notice='Đã lưu chương. Chương/truyện đã xuất bản sẽ được chuyển về bản nháp để duyệt lại.';
+if(isset($_GET['chapter_saved']))$notice='Đã lưu nội dung chương. Chương/truyện đang xuất bản đã được chuyển về bản nháp để duyệt lại.';
+if(isset($_GET['chapter_lock_saved']))$notice='Đã cập nhật cài đặt khóa và giá mở khóa. Trạng thái xuất bản được giữ nguyên.';
 if(isset($_GET['audio_saved']))$notice='Đã cập nhật phần audio. Truyện đang chờ quản trị viên duyệt lại.';
 if(isset($_GET['audio_added']))$notice='Đã thêm phần audio mới. Phần này đang chờ quản trị viên duyệt.';
 if(isset($_GET['audio_deleted']))$notice='Đã xóa phần audio. Truyện đã chuyển về bản nháp để kiểm duyệt lại.';
