@@ -57,7 +57,7 @@ if ($story) {
 }
 if(!$story){http_response_code(404);}
 $chapters=[];
-if($story){$q=$pdo->prepare("SELECT id,chapter_number,title,created_at,is_locked,unlock_price FROM chapters WHERE story_id=? AND status='published' ORDER BY chapter_number");$q->execute([$story['id']]);$chapters=$q->fetchAll();}
+if($story && ($story['story_kind']??'')==='serial'){$q=$pdo->prepare("SELECT id,chapter_number,title,created_at,is_locked,unlock_price FROM chapters WHERE story_id=? AND status='published' ORDER BY chapter_number");$q->execute([$story['id']]);$chapters=$q->fetchAll();}
 $memberId=(int)($_SESSION['member_id']??0);$favorite=false;$liked=false;$likeCount=0;$viewCount=0;
 $storyUrl = (($story['story_kind'] ?? 'serial') === 'short' ? '/truyen-ngan/' : '/truyen/') . rawurlencode($slug) . '.html';
 if(empty($_SESSION['member_csrf']))$_SESSION['member_csrf']=bin2hex(random_bytes(32));
