@@ -82,6 +82,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     elseif(in_array($storyType,['audio','both'],true) && $audioUrl!=='' && !filter_var($audioUrl,FILTER_VALIDATE_URL))$error='Link audio không hợp lệ.';
     elseif($storyType!=='audio' && $kind==='short'&&$short==='')$error='Bạn cần nhập nội dung truyện ngắn.';
     elseif($storyType!=='audio' && $kind==='serial'&&($chapterTitle===''||$chapterBody===''))$error='Truyện nhiều chương cần có tên và nội dung chương đầu tiên.';
+    elseif($postMode==='serial'&&!empty($_POST['chapter_locked'])&&((int)($_POST['chapter_price']??0)<1||(int)($_POST['chapter_price']??0)>100000))$error='Giá mở khóa phải từ 1 đến 100.000 Xu.';
     else{
      $base=ss_slug($title);if($base==='')$base='truyen-moi';$slug=$base.'-'.bin2hex(random_bytes(3));
      $pdo->beginTransaction();
