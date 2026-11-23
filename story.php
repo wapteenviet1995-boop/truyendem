@@ -57,7 +57,7 @@ if ($story) {
 }
 if(!$story){http_response_code(404);}
 $chapters=[];
-if($story){$q=$pdo->prepare("SELECT id,chapter_number,title,created_at FROM chapters WHERE story_id=? AND status='published' ORDER BY chapter_number");$q->execute([$story['id']]);$chapters=$q->fetchAll();}
+if($story){$q=$pdo->prepare("SELECT id,chapter_number,title,created_at,is_locked,unlock_price FROM chapters WHERE story_id=? AND status='published' ORDER BY chapter_number");$q->execute([$story['id']]);$chapters=$q->fetchAll();}
 $memberId=(int)($_SESSION['member_id']??0);$favorite=false;$liked=false;$likeCount=0;$viewCount=0;
 $storyUrl = (($story['story_kind'] ?? 'serial') === 'short' ? '/truyen-ngan/' : '/truyen/') . rawurlencode($slug) . '.html';
 if(empty($_SESSION['member_csrf']))$_SESSION['member_csrf']=bin2hex(random_bytes(32));
@@ -195,7 +195,7 @@ function st_render_content($value): string {
  return implode("\n",$out);
 }
 ?><!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?= $story?st_h($story['title']).' | Truyện Đêm':'Không tìm thấy truyện' ?></title><link rel="stylesheet" href="/css/style.css?v=20261111-routes1"><link rel="stylesheet" href="/css/stories.css?v=20261118-reader-menu-fix"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1"><link rel="stylesheet" href="/css/reader-redesign.css?v=20261122-short-reader1">
-</head><body class="story-site <?= $story && ($story['story_kind'] ?? 'serial') === 'short' ? 'short-story-page' : '' ?>">
+<style>.chapter-lock-label{display:inline-block;margin-left:6px;padding:3px 7px;border-radius:7px;background:rgba(177,139,232,.16);color:#bd9be9;font-size:.78em;white-space:nowrap}</style></head><body class="story-site <?= $story && ($story['story_kind'] ?? 'serial') === 'short' ? 'short-story-page' : '' ?>">
 <?php require __DIR__ . '/includes/header.php'; ?>
 <main class="story-main"><?php if(!$story):?><section class="story-panel"><h1>Không tìm thấy truyện</h1><a class="story-btn" href="/index.php">Về thư viện truyện</a></section><?php else:?>
 <a class="story-back" href="/index.php">← Thư viện truyện</a><section class="story-detail">
@@ -228,7 +228,7 @@ function st_render_content($value): string {
  apply();
 })();
 </script>
-<?php if(trim((string)($story['description']??''))!==''):?><section class="story-panel story-description-box short-story-description" aria-label="Giới thiệu truyện"><h2 class="story-description-title">GIỚI THIỆU TRUYỆN</h2><p class="story-description"><?=nl2br(st_h($story['description']))?></p></section><?php endif;?><?php else:?><section class="story-panel"><h2>Danh sách chương</h2><?php if(!$chapters):?><p>Truyện chưa có chương được xuất bản.</p><?php else:?><div class="chapter-list"><?php foreach($chapters as $c):?><a href="/truyen/<?=rawurlencode($slug)?>/chuong-<?= (int)$c['chapter_number']?>.html"><span>Chương <?= (int)$c['chapter_number'] ?> · <?=st_h($c['title'])?></span><small><?=st_h(date('d/m/Y',strtotime($c['created_at'])))?></small></a><?php endforeach;?></div><?php endif;?></section><?php endif;?><?php endif;?>
+<?php if(trim((string)($story['description']??''))!==''):?><section class="story-panel story-description-box short-story-description" aria-label="Giới thiệu truyện"><h2 class="story-description-title">GIỚI THIỆU TRUYỆN</h2><p class="story-description"><?=nl2br(st_h($story['description']))?></p></section><?php endif;?><?php else:?><section class="story-panel"><h2>Danh sách chương</h2><?php if(!$chapters):?><p>Truyện chưa có chương được xuất bản.</p><?php else:?><div class="chapter-list"><?php foreach($chapters as $c):?><a href="/truyen/<?=rawurlencode($slug)?>/chuong-<?= (int)$c['chapter_number']?>.html"><span>Chương <?= (int)$c['chapter_number'] ?> · <?=st_h($c['title'])?><?php if(!empty($c['is_locked'])): ?> <b class="chapter-lock-label">🔒 <?=number_format((int)$c['unlock_price'])?> Xu</b><?php endif; ?></span><small><?=st_h(date('d/m/Y',strtotime($c['created_at'])))?></small></a><?php endforeach;?></div><?php endif;?></section><?php endif;?><?php endif;?>
 <section class="story-comments" id="story-comments">
  <div class="story-comments-head"><div><span class="story-tag">GÓC TRÒ CHUYỆN</span><h2>Bình luận <small><?=count($topComments) + array_sum(array_map('count',$commentReplies))?></small></h2></div><p>Cùng chia sẻ cảm nhận của bạn về câu chuyện này.</p></div>
  <?php if(!empty($_SESSION['comment_error'])): ?><p class="comment-error"><?=st_h($_SESSION['comment_error'])?></p><?php unset($_SESSION['comment_error']); endif; ?>
