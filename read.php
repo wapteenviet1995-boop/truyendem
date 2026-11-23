@@ -10,7 +10,7 @@ else{$q=$pdo->prepare("SELECT c.*,s.id story_id,s.title story_title,s.slug,s.sto
 $chapter=$q->fetch();
 if(!$chapter){http_response_code(404);exit('Không tìm thấy chương truyện.');}
 $memberId=(int)($_SESSION['member_id']??0);$authorId=(int)($chapter['member_id']??0);
-$isLocked=(int)($chapter['is_locked']??0)===1 && $memberId!==$authorId;$isUnlocked=false;$unlockError='';$unlockNotice='';
+$isLocked=(int)($chapter['is_locked']??0)===1 && ($authorId<1 || $memberId!==$authorId);$isUnlocked=false;$unlockError='';$unlockNotice='';
 if($memberId){
  if(empty($_SESSION['member_csrf']))$_SESSION['member_csrf']=bin2hex(random_bytes(32));
  if($isLocked){$uq=$pdo->prepare('SELECT 1 FROM chapter_unlocks WHERE member_id=? AND chapter_id=? LIMIT 1');$uq->execute([$memberId,(int)$chapter['id']]);$isUnlocked=(bool)$uq->fetchColumn();}
