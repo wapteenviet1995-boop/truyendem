@@ -9,9 +9,43 @@ if($slug!==''&&$chapterNumber){$q=$pdo->prepare("SELECT c.*,s.id story_id,s.titl
 else{$q=$pdo->prepare("SELECT c.*,s.id story_id,s.title story_title,s.slug,s.story_kind,s.member_id FROM chapters c JOIN stories s ON s.id=c.story_id WHERE c.id=? AND c.status='published' AND s.status='published' LIMIT 1");$q->execute([$id?:0]);}
 $chapter=$q->fetch();
 if(!$chapter){http_response_code(404);exit('Không tìm thấy chương truyện.');}
-$memberId=(int)($_SESSION['member_id']??0);
-$savedProgress=0.0;$readerCsrf='';
+$memberId=(int)($_SESSION['member_id']??0);$authorId=(int)($chapter['member_id']??0);
+$isLocked=(int)($chapter['is_locked']??0)===1 && $memberId!==$authorId;$isUnlocked=false;$unlockError='';$unlockNotice='';
 if($memberId){
+ if(empty($_SESSION['member_csrf']))$_SESSION['member_csrf']=bin2hex(random_bytes(32));
+ if($isLocked){$uq=$pdo->prepare('SELECT 1 FROM chapter_unlocks WHERE member_id=? AND chapter_id=? LIMIT 1');$uq->execute([$memberId,(int)$chapter['id']]);$isUnlocked=(bool)$uq->fetchColumn();}
+}
+if($_SERVER['REQUEST_METHOD']==='POST'&&($_POST['action']??'')==='unlock_chapter'){
+ if(!$memberId){header('Location: /login.php?next='.rawurlencode('/read.php?id='.(int)$chapter['id']));exit;}
+ if(!hash_equals((string)($_SESSION['member_csrf']??''),(string)($_POST['csrf']??''))){$unlockError='Phiên đã hết hạn. Hãy tải lại trang.';}
+ else{
+  try{
+   $pdo->beginTransaction();
+   $lockQ=$pdo->prepare('SELECT c.is_locked,c.unlock_price,s.member_id,s.title FROM chapters c JOIN stories s ON s.id=c.story_id WHERE c.id=? FOR UPDATE');$lockQ->execute([(int)$chapter['id']]);$lockedRow=$lockQ->fetch();
+   if(!$lockedRow)throw new RuntimeException('Không tìm thấy chương.');
+   $payAuthor=(int)$lockedRow['member_id'];$price=(int)$lockedRow['unlock_price'];
+   if($payAuthor===$memberId||(int)$lockedRow['is_locked']!==1){$pdo->commit();header('Location: /read.php?id='.(int)$chapter['id']);exit;}
+   $already=$pdo->prepare('SELECT id FROM chapter_unlocks WHERE member_id=? AND chapter_id=? LIMIT 1 FOR UPDATE');$already->execute([$memberId,(int)$chapter['id']]);
+   if($already->fetchColumn()){$pdo->commit();header('Location: /read.php?id='.(int)$chapter['id']);exit;}
+   if($payAuthor<1||$price<1||$price>100000)throw new RuntimeException('Thiết lập giá mở khóa không hợp lệ.');
+   $pdo->prepare('INSERT IGNORE INTO member_wallets(member_id,balance) VALUES(?,0)')->execute([$memberId]);
+   $pdo->prepare('INSERT IGNORE INTO member_wallets(member_id,balance) VALUES(?,0)')->execute([$payAuthor]);
+   $walletIds=[$memberId,$payAuthor];sort($walletIds);$wq=$pdo->prepare('SELECT member_id,balance FROM member_wallets WHERE member_id IN (?,?) ORDER BY member_id FOR UPDATE');$wq->execute($walletIds);$walletRows=$wq->fetchAll();$buyerBalance=0;foreach($walletRows as $wr){if((int)$wr['member_id']===$memberId)$buyerBalance=(int)$wr['balance'];}
+   if($buyerBalance<$price)throw new RuntimeException('Bạn không đủ Xu để mở khóa chương này.');
+   $pdo->prepare('INSERT INTO chapter_unlocks(member_id,chapter_id,author_id,price_paid) VALUES(?,?,?,?)')->execute([$memberId,(int)$chapter['id'],$payAuthor,$price]);
+   $pdo->prepare('UPDATE member_wallets SET balance=balance-? WHERE member_id=?')->execute([$price,$memberId]);
+   $pdo->prepare('UPDATE member_wallets SET balance=balance+? WHERE member_id=?')->execute([$price,$payAuthor]);
+   $pdo->prepare("INSERT INTO wallet_transactions(member_id,amount,type,description,reference_id) VALUES(?,?,'chapter_unlock',?,?)")->execute([$memberId,-$price,'Mở khóa chương: '.$chapter['title'],(int)$chapter['id']]);
+   $pdo->prepare("INSERT INTO wallet_transactions(member_id,amount,type,description,reference_id) VALUES(?,?,'chapter_earning',?,?)")->execute([$payAuthor,$price,'Xu nhận từ mở khóa chương: '.$chapter['title'],(int)$chapter['id']]);
+   $pdo->commit();header('Location: /read.php?id='.(int)$chapter['id'].'&unlocked=1');exit;
+  }catch(Throwable $e){if($pdo->inTransaction())$pdo->rollBack();$unlockError=$e instanceof RuntimeException?$e->getMessage():'Giao dịch chưa thành công. Vui lòng thử lại.';}
+ }
+}
+if($isLocked&&$memberId&&!$isUnlocked){$uq=$pdo->prepare('SELECT 1 FROM chapter_unlocks WHERE member_id=? AND chapter_id=? LIMIT 1');$uq->execute([$memberId,(int)$chapter['id']]);$isUnlocked=(bool)$uq->fetchColumn();}
+$canRead=!$isLocked||$isUnlocked;
+if(isset($_GET['unlocked']))$unlockNotice='Mở khóa thành công! Bạn có thể đọc chương này bất cứ lúc nào.';
+$savedProgress=0.0;$readerCsrf=(string)($_SESSION['member_csrf']??'');
+if($memberId&&$canRead){
  if(empty($_SESSION['member_csrf']))$_SESSION['member_csrf']=bin2hex(random_bytes(32));
  $readerCsrf=(string)$_SESSION['member_csrf'];
  td_reward_story_view($pdo,(int)$chapter['story_id'],$memberId,(int)($chapter['member_id']??0),'chapter',(int)$chapter['id']);
@@ -21,7 +55,7 @@ if($memberId){
  $q=$pdo->prepare('SELECT progress_percent FROM story_reading_history WHERE member_id=? AND story_id=? LIMIT 1');
  $q->execute([$memberId,$chapter['story_id']]);$savedProgress=(float)$q->fetchColumn();
 }
-$q=$pdo->prepare("SELECT c.id,c.chapter_number,c.title,s.slug FROM chapters c JOIN stories s ON s.id=c.story_id WHERE c.story_id=? AND c.status='published' AND s.status='published' ORDER BY c.chapter_number");$q->execute([$chapter['story_id']]);$all=$q->fetchAll();$prev=$next=null;
+$q=$pdo->prepare("SELECT c.id,c.chapter_number,c.title,c.is_locked,c.unlock_price,s.slug FROM chapters c JOIN stories s ON s.id=c.story_id WHERE c.story_id=? AND c.status='published' AND s.status='published' ORDER BY c.chapter_number");$q->execute([$chapter['story_id']]);$all=$q->fetchAll();$prev=$next=null;
 foreach($all as $i=>$c){if((int)$c['id']===(int)$chapter['id']){$prev=$all[$i-1]??null;$next=$all[$i+1]??null;break;}}
 function rd_url(array $chapter): string { return '/truyen/'.rawurlencode((string)$chapter['slug']).'/chuong-'.(int)$chapter['chapter_number'].'.html'; }
 function rd_h($v){return htmlspecialchars((string)($v??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
@@ -41,7 +75,7 @@ function rd_paragraphs($value): string {
     return implode("\n", $html);
 }
 ?><!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?=rd_h($chapter['story_title'])?> - Chương <?= (int)$chapter['chapter_number']?> | Truyện Đêm</title><link rel="stylesheet" href="/css/style.css?v=20261111-reader2"><link rel="stylesheet" href="/css/stories.css?v=20261111-reader2"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1"><link rel="stylesheet" href="/css/reader-redesign.css?v=20261122-2">
-</head><body class="story-site reader-site"><?php require __DIR__ . '/includes/header.php'; ?>
+<style>.reader-locked-panel{max-width:720px;margin:28px auto;padding:30px 22px;text-align:center;border:1px solid #b99adf;border-radius:18px;background:rgba(130,95,170,.10)}.reader-locked-icon{font-size:42px;margin-bottom:10px}.reader-locked-panel h2{margin:10px 0}.reader-locked-panel p{color:var(--reader-muted,#888);line-height:1.7}.reader-locked-price{display:block;margin:18px 0;font-size:26px;color:#c29af2}.reader-unlock-button{display:inline-block;border:0;border-radius:12px;padding:13px 22px;background:#a980df;color:#1c1426;font-weight:800;text-decoration:none;cursor:pointer}.reader-wallet-link{display:block;margin-top:12px;color:inherit}.reader-locked-error{color:#d65b70!important;font-weight:700}</style></head><body class="story-site reader-site"><?php require __DIR__ . '/includes/header.php'; ?>
 <div class="reader-progress-track"><span id="readerProgress"></span></div>
 <main class="reader-main reader-layout">
  <div class="reader-breadcrumb"><a href="<?=($chapter['story_kind']??'serial')==='short'?'/truyen-ngan/':'/truyen/'?><?=rawurlencode($chapter['slug'])?>.html">← <?=rd_h($chapter['story_title'])?></a><span>Đang đọc · Chương <?= (int)$chapter['chapter_number']?></span></div>
@@ -63,15 +97,15 @@ function rd_paragraphs($value): string {
   </div>
  </section>
  <?php if($chapter['audio_url']):?><audio class="story-audio reader-audio" controls preload="none" src="<?=rd_h($chapter['audio_url'])?>">Trình duyệt không hỗ trợ audio.</audio><?php endif;?>
- <article class="reader-content" id="readerContent"><?=rd_paragraphs($chapter['content'])?></article>
- <div class="reader-reading-note"><span>✦</span> Bạn đang ở chương <?= (int)$chapter['chapter_number']?>. Tiến độ đọc được lưu trên thiết bị này.</div>
+ <?php if($canRead): ?><article class="reader-content" id="readerContent"><?=rd_paragraphs($chapter['content'])?></article><?php else: ?><section class="reader-locked-panel"><div class="reader-locked-icon">🔒</div><span class="reader-kicker">CHƯƠNG CÓ PHÍ</span><h2>Chương này đang được tác giả khóa</h2><p>Nội dung sẽ được mở ngay sau khi bạn xác nhận thanh toán.</p><strong class="reader-locked-price">✦ <?=number_format((int)$chapter['unlock_price'])?> Xu</strong><?php if($unlockError): ?><p class="reader-locked-error"><?=rd_h($unlockError)?></p><?php endif; ?><?php if(!$memberId): ?><a class="reader-unlock-button" href="/login.php?next=<?=rawurlencode('/read.php?id='.(int)$chapter['id'])?>">Đăng nhập để mở khóa</a><?php else: ?><form method="post" onsubmit="return confirm('Mở khóa chương này với <?=number_format((int)$chapter['unlock_price'])?> Xu?');"><input type="hidden" name="csrf" value="<?=rd_h($readerCsrf)?>"><input type="hidden" name="action" value="unlock_chapter"><button class="reader-unlock-button" type="submit">Mở khóa bằng <?=number_format((int)$chapter['unlock_price'])?> Xu</button></form><a class="reader-wallet-link" href="/shop.php">Nạp / nhận thêm Xu</a><?php endif; ?></section><?php endif; ?>
+ <?php if($canRead): ?><div class="reader-reading-note"><span>✦</span> Bạn đang ở chương <?= (int)$chapter['chapter_number']?>. Tiến độ đọc được lưu trên thiết bị này.</div><?php else: ?><div class="reader-reading-note">🔒 Mở khóa để xem nội dung đầy đủ.</div><?php endif; ?>
  <div class="reader-report-link"><a href="/report.php?story_id=<?=(int)$chapter['story_id']?>&chapter_id=<?=(int)$chapter['id']?>">⚑ Báo cáo vi phạm chương này</a><button type="button" class="td-reader-share" data-share-page>↗ Chia sẻ</button></div>
  <nav class="reader-pagination reader-pagination-bottom">
   <?php if($prev):?><a class="reader-prev" href="<?=rd_url($prev)?>"><small>CHƯƠNG TRƯỚC</small><strong>← <?=rd_h($prev['title'])?></strong></a><?php else:?><span></span><?php endif;?>
   <?php if($next):?><a class="reader-next" href="<?=rd_url($next)?>"><small>CHƯƠNG TIẾP THEO</small><strong><?=rd_h($next['title'])?> →</strong></a><?php else:?><a class="reader-next" href="/truyen/<?=rawurlencode($chapter['slug'])?>.html"><small>ĐÃ ĐỌC HẾT</small><strong>Danh sách chương →</strong></a><?php endif;?>
  </nav>
 </main><?php require __DIR__ . '/includes/footer.php'; ?>
-<script>
+<?php if($canRead): ?><script>
 (function(){
  var body=document.body,content=document.getElementById('readerContent'),fontValue=document.getElementById('readerFontValue');
  var key='td_reader_preferences_v1',progressKey='td_reader_progress_<?= (int)$chapter['id']?>';
@@ -130,7 +164,7 @@ function rd_paragraphs($value): string {
  send('start');
  window.setInterval(function(){if(active())send('ping');},15000);
 })();
-</script><script>
+</script><?php endif; ?><script>
 (function(){
  function copyLink(){
   var url=window.location.href;
