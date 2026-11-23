@@ -97,9 +97,8 @@ function rd_paragraphs($value): string {
    </div>
    <button type="button" class="reader-reset" id="readerReset">Mặc định</button>
   </div>
- </section
+ </section>
  <?php endif; ?>
->
  <?php if($canRead&&$chapter['audio_url']):?><audio class="story-audio reader-audio" controls preload="none" src="<?=rd_h($chapter['audio_url'])?>">Trình duyệt không hỗ trợ audio.</audio><?php endif;?>
  <?php if($canRead): ?><article class="reader-content" id="readerContent"><?=rd_paragraphs($chapter['content'])?></article><?php else: ?><section class="reader-locked-panel"><div class="reader-locked-icon">🔒</div><span class="reader-kicker">CHƯƠNG CÓ PHÍ</span><h2>Chương này đang được tác giả khóa</h2><p>Nội dung sẽ được mở ngay sau khi bạn xác nhận thanh toán.</p><strong class="reader-locked-price">✦ <?=number_format((int)$chapter['unlock_price'])?> Xu</strong><?php if($unlockError): ?><p class="reader-locked-error"><?=rd_h($unlockError)?></p><?php endif; ?><?php if(!$memberId): ?><a class="reader-unlock-button" href="/login.php?next=<?=rawurlencode('/read.php?id='.(int)$chapter['id'])?>">Đăng nhập để mở khóa</a><?php else: ?><form method="post" onsubmit="return confirm('Mở khóa chương này với <?=number_format((int)$chapter['unlock_price'])?> Xu?');"><input type="hidden" name="csrf" value="<?=rd_h($readerCsrf)?>"><input type="hidden" name="action" value="unlock_chapter"><button class="reader-unlock-button" type="submit">Mở khóa bằng <?=number_format((int)$chapter['unlock_price'])?> Xu</button></form><a class="reader-wallet-link" href="/shop.php">Nạp / nhận thêm Xu</a><?php endif; ?></section><?php endif; ?>
  <?php if($canRead): ?><div class="reader-reading-note"><span>✦</span> Bạn đang ở chương <?= (int)$chapter['chapter_number']?>. Tiến độ đọc được lưu trên thiết bị này.</div><?php else: ?><div class="reader-reading-note">🔒 Mở khóa để xem nội dung đầy đủ.</div><?php endif; ?>
