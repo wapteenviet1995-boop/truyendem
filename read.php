@@ -10,7 +10,7 @@ else{$q=$pdo->prepare("SELECT c.*,s.id story_id,s.title story_title,s.slug,s.sto
 $chapter=$q->fetch();
 if(!$chapter){http_response_code(404);exit('Không tìm thấy chương truyện.');}
 $memberId=(int)($_SESSION['member_id']??0);$authorId=(int)($chapter['member_id']??0);
-$isLocked=(int)($chapter['is_locked']??0)===1 && ($authorId<1 || $memberId!==$authorId);$isUnlocked=false;$unlockError='';$unlockNotice='';
+$isLocked=($chapter['story_kind']??'')==='serial' && (int)($chapter['is_locked']??0)===1 && ($authorId<1 || $memberId!==$authorId);$isUnlocked=false;$unlockError='';$unlockNotice='';
 if($memberId){
  if(empty($_SESSION['member_csrf']))$_SESSION['member_csrf']=bin2hex(random_bytes(32));
  if($isLocked){$uq=$pdo->prepare('SELECT 1 FROM chapter_unlocks WHERE member_id=? AND chapter_id=? LIMIT 1');$uq->execute([$memberId,(int)$chapter['id']]);$isUnlocked=(bool)$uq->fetchColumn();}
@@ -21,10 +21,11 @@ if($_SERVER['REQUEST_METHOD']==='POST'&&($_POST['action']??'')==='unlock_chapter
  else{
   try{
    $pdo->beginTransaction();
-   $lockQ=$pdo->prepare('SELECT c.is_locked,c.unlock_price,s.member_id,s.title FROM chapters c JOIN stories s ON s.id=c.story_id WHERE c.id=? FOR UPDATE');$lockQ->execute([(int)$chapter['id']]);$lockedRow=$lockQ->fetch();
+   $lockQ=$pdo->prepare('SELECT c.is_locked,c.unlock_price,s.member_id,s.title,s.story_kind FROM chapters c JOIN stories s ON s.id=c.story_id WHERE c.id=? FOR UPDATE');$lockQ->execute([(int)$chapter['id']]);$lockedRow=$lockQ->fetch();
    if(!$lockedRow)throw new RuntimeException('Không tìm thấy chương.');
    $payAuthor=(int)$lockedRow['member_id'];$price=(int)$lockedRow['unlock_price'];
-   if($payAuthor===$memberId||(int)$lockedRow['is_locked']!==1){$pdo->commit();header('Location: /read.php?id='.(int)$chapter['id']);exit;}
+   if(($lockedRow['story_kind']??'')!=='serial')throw new RuntimeException('Chỉ chương thuộc truyện dài mới hỗ trợ mở khóa bằng Xu.');
+    if($payAuthor===$memberId||(int)$lockedRow['is_locked']!==1){$pdo->commit();header('Location: /read.php?id='.(int)$chapter['id']);exit;}
    $already=$pdo->prepare('SELECT id FROM chapter_unlocks WHERE member_id=? AND chapter_id=? LIMIT 1 FOR UPDATE');$already->execute([$memberId,(int)$chapter['id']]);
    if($already->fetchColumn()){$pdo->commit();header('Location: /read.php?id='.(int)$chapter['id']);exit;}
    if($payAuthor<1||$price<1||$price>100000)throw new RuntimeException('Thiết lập giá mở khóa không hợp lệ.');
