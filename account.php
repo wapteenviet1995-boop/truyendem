@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/avatar-frames.php';
 if (empty($_SESSION['member_id'])) { header('Location: login.php'); exit; }
 $currentId=(int)$_SESSION['member_id'];
 if (empty($_SESSION['member_csrf'])) $_SESSION['member_csrf']=bin2hex(random_bytes(32));
@@ -91,10 +92,11 @@ try{$q=$pdo->prepare('SELECT COUNT(*) FROM member_messages WHERE recipient_id=? 
 $signId=(int)($member['zodiac_sign']??0);
 ?>
 <!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tài khoản của tôi | Góc Hoàng Đạo</title><link rel="stylesheet" href="css/style.css?v=20261111-account1"><link rel="stylesheet" href="css/account.css?v=20261118-2"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261122-footer-account-fix1">
+<link rel="stylesheet" href="/css/avatar-frames.css?v=1">
 </head>
 <body class="blog-page social-page account-page">
 <?php require __DIR__ . '/includes/header.php'; ?>
-<main class="account-main"><section class="account-hero"><span class="compat-kicker">✦ HỒ SƠ CỦA BẠN ✦</span><div class="account-avatar"><?php if($member['avatar_url']):?><img src="<?=acc_h($member['avatar_url'])?>" alt="Ảnh đại diện"><?php else:?><span><?=acc_h(mb_substr($member['display_name'],0,1))?></span><?php endif;?></div><h1><?=acc_h($member['display_name'])?></h1><p><?=isset($signs[$signId])?acc_h(($symbols[$signId]??'').' '.$signs[$signId]):'Chưa chọn cung hoàng đạo'?></p><small>Thành viên từ <?=acc_h(date('d/m/Y',strtotime($member['created_at'])))?></small><p><a class="account-button" href="member.php?id=<?=$currentId?>">Xem hồ sơ công khai của tôi</a></p></section>
+<main class="account-main"><section class="account-hero"><span class="compat-kicker">✦ HỒ SƠ CỦA BẠN ✦</span><?=td_avatar_html($pdo,$currentId,(string)($member['avatar_url']??''),mb_substr((string)$member['display_name'],0,1,'UTF-8'),'account-avatar')?><h1><?=acc_h($member['display_name'])?></h1><p><?=isset($signs[$signId])?acc_h(($symbols[$signId]??'').' '.$signs[$signId]):'Chưa chọn cung hoàng đạo'?></p><small>Thành viên từ <?=acc_h(date('d/m/Y',strtotime($member['created_at'])))?></small><p><a class="account-button" href="member.php?id=<?=$currentId?>">Xem hồ sơ công khai của tôi</a></p></section>
 <?php if($notice):?><p class="account-flash"><?=acc_h($notice)?></p><?php endif;?><?php if($error):?><p class="community-error"><?=acc_h($error)?></p><?php endif;?>
 <section class="account-stats"><?php foreach(['friends'=>'Bạn bè','followers'=>'Người theo dõi','posts'=>'Bài cộng đồng','likes'=>'Lượt thích','diary'=>'Trang nhật ký'] as $key=>$label):?><div><strong><?=$stats[$key]??0?></strong><span><?=acc_h($label)?></span></div><?php endforeach;?></section>
 <section class="account-notices"><a href="friends.php">✉ <?=$pending?> lời mời kết bạn</a><a href="messages.php">☾ <?=$unread?> tin nhắn chưa đọc</a></section>
