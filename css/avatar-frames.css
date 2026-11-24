@@ -17,3 +17,7 @@
 .member-public-symbol.td-avatar-shell .td-avatar-photo{inset:9%}
 .td-avatar.td-avatar-shell{width:48px;height:48px}
 @media(max-width:600px){.account-avatar.td-avatar-shell,.member-public-symbol.td-avatar-shell{width:100px;height:100px}}
+
+/* Link wrapper in the compact homepage ranking must not crop the ornamental frame. */
+.leaderboard-avatar{overflow:visible}
+.leaderboard-avatar-inner{width:42px;height:42px}
