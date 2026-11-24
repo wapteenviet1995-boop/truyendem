@@ -1,0 +1,23 @@
+/* Avatar frame layer — ảnh khung PNG nền trong suốt nằm phía trên avatar */
+.td-avatar-shell{position:relative;display:inline-grid;place-items:center;isolation:isolate;vertical-align:middle;flex:0 0 auto;overflow:visible;border-radius:50%}
+.td-avatar-photo{position:absolute;inset:8%;z-index:0;display:grid;place-items:center;overflow:hidden;border-radius:50%;background:linear-gradient(145deg,#322344,#171321);color:#ead8ff;font-weight:800}
+.td-avatar-photo>img{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%}
+.td-avatar-fallback{display:grid;place-items:center;width:100%;height:100%;font-size:1.05em}
+.td-avatar-frame-image{position:absolute;inset:-9%;z-index:2;width:118%;height:118%;object-fit:contain;pointer-events:none}
+.td-avatar-shell:not(:has(.td-avatar-frame-image)){outline:2px solid rgba(179,145,218,.55);outline-offset:1px}
+.td-frame-rare:not(:has(.td-avatar-frame-image)){box-shadow:0 0 0 2px #79c9ef,0 0 12px #4ca7db88}
+.td-frame-epic:not(:has(.td-avatar-frame-image)){box-shadow:0 0 0 2px #a879ed,0 0 14px #a879ed99}
+.td-frame-legendary:not(:has(.td-avatar-frame-image)){box-shadow:0 0 0 2px #e7b65b,0 0 16px #e7b65b99}
+.td-frame-mythic:not(:has(.td-avatar-frame-image)){box-shadow:0 0 0 2px #ee83d1,0 0 18px #9d68ffbb}
+.leaderboard-avatar.td-avatar-shell{width:42px;height:42px;overflow:visible}
+.leaderboard-avatar .td-avatar-photo{inset:7%}
+.account-avatar.td-avatar-shell{width:112px;height:112px;overflow:visible}
+.account-avatar.td-avatar-shell .td-avatar-photo{inset:9%}
+.member-public-symbol.td-avatar-shell{width:112px;height:112px;overflow:visible}
+.member-public-symbol.td-avatar-shell .td-avatar-photo{inset:9%}
+.td-avatar.td-avatar-shell{width:48px;height:48px}
+@media(max-width:600px){.account-avatar.td-avatar-shell,.member-public-symbol.td-avatar-shell{width:100px;height:100px}}
+
+/* Link wrapper in the compact homepage ranking must not crop the ornamental frame. */
+.leaderboard-avatar{overflow:visible}
+.leaderboard-avatar-inner{width:42px;height:42px}

@@ -86,6 +86,7 @@ if (($_SESSION['blog_admin_role'] ?? 'admin') === 'admin') {
       <div class="admin-nav-caption">CỘNG ĐỒNG</div>
       <a href="review_stories.php"><span class="nav-icon">✓</span><span>Duyệt truyện thành viên</span></a>
       <?php if(($_SESSION["blog_admin_role"] ?? "admin") === "admin"): ?><a href="members.php"><span class="nav-icon">♙</span><span>Thành viên</span></a><?php endif; ?>
+      <?php if(($_SESSION["blog_admin_role"] ?? "admin") === "admin"): ?><a href="avatar-frames.php"><span class="nav-icon">✧</span><span>Khung avatar</span></a><?php endif; ?>
       <a href="reports.php"><span class="nav-icon">⚑</span><span>Báo cáo vi phạm</span></a>
       <a href="notifications.php"><span class="nav-icon">♧</span><span>Thông báo quản trị</span></a>
       <?php if(($_SESSION["blog_admin_role"] ?? "admin") === "admin"): ?><a href="contributors.php"><span class="nav-icon">✦</span><span>Cộng tác viên</span></a><?php endif; ?>

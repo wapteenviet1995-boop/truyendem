@@ -69,6 +69,7 @@ try {
   </div>
   <?php if ($tdMemberLoggedIn): ?>
     <a class="td-drawer-auth" href="/account.php">♙ &nbsp; Tài khoản thành viên</a>
+    <a class="td-drawer-auth" href="/avatar-frames.php">✧ &nbsp; Kho khung avatar</a>
   <?php else: ?>
     <a class="td-drawer-auth" href="/login.php">⇥ &nbsp; Đăng nhập / Đăng ký</a>
   <?php endif; ?>
