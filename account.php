@@ -81,7 +81,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
       }
      }
     }
-   }   }else $error='Thao tác không hợp lệ.';
+   }else $error='Thao tác không hợp lệ.';
   }catch(PDOException $ex){if($pdo->inTransaction())$pdo->rollBack();$error='Không thể lưu thay đổi. Hãy kiểm tra file database/account_features.sql đã được chạy chưa.';}
  }
 }
