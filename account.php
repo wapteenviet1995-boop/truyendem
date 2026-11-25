@@ -50,28 +50,38 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     if(count($chosen)>6)$error='Bạn có thể chọn tối đa 6 cung yêu thích.';
     else{$pdo->beginTransaction();$pdo->prepare('DELETE FROM member_favorite_signs WHERE member_id=?')->execute([$currentId]);$ins=$pdo->prepare('INSERT INTO member_favorite_signs(member_id,zodiac_sign) VALUES(?,?)');foreach($chosen as $n)$ins->execute([$currentId,$n]);$pdo->commit();acc_redirect('favorites_saved');}
    }elseif($action==='avatar'){
-    if(empty($_FILES['avatar'])||$_FILES['avatar']['error']!==UPLOAD_ERR_OK)$error='Bạn hãy chọn ảnh hợp lệ để tải lên.';
+    $cropped=trim((string)($_POST['avatar_cropped']??''));
+    $imageBytes=false;$extension=''; 
+    if($cropped!==''){
+     if(strlen($cropped)>5500000||!preg_match('#^data:image/jpeg;base64,([A-Za-z0-9+/=]+)$#',$cropped,$match))$error='Ảnh đã căn chỉnh không hợp lệ. Hãy thử chọn và cắt ảnh lại.';
+     else{
+      $decoded=base64_decode($match[1],true);$imageInfo=$decoded!==false?@getimagesizefromstring($decoded):false;
+      if($decoded===false||strlen($decoded)>4*1024*1024||!$imageInfo||($imageInfo['mime']??'')!=='image/jpeg')$error='Ảnh sau khi cắt không hợp lệ hoặc quá lớn.';
+      else{$imageBytes=$decoded;$extension='jpg';}
+     }
+    }elseif(empty($_FILES['avatar'])||$_FILES['avatar']['error']!==UPLOAD_ERR_OK)$error='Bạn hãy chọn ảnh hợp lệ để tải lên.';
     elseif((int)$_FILES['avatar']['size']>2*1024*1024)$error='Ảnh đại diện tối đa 2 MB.';
     else{
      $tmp=$_FILES['avatar']['tmp_name'];$info=@getimagesize($tmp);$mime=(new finfo(FILEINFO_MIME_TYPE))->file($tmp);
      $extensions=['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp'];
      if(!$info||!isset($extensions[$mime]))$error='Chỉ chấp nhận ảnh JPG, PNG hoặc WEBP.';
+     else{$imageBytes=file_get_contents($tmp);$extension=$extensions[$mime];}
+    }
+    if($error===''&&$imageBytes!==false){
+     $dir=__DIR__.'/uploads/avatars';
+     if(!is_dir($dir)&&!mkdir($dir,0755,true)&&!is_dir($dir))$error='Không thể tạo thư mục lưu ảnh.';
      else{
-      $dir=__DIR__.'/uploads/avatars';
-      if(!is_dir($dir)&&!mkdir($dir,0755,true)&&!is_dir($dir))$error='Không thể tạo thư mục lưu ảnh.';
+      $filename=bin2hex(random_bytes(18)).'.'.$extension;$relative='uploads/avatars/'.$filename;
+      if(file_put_contents(__DIR__.'/'.$relative,$imageBytes,LOCK_EX)===false)$error='Không thể lưu ảnh. Hãy kiểm tra quyền thư mục uploads.';
       else{
-       $filename=bin2hex(random_bytes(18)).'.'.$extensions[$mime];$relative='uploads/avatars/'.$filename;
-       if(!move_uploaded_file($tmp,__DIR__.'/'.$relative))$error='Không thể lưu ảnh. Hãy kiểm tra quyền thư mục uploads.';
-       else{
-        $q=$pdo->prepare('SELECT avatar_url FROM members WHERE id=?');$q->execute([$currentId]);$old=(string)$q->fetchColumn();
-        $pdo->prepare('UPDATE members SET avatar_url=? WHERE id=?')->execute([$relative,$currentId]);
-        if($old!==''&&str_starts_with($old,'uploads/avatars/')){@unlink(__DIR__.'/'.$old);}
-        acc_redirect('avatar_saved');
-       }
+       $q=$pdo->prepare('SELECT avatar_url FROM members WHERE id=?');$q->execute([$currentId]);$old=(string)$q->fetchColumn();
+       $pdo->prepare('UPDATE members SET avatar_url=? WHERE id=?')->execute([$relative,$currentId]);
+       if($old!==''&&str_starts_with($old,'uploads/avatars/')){@unlink(__DIR__.'/'.$old);}
+       acc_redirect('avatar_saved');
       }
      }
     }
-   }else $error='Thao tác không hợp lệ.';
+   }   }else $error='Thao tác không hợp lệ.';
   }catch(PDOException $ex){if($pdo->inTransaction())$pdo->rollBack();$error='Không thể lưu thay đổi. Hãy kiểm tra file database/account_features.sql đã được chạy chưa.';}
  }
 }
@@ -102,10 +112,47 @@ $signId=(int)($member['zodiac_sign']??0);
 <section class="account-notices"><a href="friends.php">✉ <?=$pending?> lời mời kết bạn</a><a href="messages.php">☾ <?=$unread?> tin nhắn chưa đọc</a></section>
 <div class="account-grid">
 <section class="account-card"><h2>✦ Thông tin hồ sơ</h2><form method="post"><input type="hidden" name="csrf" value="<?=acc_h($csrf)?>"><input type="hidden" name="action" value="profile"><label>Tên hiển thị<input name="display_name" maxlength="100" value="<?=acc_h($member['display_name'])?>" required></label><label>Ngày sinh<input type="date" name="birth_date" value="<?=acc_h($member['birth_date'])?>"></label><label>Cung hoàng đạo<select name="zodiac_sign" required><option value="">Chọn cung</option><?php foreach($signs as $n=>$name):?><option value="<?=$n?>" <?=($signId===$n?'selected':'')?>><?=acc_h($symbols[$n].' '.$name)?></option><?php endforeach;?></select></label><label>Giới thiệu<textarea name="bio" rows="3" maxlength="500" placeholder="Viết vài dòng về bạn..."><?=acc_h($member['bio'])?></textarea></label><button class="account-button">Lưu hồ sơ</button></form></section>
-<section class="account-card"><h2>☾ Ảnh đại diện</h2><form method="post" enctype="multipart/form-data"><input type="hidden" name="csrf" value="<?=acc_h($csrf)?>"><input type="hidden" name="action" value="avatar"><label>Chọn ảnh JPG, PNG hoặc WEBP<input type="file" name="avatar" accept="image/jpeg,image/png,image/webp" required></label><small>Tối đa 2 MB. Ảnh cũ sẽ được thay thế.</small><button class="account-button">Tải ảnh lên</button></form><p><a class="account-button" href="/avatar-frames.php">✧ Mở kho khung avatar</a></p></section>
+<section class="account-card"><h2>☾ Ảnh đại diện</h2><form id="avatarCropForm" method="post" enctype="multipart/form-data"><input type="hidden" name="csrf" value="<?=acc_h($csrf)?>"><input type="hidden" name="action" value="avatar"><input type="hidden" name="avatar_cropped" id="avatarCroppedData"><label>Chọn ảnh JPG, PNG hoặc WEBP<input type="file" name="avatar" id="avatarSource" accept="image/jpeg,image/png,image/webp" required></label><div class="avatar-crop-tools"><div class="avatar-crop-stage"><canvas id="avatarCropCanvas" width="320" height="320" aria-label="Vùng xem trước ảnh đại diện"></canvas><span class="avatar-crop-guide"></span></div><p id="avatarCropHint">Chọn ảnh để bắt đầu căn chỉnh khuôn mặt.</p><label for="avatarZoom">Phóng to / thu nhỏ</label><input type="range" id="avatarZoom" min="1" max="3" step="0.01" value="1" disabled><div class="avatar-crop-actions"><button type="button" id="avatarCropReset" class="account-button" disabled>Căn giữa lại</button><button type="submit" class="account-button">Lưu ảnh đại diện</button></div><small>Kéo ảnh để di chuyển khuôn mặt. Dùng thanh trượt để phóng to hoặc thu nhỏ. Ảnh được cắt vuông và tự động tối ưu.</small></div></form><p><a class="account-button" href="/avatar-frames.php">✧ Mở kho khung avatar</a></p></section>
 <section class="account-card"><h2>♡ Cung hoàng đạo yêu thích</h2><p class="account-muted">Chọn tối đa 6 cung bạn muốn theo dõi.</p><form method="post"><input type="hidden" name="csrf" value="<?=acc_h($csrf)?>"><input type="hidden" name="action" value="favorites"><div class="account-sign-grid"><?php foreach($signs as $n=>$name):?><label><input type="checkbox" name="favorite_signs[]" value="<?=$n?>" <?=in_array($n,$favoriteSigns,true)?'checked':''?>><span><?=acc_h($symbols[$n].' '.$name)?></span></label><?php endforeach;?></div><button class="account-button">Lưu cung yêu thích</button></form></section>
 <section class="account-card"><h2>♙ Quyền riêng tư</h2><form method="post"><input type="hidden" name="csrf" value="<?=acc_h($csrf)?>"><input type="hidden" name="action" value="privacy"><label>Ai có thể xem hồ sơ<select name="profile_visibility"><option value="public" <?=($member['profile_visibility']==='public'?'selected':'')?>>Mọi người</option><option value="friends" <?=($member['profile_visibility']==='friends'?'selected':'')?>>Chỉ bạn bè</option><option value="private" <?=($member['profile_visibility']==='private'?'selected':'')?>>Chỉ mình tôi</option></select></label><label class="account-check"><input type="checkbox" name="show_online" value="1" <?=((int)$member['show_online']===1?'checked':'')?>><span>Hiển thị trạng thái online</span></label><button class="account-button">Lưu quyền riêng tư</button></form></section>
 <section class="account-card"><h2>🔒 Đổi mật khẩu</h2><form method="post"><input type="hidden" name="csrf" value="<?=acc_h($csrf)?>"><input type="hidden" name="action" value="password"><label>Mật khẩu hiện tại<input type="password" name="current_password" autocomplete="current-password" required></label><label>Mật khẩu mới<input type="password" name="new_password" minlength="8" autocomplete="new-password" required></label><label>Nhập lại mật khẩu mới<input type="password" name="confirm_password" minlength="8" autocomplete="new-password" required></label><button class="account-button">Đổi mật khẩu</button></form></section>
 </div><div class="account-links"><a href="shop.php">✦ Ví Xu & Cửa hàng</a><a href="friends.php">Danh sách bạn bè</a><a href="messages.php">Tin nhắn riêng</a><a href="diary.php">Nhật ký của tôi</a><a href="community.php">Cộng đồng</a></div>
 <form method="post" action="logout.php" class="account-logout"><input type="hidden" name="csrf" value="<?=acc_h($csrf)?>"><button>Đăng xuất</button></form>
-</main><?php require __DIR__ . '/includes/footer.php'; ?><script src="js/presence.js"></script></body></html>
+</main><?php require __DIR__ . '/includes/footer.php'; ?><script src="js/presence.js"></script><script>
+(function(){
+ const form=document.getElementById('avatarCropForm'),input=document.getElementById('avatarSource'),canvas=document.getElementById('avatarCropCanvas'),zoom=document.getElementById('avatarZoom'),reset=document.getElementById('avatarCropReset'),data=document.getElementById('avatarCroppedData'),hint=document.getElementById('avatarCropHint');
+ if(!form||!input||!canvas)return;
+ const ctx=canvas.getContext('2d');let image=null,scale=1,offsetX=0,offsetY=0,baseScale=1,drag=null;
+ const size=320;
+ function draw(){
+  ctx.clearRect(0,0,size,size);ctx.fillStyle='#171321';ctx.fillRect(0,0,size,size);
+  if(!image)return;
+  const w=image.naturalWidth,h=image.naturalHeight;
+  baseScale=Math.max(size/w,size/h);
+  const s=baseScale*scale,drawW=w*s,drawH=h*s;
+  const maxX=Math.max(0,(drawW-size)/2),maxY=Math.max(0,(drawH-size)/2);
+  offsetX=Math.max(-maxX,Math.min(maxX,offsetX));offsetY=Math.max(-maxY,Math.min(maxY,offsetY));
+  ctx.save();ctx.beginPath();ctx.rect(0,0,size,size);ctx.clip();
+  ctx.drawImage(image,(size-drawW)/2+offsetX,(size-drawH)/2+offsetY,drawW,drawH);ctx.restore();
+ }
+ input.addEventListener('change',()=>{
+  const file=input.files&&input.files[0];data.value='';
+  if(!file){image=null;draw();return;}
+  if(!/^image\/(jpeg|png|webp)$/.test(file.type)||file.size>2*1024*1024){hint.textContent='Chỉ nhận ảnh JPG, PNG hoặc WEBP tối đa 2 MB.';input.value='';image=null;draw();return;}
+  const reader=new FileReader();reader.onload=()=>{
+   const img=new Image();img.onload=()=>{image=img;scale=1;offsetX=0;offsetY=0;zoom.value='1';zoom.disabled=false;reset.disabled=false;hint.textContent='Kéo ảnh trong khung để đưa khuôn mặt vào giữa.';draw();};img.onerror=()=>{hint.textContent='Không thể đọc ảnh này.';};img.src=reader.result;
+  };reader.readAsDataURL(file);
+ });
+ zoom.addEventListener('input',()=>{if(!image)return;scale=Number(zoom.value)||1;draw();});
+ reset.addEventListener('click',()=>{scale=1;offsetX=0;offsetY=0;zoom.value='1';draw();});
+ canvas.addEventListener('pointerdown',e=>{if(!image)return;drag={x:e.clientX,y:e.clientY,ox:offsetX,oy:offsetY};canvas.setPointerCapture(e.pointerId);});
+ canvas.addEventListener('pointermove',e=>{if(!drag)return;const rect=canvas.getBoundingClientRect();const factor=size/rect.width;offsetX=drag.ox+(e.clientX-drag.x)*factor;offsetY=drag.oy+(e.clientY-drag.y)*factor;draw();});
+ ['pointerup','pointercancel','lostpointercapture'].forEach(name=>canvas.addEventListener(name,()=>{drag=null;}));
+ form.addEventListener('submit',e=>{
+  if(!image)return;
+  e.preventDefault();draw();const out=document.createElement('canvas');out.width=512;out.height=512;const outCtx=out.getContext('2d');outCtx.drawImage(canvas,0,0,size,size,0,0,512,512);
+  data.value=out.toDataURL('image/jpeg',0.9);form.submit();
+ });
+ draw();
+})();
+</script></body></html>
