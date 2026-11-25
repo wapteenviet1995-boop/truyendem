@@ -101,7 +101,7 @@ try{$q=$pdo->prepare("SELECT COUNT(*) FROM friend_requests WHERE addressee_id=? 
 try{$q=$pdo->prepare('SELECT COUNT(*) FROM member_messages WHERE recipient_id=? AND read_at IS NULL');$q->execute([$currentId]);$unread=(int)$q->fetchColumn();}catch(PDOException $ex){$unread=0;}
 $signId=(int)($member['zodiac_sign']??0);$avatarCropFrame=td_avatar_frame_data($pdo,$currentId);
 ?>
-<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tài khoản của tôi | Góc Hoàng Đạo</title><link rel="stylesheet" href="css/style.css?v=20261111-account1"><link rel="stylesheet" href="css/account.css?v=20261118-2"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261122-footer-account-fix1">
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tài khoản của tôi | Góc Hoàng Đạo</title><link rel="stylesheet" href="css/style.css?v=20261111-account1"><link rel="stylesheet" href="css/account.css?v=20261125-crop1"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261122-footer-account-fix1">
 <link rel="stylesheet" href="/css/avatar-frames.css?v=20261125-fix1">
 </head>
 <body class="blog-page social-page account-page">
