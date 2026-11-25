@@ -21,3 +21,8 @@
 /* Link wrapper in the compact homepage ranking must not crop the ornamental frame. */
 .leaderboard-avatar{overflow:visible}
 .leaderboard-avatar-inner{width:42px;height:42px}
+
+/* Keep legacy account-avatar image rules from cropping the decorative PNG frame. */
+.account-avatar.td-avatar-shell .td-avatar-photo > img{width:100%;height:100%;object-fit:cover}
+.account-avatar.td-avatar-shell .td-avatar-frame-image{position:absolute;inset:-9%;width:118%;height:118%;max-width:none;object-fit:contain;border:0;border-radius:0;box-shadow:none}
+.member-public-symbol.td-avatar-shell .td-avatar-frame-image{position:absolute;inset:-9%;width:118%;height:118%;max-width:none;object-fit:contain}
