@@ -26,3 +26,18 @@
 .account-avatar.td-avatar-shell .td-avatar-photo > img{width:100%;height:100%;object-fit:cover}
 .account-avatar.td-avatar-shell .td-avatar-frame-image{position:absolute;inset:-9%;width:118%;height:118%;max-width:none;object-fit:contain;border:0;border-radius:0;box-shadow:none}
 .member-public-symbol.td-avatar-shell .td-avatar-frame-image{position:absolute;inset:-9%;width:118%;height:118%;max-width:none;object-fit:contain}
+
+
+/* Global avatar standard: same circular photo crop and frame overlay everywhere. */
+.td-avatar-shell{box-sizing:border-box;position:relative!important;display:inline-grid!important;place-items:center!important;flex:0 0 auto!important;overflow:visible!important;vertical-align:middle}
+.td-avatar-shell>.td-avatar-photo{position:absolute!important;inset:13%!important;z-index:1!important;display:grid!important;overflow:hidden!important;border:0!important;border-radius:50%!important}
+.td-avatar-shell>.td-avatar-photo>img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center center!important;border:0!important;border-radius:50%!important;transform:none!important}
+.td-avatar-shell>.td-avatar-frame-image{position:absolute!important;inset:-10%!important;z-index:3!important;display:block!important;width:120%!important;height:120%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;object-position:center center!important;border:0!important;border-radius:0!important;box-shadow:none!important;transform:none!important;pointer-events:none!important}
+.td-avatar-shell>.td-avatar-fallback{position:absolute;inset:13%;z-index:1;border-radius:50%}
+.account-avatar.td-avatar-shell,.member-public-symbol.td-avatar-shell{width:112px;height:112px;overflow:visible!important;border:0!important}
+.leaderboard-avatar-inner.td-avatar-shell{width:100%;height:100%;min-width:0;min-height:0}
+.leaderboard-avatar.td-avatar-shell{width:42px;height:42px;overflow:visible!important}
+.td-author-avatar.td-avatar-shell{width:56px;height:56px;overflow:visible!important}
+.td-community-avatar.td-avatar-shell{width:39px;height:39px;overflow:visible!important}
+.af-current.td-avatar-shell{width:96px;height:96px;overflow:visible!important}
+@media(max-width:600px){.account-avatar.td-avatar-shell,.member-public-symbol.td-avatar-shell{width:100px;height:100px}.td-author-avatar.td-avatar-shell{width:48px;height:48px}.leaderboard-avatar.td-avatar-shell{width:38px;height:38px}}
