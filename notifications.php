@@ -137,6 +137,29 @@ function td_notification_type_label($type) {
 .np-empty,.np-message{padding:22px;border-radius:14px;background:var(--card,#191923);margin:14px 0}
 .np-message{border-left:3px solid #9870c5}
 @media(max-width:560px){.np-head{padding:19px}.np-head h1{font-size:23px}.np-card{padding:13px;gap:10px}.np-symbol{width:34px;height:34px;flex-basis:34px}}
+
+/* Sua cac khoi con nen toi khi bat che do sang */
+html[data-theme="light"] body.story-site .np-wrap{color:#30263a!important}
+html[data-theme="light"] body.story-site .np-head,
+html[data-theme="light"] body.story-site .np-empty,
+html[data-theme="light"] body.story-site .np-message{
+  background:#fff!important;background-image:none!important;
+  color:#30263a!important;border:1px solid #e5dfeb!important;
+  box-shadow:0 5px 18px rgba(42,27,54,.045)!important;
+}
+html[data-theme="light"] body.story-site .np-head h1,
+html[data-theme="light"] body.story-site .np-tools>strong,
+html[data-theme="light"] body.story-site .np-body h3{color:#30263a!important}
+html[data-theme="light"] body.story-site .np-head p,
+html[data-theme="light"] body.story-site .np-meta,
+html[data-theme="light"] body.story-site .np-body p{color:#62596c!important}
+html[data-theme="light"] body.story-site .np-symbol{background:#f2eaf8!important;color:#7953a3!important}
+html[data-theme="light"] body.story-site .np-card{background:#fff!important;color:#30263a!important;border-color:#e5dfeb!important}
+html[data-theme="light"] body.story-site .np-card.unread{background:#fbf7ff!important;border-color:#d8c5e8!important}
+html[data-theme="light"] body.story-site .np-actions button,
+html[data-theme="light"] body.story-site .np-actions a{color:#7045a0!important}
+html[data-theme="light"] body.story-site .np-btn{background:#7045a0!important;color:#fff!important}
+
 </style>
 </head>
 <body class="story-site">
