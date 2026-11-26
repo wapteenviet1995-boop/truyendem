@@ -17,9 +17,12 @@ if ($_SERVER['REQUEST_METHOD']==='POST' && (string)($_POST['action']??'')==='pre
 if ($_SERVER['REQUEST_METHOD']==='POST' && (string)($_POST['action']??'')==='delete') {
   if (!hash_equals($csrf,(string)($_POST['csrf']??''))) cchat_json(['ok'=>false,'message'=>'Phiên đã hết hạn.'],403);
   $id=max(0,(int)($_POST['message_id']??0));
+  $latestQ=$pdo->prepare("SELECT id FROM community_chat_messages WHERE member_id=? AND deleted_at IS NULL ORDER BY id DESC LIMIT 1");
+  $latestQ->execute([$me]); $latestId=(int)$latestQ->fetchColumn();
+  if($id<1 || $id!==$latestId) cchat_json(['ok'=>false,'message'=>'Bạn chỉ có thể xóa tin nhắn gần nhất của mình.'],403);
   $q=$pdo->prepare("UPDATE community_chat_messages SET deleted_at=NOW() WHERE id=? AND member_id=? AND deleted_at IS NULL");
   $q->execute([$id,$me]);
-  cchat_json(['ok'=>$q->rowCount()===1,'message'=>$q->rowCount()===1?'Đã xóa tin nhắn.':'Không thể xóa tin nhắn này.']);
+  cchat_json(['ok'=>$q->rowCount()===1,'message'=>$q->rowCount()===1?'Đã xóa tin nhắn gần nhất.':'Không thể xóa tin nhắn này.']);
 }
 if(isset($_GET['fetch'])) {
   $after=max(0,(int)($_GET['after']??0));
@@ -49,6 +52,8 @@ if($_SERVER['REQUEST_METHOD']==='POST') {
 $q=$pdo->query("SELECT c.id,c.member_id,c.message,c.created_at,m.display_name,m.avatar_url,CASE WHEN p.last_seen>=DATE_SUB(NOW(),INTERVAL 90 SECOND) THEN 1 ELSE 0 END AS is_online FROM community_chat_messages c JOIN members m ON m.id=c.member_id LEFT JOIN community_chat_presence p ON p.member_id=m.id WHERE c.deleted_at IS NULL AND m.is_active=1 ORDER BY c.id DESC LIMIT 80");
 $messages=array_reverse($q->fetchAll());
 $lastId=$messages?(int)end($messages)['id']:0;
+$latestOwnQ=$pdo->prepare("SELECT id FROM community_chat_messages WHERE member_id=? AND deleted_at IS NULL ORDER BY id DESC LIMIT 1");
+$latestOwnQ->execute([$me]); $latestOwnId=(int)$latestOwnQ->fetchColumn();
 $online=(int)$pdo->query("SELECT COUNT(*) FROM community_chat_presence WHERE last_seen>=DATE_SUB(NOW(),INTERVAL 90 SECOND)")->fetchColumn();
 ?>
 <!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Phòng trò chuyện | Truyện Đêm</title>
@@ -58,7 +63,7 @@ $online=(int)$pdo->query("SELECT COUNT(*) FROM community_chat_presence WHERE las
 <?php if($error):?><p class="cchat-error"><?=cchat_h($error)?></p><?php endif;?>
 <section class="cchat-panel"><div class="cchat-top"><div><strong>☾ Phòng chung Truyện Đêm</strong><small id="cchat-status">Đang kết nối…</small></div><div class="cchat-top-actions"><span class="cchat-online">● <b id="cchat-online-count"><?=$online?></b> đang online</span><button type="button" id="cchat-notify">Bật thông báo</button></div></div>
 <div class="cchat-stream" id="cchat-stream" data-last-id="<?=$lastId?>" data-me="<?=$me?>" data-csrf="<?=cchat_h($csrf)?>">
-<?php if(!$messages):?><p class="cchat-empty">Chưa có tin nhắn nào. Hãy mở lời đầu tiên nhé!</p><?php else:foreach($messages as $m):?><article class="cchat-message <?=((int)$m['member_id']===$me?'mine':'')?> " data-id="<?=(int)$m['id']?>"><div class="cchat-avatar"><?php if(!empty($m['avatar_url'])):?><img src="<?=cchat_h($m['avatar_url'])?>" alt=""><?php else:?><?=cchat_h(mb_substr((string)$m['display_name'],0,1))?><?php endif;?></div><div class="cchat-content"><div class="cchat-meta"><a href="/member.php?id=<?=(int)$m['member_id']?>"><?=cchat_h($m['display_name'])?></a><span class="cchat-member-status <?=((int)$m['is_online']===1?'online':'offline')?>"><?=((int)$m['is_online']===1?'Đang online':'Ngoại tuyến')?></span><time><?=cchat_h(date('d/m H:i',strtotime($m['created_at'])))?></time></div><p><?=nl2br(cchat_h($m['message']))?></p><?php if((int)$m['member_id']===$me):?><button type="button" class="cchat-delete" data-delete="<?=(int)$m['id']?>">Xóa</button><?php endif;?></div></article><?php endforeach;endif;?>
+<?php if(!$messages):?><p class="cchat-empty">Chưa có tin nhắn nào. Hãy mở lời đầu tiên nhé!</p><?php else:foreach($messages as $m):?><article class="cchat-message <?=((int)$m['member_id']===$me?'mine':'')?> " data-id="<?=(int)$m['id']?>"><div class="cchat-avatar"><?php if(!empty($m['avatar_url'])):?><img src="<?=cchat_h($m['avatar_url'])?>" alt=""><?php else:?><?=cchat_h(mb_substr((string)$m['display_name'],0,1))?><?php endif;?></div><div class="cchat-content"><div class="cchat-meta"><a href="/member.php?id=<?=(int)$m['member_id']?>"><?=cchat_h($m['display_name'])?></a><span class="cchat-member-status <?=((int)$m['is_online']===1?'online':'offline')?>"><?=((int)$m['is_online']===1?'Đang online':'Ngoại tuyến')?></span><time><?=cchat_h(date('d/m H:i',strtotime($m['created_at'])))?></time></div><p><?=nl2br(cchat_h($m['message']))?></p><?php if((int)$m['member_id']===$me && (int)$m['id']===$latestOwnId):?><button type="button" class="cchat-delete" data-delete="<?=(int)$m['id']?>">Xóa</button><?php endif;?></div></article><?php endforeach;endif;?>
 </div><div class="cchat-emoji-bar" aria-label="Chọn biểu tượng cảm xúc"><?php foreach(['😀','😂','🥰','😍','😢','😮','👍','❤️','🎉','🌙','👻','✨'] as $emoji): ?><button type="button" class="cchat-emoji" data-emoji="<?=cchat_h($emoji)?>"><?=cchat_h($emoji)?></button><?php endforeach; ?></div><form class="cchat-compose" method="post"><input type="hidden" name="csrf" value="<?=cchat_h($csrf)?>"><textarea id="cchat-message-input" name="message" maxlength="1000" rows="2" required placeholder="Chia sẻ điều bạn đang nghĩ…"></textarea><button type="submit">Gửi tin nhắn ✦</button></form><p class="cchat-note">Vui lòng trò chuyện văn minh, không spam hoặc chia sẻ thông tin riêng tư.</p></section></main>
 <?php require __DIR__.'/includes/footer.php'; ?>
 <script>
@@ -74,7 +79,7 @@ $online=(int)$pdo->query("SELECT COUNT(*) FROM community_chat_presence WHERE las
   const link=document.createElement('a');link.href='/member.php?id='+Number(m.member_id);link.textContent=m.display_name||'Thành viên';
   const state=document.createElement('span');state.className='cchat-member-status '+(Number(m.is_online)===1?'online':'offline');state.textContent=Number(m.is_online)===1?'Đang online':'Ngoại tuyến';const time=document.createElement('time');time.textContent=m.time_label||'Vừa xong';meta.append(link,state,time);
   const p=document.createElement('p');p.textContent=m.message;content.append(meta,p);
-  if(Number(m.member_id)===Number(box.dataset.me)){const del=document.createElement('button');del.type='button';del.className='cchat-delete';del.dataset.delete=m.id;del.textContent='Xóa';content.append(del);}
+  if(Number(m.member_id)===Number(box.dataset.me)){box.querySelectorAll('.cchat-message.mine .cchat-delete').forEach(old=>old.remove());const del=document.createElement('button');del.type='button';del.className='cchat-delete';del.dataset.delete=m.id;del.textContent='Xóa tin mới nhất';content.append(del);}
   item.append(avatar,content);box.append(item);last=Math.max(last,Number(m.id));
  }
  async function presence(){try{const fd=new FormData();fd.append('action','presence');fd.append('csrf',box.dataset.csrf);const r=await fetch('community-room.php',{method:'POST',body:fd,credentials:'same-origin'});const d=await r.json();if(d.ok)document.getElementById('cchat-online-count').textContent=d.online;}catch(e){}}
