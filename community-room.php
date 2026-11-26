@@ -52,7 +52,7 @@ $lastId=$messages?(int)end($messages)['id']:0;
 $online=(int)$pdo->query("SELECT COUNT(*) FROM community_chat_presence WHERE last_seen>=DATE_SUB(NOW(),INTERVAL 90 SECOND)")->fetchColumn();
 ?>
 <!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Phòng trò chuyện | Truyện Đêm</title>
-<link rel="stylesheet" href="/css/style.css?v=messaging2"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/theme-mode.css?v=20261122-global-light-audit5"><link rel="stylesheet" href="/css/community-room.css?v=2"></head>
+<link rel="stylesheet" href="/css/style.css?v=messaging2"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/theme-mode.css?v=20261122-global-light-audit5"><link rel="stylesheet" href="/css/community-room.css?v=3"></head>
 <body class="blog-page community-chat-page"><?php require __DIR__.'/includes/header.php'; ?>
 <main class="cchat-main"><section class="cchat-hero"><span>✦ KẾT NỐI CÙNG ĐỘC GIẢ ✦</span><h1>Phòng trò chuyện</h1><p>Cùng giao lưu, chia sẻ cảm nhận và trò chuyện với mọi người trong Truyện Đêm.</p></section>
 <?php if($error):?><p class="cchat-error"><?=cchat_h($error)?></p><?php endif;?>
