@@ -41,3 +41,13 @@ html[data-theme="light"] body.shop-page .community-error{background:#fff0f0;colo
 .shop-inventory-frame img{width:42px;height:42px;object-fit:contain}
 html[data-theme="light"] body.shop-page .shop-frame-preview{background:radial-gradient(circle,#f5edff,#eee8f5);border-color:#dfd2eb}
 html[data-theme="light"] body.shop-page .shop-inventory-frame{background:#f5effa;border-color:#e2d5ec}
+
+/* Xem truoc khung avatar voi anh that cua thanh vien */
+.shop-frame-preview{min-height:126px}
+.shop-frame-avatar{width:92px;height:92px;overflow:visible!important}
+.shop-frame-avatar>.td-avatar-photo{inset:13%!important}
+.shop-frame-avatar>.td-avatar-frame-image{inset:-10%!important;width:120%!important;height:120%!important;object-fit:contain!important}
+.shop-inventory-frame{overflow:visible;flex:0 0 52px;width:52px;height:52px;background:transparent;border:0}
+.shop-inventory-avatar{width:48px;height:48px;overflow:visible!important}
+.shop-inventory-avatar>.td-avatar-photo{inset:13%!important}
+.shop-inventory-avatar>.td-avatar-frame-image{inset:-10%!important;width:120%!important;height:120%!important;object-fit:contain!important}
