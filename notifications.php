@@ -1,187 +1,162 @@
 <?php
-declare(strict_types=1);
-// Temporary diagnostics: expose fatal location to the signed-in site owner.
-error_reporting(E_ALL);
-ini_set('display_errors', '0');
-register_shutdown_function(function () {
-    $e = error_get_last();
-    if ($e && in_array($e['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR], true)) {
-        error_log('TruyenDem notifications fatal: ' . $e['message'] . ' in ' . $e['file'] . ':' . $e['line']);
-        if (!headers_sent()) { http_response_code(200); header('Content-Type: text/plain; charset=utf-8'); }
-        echo "\nNOTIFICATIONS FATAL: " . $e['message'] . "\nFILE: " . basename($e['file']) . "\nLINE: " . $e['line'] . "\n";
-    }
-});
 require __DIR__ . '/includes/db.php';
-if (empty($_SESSION['member_id'])) { header('Location: /login.php?next=notifications.php'); exit; }
-$me = (int)$_SESSION['member_id'];
-if (empty($_SESSION['member_csrf'])) $_SESSION['member_csrf'] = bin2hex(random_bytes(32));
-$csrf = (string)$_SESSION['member_csrf'];
-$error = '';
 
-function noti_h($value): string {
-    return htmlspecialchars((string)($value ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-}
-function noti_lower(string $value): string {
-    return function_exists('mb_strtolower') ? mb_strtolower($value, 'UTF-8') : strtolower($value);
-}
-function noti_starts(string $value, string $prefix): bool { return substr($value, 0, strlen($prefix)) === $prefix; }
-function noti_has(string $value, string $needle): bool { return strpos($value, $needle) !== false; }
-function noti_category(string $type): string {
-    if (noti_starts($type, 'contributor_') || noti_has($type, 'reward') || noti_has($type, 'paid')) return 'rewards';
-    if (noti_starts($type, 'moderation_') || noti_starts($type, 'author_') || noti_starts($type, 'story_')) return 'stories';
-    if (noti_starts($type, 'community_') || $type === 'new_follower' || noti_starts($type, 'friend_') || noti_starts($type, 'message_')) return 'social';
-    return 'system';
-}
-function noti_icon(string $category): string {
-    return ['social'=>'♡','stories'=>'▤','rewards'=>'✧','system'=>'☾'][$category] ?? '☾';
+if (empty($_SESSION['member_id'])) {
+    header('Location: /login.php?next=notifications.php');
+    exit;
 }
 
+$memberId = (int) $_SESSION['member_id'];
+$message = '';
+$notifications = [];
+$unreadCount = 0;
+
+if (empty($_SESSION['member_csrf'])) {
+    $_SESSION['member_csrf'] = bin2hex(random_bytes(32));
+}
+$csrf = $_SESSION['member_csrf'];
+
+/* Xu ly thao tac doc/xoa thong bao */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!hash_equals($csrf, (string)($_POST['csrf'] ?? ''))) {
-        $error = 'Phiên đã hết hạn. Hãy tải lại trang.';
+    $postedToken = isset($_POST['csrf']) ? (string) $_POST['csrf'] : '';
+    if (!hash_equals($csrf, $postedToken)) {
+        $message = 'Phiên làm việc đã hết hạn. Vui lòng tải lại trang.';
     } else {
-        $action = (string)($_POST['action'] ?? '');
-        $id = (int)($_POST['notification_id'] ?? 0);
+        $action = isset($_POST['action']) ? (string) $_POST['action'] : '';
+        $noticeId = isset($_POST['id']) ? (int) $_POST['id'] : 0;
+
         try {
             if ($action === 'read_all') {
-                $pdo->prepare('UPDATE member_notifications SET is_read=1 WHERE recipient_id=? AND is_read=0')->execute([$me]);
-            } elseif ($action === 'read_one' && $id > 0) {
-                $pdo->prepare('UPDATE member_notifications SET is_read=1 WHERE id=? AND recipient_id=?')->execute([$id, $me]);
-            } elseif ($action === 'open' && $id > 0) {
-                $q = $pdo->prepare('SELECT target_url FROM member_notifications WHERE id=? AND recipient_id=? LIMIT 1');
-                $q->execute([$id, $me]);
-                $target = (string)($q->fetchColumn() ?: '/notifications.php');
-                $pdo->prepare('UPDATE member_notifications SET is_read=1 WHERE id=? AND recipient_id=?')->execute([$id, $me]);
-                if ($target === '' || $target[0] !== '/' || substr($target, 0, 2) === '//') $target = '/notifications.php';
-                header('Location: ' . $target); exit;
-            } elseif ($action === 'delete_one' && $id > 0) {
-                $pdo->prepare('DELETE FROM member_notifications WHERE id=? AND recipient_id=?')->execute([$id, $me]);
-            } elseif ($action === 'clear_read') {
-                $pdo->prepare('DELETE FROM member_notifications WHERE recipient_id=? AND is_read=1')->execute([$me]);
+                $stmt = $pdo->prepare('UPDATE member_notifications SET is_read=1 WHERE recipient_id=?');
+                $stmt->execute([$memberId]);
+                header('Location: /notifications.php?done=read');
+                exit;
+            } elseif ($action === 'read_one' && $noticeId > 0) {
+                $stmt = $pdo->prepare('UPDATE member_notifications SET is_read=1 WHERE id=? AND recipient_id=?');
+                $stmt->execute([$noticeId, $memberId]);
+                header('Location: /notifications.php');
+                exit;
+            } elseif ($action === 'delete' && $noticeId > 0) {
+                $stmt = $pdo->prepare('DELETE FROM member_notifications WHERE id=? AND recipient_id=?');
+                $stmt->execute([$noticeId, $memberId]);
+                header('Location: /notifications.php');
+                exit;
             }
-            $keep = [];
-            foreach (['filter','q'] as $key) {
-                $value = trim((string)($_POST[$key] ?? ''));
-                if ($value !== '') $keep[$key] = $value;
-            }
-            $redirect = '/notifications.php' . ($keep ? '?' . http_build_query($keep) : '');
-            header('Location: ' . $redirect); exit;
         } catch (PDOException $e) {
-            $error = 'Không thể cập nhật thông báo. Vui lòng thử lại.';
+            error_log('notifications.php POST: ' . $e->getMessage());
+            $message = 'Không thể thực hiện thao tác. Vui lòng thử lại.';
         }
     }
 }
 
-$filter = (string)($_GET['filter'] ?? 'all');
-if (!in_array($filter, ['all','unread','social','stories','rewards','system'], true)) $filter = 'all';
-$search = trim((string)($_GET['q'] ?? ''));
-$page = max(1, (int)($_GET['page'] ?? 1));
-try {
-    $q = $pdo->prepare("SELECT id,notification_type,title,message,target_url,is_read,created_at FROM member_notifications WHERE recipient_id=? ORDER BY created_at DESC,id DESC LIMIT 200");
-    $q->execute([$me]);
-    $allItems = $q->fetchAll(PDO::FETCH_ASSOC);
-    $q = $pdo->prepare('SELECT COUNT(*) FROM member_notifications WHERE recipient_id=? AND is_read=0');
-    $q->execute([$me]);
-    $unread = (int)$q->fetchColumn();
-} catch (Throwable $e) {
-    error_log('TruyenDem notifications query error: ' . $e->getMessage());
-    http_response_code(200);
-    $allItems = [];
-    $unread = 0;
-    $error = 'Không tải được dữ liệu thông báo. Có thể bảng thông báo chưa được cập nhật đúng cấu trúc. Hãy báo quản trị viên kiểm tra bảng member_notifications.';
+if (isset($_GET['done']) && $_GET['done'] === 'read') {
+    $message = 'Đã đánh dấu tất cả thông báo là đã đọc.';
 }
 
-$counts = ['all'=>count($allItems),'unread'=>0,'social'=>0,'stories'=>0,'rewards'=>0,'system'=>0];
-$filtered = [];
-foreach ($allItems as $item) {
-    $category = noti_category((string)$item['notification_type']);
-    if (!(int)$item['is_read']) $counts['unread']++;
-    $counts[$category]++;
-    $item['_category'] = $category;
-    $haystack = $search !== '' ? noti_lower((string)$item['title'].' '.(string)$item['message'].' '.(string)'') : '';
-    if ($filter === 'unread' && (int)$item['is_read']) continue;
-    if (in_array($filter, ['social','stories','rewards','system'], true) && $category !== $filter) continue;
-    if ($search !== '' && strpos($haystack, noti_lower($search)) === false) continue;
-    $filtered[] = $item;
+/* Lay danh sach thong bao */
+try {
+    $stmt = $pdo->prepare('SELECT id, notification_type, title, message, target_url, is_read, created_at FROM member_notifications WHERE recipient_id=? ORDER BY created_at DESC, id DESC LIMIT 100');
+    $stmt->execute([$memberId]);
+    $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt = $pdo->prepare('SELECT COUNT(*) FROM member_notifications WHERE recipient_id=? AND is_read=0');
+    $stmt->execute([$memberId]);
+    $unreadCount = (int) $stmt->fetchColumn();
+} catch (PDOException $e) {
+    error_log('notifications.php SELECT: ' . $e->getMessage());
+    $message = 'Chưa thể tải thông báo. Vui lòng thử lại sau.';
 }
-$perPage = 20;
-$totalPages = max(1, (int)ceil(count($filtered) / $perPage));
-$page = min($page, $totalPages);
-$items = array_slice($filtered, ($page - 1) * $perPage, $perPage);
-function noti_page_url(int $page, string $filter, string $search): string {
-    $params = ['page'=>$page];
-    if ($filter !== 'all') $params['filter'] = $filter;
-    if ($search !== '') $params['q'] = $search;
-    return '/notifications.php?' . http_build_query($params);
+
+function td_notification_escape($value) {
+    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
 ?>
 <!doctype html>
 <html lang="vi">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Thông báo | Truyện Đêm</title>
-<link rel="stylesheet" href="/css/style.css?v=memberhub1">
-<link rel="stylesheet" href="/css/member-hub.css?v=20261122-light1">
-<link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1">
-<link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1">
-<link rel="stylesheet" href="/css/notifications.css?v=20261126-upgrade1">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/member-hub.css">
+<link rel="stylesheet" href="/css/notifications.css">
+<style>
+.np-wrap{max-width:900px;margin:28px auto 60px;padding:0 16px;color:var(--text,#eee)}
+.np-head{padding:24px;border-radius:18px;background:var(--card,#191923);margin-bottom:18px}
+.np-head h1{margin:0 0 8px;font-size:26px}.np-head p{margin:0;opacity:.75}
+.np-tools{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:16px 0}
+.np-btn{border:0;border-radius:10px;padding:10px 14px;background:#8b65b5;color:#fff;font-weight:600;cursor:pointer}
+.np-card{display:flex;gap:14px;align-items:flex-start;padding:17px;margin:12px 0;border:1px solid var(--line,#333);border-radius:15px;background:var(--card,#191923)}
+.np-card.unread{border-color:#9870c5}.np-symbol{width:40px;height:40px;flex:0 0 40px;border-radius:50%;display:grid;place-items:center;background:rgba(151,111,193,.18);font-size:20px}
+.np-body{min-width:0;flex:1}.np-body h3{font-size:16px;margin:0 0 7px}.np-body p{margin:0 0 9px;line-height:1.55;overflow-wrap:anywhere}
+.np-meta{font-size:12px;opacity:.65;margin-bottom:8px}.np-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.np-actions button{background:none;border:0;color:#bd9ae4;padding:4px 0;cursor:pointer}.np-actions a{color:#bd9ae4;text-decoration:none}
+.np-empty,.np-message{padding:22px;border-radius:14px;background:var(--card,#191923);margin:14px 0}
+.np-message{border-left:3px solid #9870c5}
+@media(max-width:560px){.np-head{padding:19px}.np-head h1{font-size:23px}.np-card{padding:13px;gap:10px}.np-symbol{width:34px;height:34px;flex-basis:34px}}
+</style>
 </head>
 <body class="story-site">
 <?php require __DIR__ . '/includes/header.php'; ?>
-<main class="member-hub-main noti-main">
-<section class="member-hub-hero noti-hero">
-<span class="kicker">✦ TRUNG TÂM HOẠT ĐỘNG ✦</span>
-<h1>Thông báo <small><?=number_format($unread)?> chưa đọc</small></h1>
-<p>Mọi tương tác, cập nhật truyện và khoản xu/nhuận bút đều được gom tại đây.</p>
-<div class="noti-summary"><span><b><?=number_format($counts['all'])?></b> thông báo gần đây</span><span><b><?=number_format($unread)?></b> chưa đọc</span></div>
-</section>
-<nav class="member-hub-tabs noti-shortcuts">
-<a href="/library.php">▣ Tủ sách</a><a href="/notifications.php" aria-current="page">♧ Thông báo</a><a href="/moderation-history.php">✓ Lịch sử kiểm duyệt</a><a href="/submit_story.php#my-stories">▤ Bài viết của tôi</a><a href="/shop.php">✧ Điểm danh & Xu</a><a href="/account.php">Hồ sơ</a>
-</nav>
-<?php if ($error): ?><p class="member-hub-flash"><?=noti_h($error)?></p><?php endif; ?>
-<section class="noti-toolbar">
-<form class="noti-search" method="get" action="/notifications.php">
-<input type="hidden" name="filter" value="<?=noti_h($filter)?>">
-<input type="search" name="q" value="<?=noti_h($search)?>" placeholder="Tìm thông báo..." aria-label="Tìm thông báo">
-<button type="submit">Tìm</button>
-<?php if ($search !== ''): ?><a href="<?=noti_h('/notifications.php'.($filter!=='all'?'?filter='.$filter:''))?>">Xóa lọc</a><?php endif; ?>
-</form>
-<div class="noti-actions">
-<?php if ($unread > 0): ?><form method="post"><input type="hidden" name="csrf" value="<?=noti_h($csrf)?>"><input type="hidden" name="action" value="read_all"><input type="hidden" name="filter" value="<?=noti_h($filter)?>"><input type="hidden" name="q" value="<?=noti_h($search)?>"><button type="submit" class="noti-action-primary">✓ Đọc tất cả</button></form><?php endif; ?>
-<?php if ($counts['all'] > $counts['unread']): ?><form method="post" onsubmit="return confirm('Xóa toàn bộ thông báo đã đọc?')"><input type="hidden" name="csrf" value="<?=noti_h($csrf)?>"><input type="hidden" name="action" value="clear_read"><input type="hidden" name="filter" value="<?=noti_h($filter)?>"><button type="submit" class="noti-action-muted">Dọn thông báo đã đọc</button></form><?php endif; ?>
-</div>
-</section>
-<nav class="noti-filters" aria-label="Lọc thông báo">
-<?php $labels=['all'=>'Tất cả','unread'=>'Chưa đọc','social'=>'Cộng đồng','stories'=>'Truyện & kiểm duyệt','rewards'=>'Xu & nhuận bút','system'=>'Khác']; foreach($labels as $key=>$label): ?>
-<a class="<?=($filter===$key?'active':'')?>" href="<?=noti_h('/notifications.php'.($key!=='all'?'?filter='.$key:''))?>"><?=noti_h($label)?> <b><?=number_format($counts[$key])?></b></a>
-<?php endforeach; ?>
-</nav>
-<section class="noti-feed">
-<div class="noti-feed-head"><h2><?=noti_h($labels[$filter])?></h2><span><?=number_format(count($filtered))?> kết quả · Trang <?=$page?>/<?=$totalPages?></span></div>
-<?php if (!$items): ?>
-<div class="member-hub-empty noti-empty"><span>☾</span><strong><?=($search!==''?'Không tìm thấy thông báo phù hợp':'Bạn chưa có thông báo ở mục này')?></strong><p>Khi có hoạt động mới, thông báo sẽ xuất hiện tại đây.</p></div>
-<?php else: ?>
-<div class="noti-list">
-<?php foreach ($items as $n): $cat=$n['_category']; $isUnread=!(int)$n['is_read']; ?>
-<article class="noti-card <?=($isUnread?'is-unread':'is-read')?>">
-<div class="noti-icon noti-<?=noti_h($cat)?>"><?=noti_icon($cat)?></div>
-<div class="noti-content">
-<div class="noti-card-top"><span class="noti-category"><?=noti_h($labels[$cat] ?? 'Thông báo')}</span><time datetime="<?=noti_h(date('c',strtotime($n['created_at'])))?>"><?=noti_h(date('d/m/Y · H:i',strtotime($n['created_at'])))?></time></div>
-<h3><?=noti_h($n['title'])?></h3><p><?=noti_h($n['message'])?></p>
+<main class="np-wrap">
+    <section class="np-head">
+        <h1>Thông báo</h1>
+        <p>Bạn có <strong><?php echo number_format($unreadCount); ?></strong> thông báo chưa đọc.</p>
+    </section>
 
-<div class="noti-card-actions">
-<form method="post"><input type="hidden" name="csrf" value="<?=noti_h($csrf)?>"><input type="hidden" name="action" value="open"><input type="hidden" name="notification_id" value="<?=(int)$n['id']?>"><button type="submit" class="noti-open">Mở nội dung →</button></form>
-<?php if ($isUnread): ?><form method="post"><input type="hidden" name="csrf" value="<?=noti_h($csrf)?>"><input type="hidden" name="action" value="read_one"><input type="hidden" name="notification_id" value="<?=(int)$n['id']?>"><input type="hidden" name="filter" value="<?=noti_h($filter)?>"><button type="submit" class="noti-secondary">Đánh dấu đã đọc</button></form><?php endif; ?>
-<form method="post" onsubmit="return confirm('Xóa thông báo này?')"><input type="hidden" name="csrf" value="<?=noti_h($csrf)?>"><input type="hidden" name="action" value="delete_one"><input type="hidden" name="notification_id" value="<?=(int)$n['id']?>"><input type="hidden" name="filter" value="<?=noti_h($filter)?>"><button type="submit" class="noti-delete" aria-label="Xóa thông báo">Xóa</button></form>
-</div>
-</div>
-<?php if ($isUnread): ?><span class="noti-unread-dot" aria-label="Chưa đọc"></span><?php endif; ?>
-</article>
-<?php endforeach; ?>
-</div>
-<?php if ($totalPages > 1): ?><nav class="noti-pagination" aria-label="Phân trang"><?php if($page>1):?><a href="<?=noti_h(noti_page_url($page-1,$filter,$search))?>">← Trước</a><?php endif; ?><span><?=$page?> / <?=$totalPages?></span><?php if($page<$totalPages):?><a href="<?=noti_h(noti_page_url($page+1,$filter,$search))?>">Sau →</a><?php endif; ?></nav><?php endif; ?>
-<?php endif; ?>
-</section>
+    <?php if ($message !== ''): ?>
+        <div class="np-message"><?php echo td_notification_escape($message); ?></div>
+    <?php endif; ?>
+
+    <div class="np-tools">
+        <strong>Hoạt động gần đây</strong>
+        <?php if ($unreadCount > 0): ?>
+        <form method="post">
+            <input type="hidden" name="csrf" value="<?php echo td_notification_escape($csrf); ?>">
+            <input type="hidden" name="action" value="read_all">
+            <button class="np-btn" type="submit">Đánh dấu tất cả đã đọc</button>
+        </form>
+        <?php endif; ?>
+    </div>
+
+    <?php if (!$notifications): ?>
+        <div class="np-empty">Bạn chưa có thông báo nào.</div>
+    <?php else: ?>
+        <?php foreach ($notifications as $notice): ?>
+            <article class="np-card <?php echo ((int)$notice['is_read'] === 0) ? 'unread' : ''; ?>">
+                <div class="np-symbol">☾</div>
+                <div class="np-body">
+                    <div class="np-meta">
+                        <?php echo td_notification_escape($notice['notification_type']); ?>
+                        · <?php echo td_notification_escape($notice['created_at']); ?>
+                        <?php if ((int)$notice['is_read'] === 0): ?> · Chưa đọc<?php endif; ?>
+                    </div>
+                    <h3><?php echo td_notification_escape($notice['title']); ?></h3>
+                    <p><?php echo nl2br(td_notification_escape($notice['message'])); ?></p>
+                    <div class="np-actions">
+                        <?php if (!empty($notice['target_url']) && strpos((string)$notice['target_url'], '/') === 0 && strpos((string)$notice['target_url'], '//') !== 0): ?>
+                            <a href="<?php echo td_notification_escape($notice['target_url']); ?>">Mở nội dung →</a>
+                        <?php endif; ?>
+                        <?php if ((int)$notice['is_read'] === 0): ?>
+                        <form method="post">
+                            <input type="hidden" name="csrf" value="<?php echo td_notification_escape($csrf); ?>">
+                            <input type="hidden" name="action" value="read_one">
+                            <input type="hidden" name="id" value="<?php echo (int)$notice['id']; ?>">
+                            <button type="submit">Đánh dấu đã đọc</button>
+                        </form>
+                        <?php endif; ?>
+                        <form method="post" onsubmit="return confirm('Bạn có chắc muốn xóa thông báo này?');">
+                            <input type="hidden" name="csrf" value="<?php echo td_notification_escape($csrf); ?>">
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="id" value="<?php echo (int)$notice['id']; ?>">
+                            <button type="submit">Xóa</button>
+                        </form>
+                    </div>
+                </div>
+            </article>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </main>
 <?php require __DIR__ . '/includes/footer.php'; ?>
-</body></html>
+</body>
+</html>
