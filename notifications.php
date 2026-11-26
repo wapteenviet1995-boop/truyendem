@@ -1,5 +1,16 @@
 <?php
 declare(strict_types=1);
+// Temporary diagnostics: expose fatal location to the signed-in site owner.
+error_reporting(E_ALL);
+ini_set('display_errors', '0');
+register_shutdown_function(function () {
+    $e = error_get_last();
+    if ($e && in_array($e['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR], true)) {
+        error_log('TruyenDem notifications fatal: ' . $e['message'] . ' in ' . $e['file'] . ':' . $e['line']);
+        if (!headers_sent()) { http_response_code(200); header('Content-Type: text/plain; charset=utf-8'); }
+        echo "\nNOTIFICATIONS FATAL: " . $e['message'] . "\nFILE: " . basename($e['file']) . "\nLINE: " . $e['line'] . "\n";
+    }
+});
 require __DIR__ . '/includes/db.php';
 if (empty($_SESSION['member_id'])) { header('Location: /login.php?next=notifications.php'); exit; }
 $me = (int)$_SESSION['member_id'];
