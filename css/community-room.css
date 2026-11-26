@@ -5,3 +5,15 @@
 
 /* Giao diện tin nhắn gọn hơn, ưu tiên màn hình điện thoại */
 .cchat-main{max-width:760px;padding:18px 12px 46px}.cchat-hero{margin:4px auto 16px}.cchat-hero h1{font-size:1.45rem;margin:5px 0}.cchat-hero p{font-size:.82rem;line-height:1.4}.cchat-panel{border-radius:15px}.cchat-top{padding:12px 14px}.cchat-top strong{font-size:.98rem}.cchat-top small{font-size:.72rem}.cchat-stream{height:min(58vh,540px);min-height:260px;padding:12px;gap:9px}.cchat-message{max-width:88%;gap:7px}.cchat-avatar{width:30px;height:30px;flex-basis:30px;font-size:.82rem}.cchat-content{padding:7px 9px;border-radius:4px 12px 12px 12px}.mine .cchat-content{border-radius:12px 4px 12px 12px}.cchat-meta{gap:6px;font-size:.68rem}.cchat-meta a{font-size:.76rem}.cchat-member-status{font-size:.62rem}.cchat-content p{font-size:.9rem;line-height:1.38;margin-top:3px}.cchat-delete{margin-top:4px;padding:3px 7px;font-size:.65rem}.cchat-emoji-bar{padding:7px 10px 0;gap:4px}.cchat-emoji{min-width:29px;height:29px;font-size:.95rem}.cchat-compose{padding:9px;gap:7px}.cchat-compose textarea{min-height:40px;max-height:90px;padding:8px 10px;font-size:.88rem}.cchat-compose button{padding:9px 11px;font-size:.78rem}.cchat-note{font-size:.68rem;padding:0 10px 9px}.cchat-top-actions button{padding:6px 8px;font-size:.68rem}@media(max-width:560px){.cchat-main{padding:12px 8px 34px}.cchat-hero{margin-bottom:12px}.cchat-hero h1{font-size:1.25rem}.cchat-stream{min-height:240px;padding:9px;gap:8px}.cchat-message{max-width:94%}.cchat-content p{font-size:.86rem}.cchat-compose button{font-size:.72rem;padding:9px}.cchat-top-actions{gap:7px}}
+
+/* Trả lời và thả tim */
+.cchat-message-actions{display:flex;align-items:center;gap:7px;margin-top:6px;flex-wrap:wrap}
+.cchat-reply-btn,.cchat-heart{border:1px solid var(--line);background:transparent;color:var(--mute);border-radius:8px;padding:3px 8px;font:inherit;font-size:.68rem;cursor:pointer}
+.cchat-reply-btn:hover{color:var(--acc);border-color:var(--acc)}
+.cchat-heart{color:var(--mute)}.cchat-heart.liked{color:#e11d48;background:rgba(225,29,72,.08);border-color:rgba(225,29,72,.3)}
+.cchat-reply-quote{display:grid;gap:2px;margin:5px 0;padding:6px 8px;border-left:3px solid var(--acc);border-radius:5px;background:var(--hov);font-size:.72rem;max-width:100%;overflow:hidden}
+.cchat-reply-quote b{color:var(--acc)}.cchat-reply-quote span{color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cchat-reply-preview{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 12px 0;padding:8px 10px;border-left:3px solid var(--acc);border-radius:8px;background:var(--hov);font-size:.75rem;color:var(--ink)}
+.cchat-reply-preview[hidden]{display:none}.cchat-reply-preview span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cchat-reply-preview button{flex:0 0 auto;border:0;background:transparent;color:var(--mute);font-size:1.2rem;cursor:pointer}
+.cchat-heart:disabled{opacity:.55;cursor:wait}
