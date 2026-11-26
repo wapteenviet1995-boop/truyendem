@@ -71,7 +71,7 @@ $unreadQ=$pdo->prepare('SELECT COUNT(*) FROM member_messages WHERE recipient_id=
 <?php if($error):?><p class="community-error"><?=msg_h($error)?></p><?php endif;?>
 <?php if($person):?>
 <section class="social-card chat-card"><div class="chat-heading"><div><h2><?=msg_h($person['display_name'])?></h2><small class="<?=((time()-strtotime((string)$person['last_seen_at'])<=300 && $person['last_seen_at'])?'is-online':'')?>"><?=msg_h(msg_presence_label($person['last_seen_at']))?></small></div><a class="social-quiet-link" href="member.php?id=<?=(int)$person['id']?>">Xem hồ sơ</a></div>
-<div class="chat-messages" id="chat-messages" data-current="<?= $currentId ?>" data-target="<?=(int)$person['id']?>"><?php if(!$chat):?><p class="chat-empty">Hãy gửi lời chào đầu tiên nhé ✨</p><?php else:foreach($chat as $m):?><div class="chat-bubble <?=((int)$m['sender_id']===$currentId?'mine':'theirs')?>"><p><?=nl2br(msg_h($m['message']))?></p><small><?=msg_h(date('d/m H:i',strtotime($m['created_at'])))?></small></div><?php endforeach;endif;?></div>
+<div class="chat-messages" id="chat-messages" data-current="<?= $currentId ?>" data-target="<?=(int)$person['id']?>"><?php if(!$chat):?><p class="chat-empty">Hãy gửi lời chào đầu tiên nhé ✨</p><?php else:foreach($chat as $m):?><div class="chat-bubble <?=((int)$m['sender_id']===$currentId?'mine':'theirs')?>" data-id="<?=(int)$m['id']?>"><p><?=nl2br(msg_h($m['message']))?></p><small><?=msg_h(date('d/m H:i',strtotime($m['created_at'])))?></small></div><?php endforeach;endif;?></div>
 <form method="post" class="chat-compose"><input type="hidden" name="csrf" value="<?=msg_h($_SESSION['member_csrf'])?>"><input type="hidden" name="recipient_id" value="<?=(int)$person['id']?>"><textarea name="message" maxlength="8000" rows="2" required placeholder="Viết tin nhắn..."></textarea><button class="social-button" type="submit">Gửi tin ✦</button></form></section>
 <?php else:?>
 <section class="social-card"><div class="social-section-title"><h2>Bạn bè của tôi</h2><span><?=$totalUnread?> tin chưa đọc</span></div><?php if(!$friends):?><p class="social-muted">Bạn chưa có bạn bè. Hãy kết bạn trước để bắt đầu trò chuyện.</p><a class="social-button" href="friends.php">Tìm bạn bè</a><?php else:foreach($friends as $f):?><a class="chat-friend" href="messages.php?with=<?=(int)$f['id']?>"><span class="chat-avatar"><?=msg_h((preg_match('/^./us',(string)$f['display_name'],$first)?$first[0]:'✦'))?></span><span class="chat-friend-info"><strong><?=msg_h($f['display_name'])?></strong><small><?=msg_h(msg_presence_label($f['last_seen_at']))?></small></span><?php if((int)$f['unread']>0):?><b class="chat-unread"><?=(int)$f['unread']?></b><?php endif;?></a><?php endforeach;endif;?></section>
@@ -84,18 +84,19 @@ $unreadQ=$pdo->prepare('SELECT COUNT(*) FROM member_messages WHERE recipient_id=
  const current=Number(box.dataset.current), target=Number(box.dataset.target);
  let lastId=0; box.querySelectorAll('.chat-bubble').forEach(el=>{const t=el.dataset.id;if(t)lastId=Math.max(lastId,Number(t));});
  async function refresh(){
+  const nearBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 90;
   try{
    const r=await fetch('messages.php?with='+target+'&fetch=1',{cache:'no-store',credentials:'same-origin'});
    if(!r.ok)return; const data=await r.json(); if(!data.ok)return;
    box.replaceChildren();
    if(!data.messages.length){const p=document.createElement('p');p.className='chat-empty';p.textContent='Hãy gửi lời chào đầu tiên nhé ✨';box.append(p);}
    data.messages.forEach(m=>{
-    const item=document.createElement('div');item.className='chat-bubble '+(Number(m.sender_id)===current?'mine':'theirs');
+    const item=document.createElement('div');item.className='chat-bubble '+(Number(m.sender_id)===current?'mine':'theirs'); item.dataset.id=m.id;
     const p=document.createElement('p');p.textContent=m.message;
     const small=document.createElement('small');small.textContent=m.time_label;
     item.append(p,small);box.append(item);
    });
-   box.scrollTop=box.scrollHeight;
+   if(nearBottom) box.scrollTop=box.scrollHeight;
   }catch(e){}
  }
  box.scrollTop=box.scrollHeight; setInterval(refresh,5000);
