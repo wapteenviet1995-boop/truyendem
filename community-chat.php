@@ -6,7 +6,7 @@ $me=(int)$_SESSION['member_id'];
 if(empty($_SESSION['member_csrf'])) $_SESSION['member_csrf']=bin2hex(random_bytes(32));
 $csrf=(string)$_SESSION['member_csrf'];
 function cchat_h($v): string { return htmlspecialchars((string)$v,ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8'); }
-function cchat_json(array $data,int $status=200): never { http_response_code($status); header('Content-Type: application/json; charset=utf-8'); echo json_encode($data,JSON_UNESCAPED_UNICODE); exit; }
+function cchat_json(array $data,int $status=200): void { http_response_code($status); header('Content-Type: application/json; charset=utf-8'); echo json_encode($data,JSON_UNESCAPED_UNICODE); exit; }
 if(isset($_GET['fetch'])) {
   $after=max(0,(int)($_GET['after']??0));
   $q=$pdo->prepare("SELECT c.id,c.member_id,c.message,DATE_FORMAT(c.created_at,'%d/%m %H:%i') AS time_label,m.display_name,m.avatar_url FROM community_chat_messages c JOIN members m ON m.id=c.member_id WHERE c.id>? AND c.deleted_at IS NULL AND m.is_active=1 ORDER BY c.id ASC LIMIT 80");
