@@ -83,7 +83,7 @@ try {
       <a class="td-drawer-link" href="/index.php#leaderboard"><span>♜</span> Bảng xếp hạng</a>
       <a class="td-drawer-link" href="/discover.php"><span>✧</span> Truyện mới cập nhật</a>
       <a class="td-drawer-link" href="/community.php"><span>♧</span> Cộng đồng</a>
-      <a class="td-drawer-link" href="/community-chat.php"><span>✉</span> Phòng trò chuyện</a>
+      <a class="td-drawer-link" href="/community-room.php"><span>✉</span> Phòng trò chuyện</a>
       <a class="td-drawer-link" href="/contributor-leaderboard.php"><span>♜</span> Bảng xếp hạng CTV</a>
     </section>
     <section class="td-drawer-section td-drawer-genres">
