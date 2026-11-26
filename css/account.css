@@ -13,3 +13,5 @@
 .avatar-crop-actions .account-button{justify-self:auto}
 .avatar-crop-tools small{color:var(--mute);line-height:1.5}
 @media(max-width:520px){.avatar-crop-stage{width:min(100%,280px)}.avatar-crop-actions{display:grid;grid-template-columns:1fr}.avatar-crop-actions .account-button{width:100%;text-align:center}}
+
+.account-details{display:grid;gap:12px;margin:0 0 18px}.account-details>div{padding:12px 14px;border:1px solid var(--line);border-radius:11px;background:var(--bg)}.account-details dt{font-size:.8rem;color:var(--mute);margin-bottom:3px}.account-details dd{margin:0;color:var(--ink);overflow-wrap:anywhere}.account-about .account-button{display:inline-flex;text-decoration:none;align-items:center}
