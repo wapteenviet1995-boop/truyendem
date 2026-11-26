@@ -13,10 +13,12 @@ function noti_h($value): string {
 function noti_lower(string $value): string {
     return function_exists('mb_strtolower') ? mb_strtolower($value, 'UTF-8') : strtolower($value);
 }
+function noti_starts(string $value, string $prefix): bool { return substr($value, 0, strlen($prefix)) === $prefix; }
+function noti_has(string $value, string $needle): bool { return strpos($value, $needle) !== false; }
 function noti_category(string $type): string {
-    if (str_starts_with($type, 'contributor_') || str_contains($type, 'reward') || str_contains($type, 'paid')) return 'rewards';
-    if (str_starts_with($type, 'moderation_') || str_starts_with($type, 'author_') || str_starts_with($type, 'story_')) return 'stories';
-    if (str_starts_with($type, 'community_') || $type === 'new_follower' || str_starts_with($type, 'friend_') || str_starts_with($type, 'message_')) return 'social';
+    if (noti_starts($type, 'contributor_') || noti_has($type, 'reward') || noti_has($type, 'paid')) return 'rewards';
+    if (noti_starts($type, 'moderation_') || noti_starts($type, 'author_') || noti_starts($type, 'story_')) return 'stories';
+    if (noti_starts($type, 'community_') || $type === 'new_follower' || noti_starts($type, 'friend_') || noti_starts($type, 'message_')) return 'social';
     return 'system';
 }
 function noti_icon(string $category): string {
@@ -39,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $q->execute([$id, $me]);
                 $target = (string)($q->fetchColumn() ?: '/notifications.php');
                 $pdo->prepare('UPDATE member_notifications SET is_read=1 WHERE id=? AND recipient_id=?')->execute([$id, $me]);
-                if ($target === '' || $target[0] !== '/' || str_starts_with($target, '//')) $target = '/notifications.php';
+                if ($target === '' || $target[0] !== '/' || substr($target, 0, 2) === '//') $target = '/notifications.php';
                 header('Location: ' . $target); exit;
             } elseif ($action === 'delete_one' && $id > 0) {
                 $pdo->prepare('DELETE FROM member_notifications WHERE id=? AND recipient_id=?')->execute([$id, $me]);
@@ -64,15 +66,18 @@ if (!in_array($filter, ['all','unread','social','stories','rewards','system'], t
 $search = trim((string)($_GET['q'] ?? ''));
 $page = max(1, (int)($_GET['page'] ?? 1));
 try {
-    $q = $pdo->prepare("SELECT n.id,n.notification_type,n.title,n.message,n.target_url,n.is_read,n.created_at,m.display_name actor_name FROM member_notifications n LEFT JOIN members m ON m.id=n.actor_id WHERE n.recipient_id=? ORDER BY n.created_at DESC,n.id DESC LIMIT 200");
+    $q = $pdo->prepare("SELECT id,notification_type,title,message,target_url,is_read,created_at FROM member_notifications WHERE recipient_id=? ORDER BY created_at DESC,id DESC LIMIT 200");
     $q->execute([$me]);
     $allItems = $q->fetchAll(PDO::FETCH_ASSOC);
     $q = $pdo->prepare('SELECT COUNT(*) FROM member_notifications WHERE recipient_id=? AND is_read=0');
     $q->execute([$me]);
     $unread = (int)$q->fetchColumn();
-} catch (PDOException $e) {
-    http_response_code(500);
-    exit('Chưa cài đặt bảng thông báo. Hãy chạy database/member_hub.sql trong phpMyAdmin.');
+} catch (Throwable $e) {
+    error_log('TruyenDem notifications query error: ' . $e->getMessage());
+    http_response_code(200);
+    $allItems = [];
+    $unread = 0;
+    $error = 'Không tải được dữ liệu thông báo. Có thể bảng thông báo chưa được cập nhật đúng cấu trúc. Hãy báo quản trị viên kiểm tra bảng member_notifications.';
 }
 
 $counts = ['all'=>count($allItems),'unread'=>0,'social'=>0,'stories'=>0,'rewards'=>0,'system'=>0];
@@ -82,7 +87,7 @@ foreach ($allItems as $item) {
     if (!(int)$item['is_read']) $counts['unread']++;
     $counts[$category]++;
     $item['_category'] = $category;
-    $haystack = $search !== '' ? noti_lower((string)$item['title'].' '.(string)$item['message'].' '.(string)($item['actor_name'] ?? '')) : '';
+    $haystack = $search !== '' ? noti_lower((string)$item['title'].' '.(string)$item['message'].' '.(string)'') : '';
     if ($filter === 'unread' && (int)$item['is_read']) continue;
     if (in_array($filter, ['social','stories','rewards','system'], true) && $category !== $filter) continue;
     if ($search !== '' && strpos($haystack, noti_lower($search)) === false) continue;
@@ -152,7 +157,7 @@ function noti_page_url(int $page, string $filter, string $search): string {
 <div class="noti-content">
 <div class="noti-card-top"><span class="noti-category"><?=noti_h($labels[$cat] ?? 'Thông báo')}</span><time datetime="<?=noti_h(date('c',strtotime($n['created_at'])))?>"><?=noti_h(date('d/m/Y · H:i',strtotime($n['created_at'])))?></time></div>
 <h3><?=noti_h($n['title'])?></h3><p><?=noti_h($n['message'])?></p>
-<?php if (!empty($n['actor_name'])): ?><small class="noti-actor">Thành viên: <?=noti_h($n['actor_name'])?></small><?php endif; ?>
+
 <div class="noti-card-actions">
 <form method="post"><input type="hidden" name="csrf" value="<?=noti_h($csrf)?>"><input type="hidden" name="action" value="open"><input type="hidden" name="notification_id" value="<?=(int)$n['id']?>"><button type="submit" class="noti-open">Mở nội dung →</button></form>
 <?php if ($isUnread): ?><form method="post"><input type="hidden" name="csrf" value="<?=noti_h($csrf)?>"><input type="hidden" name="action" value="read_one"><input type="hidden" name="notification_id" value="<?=(int)$n['id']?>"><input type="hidden" name="filter" value="<?=noti_h($filter)?>"><button type="submit" class="noti-secondary">Đánh dấu đã đọc</button></form><?php endif; ?>
