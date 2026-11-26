@@ -17,3 +17,6 @@
 .cchat-reply-preview[hidden]{display:none}.cchat-reply-preview span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cchat-reply-preview button{flex:0 0 auto;border:0;background:transparent;color:var(--mute);font-size:1.2rem;cursor:pointer}
 .cchat-heart:disabled{opacity:.55;cursor:wait}
+
+/* Gửi ảnh trong phòng trò chuyện */
+.cchat-compose-fields{flex:1;min-width:0;display:grid;gap:7px}.cchat-compose-fields textarea{width:100%;box-sizing:border-box}.cchat-image-tools{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:.72rem;color:var(--mute)}.cchat-image-tools label{display:inline-flex;align-items:center;padding:6px 10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);cursor:pointer;font-weight:700}.cchat-image-tools input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}.cchat-image-link{display:block;margin-top:7px;max-width:min(100%,360px)}.cchat-image{display:block;width:auto;max-width:100%;max-height:300px;object-fit:contain;border-radius:10px;border:1px solid var(--line)}@media(max-width:560px){.cchat-compose{align-items:stretch}.cchat-compose-fields{width:100%}.cchat-compose{flex-wrap:wrap}.cchat-compose>button{align-self:flex-end}.cchat-image{max-height:240px}}
