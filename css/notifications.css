@@ -1,0 +1,72 @@
+/* Trung tam thong bao - Truyen Dem */
+.noti-main{max-width:900px}
+.noti-hero{padding-bottom:18px}
+.noti-hero h1 small{display:inline-block;margin-left:6px;padding:5px 9px;border:1px solid rgba(214,179,106,.35);border-radius:99px;color:#e3c47e;font:600 .72rem "Be Vietnam Pro",sans-serif;vertical-align:middle}
+.noti-summary{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:16px}
+.noti-summary span{padding:8px 12px;border:1px solid #494234;border-radius:99px;background:#202020;color:#aaa49a;font-size:.78rem}
+.noti-summary b{color:#e3c47e}
+.noti-toolbar{display:grid;gap:12px;margin:0 0 14px;padding:14px;border:1px solid #393630;border-radius:13px;background:#202020}
+.noti-search{display:flex;gap:8px;min-width:0}
+.noti-search input{flex:1;min-width:0;padding:11px 12px;border:1px solid #494234;border-radius:9px;background:#171717;color:#f1eee8;font:inherit}
+.noti-search button,.noti-action-primary{border:0;border-radius:9px;padding:10px 14px;background:#d6b36a;color:#171511;font-weight:700;cursor:pointer}
+.noti-search>a{align-self:center;color:#e3c47e;font-size:.82rem}
+.noti-actions{display:flex;gap:8px;flex-wrap:wrap}
+.noti-actions form,.noti-card-actions form{margin:0}
+.noti-action-muted,.noti-secondary,.noti-delete{border:1px solid #554a37;border-radius:8px;padding:8px 11px;background:#29251e;color:#d9c69e;font:600 .78rem "Be Vietnam Pro",sans-serif;cursor:pointer}
+.noti-filters{display:flex;gap:7px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:thin}
+.noti-filters a{display:inline-flex;align-items:center;gap:7px;flex:none;padding:8px 11px;border:1px solid #393630;border-radius:99px;background:#202020;color:#bdb5a8;text-decoration:none;font-size:.77rem}
+.noti-filters a b{color:#e3c47e;font-size:.72rem}
+.noti-filters a.active{border-color:#9b7b43;background:#352d20;color:#f1dfb4}
+.noti-feed{padding:15px;border:1px solid #393630;border-radius:14px;background:#1c1c1c}
+.noti-feed-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}
+.noti-feed-head h2{margin:0;color:#e3c47e;font:600 1.1rem Lora,Georgia,serif}
+.noti-feed-head>span{color:#918a7e;font-size:.74rem}
+.noti-list{display:grid;gap:9px}
+.noti-card{position:relative;display:flex;align-items:flex-start;gap:12px;padding:14px;border:1px solid #393630;border-radius:12px;background:#222}
+.noti-card.is-unread{border-color:#78613a;background:linear-gradient(110deg,#30291d,#24221e)}
+.noti-icon{display:grid;place-items:center;flex:none;width:39px;height:39px;border:1px solid #5b4b30;border-radius:12px;background:#30291d;color:#e3c47e;font-size:1.15rem}
+.noti-icon.noti-social{color:#e6a6b5;border-color:#704653;background:#35232a}
+.noti-icon.noti-stories{color:#a9bce5;border-color:#455477;background:#242d40}
+.noti-icon.noti-rewards{color:#e3c47e}
+.noti-content{flex:1;min-width:0}
+.noti-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.noti-category{color:#d6b36a;font-size:.7rem;font-weight:700}
+.noti-card time{color:#918a7e;font-size:.7rem}
+.noti-content h3{margin:5px 0;color:#f1eee8;font-size:.92rem;line-height:1.45}
+.noti-content p{margin:0;color:#c8c1b5;font-size:.84rem;line-height:1.65;overflow-wrap:anywhere}
+.noti-actor{display:block;margin-top:5px;color:#918a7e;font-size:.72rem}
+.noti-card-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:11px}
+.noti-open{border:0;border-radius:8px;padding:8px 11px;background:#d6b36a;color:#171511;font:700 .78rem "Be Vietnam Pro",sans-serif;cursor:pointer}
+.noti-secondary{padding:7px 10px}
+.noti-delete{padding:7px 10px;border-color:#62403b;background:#30211f;color:#e4aaa0}
+.noti-unread-dot{position:absolute;top:17px;right:15px;width:8px;height:8px;border-radius:50%;background:#e3c47e;box-shadow:0 0 0 4px rgba(227,196,126,.12)}
+.noti-empty{text-align:center;padding:35px 15px}
+.noti-empty>span{display:block;margin-bottom:8px;color:#e3c47e;font-size:2rem}
+.noti-empty strong{color:#e9dfce}
+.noti-empty p{margin:7px 0 0;color:#918a7e;font-size:.84rem}
+.noti-pagination{display:flex;justify-content:center;align-items:center;gap:18px;padding:16px 0 2px;color:#aaa49a;font-size:.82rem}
+.noti-pagination a{color:#e3c47e;text-decoration:none;font-weight:700}
+@media(max-width:560px){
+ .noti-main{padding-left:10px;padding-right:10px}
+ .noti-toolbar,.noti-feed{padding:11px}
+ .noti-card{gap:9px;padding:11px}
+ .noti-icon{width:34px;height:34px;border-radius:10px}
+ .noti-card time{font-size:.66rem}
+ .noti-content h3{font-size:.86rem}
+ .noti-content p{font-size:.8rem}
+ .noti-card-actions{gap:6px}
+ .noti-open,.noti-secondary,.noti-delete{padding:7px 9px;font-size:.72rem}
+ .noti-unread-dot{top:13px;right:12px}
+ .noti-feed-head{align-items:flex-start;flex-direction:column;gap:4px}
+}
+html[data-theme="light"] body.story-site .noti-toolbar,
+html[data-theme="light"] body.story-site .noti-feed,
+html[data-theme="light"] body.story-site .noti-card{background:#fff!important;border-color:#e5dfe9!important}
+html[data-theme="light"] body.story-site .noti-card.is-unread{background:#fffaf0!important;border-color:#e7d2a4!important}
+html[data-theme="light"] body.story-site .noti-content h3,
+html[data-theme="light"] body.story-site .noti-empty strong{color:#30283a!important}
+html[data-theme="light"] body.story-site .noti-content p{color:#625b69!important}
+html[data-theme="light"] body.story-site .noti-filters a{background:#fff!important;border-color:#e5dfe9!important;color:#625b69!important}
+html[data-theme="light"] body.story-site .noti-filters a.active{background:#f4edf9!important;border-color:#cbb5dc!important;color:#49345c!important}
+html[data-theme="light"] body.story-site .noti-search input{background:#fff!important;border-color:#ddd4e5!important;color:#30283a!important}
+html[data-theme="light"] body.story-site .noti-summary span{background:#fff!important;border-color:#e5dfe9!important;color:#625b69!important}
