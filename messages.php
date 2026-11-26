@@ -64,7 +64,7 @@ function msg_presence_label(?string $lastSeen): string {
 }
 $unreadQ=$pdo->prepare('SELECT COUNT(*) FROM member_messages WHERE recipient_id=? AND read_at IS NULL');$unreadQ->execute([$currentId]);$totalUnread=(int)$unreadQ->fetchColumn();
 ?>
-<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tin nhắn riêng | Truyện Đêm</title><link rel="stylesheet" href="css/style.css?v=messaging1"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1"><link rel="stylesheet" href="/css/theme-mode.css?v=20261122-global-light-audit5">
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tin nhắn riêng | Truyện Đêm</title><link rel="stylesheet" href="css/style.css?v=messaging1"><link rel="stylesheet" href="/css/truyenhub-theme.css?v=20261113-1"><link rel="stylesheet" href="/css/site-matte-black.css?v=20261114-matte1"><link rel="stylesheet" href="/css/theme-mode.css?v=20261122-global-light-audit5"><link rel="stylesheet" href="/css/messages-upgrade.css?v=1">
 </head>
 <body class="blog-page social-page"><?php require __DIR__ . '/includes/header.php'; ?>
 <main class="social-main messages-main"><section class="social-hero"><span class="compat-kicker">✦ KẾT NỐI RIÊNG TƯ ✦</span><h1>Tin nhắn <em>riêng</em></h1><p>Trò chuyện thân mật cùng những người bạn dưới bầu trời hoàng đạo.</p></section>
