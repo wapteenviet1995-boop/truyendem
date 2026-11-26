@@ -10,6 +10,9 @@ $error = '';
 function noti_h($value): string {
     return htmlspecialchars((string)($value ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
+function noti_lower(string $value): string {
+    return function_exists('mb_strtolower') ? mb_strtolower($value, 'UTF-8') : strtolower($value);
+}
 function noti_category(string $type): string {
     if (str_starts_with($type, 'contributor_') || str_contains($type, 'reward') || str_contains($type, 'paid')) return 'rewards';
     if (str_starts_with($type, 'moderation_') || str_starts_with($type, 'author_') || str_starts_with($type, 'story_')) return 'stories';
@@ -79,10 +82,10 @@ foreach ($allItems as $item) {
     if (!(int)$item['is_read']) $counts['unread']++;
     $counts[$category]++;
     $item['_category'] = $category;
-    $haystack = mb_strtolower((string)$item['title'].' '.(string)$item['message'].' '.(string)($item['actor_name'] ?? ''), 'UTF-8');
+    $haystack = $search !== '' ? noti_lower((string)$item['title'].' '.(string)$item['message'].' '.(string)($item['actor_name'] ?? '')) : '';
     if ($filter === 'unread' && (int)$item['is_read']) continue;
     if (in_array($filter, ['social','stories','rewards','system'], true) && $category !== $filter) continue;
-    if ($search !== '' && !str_contains($haystack, mb_strtolower($search, 'UTF-8'))) continue;
+    if ($search !== '' && strpos($haystack, noti_lower($search)) === false) continue;
     $filtered[] = $item;
 }
 $perPage = 20;
