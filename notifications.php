@@ -74,33 +74,44 @@ function td_notification_escape($value) {
 function td_notification_type_label($type) {
     $labels = [
         'new_follower' => 'Người theo dõi mới',
-        'community_comment' => 'Bình luận cộng đồng',
-        'community_like' => 'Lượt thích cộng đồng',
-        'story_comment_like' => 'Lượt thích bình luận',
-        'story_comment_reply' => 'Trả lời bình luận',
-        'author_new_story' => 'Truyện mới từ tác giả bạn theo dõi',
+        'friend_request' => 'Lời mời kết bạn',
+        'friend_accepted' => 'Đã chấp nhận lời mời kết bạn',
+        'message_new' => 'Tin nhắn mới',
+        'community_comment' => 'Bình luận mới trong cộng đồng',
+        'community_like' => 'Bài viết được yêu thích',
+        'community_reply' => 'Có người trả lời bài viết',
+        'story_comment' => 'Bình luận mới về truyện',
+        'story_comment_like' => 'Bình luận được yêu thích',
+        'story_comment_reply' => 'Có người trả lời bình luận',
+        'story_like' => 'Truyện được yêu thích',
+        'author_new_story' => 'Tác giả bạn theo dõi vừa đăng truyện',
+        'moderation_submitted' => 'Truyện đã gửi kiểm duyệt',
         'moderation_approved' => 'Truyện đã được duyệt',
         'moderation_rejected' => 'Truyện cần chỉnh sửa',
-        'contributor_reward' => 'Nhuận bút mới',
-        'contributor_paid' => 'Nhuận bút đã thanh toán'
+        'contributor_reward' => 'Bạn có nhuận bút mới',
+        'contributor_paid' => 'Nhuận bút đã được thanh toán'
     ];
+
     $type = (string) $type;
     if (isset($labels[$type])) {
         return $labels[$type];
     }
-    if (strpos($type, 'moderation_') === 0) {
-        return 'Thông báo kiểm duyệt';
+    if (strpos($type, 'moderation_') === 0 || strpos($type, 'author_') === 0) {
+        return 'Thông báo về truyện và kiểm duyệt';
     }
-    if (strpos($type, 'contributor_') === 0) {
-        return 'Thông báo cộng tác viên';
+    if (strpos($type, 'contributor_') === 0 || strpos($type, 'reward') !== false || strpos($type, 'paid') !== false) {
+        return 'Thông báo nhuận bút và phần thưởng';
     }
-    if (strpos($type, 'community_') === 0) {
+    if (strpos($type, 'community_') === 0 || strpos($type, 'friend_') === 0 || strpos($type, 'message_') === 0 || strpos($type, 'new_follower') === 0) {
         return 'Hoạt động cộng đồng';
     }
     if (strpos($type, 'story_') === 0) {
-        return 'Hoạt động truyện';
+        return 'Hoạt động liên quan đến truyện';
     }
-    return 'Thông báo Truyện Đêm';
+    if ($type === '') {
+        return 'Thông báo Truyện Đêm';
+    }
+    return 'Thông báo khác';
 }
 ?>
 <!doctype html>
