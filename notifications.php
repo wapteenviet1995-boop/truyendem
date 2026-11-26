@@ -70,6 +70,38 @@ try {
 function td_notification_escape($value) {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
+
+function td_notification_type_label($type) {
+    $labels = [
+        'new_follower' => 'Người theo dõi mới',
+        'community_comment' => 'Bình luận cộng đồng',
+        'community_like' => 'Lượt thích cộng đồng',
+        'story_comment_like' => 'Lượt thích bình luận',
+        'story_comment_reply' => 'Trả lời bình luận',
+        'author_new_story' => 'Truyện mới từ tác giả bạn theo dõi',
+        'moderation_approved' => 'Truyện đã được duyệt',
+        'moderation_rejected' => 'Truyện cần chỉnh sửa',
+        'contributor_reward' => 'Nhuận bút mới',
+        'contributor_paid' => 'Nhuận bút đã thanh toán'
+    ];
+    $type = (string) $type;
+    if (isset($labels[$type])) {
+        return $labels[$type];
+    }
+    if (strpos($type, 'moderation_') === 0) {
+        return 'Thông báo kiểm duyệt';
+    }
+    if (strpos($type, 'contributor_') === 0) {
+        return 'Thông báo cộng tác viên';
+    }
+    if (strpos($type, 'community_') === 0) {
+        return 'Hoạt động cộng đồng';
+    }
+    if (strpos($type, 'story_') === 0) {
+        return 'Hoạt động truyện';
+    }
+    return 'Thông báo Truyện Đêm';
+}
 ?>
 <!doctype html>
 <html lang="vi">
@@ -127,7 +159,7 @@ function td_notification_escape($value) {
                 <div class="np-symbol">☾</div>
                 <div class="np-body">
                     <div class="np-meta">
-                        <?php echo td_notification_escape($notice['notification_type']); ?>
+                        <?php echo td_notification_escape(td_notification_type_label($notice['notification_type'])); ?>
                         · <?php echo td_notification_escape($notice['created_at']); ?>
                         <?php if ((int)$notice['is_read'] === 0): ?> · Chưa đọc<?php endif; ?>
                     </div>
